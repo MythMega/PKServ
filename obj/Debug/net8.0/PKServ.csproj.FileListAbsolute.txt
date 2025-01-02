@@ -88,3 +88,4 @@ C:\Users\mythm\source\repos\PKServ\obj\Debug\net8.0\PKServ.genruntimeconfig.cach
 C:\Users\mythm\source\repos\PKServ\obj\Debug\net8.0\ref\PKServ.dll
 C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\user.data
 C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\badges.json
+C:\Users\mythm\source\repos\PKServ\obj\Debug\net8.0\PKServ.sourcelink.json
