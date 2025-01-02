@@ -315,9 +315,14 @@ namespace PKServ
                                     responseString = searchValue.searchValue(info);
                                     break;
 
+                                case "Interface/GetUserHere":
+                                    responseString = API_GetUserHere(usersHere);
+                                    break;
+
                                 default:
                                     responseString = $"Route non reconnue. \nDEBUG : {requestBody}";
                                     break;
+
                             }
 
                             byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
@@ -335,6 +340,11 @@ namespace PKServ
 
             Console.ReadLine();
             listener.Stop();
+        }
+
+        private static string API_GetUserHere(List<User> usersHere)
+        {
+            return JsonSerializer.Serialize(usersHere.Where(x => x.Platform != "system").ToList());
         }
 
         private static void generateOverlays(OverlayGeneration overlay, bool First)
