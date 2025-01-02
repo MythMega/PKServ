@@ -1,0 +1,241 @@
+[
+  {
+    "Type": "BallLaunched",
+    "Value": 10,
+    "Rarity": "common",
+    "Title": "Tuto capture.",
+    "Description": "10 balls lancés.",
+    "XP": 50,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "BallLaunched",
+    "Value": 100,
+    "Rarity": "uncommon",
+    "Title": "Ball à zéro.",
+    "Description": "100 balls lancés.",
+    "XP": 100,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "BallLaunched",
+    "Value": 250,
+    "Rarity": "rare",
+    "Title": "ball-ognaise.",
+    "Description": "250 balls lancés.",
+    "XP": 200,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "BallLaunched",
+    "Value": 1000,
+    "Rarity": "epic",
+    "Title": "punching-ball.",
+    "Description": "1000 balls lancés.",
+    "XP": 500,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "TotalCatch",
+    "Value": 5,
+    "Rarity": "common",
+    "Title": "Dresseur débutant.",
+    "Description": "5 pokémons attrapés.",
+    "XP": 50,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "TotalCatch",
+    "Value": 50,
+    "Rarity": "uncommon",
+    "Title": "Dresseur aguerri.",
+    "Description": "50 pokémons attrapés.",
+    "XP": 100,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "TotalCatch",
+    "Value": 250,
+    "Rarity": "rare",
+    "Title": "Top-Dresseur.",
+    "Description": "250 Pokémons attrapés.",
+    "XP": 200,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "TotalCatch",
+    "Value": 500,
+    "Rarity": "epic",
+    "Title": "Dresseur légendaire.",
+    "Description": "500 Pokémons attrapés.",
+    "XP": 500,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "TotalCatch",
+    "Value": 2500,
+    "Rarity": "legendary",
+    "Title": "Dresseur divin.",
+    "Description": "this is a description of a badge or a trophy",
+    "XP": 1000,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "ShinyCatch",
+    "Value": 1,
+    "Rarity": "uncommon",
+    "Title": "La brillance.",
+    "Description": "1 shiny attrapé.",
+    "XP": 10,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "ShinyCatch",
+    "Value": 10,
+    "Rarity": "rare",
+    "Title": "Disco-ball.",
+    "Description": "10 shiny attrapé.",
+    "XP": 50,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "ShinyCatch",
+    "Value": 50,
+    "Rarity": "epic",
+    "Title": "Disco-ball.",
+    "Description": "50 shiny attrapé.",
+    "XP": 100,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "DaySinceStart",
+    "Value": 30,
+    "Rarity": "rare",
+    "Title": "Blue.",
+    "Description": "Dresseur depuis 1 mois.",
+    "XP": 500,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "DaySinceStart",
+    "Value": 365,
+    "Rarity": "legendary",
+    "Title": "Red.",
+    "Description": "Dresseur depuis 1 an.",
+    "XP": 1510,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "SpecificPoke",
+    "Value": 1,
+    "SpecificValue": "Salamèche",
+    "Rarity": "uncommon",
+    "Title": "lumière rouge.",
+    "Description": "Salamèche attrapé.",
+    "XP": 10,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "SpecificPoke",
+    "Value": 1,
+    "SpecificValue": "Bulbizarre",
+    "Rarity": "uncommon",
+    "Title": "lumière verte.",
+    "Description": "Bulbizarre attrapé.",
+    "XP": 10,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "SpecificPoke",
+    "Value": 1,
+    "SpecificValue": "Carapuce",
+    "Rarity": "uncommon",
+    "Title": "lumière bleue.",
+    "Description": "Carapuce attrapé.",
+    "XP": 10,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "SpecificPoke",
+    "Value": 1,
+    "SpecificValue": "Sulfura",
+    "Rarity": "epic",
+    "Title": "Flamboyant.",
+    "Description": "Sulfura attrapé.",
+    "XP": 200,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "SpecificPoke",
+    "Value": 1,
+    "SpecificValue": "Artikodin",
+    "Rarity": "epic",
+    "Title": "Givrant.",
+    "Description": "Artikodin attrapé.",
+    "XP": 200,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "SpecificPoke",
+    "Value": 1,
+    "SpecificValue": "Electhor",
+    "Rarity": "epic",
+    "Title": "Foudroyant.",
+    "Description": "Electhor attrapé.",
+    "XP": 200,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "SpecificPoke",
+    "Value": 1,
+    "SpecificValue": "Mew",
+    "Rarity": "exotic",
+    "Title": "Agent Rocket.",
+    "Description": "Mew attrapé.",
+    "XP": 300,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "SpecificPoke",
+    "Value": 1,
+    "SpecificValue": "Mewtwo",
+    "Rarity": "legendary",
+    "Title": "Soldat Rocket.",
+    "Description": "Mewtwo attrapé.",
+    "XP": 300,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  },
+  {
+    "Type": "SpecificPoke",
+    "Value": 1,
+    "SpecificValue": "Mewtwo",
+    "Rarity": "legendary",
+    "Title": "Soldat Rocket.",
+    "Description": "Mewtwo attrapé.",
+    "XP": 300,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false
+  }
+]

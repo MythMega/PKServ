@@ -1,0 +1,5119 @@
+[
+  {
+    "Name_FR": "Bulbizarre",
+    "Name_EN": "Bulbasaur",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Herbizarre",
+    "Name_EN": "Ivysaur",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Florizarre",
+    "Name_EN": "Venusaur",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Salamèche",
+    "Name_EN": "Charmander",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Reptincel",
+    "Name_EN": "Charmeleon",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Dracaufeu",
+    "Name_EN": "Charizard",
+    "Type1": "fire",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Carapuce",
+    "Name_EN": "Squirtle",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Carabaffe",
+    "Name_EN": "Wartortle",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Tortank",
+    "Name_EN": "Blastoise",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Chenipan",
+    "Name_EN": "Caterpie",
+    "Type1": "bug",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Chrysacier",
+    "Name_EN": "Metapod",
+    "Type1": "bug",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Papilusion",
+    "Name_EN": "Butterfree",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Aspicot",
+    "Name_EN": "Weedle",
+    "Type1": "bug",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Coconfort",
+    "Name_EN": "Kakuna",
+    "Type1": "bug",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Dardargnan",
+    "Name_EN": "Beedrill",
+    "Type1": "bug",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Roucool",
+    "Name_EN": "Pidgey",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Roucoups",
+    "Name_EN": "Pidgeotto",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Roucarnage",
+    "Name_EN": "Pidgeot",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Rattata",
+    "Name_EN": "Rattata",
+    "Type1": "normal",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Rattatac",
+    "Name_EN": "Raticate",
+    "Type1": "normal",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Piafabec",
+    "Name_EN": "Spearow",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Rapasdepic",
+    "Name_EN": "Fearow",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Abo",
+    "Name_EN": "Ekans",
+    "Type1": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Arbok",
+    "Name_EN": "Arbok",
+    "Type1": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Pikachu",
+    "Name_EN": "Pikachu",
+    "Type1": "electric",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Raichu",
+    "Name_EN": "Raichu",
+    "Type1": "electric",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Sabelette",
+    "Name_EN": "Sandshrew",
+    "Type1": "ground",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Sablaireau",
+    "Name_EN": "Sandslash",
+    "Type1": "ground",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Nidoran♀",
+    "Name_EN": "Nidoran♀",
+    "Sprite_Normal": "https://img.pokemondb.net/sprites/black-white/anim/normal/nidoran-f.gif",
+    "Sprite_Shiny": "https://img.pokemondb.net/sprites/black-white/anim/shiny/nidoran-f.gif",
+    "Type1": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Nidorina",
+    "Name_EN": "Nidorina",
+    "Type1": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Nidoqueen",
+    "Name_EN": "Nidoqueen",
+    "Type1": "poison",
+    "Type2": "ground",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Nidoran♂",
+    "Name_EN": "Nidoran♂",
+    "Sprite_Normal": "https://img.pokemondb.net/sprites/black-white/anim/normal/nidoran-m.gif",
+    "Sprite_Shiny": "https://img.pokemondb.net/sprites/black-white/anim/shiny/nidoran-m.gif",
+    "Type1": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Nidorino",
+    "Name_EN": "Nidorino",
+    "Type1": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Nidoking",
+    "Name_EN": "Nidoking",
+    "Type1": "poison",
+    "Type2": "ground",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Mélofée",
+    "Name_EN": "Clefairy",
+    "Type1": "fairy",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Mélodelfe",
+    "Name_EN": "Clefable",
+    "Type1": "fairy",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Goupix",
+    "Name_EN": "Vulpix",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Feunard",
+    "Name_EN": "Ninetales",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rondoudou",
+    "Name_EN": "Jigglypuff",
+    "Type1": "normal",
+    "Type2": "fairy",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Grodoudou",
+    "Name_EN": "Wigglytuff",
+    "Type1": "normal",
+    "Type2": "fairy",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Nosferapti",
+    "Name_EN": "Zubat",
+    "Type1": "poison",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Nosferalto",
+    "Name_EN": "Golbat",
+    "Type1": "poison",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mystherbe",
+    "Name_EN": "Oddish",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ortide",
+    "Name_EN": "Gloom",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rafflesia",
+    "Name_EN": "Vileplume",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Paras",
+    "Name_EN": "Paras",
+    "Type1": "bug",
+    "Type2": "grass",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Parasect",
+    "Name_EN": "Parasect",
+    "Type1": "bug",
+    "Type2": "grass",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mimitoss",
+    "Name_EN": "Venonat",
+    "Type1": "bug",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Aéromite",
+    "Name_EN": "Venomoth",
+    "Type1": "bug",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Taupiqueur",
+    "Name_EN": "Diglett",
+    "Type1": "ground",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Triopikeur",
+    "Name_EN": "Dugtrio",
+    "Type1": "ground",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Miaouss",
+    "Name_EN": "Meowth",
+    "Type1": "normal",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Persian",
+    "Name_EN": "Persian",
+    "Type1": "normal",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Psykokwak",
+    "Name_EN": "Psyduck",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Akwakwak",
+    "Name_EN": "Golduck",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Férosinge",
+    "Name_EN": "Mankey",
+    "Type1": "fighting",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Colossinge",
+    "Name_EN": "Primeape",
+    "Type1": "fighting",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Caninos",
+    "Name_EN": "Growlithe",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Arcanin",
+    "Name_EN": "Arcanine",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ptitard",
+    "Name_EN": "Poliwag",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Têtarte",
+    "Name_EN": "Poliwhirl",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tartard",
+    "Name_EN": "Poliwrath",
+    "Type1": "water",
+    "Type2": "fighting",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Abra",
+    "Name_EN": "Abra",
+    "Type1": "psychic",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Kadabra",
+    "Name_EN": "Kadabra",
+    "Type1": "psychic",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Alakazam",
+    "Name_EN": "Alakazam",
+    "Type1": "psychic",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Machoc",
+    "Name_EN": "Machop",
+    "Type1": "fighting",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Machopeur",
+    "Name_EN": "Machoke",
+    "Type1": "fighting",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mackogneur",
+    "Name_EN": "Machamp",
+    "Type1": "fighting",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chétiflor",
+    "Name_EN": "Bellsprout",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Boustiflor",
+    "Name_EN": "Weepinbell",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Empiflor",
+    "Name_EN": "Victreebel",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tentacool",
+    "Name_EN": "Tentacool",
+    "Type1": "water",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tentacruel",
+    "Name_EN": "Tentacruel",
+    "Type1": "water",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Racaillou",
+    "Name_EN": "Geodude",
+    "Type1": "rock",
+    "Type2": "ground",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Gravalanch",
+    "Name_EN": "Graveler",
+    "Type1": "rock",
+    "Type2": "ground",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Grolem",
+    "Name_EN": "Golem",
+    "Type1": "rock",
+    "Type2": "ground",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ponyta",
+    "Name_EN": "Ponyta",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Galopa",
+    "Name_EN": "Rapidash",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ramoloss",
+    "Name_EN": "Slowpoke",
+    "Type1": "water",
+    "Type2": "psychic",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Flagadoss",
+    "Name_EN": "Slowbro",
+    "Type1": "water",
+    "Type2": "psychic",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Magnéti",
+    "Name_EN": "Magnemite",
+    "Type1": "electric",
+    "Type2": "steel",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Magnéton",
+    "Name_EN": "Magneton",
+    "Type1": "electric",
+    "Type2": "steel",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Canarticho",
+    "Name_EN": "Farfetch'd",
+    "Sprite_Normal": "https://img.pokemondb.net/sprites/black-white/anim/normal/farfetchd.gif",
+    "Sprite_Shiny": "https://img.pokemondb.net/sprites/black-white/anim/shiny/farfetchd.gif",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Doduo",
+    "Name_EN": "Doduo",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Dodrio",
+    "Name_EN": "Dodrio",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Otaria",
+    "Name_EN": "Seel",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lamantine",
+    "Name_EN": "Dewgong",
+    "Type1": "water",
+    "Type2": "ice",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tadmorv",
+    "Name_EN": "Grimer",
+    "Type1": "poison",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Grotadmorv",
+    "Name_EN": "Muk",
+    "Type1": "poison",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kokiyas",
+    "Name_EN": "Shellder",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Crustabri",
+    "Name_EN": "Cloyster",
+    "Type1": "water",
+    "Type2": "ice",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Fantominus",
+    "Name_EN": "Gastly",
+    "Type1": "ghost",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Spectrum",
+    "Name_EN": "Haunter",
+    "Type1": "ghost",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Ectoplasma",
+    "Name_EN": "Gengar",
+    "Type1": "ghost",
+    "Type2": "poison",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Onix",
+    "Name_EN": "Onix",
+    "Type1": "rock",
+    "Type2": "ground",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Soporifik",
+    "Name_EN": "Drowzee",
+    "Type1": "psychic",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Hypnomade",
+    "Name_EN": "Hypno",
+    "Type1": "psychic",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Krabby",
+    "Name_EN": "Krabby",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Krabboss",
+    "Name_EN": "Kingler",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Voltorbe",
+    "Name_EN": "Voltorb",
+    "Type1": "electric",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Electrode",
+    "Name_EN": "Electrode",
+    "Type1": "electric",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Noeunoeuf",
+    "Name_EN": "Exeggcute",
+    "Type1": "grass",
+    "Type2": "psychic",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Noadkoko",
+    "Name_EN": "Exeggutor",
+    "Type1": "grass",
+    "Type2": "psychic",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Osselait",
+    "Name_EN": "Cubone",
+    "Type1": "ground",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Ossatueur",
+    "Name_EN": "Marowak",
+    "Type1": "ground",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Kicklee",
+    "Name_EN": "Hitmonlee",
+    "Type1": "fighting",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tygnon",
+    "Name_EN": "Hitmonchan",
+    "Type1": "fighting",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Excelangue",
+    "Name_EN": "Lickitung",
+    "Type1": "normal",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Smogo",
+    "Name_EN": "Koffing",
+    "Type1": "poison",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Smogogo",
+    "Name_EN": "Weezing",
+    "Type1": "poison",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rhinocorne",
+    "Name_EN": "Rhyhorn",
+    "Type1": "ground",
+    "Type2": "rock",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rhinoféros",
+    "Name_EN": "Rhydon",
+    "Type1": "ground",
+    "Type2": "rock",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Leveinard",
+    "Name_EN": "Chansey",
+    "Type1": "normal",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Saquedeneu",
+    "Name_EN": "Tangela",
+    "Type1": "grass",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kangourex",
+    "Name_EN": "Kangaskhan",
+    "Type1": "normal",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Hypotrempe",
+    "Name_EN": "Horsea",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Hypocean",
+    "Name_EN": "Seadra",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Poissirène",
+    "Name_EN": "Goldeen",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Poissoroy",
+    "Name_EN": "Seaking",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Stari",
+    "Name_EN": "Staryu",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Staross",
+    "Name_EN": "Starmie",
+    "Type1": "water",
+    "Type2": "psychic",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "M. Mime",
+    "Name_EN": "Mr. Mime",
+    "Sprite_Normal": "https://img.pokemondb.net/sprites/black-white/anim/normal/mr-mime.gif",
+    "Sprite_Shiny": "https://img.pokemondb.net/sprites/black-white/anim/shiny/mr-mime.gif",
+    "Type1": "psychic",
+    "Type2": "fairy",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Insecateur",
+    "Name_EN": "Scyther",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lippoutou",
+    "Name_EN": "Jynx",
+    "Type1": "ice",
+    "Type2": "psychic",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Elektek",
+    "Name_EN": "Electabuzz",
+    "Type1": "electric",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Magmar",
+    "Name_EN": "Magmar",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Scarabrute",
+    "Name_EN": "Pinsir",
+    "Type1": "bug",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tauros",
+    "Name_EN": "Tauros",
+    "Type1": "normal",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Magicarpe",
+    "Name_EN": "Magikarp",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Léviator",
+    "Name_EN": "Gyarados",
+    "Type1": "water",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lokhlass",
+    "Name_EN": "Lapras",
+    "Type1": "water",
+    "Type2": "ice",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Métamorph",
+    "Name_EN": "Ditto",
+    "Type1": "normal",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Evoli",
+    "Name_EN": "Eevee",
+    "Type1": "normal",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Aquali",
+    "Name_EN": "Vaporeon",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Voltali",
+    "Name_EN": "Jolteon",
+    "Type1": "electric",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pyroli",
+    "Name_EN": "Flareon",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Porygon",
+    "Name_EN": "Porygon",
+    "Type1": "normal",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Amonita",
+    "Name_EN": "Omanyte",
+    "Type1": "rock",
+    "Type2": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Amonistar",
+    "Name_EN": "Omastar",
+    "Type1": "rock",
+    "Type2": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kabuto",
+    "Name_EN": "Kabuto",
+    "Type1": "rock",
+    "Type2": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kabutops",
+    "Name_EN": "Kabutops",
+    "Type1": "rock",
+    "Type2": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ptéra",
+    "Name_EN": "Aerodactyl",
+    "Type1": "rock",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Ronflex",
+    "Name_EN": "Snorlax",
+    "Type1": "normal",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Artikodin",
+    "Name_EN": "Articuno",
+    "Type1": "ice",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Électhor",
+    "Name_EN": "Zapdos",
+    "Type1": "electric",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Sulfura",
+    "Name_EN": "Moltres",
+    "Type1": "fire",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Minidraco",
+    "Name_EN": "Dratini",
+    "Type1": "dragon",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Draco",
+    "Name_EN": "Dragonair",
+    "Type1": "dragon",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Dracolosse",
+    "Name_EN": "Dragonite",
+    "Type1": "dragon",
+    "Type2": "flying",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mewtwo",
+    "Name_EN": "Mewtwo",
+    "Type1": "psychic",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mew",
+    "Name_EN": "Mew",
+    "Type1": "psychic",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Germignon",
+    "Name_EN": "Chikorita",
+    "Type1": "grass",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Macronium",
+    "Name_EN": "Bayleef",
+    "Type1": "grass",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Meganium",
+    "Name_EN": "Meganium",
+    "Type1": "grass",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Héricendre",
+    "Name_EN": "Cyndaquil",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Feurisson",
+    "Name_EN": "Quilava",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Typhlosion",
+    "Name_EN": "Typhlosion",
+    "Type1": "fire",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kaiminus",
+    "Name_EN": "Totodile",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Crocrodil",
+    "Name_EN": "Croconaw",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Aligatueur",
+    "Name_EN": "Feraligatr",
+    "Type1": "water",
+    "isLock": false,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Fouinette",
+    "Name_EN": "Sentret",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Fouinar",
+    "Name_EN": "Furret",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Hoothoot",
+    "Name_EN": "Hoothoot",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Noarfang",
+    "Name_EN": "Noctowl",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Coxy",
+    "Name_EN": "Ledyba",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Coxyclaque",
+    "Name_EN": "Ledian",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mimigal",
+    "Name_EN": "Spinarak",
+    "Type1": "bug",
+    "Type2": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Migalos",
+    "Name_EN": "Ariados",
+    "Type1": "bug",
+    "Type2": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Nostenfer",
+    "Name_EN": "Crobat",
+    "Type1": "poison",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Loupio",
+    "Name_EN": "Chinchou",
+    "Type1": "water",
+    "Type2": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lanturn",
+    "Name_EN": "Lanturn",
+    "Type1": "water",
+    "Type2": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pichu",
+    "Name_EN": "Pichu",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mélo",
+    "Name_EN": "Cleffa",
+    "Type1": "fairy",
+    "isLock": false,
+    "enabled": true
+  },
+  {
+    "Name_FR": "Toudoudou",
+    "Name_EN": "Igglybuff",
+    "Type1": "normal",
+    "Type2": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Togepi",
+    "Name_EN": "Togepi",
+    "Type1": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Togetic",
+    "Name_EN": "Togetic",
+    "Type1": "fairy",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Natu",
+    "Name_EN": "Natu",
+    "Type1": "psychic",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Xatu",
+    "Name_EN": "Xatu",
+    "Type1": "psychic",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Wattouat",
+    "Name_EN": "Mareep",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lainergie",
+    "Name_EN": "Flaaffy",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pharamp",
+    "Name_EN": "Ampharos",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Joliflor",
+    "Name_EN": "Bellossom",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Marill",
+    "Name_EN": "Marill",
+    "Type1": "water",
+    "Type2": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Azumarill",
+    "Name_EN": "Azumarill",
+    "Type1": "water",
+    "Type2": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Simularbre",
+    "Name_EN": "Sudowoodo",
+    "Type1": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tarpaud",
+    "Name_EN": "Politoed",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Granivol",
+    "Name_EN": "Hoppip",
+    "Type1": "grass",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Floravol",
+    "Name_EN": "Skiploom",
+    "Type1": "grass",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cotovol",
+    "Name_EN": "Jumpluff",
+    "Type1": "grass",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Capumain",
+    "Name_EN": "Aipom",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tournegrin",
+    "Name_EN": "Sunkern",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Héliatronc",
+    "Name_EN": "Sunflora",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Yanma",
+    "Name_EN": "Yanma",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Axoloto",
+    "Name_EN": "Wooper",
+    "Type1": "water",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Maraiste",
+    "Name_EN": "Quagsire",
+    "Type1": "water",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mentali",
+    "Name_EN": "Espeon",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Noctali",
+    "Name_EN": "Umbreon",
+    "Type1": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cornèbre",
+    "Name_EN": "Murkrow",
+    "Type1": "dark",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Roigada",
+    "Name_EN": "Slowking",
+    "Type1": "water",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Feuforêve",
+    "Name_EN": "Misdreavus",
+    "Type1": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Zarbi",
+    "Name_EN": "Unown",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Qulbutoké",
+    "Name_EN": "Wobbuffet",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Girafarig",
+    "Name_EN": "Girafarig",
+    "Type1": "normal",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pomdepik",
+    "Name_EN": "Pineco",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Foretress",
+    "Name_EN": "Forretress",
+    "Type1": "bug",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Insolourdo",
+    "Name_EN": "Dunsparce",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Scorplane",
+    "Name_EN": "Gligar",
+    "Type1": "ground",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Steelix",
+    "Name_EN": "Steelix",
+    "Type1": "steel",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Snubbull",
+    "Name_EN": "Snubbull",
+    "Type1": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Granbull",
+    "Name_EN": "Granbull",
+    "Type1": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Qwilfish",
+    "Name_EN": "Qwilfish",
+    "Type1": "water",
+    "Type2": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cizayox",
+    "Name_EN": "Scizor",
+    "Type1": "bug",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Caratroc",
+    "Name_EN": "Shuckle",
+    "Type1": "bug",
+    "Type2": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Scarhino",
+    "Name_EN": "Heracross",
+    "Type1": "bug",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Farfuret",
+    "Name_EN": "Sneasel",
+    "Type1": "dark",
+    "Type2": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Teddiursa",
+    "Name_EN": "Teddiursa",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ursaring",
+    "Name_EN": "Ursaring",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Limagma",
+    "Name_EN": "Slugma",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Volcaropod",
+    "Name_EN": "Magcargo",
+    "Type1": "fire",
+    "Type2": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Marcacrin",
+    "Name_EN": "Swinub",
+    "Type1": "ice",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cochignon",
+    "Name_EN": "Piloswine",
+    "Type1": "ice",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Corayon",
+    "Name_EN": "Corsola",
+    "Type1": "water",
+    "Type2": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rémoraid",
+    "Name_EN": "Remoraid",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Octillery",
+    "Name_EN": "Octillery",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cadoizo",
+    "Name_EN": "Delibird",
+    "Type1": "ice",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Démanta",
+    "Name_EN": "Mantine",
+    "Type1": "water",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Airmure",
+    "Name_EN": "Skarmory",
+    "Type1": "steel",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Malosse",
+    "Name_EN": "Houndour",
+    "Type1": "dark",
+    "Type2": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Démolosse",
+    "Name_EN": "Houndoom",
+    "Type1": "dark",
+    "Type2": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Hyporoi",
+    "Name_EN": "Kingdra",
+    "Type1": "water",
+    "Type2": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Phanpy",
+    "Name_EN": "Phanpy",
+    "Type1": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Donphan",
+    "Name_EN": "Donphan",
+    "Type1": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Porygon2",
+    "Name_EN": "Porygon2",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cerfrousse",
+    "Name_EN": "Stantler",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Queulorior",
+    "Name_EN": "Smeargle",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Debugant",
+    "Name_EN": "Tyrogue",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kapoera",
+    "Name_EN": "Hitmontop",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lippouti",
+    "Name_EN": "Smoochum",
+    "Type1": "ice",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Elekid",
+    "Name_EN": "Elekid",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Magby",
+    "Name_EN": "Magby",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Écrémeuh",
+    "Name_EN": "Miltank",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Leuphorie",
+    "Name_EN": "Blissey",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Raikou",
+    "Name_EN": "Raikou",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Entei",
+    "Name_EN": "Entei",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Suicune",
+    "Name_EN": "Suicune",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Embrylex",
+    "Name_EN": "Larvitar",
+    "Type1": "rock",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ymphect",
+    "Name_EN": "Pupitar",
+    "Type1": "rock",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tyranocif",
+    "Name_EN": "Tyranitar",
+    "Type1": "rock",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lugia",
+    "Name_EN": "Lugia",
+    "Type1": "psychic",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ho-Oh",
+    "Name_EN": "Ho-Oh",
+    "Type1": "fire",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Celebi",
+    "Name_EN": "Celebi",
+    "Type1": "psychic",
+    "Type2": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Arcko",
+    "Name_EN": "Treecko",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Massko",
+    "Name_EN": "Grovyle",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Jungko",
+    "Name_EN": "Sceptile",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Poussifeu",
+    "Name_EN": "Torchic",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Galifeu",
+    "Name_EN": "Combusken",
+    "Type1": "fire",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Braségali",
+    "Name_EN": "Blaziken",
+    "Type1": "fire",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Gobou",
+    "Name_EN": "Mudkip",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Flobio",
+    "Name_EN": "Marshtomp",
+    "Type1": "water",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Laggron",
+    "Name_EN": "Swampert",
+    "Type1": "water",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Medhyèna",
+    "Name_EN": "Poochyena",
+    "Type1": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Grahyèna",
+    "Name_EN": "Mightyena",
+    "Type1": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Zigzaton",
+    "Name_EN": "Zigzagoon",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Linéon",
+    "Name_EN": "Linoone",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chenipotte",
+    "Name_EN": "Wurmple",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Armulys",
+    "Name_EN": "Silcoon",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Charmillon",
+    "Name_EN": "Beautifly",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Blindalys",
+    "Name_EN": "Cascoon",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Papinox",
+    "Name_EN": "Dustox",
+    "Type1": "bug",
+    "Type2": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Nénupiot",
+    "Name_EN": "Lotad",
+    "Type1": "water",
+    "Type2": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lombre",
+    "Name_EN": "Lombre",
+    "Type1": "water",
+    "Type2": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ludicolo",
+    "Name_EN": "Ludicolo",
+    "Type1": "water",
+    "Type2": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Grainipiot",
+    "Name_EN": "Seedot",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pifeuil",
+    "Name_EN": "Nuzleaf",
+    "Type1": "grass",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tengalice",
+    "Name_EN": "Shiftry",
+    "Type1": "grass",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Nirondelle",
+    "Name_EN": "Taillow",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Hélédelle",
+    "Name_EN": "Swellow",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Goélise",
+    "Name_EN": "Wingull",
+    "Type1": "water",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Bekipan",
+    "Name_EN": "Pelipper",
+    "Type1": "water",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tarsal",
+    "Name_EN": "Ralts",
+    "Type1": "psychic",
+    "Type2": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kirlia",
+    "Name_EN": "Kirlia",
+    "Type1": "psychic",
+    "Type2": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Gardevoir",
+    "Name_EN": "Gardevoir",
+    "Type1": "psychic",
+    "Type2": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Arakdo",
+    "Name_EN": "Surskit",
+    "Type1": "bug",
+    "Type2": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Maskadra",
+    "Name_EN": "Masquerain",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Balignon",
+    "Name_EN": "Shroomish",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chapignon",
+    "Name_EN": "Breloom",
+    "Type1": "grass",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Parecool",
+    "Name_EN": "Slakoth",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Vigoroth",
+    "Name_EN": "Vigoroth",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Monaflèmit",
+    "Name_EN": "Slaking",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ningale",
+    "Name_EN": "Nincada",
+    "Type1": "bug",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ninjask",
+    "Name_EN": "Ninjask",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Munja",
+    "Name_EN": "Shedinja",
+    "Type1": "bug",
+    "Type2": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chuchmur",
+    "Name_EN": "Whismur",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ramboum",
+    "Name_EN": "Loudred",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Brouhabam",
+    "Name_EN": "Exploud",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Makuhita",
+    "Name_EN": "Makuhita",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Hariyama",
+    "Name_EN": "Hariyama",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Azurill",
+    "Name_EN": "Azurill",
+    "Type1": "normal",
+    "Type2": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tarinor",
+    "Name_EN": "Nosepass",
+    "Type1": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Skitty",
+    "Name_EN": "Skitty",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Delcatty",
+    "Name_EN": "Delcatty",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ténéfix",
+    "Name_EN": "Sableye",
+    "Type1": "dark",
+    "Type2": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mysdibule",
+    "Name_EN": "Mawile",
+    "Type1": "steel",
+    "Type2": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Galekid",
+    "Name_EN": "Aron",
+    "Type1": "steel",
+    "Type2": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Galegon",
+    "Name_EN": "Lairon",
+    "Type1": "steel",
+    "Type2": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Galeking",
+    "Name_EN": "Aggron",
+    "Type1": "steel",
+    "Type2": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Méditikka",
+    "Name_EN": "Meditite",
+    "Type1": "fighting",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Charmina",
+    "Name_EN": "Medicham",
+    "Type1": "fighting",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Dynavolt",
+    "Name_EN": "Electrike",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Élecsprint",
+    "Name_EN": "Manectric",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Posipi",
+    "Name_EN": "Plusle",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Négapi",
+    "Name_EN": "Minun",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Muciole",
+    "Name_EN": "Volbeat",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lumivole",
+    "Name_EN": "Illumise",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rosélia",
+    "Name_EN": "Roselia",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Gloupti",
+    "Name_EN": "Gulpin",
+    "Type1": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Avaltout",
+    "Name_EN": "Swalot",
+    "Type1": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Carvanha",
+    "Name_EN": "Carvanha",
+    "Type1": "water",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Sharpedo",
+    "Name_EN": "Sharpedo",
+    "Type1": "water",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Wailmer",
+    "Name_EN": "Wailmer",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Wailord",
+    "Name_EN": "Wailord",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chamallot",
+    "Name_EN": "Numel",
+    "Type1": "fire",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Camérupt",
+    "Name_EN": "Camerupt",
+    "Type1": "fire",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chartor",
+    "Name_EN": "Torkoal",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Spoink",
+    "Name_EN": "Spoink",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Groret",
+    "Name_EN": "Grumpig",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Spinda",
+    "Name_EN": "Spinda",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kraknoix",
+    "Name_EN": "Trapinch",
+    "Type1": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Vibraninf",
+    "Name_EN": "Vibrava",
+    "Type1": "ground",
+    "Type2": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Libégon",
+    "Name_EN": "Flygon",
+    "Type1": "ground",
+    "Type2": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cacnea",
+    "Name_EN": "Cacnea",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cacturne",
+    "Name_EN": "Cacturne",
+    "Type1": "grass",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tylton",
+    "Name_EN": "Swablu",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Altaria",
+    "Name_EN": "Altaria",
+    "Type1": "dragon",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mangriff",
+    "Name_EN": "Zangoose",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Séviper",
+    "Name_EN": "Seviper",
+    "Type1": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Séléroc",
+    "Name_EN": "Lunatone",
+    "Type1": "rock",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Solaroc",
+    "Name_EN": "Solrock",
+    "Type1": "rock",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Barloche",
+    "Name_EN": "Barboach",
+    "Type1": "water",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Barbicha",
+    "Name_EN": "Whiscash",
+    "Type1": "water",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Écrapince",
+    "Name_EN": "Corphish",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Colhomard",
+    "Name_EN": "Crawdaunt",
+    "Type1": "water",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Balbuto",
+    "Name_EN": "Baltoy",
+    "Type1": "ground",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kaorine",
+    "Name_EN": "Claydol",
+    "Type1": "ground",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lilia",
+    "Name_EN": "Lileep",
+    "Type1": "rock",
+    "Type2": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Vacilys",
+    "Name_EN": "Cradily",
+    "Type1": "rock",
+    "Type2": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Anorith",
+    "Name_EN": "Anorith",
+    "Type1": "rock",
+    "Type2": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Armaldo",
+    "Name_EN": "Armaldo",
+    "Type1": "rock",
+    "Type2": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Barpau",
+    "Name_EN": "Feebas",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Milobellus",
+    "Name_EN": "Milotic",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Morpheo",
+    "Name_EN": "Castform",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kecleon",
+    "Name_EN": "Kecleon",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Polichombr",
+    "Name_EN": "Shuppet",
+    "Type1": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Branette",
+    "Name_EN": "Banette",
+    "Type1": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Skelenox",
+    "Name_EN": "Duskull",
+    "Type1": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Teraclope",
+    "Name_EN": "Dusclops",
+    "Type1": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tropius",
+    "Name_EN": "Tropius",
+    "Type1": "grass",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Éoko",
+    "Name_EN": "Chimecho",
+    "Type1": "psy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Absol",
+    "Name_EN": "Absol",
+    "Type1": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Okéoké",
+    "Name_EN": "Wynaut",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Stalgamin",
+    "Name_EN": "Snorunt",
+    "Type1": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Oniglali",
+    "Name_EN": "Glalie",
+    "Type1": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Obalie",
+    "Name_EN": "Spheal",
+    "Type1": "ice",
+    "Type2": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Phogleur",
+    "Name_EN": "Sealeo",
+    "Type1": "ice",
+    "Type2": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kaimorse",
+    "Name_EN": "Walrein",
+    "Type1": "ice",
+    "Type2": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Coquiperl",
+    "Name_EN": "Clamperl",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Serpang",
+    "Name_EN": "Huntail",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rosabyss",
+    "Name_EN": "Gorebyss",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Relicanth",
+    "Name_EN": "Relicanth",
+    "Type1": "water",
+    "Type2": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lovdisc",
+    "Name_EN": "Luvdisc",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Draby",
+    "Name_EN": "Bagon",
+    "Type1": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Drackhaus",
+    "Name_EN": "Shelgon",
+    "Type1": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Drattak",
+    "Name_EN": "Salamence",
+    "Type1": "dragon",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Terhal",
+    "Name_EN": "Beldum",
+    "Type1": "steel",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Métang",
+    "Name_EN": "Metang",
+    "Type1": "steel",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Métalosse",
+    "Name_EN": "Metagross",
+    "Type1": "steel",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Regirock",
+    "Name_EN": "Regirock",
+    "Type1": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Regice",
+    "Name_EN": "Regice",
+    "Type1": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Registeel",
+    "Name_EN": "Registeel",
+    "Type1": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Latias",
+    "Name_EN": "Latias",
+    "Type1": "dragon",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Latios",
+    "Name_EN": "Latios",
+    "Type1": "dragon",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kyogre",
+    "Name_EN": "Kyogre",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Groudon",
+    "Name_EN": "Groudon",
+    "Type1": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rayquaza",
+    "Name_EN": "Rayquaza",
+    "Type1": "dragon",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Jirachi",
+    "Name_EN": "Jirachi",
+    "Type1": "steel",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Deoxys",
+    "Name_EN": "Deoxys",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tortipouss",
+    "Name_EN": "Turtwig",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Boskara",
+    "Name_EN": "Grotle",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Torterra",
+    "Name_EN": "Torterra",
+    "Type1": "grass",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ouisticram",
+    "Name_EN": "Chimchar",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chimpenfeu",
+    "Name_EN": "Monferno",
+    "Type1": "fire",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Simiabraz",
+    "Name_EN": "Infernape",
+    "Type1": "fire",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tiplouf",
+    "Name_EN": "Piplup",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Prinplouf",
+    "Name_EN": "Prinplup",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pingoléon",
+    "Name_EN": "Empoleon",
+    "Type1": "water",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Étourmi",
+    "Name_EN": "Starly",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Étourvol",
+    "Name_EN": "Staravia",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Étouraptor",
+    "Name_EN": "Staraptor",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Keunotor",
+    "Name_EN": "Bidoof",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Castorno",
+    "Name_EN": "Bibarel",
+    "Type1": "normal",
+    "Type2": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Crikzik",
+    "Name_EN": "Kricketot",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mélokrik",
+    "Name_EN": "Kricketune",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lixy",
+    "Name_EN": "Shinx",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Luxio",
+    "Name_EN": "Luxio",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Luxray",
+    "Name_EN": "Luxray",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rozbouton",
+    "Name_EN": "Budew",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Roserade",
+    "Name_EN": "Roserade",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kranidos",
+    "Name_EN": "Cranidos",
+    "Type1": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Charkos",
+    "Name_EN": "Rampardos",
+    "Type1": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Dinoclier",
+    "Name_EN": "Shieldon",
+    "Type1": "rock",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Bastiodon",
+    "Name_EN": "Bastiodon",
+    "Type1": "rock",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cheniti",
+    "Name_EN": "Burmy",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cheniselle",
+    "Name_EN": "Wormadam",
+    "Type1": "bug",
+    "Type2": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Papilord",
+    "Name_EN": "Mothim",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Apitrini",
+    "Name_EN": "Combee",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Apireine",
+    "Name_EN": "Vespiquen",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pachirisu",
+    "Name_EN": "Pachirisu",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mustébouée",
+    "Name_EN": "Buizel",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mustéflott",
+    "Name_EN": "Floatzel",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ceribou",
+    "Name_EN": "Cherubi",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ceriflor",
+    "Name_EN": "Cherrim",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Sancoki",
+    "Name_EN": "Shellos",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tritosor",
+    "Name_EN": "Gastrodon",
+    "Type1": "water",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Capidextre",
+    "Name_EN": "Ambipom",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Baudrive",
+    "Name_EN": "Drifloon",
+    "Type1": "ghost",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Grodrive",
+    "Name_EN": "Drifblim",
+    "Type1": "ghost",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+
+  {
+    "Name_FR": "Laporeille",
+    "Name_EN": "Buneary",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lockpin",
+    "Name_EN": "Lopunny",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Magirêve",
+    "Name_EN": "Mismagius",
+    "Type1": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Corboss",
+    "Name_EN": "Honchkrow",
+    "Type1": "dark",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chaglam",
+    "Name_EN": "Glameow",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chaffreux",
+    "Name_EN": "Purugly",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Korillon",
+    "Name_EN": "Chingling",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Moufouette",
+    "Name_EN": "Stunky",
+    "Type1": "poison",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Moufflair",
+    "Name_EN": "Skuntank",
+    "Type1": "poison",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Archéomire",
+    "Name_EN": "Bronzor",
+    "Type1": "steel",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Archéodong",
+    "Name_EN": "Bronzong",
+    "Type1": "steel",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Manzaï",
+    "Name_EN": "Bonsly",
+    "Type1": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mime Jr.",
+    "Name_EN": "Mime Jr.",
+    "Sprite_Normal": "https://img.pokemondb.net/sprites/black-white/anim/normal/mime-jr.gif",
+    "Sprite_Shiny": "https://img.pokemondb.net/sprites/black-white/anim/shiny/mime-jr.gif",
+    "Type1": "psychic",
+    "Type2": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ptiravi",
+    "Name_EN": "Happiny",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pijako",
+    "Name_EN": "Chatot",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Spiritomb",
+    "Name_EN": "Spiritomb",
+    "Type1": "ghost",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Griknot",
+    "Name_EN": "Gible",
+    "Type1": "dragon",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Carmache",
+    "Name_EN": "Gabite",
+    "Type1": "dragon",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Carchacrok",
+    "Name_EN": "Garchomp",
+    "Type1": "dragon",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Goinfrex",
+    "Name_EN": "Munchlax",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Riolu",
+    "Name_EN": "Riolu",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lucario",
+    "Name_EN": "Lucario",
+    "Type1": "fighting",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Hippopotas",
+    "Name_EN": "Hippopotas",
+    "Type1": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Hippodocus",
+    "Name_EN": "Hippowdon",
+    "Type1": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rapion",
+    "Name_EN": "Skorupi",
+    "Type1": "poison",
+    "Type2": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Drascore",
+    "Name_EN": "Drapion",
+    "Type1": "poison",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cradopaud",
+    "Name_EN": "Croagunk",
+    "Type1": "poison",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Coatox",
+    "Name_EN": "Toxicroak",
+    "Type1": "poison",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Vortente",
+    "Name_EN": "Carnivine",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ecayon",
+    "Name_EN": "Finneon",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Luminéon",
+    "Name_EN": "Lumineon",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Babimanta",
+    "Name_EN": "Mantyke",
+    "Type1": "water",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Blizzi",
+    "Name_EN": "Snover",
+    "Type1": "grass",
+    "Type2": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Blizzaroi",
+    "Name_EN": "Abomasnow",
+    "Type1": "grass",
+    "Type2": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Dimoret",
+    "Name_EN": "Weavile",
+    "Type1": "dark",
+    "Type2": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Magnézone",
+    "Name_EN": "Magnezone",
+    "Type1": "electric",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Coudlangue",
+    "Name_EN": "Lickilicky",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rhinastoc",
+    "Name_EN": "Rhyperior",
+    "Type1": "ground",
+    "Type2": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Bouldeneu",
+    "Name_EN": "Tangrowth",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Élekable",
+    "Name_EN": "Electivire",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Maganon",
+    "Name_EN": "Magmortar",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Togekiss",
+    "Name_EN": "Togekiss",
+    "Type1": "fairy",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Yanmega",
+    "Name_EN": "Yanmega",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Phyllali",
+    "Name_EN": "Leafeon",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Givrali",
+    "Name_EN": "Glaceon",
+    "Type1": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Scorvol",
+    "Name_EN": "Gliscor",
+    "Type1": "ground",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mammochon",
+    "Name_EN": "Mamoswine",
+    "Type1": "ice",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Porygon-Z",
+    "Name_EN": "Porygon-Z",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Gallame",
+    "Name_EN": "Gallade",
+    "Type1": "psychic",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tarinorme",
+    "Name_EN": "Probopass",
+    "Type1": "rock",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Noctunoir",
+    "Name_EN": "Dusknoir",
+    "Type1": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Momartik",
+    "Name_EN": "Froslass",
+    "Type1": "ice",
+    "Type2": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Motisma",
+    "Name_EN": "Rotom",
+    "Type1": "electric",
+    "Type2": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Crehelf",
+    "Name_EN": "Uxie",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Crefollet",
+    "Name_EN": "Mesprit",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Crefadet",
+    "Name_EN": "Azelf",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Dialga",
+    "Name_EN": "Dialga",
+    "Type1": "steel",
+    "Type2": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Palkia",
+    "Name_EN": "Palkia",
+    "Type1": "water",
+    "Type2": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Heatran",
+    "Name_EN": "Heatran",
+    "Type1": "fire",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Regigigas",
+    "Name_EN": "Regigigas",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Giratina",
+    "Name_EN": "Giratina",
+    "Type1": "ghost",
+    "Type2": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cresselia",
+    "Name_EN": "Cresselia",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Phione",
+    "Name_EN": "Phione",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Manaphy",
+    "Name_EN": "Manaphy",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Darkrai",
+    "Name_EN": "Darkrai",
+    "Type1": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Shaymin",
+    "Name_EN": "Shaymin",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Arceus",
+    "Name_EN": "Arceus",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Victini",
+    "Name_EN": "Victini",
+    "Type1": "psychic",
+    "Type2": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Vipélierre",
+    "Name_EN": "Snivy",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lianaja",
+    "Name_EN": "Servine",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Majaspic",
+    "Name_EN": "Serperior",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Gruikui",
+    "Name_EN": "Tepig",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Grotichon",
+    "Name_EN": "Pignite",
+    "Type1": "fire",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Roitiflam",
+    "Name_EN": "Emboar",
+    "Type1": "fire",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Moustillon",
+    "Name_EN": "Oshawott",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mateloutre",
+    "Name_EN": "Dewott",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Clamiral",
+    "Name_EN": "Samurott",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ratentif",
+    "Name_EN": "Patrat",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Miradar",
+    "Name_EN": "Watchog",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ponchiot",
+    "Name_EN": "Lillipup",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ponchien",
+    "Name_EN": "Herdier",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mastouffe",
+    "Name_EN": "Stoutland",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chacripan",
+    "Name_EN": "Purrloin",
+    "Type1": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Léopardus",
+    "Name_EN": "Liepard",
+    "Type1": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Feuillajou",
+    "Name_EN": "Pansage",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Feuiloutan",
+    "Name_EN": "Simisage",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Flamajou",
+    "Name_EN": "Pansear",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Flamoutan",
+    "Name_EN": "Simisear",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Flotajou",
+    "Name_EN": "Panpour",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Flotoutan",
+    "Name_EN": "Simipour",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Munna",
+    "Name_EN": "Munna",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mushana",
+    "Name_EN": "Musharna",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Poichigeon",
+    "Name_EN": "Pidove",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Colombeau",
+    "Name_EN": "Tranquill",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Déflaisan",
+    "Name_EN": "Unfezant",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Zébibron",
+    "Name_EN": "Blitzle",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Zéblitz",
+    "Name_EN": "Zebstrika",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Nodulithe",
+    "Name_EN": "Roggenrola",
+    "Type1": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Géolithe",
+    "Name_EN": "Boldore",
+    "Type1": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Gigalithe",
+    "Name_EN": "Gigalith",
+    "Type1": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chovsourir",
+    "Name_EN": "Woobat",
+    "Type1": "psychic",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rhinolove",
+    "Name_EN": "Swoobat",
+    "Type1": "psychic",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Rototaupe",
+    "Name_EN": "Drilbur",
+    "Type1": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Minotaupe",
+    "Name_EN": "Excadrill",
+    "Type1": "ground",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Nanméouïe",
+    "Name_EN": "Audino",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Charpenti",
+    "Name_EN": "Timburr",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ouvrifier",
+    "Name_EN": "Gurdurr",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Bétochef",
+    "Name_EN": "Conkeldurr",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tritonde",
+    "Name_EN": "Tympole",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Batracné",
+    "Name_EN": "Palpitoad",
+    "Type1": "water",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Crapustule",
+    "Name_EN": "Seismitoad",
+    "Type1": "water",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Judokrak",
+    "Name_EN": "Throh",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Karaclée",
+    "Name_EN": "Sawk",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Larveyette",
+    "Name_EN": "Sewaddle",
+    "Type1": "bug",
+    "Type2": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Couverdure",
+    "Name_EN": "Swadloon",
+    "Type1": "bug",
+    "Type2": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Manternel",
+    "Name_EN": "Leavanny",
+    "Type1": "bug",
+    "Type2": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Venipatte",
+    "Name_EN": "Venipede",
+    "Type1": "bug",
+    "Type2": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Scobolide",
+    "Name_EN": "Whirlipede",
+    "Type1": "bug",
+    "Type2": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Brutapode",
+    "Name_EN": "Scolipede",
+    "Type1": "bug",
+    "Type2": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+
+  {
+    "Name_FR": "Doudouvet",
+    "Name_EN": "Cottonee",
+    "Type1": "grass",
+    "Type2": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Farfaduvet",
+    "Name_EN": "Whimsicott",
+    "Type1": "grass",
+    "Type2": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chlorobule",
+    "Name_EN": "Petilil",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Fragilady",
+    "Name_EN": "Lilligant",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Bargantua",
+    "Name_EN": "Basculin",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mascaïman",
+    "Name_EN": "Sandile",
+    "Type1": "ground",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Escroco",
+    "Name_EN": "Krokorok",
+    "Type1": "ground",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Crocorible",
+    "Name_EN": "Krookodile",
+    "Type1": "ground",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Darumarond",
+    "Name_EN": "Darumaka",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Darumacho",
+    "Name_EN": "Darmanitan",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Maracachi",
+    "Name_EN": "Maractus",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Crabicoque",
+    "Name_EN": "Dwebble",
+    "Type1": "bug",
+    "Type2": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Crabaraque",
+    "Name_EN": "Crustle",
+    "Type1": "bug",
+    "Type2": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Baggiguane",
+    "Name_EN": "Scraggy",
+    "Type1": "dark",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Baggaïd",
+    "Name_EN": "Scrafty",
+    "Type1": "dark",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cryptéro",
+    "Name_EN": "Sigilyph",
+    "Type1": "psychic",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tutafeh",
+    "Name_EN": "Yamask",
+    "Type1": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tutankafer",
+    "Name_EN": "Cofagrigus",
+    "Type1": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Carapagos",
+    "Name_EN": "Tirtouga",
+    "Type1": "water",
+    "Type2": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mégapagos",
+    "Name_EN": "Carracosta",
+    "Type1": "water",
+    "Type2": "rock",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Arkéapti",
+    "Name_EN": "Archen",
+    "Type1": "rock",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Aéroptéryx",
+    "Name_EN": "Archeops",
+    "Type1": "rock",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Miamiasme",
+    "Name_EN": "Trubbish",
+    "Type1": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Miasmax",
+    "Name_EN": "Garbodor",
+    "Type1": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Zorua",
+    "Name_EN": "Zorua",
+    "Type1": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Zoroark",
+    "Name_EN": "Zoroark",
+    "Type1": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chinchidou",
+    "Name_EN": "Minccino",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pashmilla",
+    "Name_EN": "Cinccino",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Scrutella",
+    "Name_EN": "Gothita",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mesmérella",
+    "Name_EN": "Gothorita",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Sidérella",
+    "Name_EN": "Gothitelle",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Nucléos",
+    "Name_EN": "Solosis",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Méios",
+    "Name_EN": "Duosion",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Symbios",
+    "Name_EN": "Reuniclus",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Couaneton",
+    "Name_EN": "Ducklett",
+    "Type1": "water",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lakmécygne",
+    "Name_EN": "Swanna",
+    "Type1": "water",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Sorbébé",
+    "Name_EN": "Vanillite",
+    "Type1": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Sorboul",
+    "Name_EN": "Vanillish",
+    "Type1": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Sorbouboul",
+    "Name_EN": "Vanilluxe",
+    "Type1": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Vivaldaim",
+    "Name_EN": "Deerling",
+    "Type1": "normal",
+    "Type2": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Haydaim",
+    "Name_EN": "Sawsbuck",
+    "Type1": "normal",
+    "Type2": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Emolga",
+    "Name_EN": "Emolga",
+    "Type1": "electric",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Carabing",
+    "Name_EN": "Karrablast",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lançargot",
+    "Name_EN": "Escavalier",
+    "Type1": "bug",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Trompignon",
+    "Name_EN": "Foongus",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Gaulet",
+    "Name_EN": "Amoonguss",
+    "Type1": "grass",
+    "Type2": "poison",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Viskuse",
+    "Name_EN": "Frillish",
+    "Type1": "water",
+    "Type2": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Moyade",
+    "Name_EN": "Jellicent",
+    "Type1": "water",
+    "Type2": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mamanbo",
+    "Name_EN": "Alomomola",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Statitik",
+    "Name_EN": "Joltik",
+    "Type1": "bug",
+    "Type2": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mygavolt",
+    "Name_EN": "Galvantula",
+    "Type1": "bug",
+    "Type2": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Grindur",
+    "Name_EN": "Ferroseed",
+    "Type1": "grass",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Noacier",
+    "Name_EN": "Ferrothorn",
+    "Type1": "grass",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tic",
+    "Name_EN": "Klink",
+    "Type1": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Clic",
+    "Name_EN": "Klang",
+    "Type1": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cliticlic",
+    "Name_EN": "Klinklang",
+    "Type1": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+
+  {
+    "Name_FR": "Anchwatt",
+    "Name_EN": "Tynamo",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lampéroie",
+    "Name_EN": "Eelektrik",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Ohmassacre",
+    "Name_EN": "Eelektross",
+    "Type1": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lewsor",
+    "Name_EN": "Elgyem",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Neitram",
+    "Name_EN": "Beheeyem",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Funécire",
+    "Name_EN": "Litwick",
+    "Type1": "ghost",
+    "Type2": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mélancolux",
+    "Name_EN": "Lampent",
+    "Type1": "ghost",
+    "Type2": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lugulabre",
+    "Name_EN": "Chandelure",
+    "Type1": "ghost",
+    "Type2": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Coupenotte",
+    "Name_EN": "Axew",
+    "Type1": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Incisache",
+    "Name_EN": "Fraxure",
+    "Type1": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Tranchodon",
+    "Name_EN": "Haxorus",
+    "Type1": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Polarhume",
+    "Name_EN": "Cubchoo",
+    "Type1": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Polagriffe",
+    "Name_EN": "Beartic",
+    "Type1": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Hexagel",
+    "Name_EN": "Cryogonal",
+    "Type1": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Escargaume",
+    "Name_EN": "Shelmet",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Limaspeed",
+    "Name_EN": "Accelgor",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Limonde",
+    "Name_EN": "Stunfisk",
+    "Type1": "ground",
+    "Type2": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kungfouine",
+    "Name_EN": "Mienfoo",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Shaofouine",
+    "Name_EN": "Mienshao",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Drakkarmin",
+    "Name_EN": "Druddigon",
+    "Type1": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Gringolem",
+    "Name_EN": "Golett",
+    "Type1": "ground",
+    "Type2": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Golemastoc",
+    "Name_EN": "Golurk",
+    "Type1": "ground",
+    "Type2": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Scalpion",
+    "Name_EN": "Pawniard",
+    "Type1": "dark",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Scalproie",
+    "Name_EN": "Bisharp",
+    "Type1": "dark",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Frison",
+    "Name_EN": "Bouffalant",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Furaiglon",
+    "Name_EN": "Rufflet",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Gueriaigle",
+    "Name_EN": "Braviary",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Vostourno",
+    "Name_EN": "Vullaby",
+    "Type1": "dark",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Vaututrice",
+    "Name_EN": "Mandibuzz",
+    "Type1": "dark",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Aflamanoir",
+    "Name_EN": "Heatmor",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Fermite",
+    "Name_EN": "Durant",
+    "Type1": "bug",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Solochi",
+    "Name_EN": "Deino",
+    "Type1": "dark",
+    "Type2": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Diamat",
+    "Name_EN": "Zweilous",
+    "Type1": "dark",
+    "Type2": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Trioxhydre",
+    "Name_EN": "Hydreigon",
+    "Type1": "dark",
+    "Type2": "dragon",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pyronille",
+    "Name_EN": "Larvesta",
+    "Type1": "bug",
+    "Type2": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pyrax",
+    "Name_EN": "Volcarona",
+    "Type1": "bug",
+    "Type2": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cobaltium",
+    "Name_EN": "Cobalion",
+    "Type1": "steel",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Terrakium",
+    "Name_EN": "Terrakion",
+    "Type1": "rock",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Viridium",
+    "Name_EN": "Virizion",
+    "Type1": "grass",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Boréas",
+    "Name_EN": "Tornadus",
+    "Type1": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Fulguris",
+    "Name_EN": "Thundurus",
+    "Type1": "electric",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Reshiram",
+    "Name_EN": "Reshiram",
+    "Type1": "dragon",
+    "Type2": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Zekrom",
+    "Name_EN": "Zekrom",
+    "Type1": "dragon",
+    "Type2": "electric",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Démétéros",
+    "Name_EN": "Landorus",
+    "Type1": "ground",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Kyurem",
+    "Name_EN": "Kyurem",
+    "Type1": "dragon",
+    "Type2": "ice",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Keldeo",
+    "Name_EN": "Keldeo",
+    "Type1": "water",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Meloetta",
+    "Name_EN": "Meloetta",
+    "Type1": "normal",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Genesect",
+    "Name_EN": "Genesect",
+    "Type1": "bug",
+    "Type2": "steel",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Marisson",
+    "Name_EN": "Chespin",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Boguérisse",
+    "Name_EN": "Quilladin",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Blindépique",
+    "Name_EN": "Chesnaught",
+    "Type1": "grass",
+    "Type2": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Feunnec",
+    "Name_EN": "Fennekin",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Roussil",
+    "Name_EN": "Braixen",
+    "Type1": "fire",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Goupelin",
+    "Name_EN": "Delphox",
+    "Type1": "fire",
+    "Type2": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Grenousse",
+    "Name_EN": "Froakie",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Croâporal",
+    "Name_EN": "Frogadier",
+    "Type1": "water",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Amphinobi",
+    "Name_EN": "Greninja",
+    "Type1": "water",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Sapereau",
+    "Name_EN": "Bunnelby",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Excavarenne",
+    "Name_EN": "Diggersby",
+    "Type1": "normal",
+    "Type2": "ground",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Passerouge",
+    "Name_EN": "Fletchling",
+    "Type1": "normal",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Braisillon",
+    "Name_EN": "Fletchinder",
+    "Type1": "fire",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Flambusard",
+    "Name_EN": "Talonflame",
+    "Type1": "fire",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Lépidonille",
+    "Name_EN": "Scatterbug",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pérégrain",
+    "Name_EN": "Spewpa",
+    "Type1": "bug",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Prismillon",
+    "Name_EN": "Vivillon",
+    "Type1": "bug",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Hélionceau",
+    "Name_EN": "Litleo",
+    "Type1": "fire",
+    "Type2": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Némélios",
+    "Name_EN": "Pyroar",
+    "Type1": "fire",
+    "Type2": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Flabébé",
+    "Name_EN": "Flabébé",
+    "Type1": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Floette",
+    "Name_EN": "Floette",
+    "Type1": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Florges",
+    "Name_EN": "Florges",
+    "Type1": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cabriolaine",
+    "Name_EN": "Skiddo",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Chevroum",
+    "Name_EN": "Gogoat",
+    "Type1": "grass",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pandespiègle",
+    "Name_EN": "Pancham",
+    "Type1": "fighting",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Pandarbare",
+    "Name_EN": "Pangoro",
+    "Type1": "fighting",
+    "Type2": "dark",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Couafarel",
+    "Name_EN": "Furfrou",
+    "Type1": "normal",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Psystigri",
+    "Name_EN": "Espurr",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Mistigrix",
+    "Name_EN": "Meowstic",
+    "Type1": "psychic",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Monorpale",
+    "Name_EN": "Honedge",
+    "Type1": "steel",
+    "Type2": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Dimoclès",
+    "Name_EN": "Doublade",
+    "Type1": "steel",
+    "Type2": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Exagide",
+    "Name_EN": "Aegislash",
+    "Type1": "steel",
+    "Type2": "ghost",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Fluvetin",
+    "Name_EN": "Spritzee",
+    "Type1": "fairy",
+    "isLock": true,
+    "enabled": false
+  },
+  {
+    "Name_FR": "Cocotine",
+    "Name_EN": "Aromatisse",
+    "Type1": "fairy",
+    "isLock": true,
+    "enabled": false
+  }
+]

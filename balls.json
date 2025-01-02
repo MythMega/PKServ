@@ -1,0 +1,91 @@
+[
+  {
+    "Name": "Pokeball",
+    "catchrate": 33,
+    "shinyrate": 3,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 0,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 0,
+    "rewardSource": "Envoyer Pokeball"
+  },
+  {
+    "Name": "Super Ball",
+    "catchrate": 50,
+    "shinyrate": 3,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 0,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 0,
+    "rewardSource": "Envoyer Super Ball"
+  },
+  {
+    "Name": "Hyper Ball",
+    "catchrate": 80,
+    "shinyrate": 3,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 10,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 0,
+    "rewardSource": "Envoyer Hyper Ball"
+  },
+  {
+    "Name": "Sombre Ball",
+    "catchrate": 20,
+    "shinyrate": 3,
+    "nightAdditionalRate": 60,
+    "alreadyCaughtAdditionalRate": 0,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 0,
+    "rewardSource": "Envoyer Sombre Ball"
+  },
+  {
+    "Name": "Bis Ball",
+    "catchrate": 33,
+    "shinyrate": 7,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 40,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 0,
+    "rewardSource": "Envoyer Bis Ball"
+  },
+  {
+    "Name": "Dex Ball",
+    "catchrate": 33,
+    "shinyrate": 1,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 40,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 2,
+    "rewardSource": "Envoyer Dex Ball"
+  },
+  {
+    "Name": "Master Ball",
+    "catchrate": 100,
+    "shinyrate": 100,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 0,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 2,
+    "rewardSource": "Envoyer une master ball"
+  },
+  {
+    "Name": "Season Ball",
+    "catchrate": 50,
+    "shinyrate": 10,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 0,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 1,
+    "eclusiveType": "fire",
+    "rewardSource": "Envoyer une season ball"
+  }
+]

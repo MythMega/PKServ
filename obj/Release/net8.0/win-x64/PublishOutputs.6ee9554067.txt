@@ -1,0 +1,11 @@
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish\win-x64\PKServ.pdb
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish\win-x64\badges.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish\win-x64\balls.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish\win-x64\customPokemons.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish\win-x64\pokemons.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish\win-x64\Triggers.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish\win-x64\user.data
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish\win-x64\_settings.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish\win-x64\PKServ.dll.config
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish\win-x64\e_sqlite3.dll
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish\win-x64\PKServ.exe

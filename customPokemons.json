@@ -1,0 +1,52 @@
+[
+  {
+    "Name_FR": "Ossatueur d'Alola",
+    "Name_EN": "Alolan Marowak",
+    "Sprite_Normal": "https://img.pokemondb.net/sprites/home/normal/marowak-alolan.png",
+    "Sprite_Shiny": "https://img.pokemondb.net/sprites/home/shiny/marowak-alolan.png",
+    "isLock": false,
+    "enabled": true,
+    "Type1": "ghost",
+    "Type2": "fairy"
+  },
+  {
+    "Name_FR": "Pikachu Surfeur",
+    "Name_EN": "Surfer Pikachu",
+    "Sprite_Normal": "https://i.ibb.co/8dfjn4V/surf-0.png",
+    "Sprite_Shiny": "https://i.ibb.co/Y7L6mPK/surf-1.png",
+    "isLock": true,
+    "enabled": true,
+    "Type1": "electric",
+    "Type2": "water"
+  },
+  {
+    "Name_FR": "Fantôme mère d'Osselait",
+    "Name_EN": "Cubone mom ghost",
+    "Sprite_Normal": "https://i.ibb.co/CvwFb7k/Cubone-Mom-normal.png",
+    "Sprite_Shiny": "https://i.ibb.co/bK10HpL/Cubone-Mom-shiny.png",
+    "isLock": true,
+    "enabled": true,
+    "Type1": "electric",
+    "Type2": "water"
+  },
+  {
+    "Name_FR": "Onyx de crystal",
+    "Name_EN": "Crystal Onyx",
+    "Sprite_Normal": "https://i.ibb.co/8dfjn4V/surf-0.png",
+    "Sprite_Shiny": "https://i.ibb.co/Y7L6mPK/surf-1.png",
+    "isLock": true,
+    "enabled": false,
+    "Type1": "rock",
+    "Type2": "ice"
+  },
+  {
+    "Name_FR": "Munja bonbon Violette",
+    "Name_EN": "Shedinja Violet Candy",
+    "Sprite_Normal": "https://i.ibb.co/HHXtvFL/shedinja.gif",
+    "Sprite_Shiny": "https://i.ibb.co/yFdh3Sh/shedinja.gif",
+    "isLock": true,
+    "enabled": false,
+    "Type1": "ghost",
+    "Type2": "fairy"
+  }
+]

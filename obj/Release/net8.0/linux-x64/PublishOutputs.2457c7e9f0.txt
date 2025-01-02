@@ -1,0 +1,11 @@
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish_linux\PKServ.pdb
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish_linux\badges.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish_linux\balls.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish_linux\customPokemons.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish_linux\pokemons.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish_linux\Triggers.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish_linux\user.data
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish_linux\_settings.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish_linux\PKServ.dll.config
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish_linux\libe_sqlite3.so
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\publish_linux\PKServ

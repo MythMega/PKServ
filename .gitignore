@@ -1,6 +1,12 @@
 # Ignorer tous les dossiers bin
 **/bin/
 
+**/.vs/
+
+PKServ.zip
+dataFillerPheki.bat
+
 # Ignorer d'autres dossiers ou fichiers si nécessaire
 # ex: **/obj/
 # ex: *.log
+
