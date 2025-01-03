@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection.Metadata;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -170,11 +171,18 @@ namespace PKServ
         }}
 
 
-        th, td {{ text-align: center; border: 1px solid black; padding: 10px; /* Ajuste la marge interne des cellules selon tes besoins */ }}
+        th, td {{ text-align: center; border: 1px solid black; padding: 10px; }}
 
     </style>
 </head>
 <body>
+    <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
+      <form class=""form-inline"">
+        <a class=""btn btn-sm btn-outline-secondary"" href=""../main.html"" style=""color: white;"">Accueil Pokédex</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""../availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""../pokestats.html"" style=""color: white;"">Classements</a>
+      </form>
+    </nav><br><br>
     <h1>Pokédex {userRequest.UserName} - chez {userRequest.ChannelSource}</h1>
     <p>Pokédex de {userRequest.UserName} [de {userRequest.Platform}] au {DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}, sur le stream de {userRequest.ChannelSource}.</p>
     <table class=""table table-dark table-bordered table-striped"">
@@ -295,6 +303,13 @@ namespace PKServ
   <script src=""https://code.jquery.com/jquery-3.5.1.min.js""></script>
 </head>
 <body>
+    <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
+      <form class=""form-inline"">
+        <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
+      </form>
+    </nav><br><br>
 <style>
     body {{
         background-color: #2a2a2a;
@@ -497,6 +512,14 @@ namespace PKServ
     </style>
 </head>
 <body>
+
+    <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
+      <form class=""form-inline"">
+        <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
+      </form>
+    </nav><br><br>
 <div class=""container""
 ";
 
@@ -693,6 +716,9 @@ namespace PKServ
             }
         }
 
+        /// <summary>
+        /// Rapport de dex
+        /// </summary>
         public void BuildRapport()
         {
             List<string> lineTables = getLineTables();
@@ -743,6 +769,14 @@ namespace PKServ
     </style>
 </head>
 <body>
+
+    <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
+      <form class=""form-inline"">
+        <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
+      </form>
+    </nav><br><br>
 
     <table class=""table table-dark table-bordered table-striped"">
         <thead>
