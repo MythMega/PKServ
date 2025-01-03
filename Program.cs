@@ -189,7 +189,8 @@ namespace PKServ
 
                                 case "Interface/FullExport":
                                     ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
-                                    responseString = API_FullExport(ctx, data, settings, globalAppSettings);
+                                    bool forced = ctx.TriggerName == "API_FWE_Force";
+                                    responseString = API_FullExport(ctx, data, settings, globalAppSettings, forced: forced);
                                     break;
 
                                 case "Interface/Trade":
@@ -733,12 +734,12 @@ namespace PKServ
             }
         }
 
-        private static string API_FullExport(UserRequest json, DataConnexion cnx, AppSettings appSettings, GlobalAppSettings globalAppSettings)
+        private static string API_FullExport(UserRequest json, DataConnexion cnx, AppSettings appSettings, GlobalAppSettings globalAppSettings, bool forced = false)
         {
             try
             {
                 // export main file  + individuals
-                string result = new Work(json, cnx, appSettings, globalAppSettings).DoFullExport();
+                string result = new Work(json, cnx, appSettings, globalAppSettings).DoFullExport(forced: forced);
 
                 //  export availablespokemon.html
                 ExportDexAvailablePokemon a = new ExportDexAvailablePokemon(appSettings, json, cnx, globalAppSettings);

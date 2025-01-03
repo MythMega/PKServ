@@ -286,9 +286,16 @@ namespace PKServ
         /// Lors d'un export de FULL DEX, exporte les dex solo puis le main
         /// </summary>
         /// <returns></returns>
-        internal string DoFullExport()
+        internal string DoFullExport(bool forced = false)
         {
-            List<User> users = connexion.GetAllUserPlatforms().Where(user => user.lastCatch() > appSettings.LastFullExport).ToList();
+            List<User> users = connexion.GetAllUserPlatforms();
+
+            // si ce n'est pas forcé par le management, on export uniquement les dex avec maj recente
+            if (!forced)
+            {
+                users = users.Where(user => user.lastCatch() > appSettings.LastFullExport).ToList();
+            }                
+                
             int count = 0;
             foreach (User user in users)
             {
