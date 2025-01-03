@@ -935,6 +935,222 @@ namespace PKServ
 ";
             }
 
+            if (globalAppSettings.OverlaySettings.SessionMoneySpentGoal.Enabled)
+            {
+                files["SessionMoneySpentGoal.html"] = @$"
+<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Progress Dex</title>
+    <style>
+        body {{
+            background: none;
+        }}
+
+        .progress {{
+            --progress: 0%;
+            width: 500px;
+            height: 50px;
+            margin: 0 0;
+            border: 1px solid #fff;
+            padding: 12px 10px;
+            box-shadow: 0 0 10px #aaa;
+        }}
+
+        .progress .bar {{
+            position: relative; /* Pour permettre le positionnement absolu des éléments enfants */
+            width: var(--progress);
+            height: 100%;
+            background: linear-gradient(gold, #c85, gold);
+            background-repeat: repeat;
+            box-shadow: 0 0 10px 0px orange;
+            animation:
+                shine 4s ease-in infinite,
+                end 1s ease-out 1;
+            transition: width 3s ease;
+        }}
+
+        .progress .bar span {{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white; /* Pour que le texte soit visible sur le fond */
+            font-size: 40px;
+            font-weight: bold;
+        }}
+
+        @property --progress {{
+            syntax: ""<length>"";
+            initial-value: 0%;
+            inherits: true;
+        }}
+
+        @keyframes shine {{
+            0% {{ background-position: 0 0; }}
+            100% {{ background-position: 0 50px; }}
+        }}
+
+        @keyframes end {{
+            0%, 100% {{ box-shadow: 0 0 10px 0px orange; }}
+            50% {{ box-shadow: 0 0 15px 5px orange; }}
+        }}
+    </style>
+</head>
+<body>
+    <div class=""progress"">
+        <div class=""bar"">
+            <span id=""progress-text"">0/0</span>
+            <div class=""progress-value""></div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchProgress() {{
+            try {{
+                // Appel à l'API pour obtenir la valeur de pokecount
+                const pokecountResponse = await fetch('http://localhost:{port}/Get?Value=sessionmoneygoal');
+                console.log(pokecountResponse);
+				const pokecountData = await pokecountResponse.json();
+
+                const maxProgress = pokecountData.total;
+                const currentProgress = pokecountData.progress;
+
+                // Calculer le pourcentage de progression
+                const progressPercentage = (currentProgress / maxProgress) * 100;
+
+                // Mettre à jour la progression et le texte affiché
+                const progress = document.querySelector("".progress"");
+                const progressText = document.getElementById(""progress-text"");
+
+                progress.style.setProperty(""--progress"", `${{progressPercentage}}%`);
+                progressText.textContent = `${{currentProgress}}/${{maxProgress}}`;
+            }} catch (error) {{
+                console.error('Erreur:', error);
+            }}
+        }}
+
+        // Appelle la fonction toutes les 10 secondes (10000 millisecondes)
+        setInterval(fetchProgress, 10000);
+
+        // Appel initial pour mettre à jour la barre de progression dès le chargement de la page
+        fetchProgress();
+    </script>
+</body>
+</html>
+";
+            }
+
+            if (globalAppSettings.OverlaySettings.GlobalMoneySpentGoal.Enabled)
+            {
+                files["GlobalMoneySpentGoal.html"] = @$"
+<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Progress Dex</title>
+    <style>
+        body {{
+            background: none;
+        }}
+
+        .progress {{
+            --progress: 0%;
+            width: 500px;
+            height: 50px;
+            margin: 0 0;
+            border: 1px solid #fff;
+            padding: 12px 10px;
+            box-shadow: 0 0 10px #aaa;
+        }}
+
+        .progress .bar {{
+            position: relative; /* Pour permettre le positionnement absolu des éléments enfants */
+            width: var(--progress);
+            height: 100%;
+            background: linear-gradient(gold, #c85, gold);
+            background-repeat: repeat;
+            box-shadow: 0 0 10px 0px orange;
+            animation:
+                shine 4s ease-in infinite,
+                end 1s ease-out 1;
+            transition: width 3s ease;
+        }}
+
+        .progress .bar span {{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white; /* Pour que le texte soit visible sur le fond */
+            font-size: 40px;
+            font-weight: bold;
+        }}
+
+        @property --progress {{
+            syntax: ""<length>"";
+            initial-value: 0%;
+            inherits: true;
+        }}
+
+        @keyframes shine {{
+            0% {{ background-position: 0 0; }}
+            100% {{ background-position: 0 50px; }}
+        }}
+
+        @keyframes end {{
+            0%, 100% {{ box-shadow: 0 0 10px 0px orange; }}
+            50% {{ box-shadow: 0 0 15px 5px orange; }}
+        }}
+    </style>
+</head>
+<body>
+    <div class=""progress"">
+        <div class=""bar"">
+            <span id=""progress-text"">0/0</span>
+            <div class=""progress-value""></div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchProgress() {{
+            try {{
+                // Appel à l'API pour obtenir la valeur de pokecount
+                const pokecountResponse = await fetch('http://localhost:{port}/Get?Value=globalmoneygoal');
+                console.log(pokecountResponse);
+				const pokecountData = await pokecountResponse.json();
+
+                const maxProgress = pokecountData.total;
+                const currentProgress = pokecountData.progress;
+
+                // Calculer le pourcentage de progression
+                const progressPercentage = (currentProgress / maxProgress) * 100;
+
+                // Mettre à jour la progression et le texte affiché
+                const progress = document.querySelector("".progress"");
+                const progressText = document.getElementById(""progress-text"");
+
+                progress.style.setProperty(""--progress"", `${{progressPercentage}}%`);
+                progressText.textContent = `${{currentProgress}}/${{maxProgress}}`;
+            }} catch (error) {{
+                console.error('Erreur:', error);
+            }}
+        }}
+
+        // Appelle la fonction toutes les 10 secondes (10000 millisecondes)
+        setInterval(fetchProgress, 10000);
+
+        // Appel initial pour mettre à jour la barre de progression dès le chargement de la page
+        fetchProgress();
+    </script>
+</body>
+</html>
+";
+            }
+
             TextsUpdate();
 
             writeFile();

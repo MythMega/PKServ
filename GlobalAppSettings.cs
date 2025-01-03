@@ -29,6 +29,8 @@ namespace PKServ
         public OverlayBar SessionTotalCaughtGoal { get; set; }
         public OverlayBar SessionShinyCaughtGoal { get; set; }
         public OverlayBar SessionParticipantsGoal { get; set; }
+        public OverlayBar SessionMoneySpentGoal { get; set; }
+        public OverlayBar GlobalMoneySpentGoal { get; set; }
     }
 
     public class OverlayBar

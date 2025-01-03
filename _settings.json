@@ -86,6 +86,14 @@
     "SessionParticipantsGoal": {
       "Enabled": true,
       "GoalValue": 10
+    },
+    "SessionMoneySpentGoal": {
+      "Enabled": true,
+      "GoalValue": 5000
+    },
+    "GlobalMoneySpentGoal": {
+      "Enabled": true,
+      "GoalValue": 5000000
     }
   },
     "BadgeSettings": {

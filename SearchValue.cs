@@ -39,19 +39,6 @@ namespace PKServ
 
         }
 
-        public bool IsValide()
-        {
-            return
-                (new List<string> {
-                    "pokecount",
-                    "globaldex",
-                    "userdexprogress",
-                    "overlayprogressglobaldex",
-                    "overlayprogressglobalshinydex",
-                    "lastpokecaughtsprite",
-                }.Contains(value.ToLower()));
-        }
-
         public string searchValue(string value)
         {
             this.value = value.ToLower();
@@ -61,6 +48,10 @@ namespace PKServ
         public string searchResult()
         {
             var allentries = dataConnexion.GetAllEntries();
+            var alluser = dataConnexion.GetAllUserPlatforms();
+
+            alluser.ForEach(user => { user.generateStats(); });
+
             string result = string.Empty;
             if (value is not null)
             {
@@ -95,11 +86,26 @@ namespace PKServ
 }} ";
                         break;
 
+                    // bar custom : session money goal
+                    case "sessionmoneygoal":
+                        result = @$"{{
+    ""progress"":{appSettings.catchHistory.Sum(s => s.price)},
+    ""total"":{globalAppSettings.OverlaySettings.GlobalShinyCaughtGoal.GoalValue}
+}} "; 
+                        break;
+                    // bar custom : global money goal
+                    case "globalmoneygoal":
+                        result = @$"{{
+    ""progress"":{alluser.Sum(x => x.Stats.moneySpent).ToString()},
+    ""total"":{globalAppSettings.OverlaySettings.GlobalMoneySpentGoal.GoalValue}
+}} ";
+                        break;
+
                     // bar custom : pokegoal shiny
                     case "globalshinycaughtgoal":
                         result = @$"{{
     ""progress"":{allentries.Sum(x => x.CountShiny).ToString()},
-    ""total"":{globalAppSettings.OverlaySettings.GlobalShinyCaughtGoal.GoalValue}
+    ""total"":{globalAppSettings.OverlaySettings.SessionMoneySpentGoal.GoalValue}
 }} ";
                         break;
 
