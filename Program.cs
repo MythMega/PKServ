@@ -302,17 +302,26 @@ namespace PKServ
 
                             string urlPath = request.Url.LocalPath.Trim('/');
                             string responseString = "";
-
-                            switch (queryParameters.AllKeys[0])
+                            switch(urlPath)
                             {
-                                case "Value":
-                                    SearchValue searchValue = new SearchValue();
+                                case "Get":
+                                    switch (queryParameters.AllKeys[0])
+                                    {
+                                        case "Value":
+                                            SearchValue searchValue = new SearchValue();
 
-                                    string info = queryParameters["Value"];
+                                            string info = queryParameters["Value"];
 
-                                    searchValue.SetEnv(data, settings, globalAppSettings, usersHere);
+                                            searchValue.SetEnv(data, settings, globalAppSettings, usersHere);
 
-                                    responseString = searchValue.searchValue(info);
+                                            responseString = searchValue.searchValue(info);
+                                            break;
+
+                                        default:
+                                            responseString = $"Route non reconnue. \nDEBUG : {requestBody}";
+                                            break;
+
+                                    }
                                     break;
 
                                 case "Interface/GetUserHere":
@@ -322,8 +331,9 @@ namespace PKServ
                                 default:
                                     responseString = $"Route non reconnue. \nDEBUG : {requestBody}";
                                     break;
-
                             }
+
+                            
 
                             byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
                             response.ContentLength64 = buffer.Length;
