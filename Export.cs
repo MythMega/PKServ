@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection.Metadata;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -91,6 +89,9 @@ namespace PKServ
             return lineTables;
         }
 
+        /// <summary>
+        /// SOLO DEX
+        /// </summary>
         public void BuildRapport()
         {
             this.filename = $"Dex_{userRequest.UserName}_export_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.html";
@@ -224,11 +225,13 @@ namespace PKServ
             BuildDoc();
         }
 
+        /// <summary>
+        /// MAIN.HTML
+        /// </summary>
         public void BuildDoc()
         {
             List<User> utilisateurs = dataConnexion.GetAllUserPlatforms();
-            List<string> lines = new List<string>();
-            List<string> table = new List<string>();
+            string dataPseudoList = string.Join(", ", utilisateurs.Select(x => x.Pseudo));
             int NombreTotalPokeball = 0;
             int NombreTotalSousouDepense = 0;
             int NombreTotalPokecapture = 0;
@@ -301,6 +304,7 @@ namespace PKServ
   <title>Rapport de Dexs</title>
   <link href=""https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"" rel=""stylesheet"">
   <script src=""https://code.jquery.com/jquery-3.5.1.min.js""></script>
+  <script src=""https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js""></script>
 </head>
 <body>
     <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
@@ -345,14 +349,23 @@ namespace PKServ
         <option value=""youtube"">YouTube</option>
         <option value=""tiktok"">TikTok</option>
     </select>
-<br>
+    <br>
     <label for=""pseudo"">Pseudo:</label>
-    <input type=""text"" id=""pseudo"" name=""pseudo"">
-<br>
+    <input type=""text"" id=""pseudo"" name=""pseudo"" class=""awesomplete"" data-list=""{dataPseudoList}"">
+    <br>
     <input type=""submit"" value=""Submit"">
 </form>
 
-<script> document.getElementById('redirectForm').onsubmit = function(event) {{ event.preventDefault(); var platform = document.getElementById('platform').value; var pseudo = document.getElementById('pseudo').value.toLowerCase(); var currentUrl = window.location.href; var newUrl = currentUrl.substring(0, currentUrl.lastIndexOf(""/"")) + '/' + platform + '/' + pseudo + '.html'; window.location.href = newUrl; }} </script>
+<script>
+document.getElementById('redirectForm').onsubmit = function(event) {{
+    event.preventDefault();
+    var platform = document.getElementById('platform').value;
+    var pseudo = document.getElementById('pseudo').value.toLowerCase();
+    var currentUrl = window.location.href;
+    var newUrl = currentUrl.substring(0, currentUrl.lastIndexOf(""/"")) + '/' + platform + '/' + pseudo + '.html';
+    window.location.href = newUrl;
+}};
+</script>
     <p>{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}</p>
     <h1 class=""mt-5"">Stats globales de la chaîne</h1>
   <div class=""row"">
@@ -380,78 +393,12 @@ namespace PKServ
           <p>{classementDexProgress}</p>
         </div>
     </div>
-    <h1 class=""mt-5"">Selectionnez une personne</h1>
-    <select id=""tableSelector"" class=""form-control mb-3""> ";
+";
 
-            //utilisateurs.ForEach(item => lines.Add($"<option value=\"{item.Platform}-{item.Pseudo}\">{item.Pseudo} ({item.Platform})</option>"));
-
-            string middle = @"</select>";
-
-            string wip = "";
-            List<Entrie> info = new List<Entrie>();
-            Pokemon pkm = null;
-            foreach (User item in utilisateurs)
-            {
-                wip = @$"
-    <div id=""{item.Platform}-{item.Pseudo}"" class=""table-container"">
-      <h2>{item.Pseudo} ({item.Platform})</h2>
-      <table class=""table table-dark table-bordered table-striped"">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Pokémon</th>
-            <th>Capturés normaux</th>
-            <th>Capturés shiny</th>
-          </tr>
-        </thead>
-        <tbody>";
-
-                info = dataConnexion.GetEntriesByPseudo(item.Pseudo, item.Platform);
-                foreach (Entrie en in info)
-                {
-                    en.setIDPoke(appSettings);
-                }
-                info = info.OrderBy(e => e.entryPokeID).ToList();
-
-                foreach (Entrie entry in info)
-                {
-                    pkm = appSettings.pokemons.FirstOrDefault(p => p.Name_FR == entry.PokeName);
-                    if (pkm == null)
-                    {
-                        Console.WriteLine($"WARN Le pokémon {entry.Pseudo} (possédé par {entry.Pseudo}) n'a pas été trouvé dans la liste des pokémon activés");
-                    }
-                    else
-                    {
-                        wip += @$"<tr>
-            <td><img src=""{pkm.Sprite_Normal}"" alt=""Normal Sprite"" style=""height: 64px; width: auto;""></td>
-            <td>{entry.PokeName}</td>
-            <td>{entry.CountNormal}</td>
-            <td>{entry.CountShiny}</td>
-          </tr>";
-                    }
-                }
-                wip += @"
-        </tbody>
-      </table>
-    </div>";
-                table.Add(wip);
-                wip = "";
-            }
-
-            string end = @"<script>
-    $(document).ready(function() {{
-      $('#tableSelector').change(function() {{
-        $('.table-container').hide();
-        $('#' + $(this).val()).show();
-      }});
-    }});
-  </script>
+            string end = @"
 </html>
 ";
             fileContent = start;
-            lines.ForEach(line => fileContent += line);
-            fileContent += middle;
-            table.ForEach(line => fileContent += line);
             fileContent += end;
 
             filename = $"FullExport_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.html";

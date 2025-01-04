@@ -1,6 +1,6 @@
 # Ignorer tous les dossiers bin
 **/bin/
-
+**/obj/
 **/.vs/
 
 PKServ.zip
