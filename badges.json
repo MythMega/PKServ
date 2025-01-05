@@ -6,9 +6,10 @@
     "Title": "Tuto capture.",
     "Description": "10 balls lancés.",
     "XP": 50,
-    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "IconUrl": "https://s3.pokeos.com/forgotten-dex/pokeball/poke.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Envoyer des balls !"
   },
   {
     "Type": "BallLaunched",
@@ -17,9 +18,10 @@
     "Title": "Ball à zéro.",
     "Description": "100 balls lancés.",
     "XP": 100,
-    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "IconUrl": "https://s3.pokeos.com/forgotten-dex/pokeball/great.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Envoyer des balls !"
   },
   {
     "Type": "BallLaunched",
@@ -28,9 +30,10 @@
     "Title": "ball-ognaise.",
     "Description": "250 balls lancés.",
     "XP": 200,
-    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "IconUrl": "https://s3.pokeos.com/forgotten-dex/pokeball/ultra.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Envoyer des balls !"
   },
   {
     "Type": "BallLaunched",
@@ -39,9 +42,10 @@
     "Title": "punching-ball.",
     "Description": "1000 balls lancés.",
     "XP": 500,
-    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "IconUrl": "https://s3.pokeos.com/forgotten-dex/pokeball/master.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Envoyer des balls !"
   },
   {
     "Type": "TotalCatch",
@@ -52,7 +56,8 @@
     "XP": 50,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Attrapez les tous !"
   },
   {
     "Type": "TotalCatch",
@@ -63,7 +68,8 @@
     "XP": 100,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Attrapez les tous !"
   },
   {
     "Type": "TotalCatch",
@@ -74,7 +80,8 @@
     "XP": 200,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Attrapez les tous !"
   },
   {
     "Type": "TotalCatch",
@@ -85,7 +92,8 @@
     "XP": 500,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Attrapez les tous !"
   },
   {
     "Type": "TotalCatch",
@@ -96,7 +104,8 @@
     "XP": 1000,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Attrapez les tous !"
   },
   {
     "Type": "ShinyCatch",
@@ -107,7 +116,8 @@
     "XP": 10,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Shiny Hunting"
   },
   {
     "Type": "ShinyCatch",
@@ -118,7 +128,8 @@
     "XP": 50,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Shiny Hunting"
   },
   {
     "Type": "ShinyCatch",
@@ -129,29 +140,56 @@
     "XP": 100,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Shiny Hunting"
+  },
+  {
+    "Type": "DaySinceStart",
+    "Value": 7,
+    "Rarity": "common",
+    "Title": "Regis.",
+    "Description": "Dresseur depuis 1 semaine.",
+    "XP": 100,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false,
+    "Group": "Global",
+    "SubGroup": "Experience as Trainer"
   },
   {
     "Type": "DaySinceStart",
     "Value": 30,
-    "Rarity": "rare",
+    "Rarity": "uncommon",
     "Title": "Blue.",
     "Description": "Dresseur depuis 1 mois.",
     "XP": 500,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Experience as Trainer"
+  },
+  {
+    "Type": "DaySinceStart",
+    "Value": 90,
+    "Rarity": "epic",
+    "Title": "Sacha.",
+    "Description": "Dresseur depuis 3 mois.",
+    "XP": 750,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false,
+    "Group": "Global",
+    "SubGroup": "Experience as Trainer"
   },
   {
     "Type": "DaySinceStart",
     "Value": 365,
-    "Rarity": "legendary",
+    "Rarity": "exotic",
     "Title": "Red.",
     "Description": "Dresseur depuis 1 an.",
     "XP": 1510,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Global"
+    "Group": "Global",
+    "SubGroup": "Experience as Trainer"
   },
   {
     "Type": "MultiplePoke",
@@ -163,7 +201,8 @@
     "XP": 500,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Kanto"
+    "Group": "Kanto",
+    "SubGroup": "Dex Of Kanto"
   },
   {
     "Type": "MultiplePoke",
@@ -175,7 +214,8 @@
     "XP": 350,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Kanto"
+    "Group": "Kanto",
+    "SubGroup": "Dex Of Kanto"
   },
   {
     "Type": "SpecificPoke",
@@ -185,9 +225,10 @@
     "Title": "Agent Rocket.",
     "Description": "Mew attrapé.",
     "XP": 500,
-    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "IconUrl": "https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/sprite/badge/custom/mew.png",
     "Locked": false,
-    "Group": "Kanto"
+    "Group": "Kanto",
+    "SubGroup": "Legends Of Kanto"
   },
   {
     "Type": "SpecificPoke",
@@ -197,9 +238,10 @@
     "Title": "Soldat Rocket.",
     "Description": "Mewtwo attrapé.",
     "XP": 750,
-    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "IconUrl": "https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/sprite/badge/custom/mewtwo.png",
     "Locked": false,
-    "Group": "Kanto"
+    "Group": "Kanto",
+    "SubGroup": "Legends Of Kanto"
   },
   {
     "Type": "MultiplePoke",
@@ -211,7 +253,8 @@
     "XP": 1000,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Kanto"
+    "Group": "Kanto",
+    "SubGroup": "Legends Of Kanto"
   },
   {
     "Type": "MultiplePoke",
@@ -223,7 +266,8 @@
     "XP": 1000,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Johto"
+    "Group": "Johto",
+    "SubGroup": "Dex Of Johto"
   },
   {
     "Type": "MultiplePoke",
@@ -235,7 +279,8 @@
     "XP": 350,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Johto"
+    "Group": "Johto",
+    "SubGroup": "Dex Of Johto"
   },
   {
     "Type": "MultiplePoke",
@@ -247,7 +292,8 @@
     "XP": 700,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Johto"
+    "Group": "Johto",
+    "SubGroup": "Legends Of Johto"
   },
   {
     "Type": "MultiplePoke",
@@ -259,7 +305,8 @@
     "XP": 1000,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Johto"
+    "Group": "Johto",
+    "SubGroup": "Legends Of Johto"
   },
   {
     "Type": "SpecificPoke",
@@ -271,6 +318,7 @@
     "XP": 1000,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
     "Locked": false,
-    "Group": "Johto"
+    "Group": "Johto",
+    "SubGroup": "Legends Of Johto"
   }
 ]

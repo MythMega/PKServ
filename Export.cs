@@ -869,24 +869,35 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                 utilisateur.generateStatsAchievement(settings, globalAppSettings);
                 data += $"<p>Level {utilisateur.Stats.level}</p><br><p>{utilisateur.Stats.currentXP} XP/{globalAppSettings.BadgeSettings.XPPerLevel} XP</p><br><p>{utilisateur.Stats.totalXP} XP Totale</p><br>";
 
-                var group = utilisateur.Stats.badges.GroupBy(x => x.Type);
-                foreach (var groupBadges in group)
+                List<string> GroupsBadges = utilisateur.Stats.badges.Select(element => element.Group).Distinct().ToList();
+                foreach (string group in GroupsBadges)
                 {
+                    List<Badge> badgesOfThisGroup = utilisateur.Stats.badges.Where(g => g.Group == group).ToList();
+                    List<string> SubGroupsBadges = badgesOfThisGroup.Select(element => element.SubGroup).Distinct().ToList();
+                    data += $"<br><br><br><h2 class=\"col-12\" style=\"margin-top:25px\"><b>{group.ToString()} [{badgesOfThisGroup.Where(x => x.Obtained).Count().ToString()}/{badgesOfThisGroup.Count}]</b></h2>";
                     data += "<div class=\"row\">";
-                    foreach (var badge in groupBadges)
-                     {
-                        wip = badge.Obtained ? badge.Description : "????";
+                    foreach (string subgroup in SubGroupsBadges)
+                    {
+                        List<Badge> badgeOfThisSubgroup = badgesOfThisGroup.Where(element => element.SubGroup == subgroup).ToList();
+                        data += $"  <br><br><h4 class=\"col-12\" style=\"margin-top:15px\"><b>{subgroup.ToString()} [{badgeOfThisSubgroup.Where(x => x.Obtained).Count().ToString()}/{badgeOfThisSubgroup.Count}]</b></h4>";
+                        data += "   <div class=\"row\">";
+
+                        foreach (Badge badge in badgeOfThisSubgroup)
+                        {
+                            wip = badge.Obtained ? badge.Description : "????";
                         wip += $" [+{badge.XP}XP]";
                         data += $@"
-<div class=""col-4"">
-    <div class=""card {badge.Rarity}"" style=""background-color: #222222;"">
-      <center><br><img src=""{badge.IconUrl}"" class=""card-img-top trophy-{badge.Obtained}"" alt=""...""></center>
-      <div class=""card-body"">
-        <h5 class=""card-title"">{badge.Title}</h5>
-        <p class=""card-text"">{wip}</p>
-      </div>
-    </div>
-</div>";
+                            <div style=""width: 29vw;  margin-left: 1vw; margin-bottom: 15px;"">
+                                <div class=""card {badge.Rarity}"" style=""background-color: #222222;  height: 220px;"">
+                                  <center><br><img src=""{badge.IconUrl}"" class=""card-img-top trophy-{badge.Obtained}"" alt=""..."" style=""height: 96px; width: auto;""></center>
+                                  <div class=""card-body"">
+                                    <h5 class=""card-title"">{badge.Title}</h5>
+                                    <p class=""card-text"">{wip}</p>
+                                  </div>
+                                </div>
+                            </div>";
+                        }
+                        data += "   </div>";
                     }
                     data += "</div>";
                 }

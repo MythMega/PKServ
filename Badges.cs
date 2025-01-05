@@ -43,7 +43,8 @@ namespace PKServ
         public int XP { get; set; }
         public string IconUrl { get; set; }
         public bool Locked { get; set; }
-        public string Group { get; set; } = "main"; // les badges seront triés par groupes à l'affichage
+        public string Group { get; set; } = "Main"; // les badges seront triés par groupes à l'affichage
+        public string SubGroup { get; set; } = "Common"; // les badges seront triés par sous groupes au sein d'un groupe
         public bool Obtained { get; set; } = false; 
     }
 }
