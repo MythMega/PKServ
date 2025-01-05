@@ -22,7 +22,7 @@ namespace PKServ
         /// - TotalGiven (total poké given through giveaway)
         /// - ShinyGiven (total shiny given through giveaway)
         /// - SpecificPoke (specific pokemon captured)
-        /// - SpecificPoke (multiple pokemon captured) - here the 'value' is useless but must have to be set
+        /// - MultiplePoke (multiple pokemon captured) - here the 'value' is useless but must have to be set
         /// </summary>
         public string Type { get; set; }
         public int Value { get; set; } = 0;
@@ -43,6 +43,7 @@ namespace PKServ
         public int XP { get; set; }
         public string IconUrl { get; set; }
         public bool Locked { get; set; }
-        public bool Obtained { get; set; } = false; // Correction pour correspondre aux conventions de nommage C#
+        public string Group { get; set; } = "main"; // les badges seront triés par groupes à l'affichage
+        public bool Obtained { get; set; } = false; 
     }
 }

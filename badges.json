@@ -7,7 +7,8 @@
     "Description": "10 balls lancés.",
     "XP": 50,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "BallLaunched",
@@ -17,7 +18,8 @@
     "Description": "100 balls lancés.",
     "XP": 100,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "BallLaunched",
@@ -27,7 +29,8 @@
     "Description": "250 balls lancés.",
     "XP": 200,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "BallLaunched",
@@ -37,7 +40,8 @@
     "Description": "1000 balls lancés.",
     "XP": 500,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "TotalCatch",
@@ -47,7 +51,8 @@
     "Description": "5 pokémons attrapés.",
     "XP": 50,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "TotalCatch",
@@ -57,7 +62,8 @@
     "Description": "50 pokémons attrapés.",
     "XP": 100,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "TotalCatch",
@@ -67,7 +73,8 @@
     "Description": "250 Pokémons attrapés.",
     "XP": 200,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "TotalCatch",
@@ -77,7 +84,8 @@
     "Description": "500 Pokémons attrapés.",
     "XP": 500,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "TotalCatch",
@@ -87,7 +95,8 @@
     "Description": "this is a description of a badge or a trophy",
     "XP": 1000,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "ShinyCatch",
@@ -97,7 +106,8 @@
     "Description": "1 shiny attrapé.",
     "XP": 10,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "ShinyCatch",
@@ -107,7 +117,8 @@
     "Description": "10 shiny attrapé.",
     "XP": 50,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "ShinyCatch",
@@ -117,7 +128,8 @@
     "Description": "50 shiny attrapé.",
     "XP": 100,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "DaySinceStart",
@@ -127,7 +139,8 @@
     "Description": "Dresseur depuis 1 mois.",
     "XP": 500,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
     "Type": "DaySinceStart",
@@ -137,73 +150,32 @@
     "Description": "Dresseur depuis 1 an.",
     "XP": 1510,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Global"
   },
   {
-    "Type": "SpecificPoke",
+    "Type": "MultiplePoke",
     "Value": 1,
-    "SpecificValue": "Salamèche",
+    "SpecificValue": "Bulbizarre, Herbizarre, Florizarre, Salamèche, Reptincel, Dracaufeu, Carapuce, Carabaffe, Tortank",
     "Rarity": "uncommon",
-    "Title": "lumière rouge.",
-    "Description": "Salamèche attrapé.",
-    "XP": 10,
+    "Title": "Starters 1G.",
+    "Description": "Les trois familles de starter de Kanto capturés.",
+    "XP": 500,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Kanto"
   },
   {
-    "Type": "SpecificPoke",
+    "Type": "MultiplePoke",
     "Value": 1,
-    "SpecificValue": "Bulbizarre",
-    "Rarity": "uncommon",
-    "Title": "lumière verte.",
-    "Description": "Bulbizarre attrapé.",
-    "XP": 10,
+    "SpecificValue": "Mélofée, Nidorina, Nidorino, Abra, Insécateur, Scarabrute, Porygon, Minidraco",
+    "Rarity": "rare",
+    "Title": "Casino de Céladopole.",
+    "Description": "Les pokémons du casino de Céladopole capturés.",
+    "XP": 350,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
-  },
-  {
-    "Type": "SpecificPoke",
-    "Value": 1,
-    "SpecificValue": "Carapuce",
-    "Rarity": "uncommon",
-    "Title": "lumière bleue.",
-    "Description": "Carapuce attrapé.",
-    "XP": 10,
-    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
-  },
-  {
-    "Type": "SpecificPoke",
-    "Value": 1,
-    "SpecificValue": "Sulfura",
-    "Rarity": "epic",
-    "Title": "Flamboyant.",
-    "Description": "Sulfura attrapé.",
-    "XP": 200,
-    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
-  },
-  {
-    "Type": "SpecificPoke",
-    "Value": 1,
-    "SpecificValue": "Artikodin",
-    "Rarity": "epic",
-    "Title": "Givrant.",
-    "Description": "Artikodin attrapé.",
-    "XP": 200,
-    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
-  },
-  {
-    "Type": "SpecificPoke",
-    "Value": 1,
-    "SpecificValue": "Electhor",
-    "Rarity": "epic",
-    "Title": "Foudroyant.",
-    "Description": "Electhor attrapé.",
-    "XP": 200,
-    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Kanto"
   },
   {
     "Type": "SpecificPoke",
@@ -212,9 +184,10 @@
     "Rarity": "exotic",
     "Title": "Agent Rocket.",
     "Description": "Mew attrapé.",
-    "XP": 300,
+    "XP": 500,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Kanto"
   },
   {
     "Type": "SpecificPoke",
@@ -223,19 +196,81 @@
     "Rarity": "legendary",
     "Title": "Soldat Rocket.",
     "Description": "Mewtwo attrapé.",
-    "XP": 300,
+    "XP": 750,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Kanto"
+  },
+  {
+    "Type": "MultiplePoke",
+    "Value": 1,
+    "SpecificValue": "Artikodin, Électhor, Sulfura",
+    "Rarity": "exotic",
+    "Title": "Oiseaux légendaires.",
+    "Description": "Trois oiseaux capturés.",
+    "XP": 1000,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false,
+    "Group": "Kanto"
+  },
+  {
+    "Type": "MultiplePoke",
+    "Value": 1,
+    "SpecificValue": "Germignon, Macronium, Meganium, Héricendre, Feurisson, Typhlosion, Kaiminus, Crocrodil, Aligatueur",
+    "Rarity": "uncommon",
+    "Title": "Starters 2G..",
+    "Description": "Les trois familles de starter de Johto capturés.",
+    "XP": 1000,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false,
+    "Group": "Johto"
+  },
+  {
+    "Type": "MultiplePoke",
+    "Value": 1,
+    "SpecificValue": "Abo, Sabelette, Abra, Minidraco, Osselait, Qulbutoké",
+    "Rarity": "rare",
+    "Title": "Casino de Doublonville.",
+    "Description": "Les pokémons du casino de Doublonville capturés.",
+    "XP": 350,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false,
+    "Group": "Johto"
+  },
+  {
+    "Type": "MultiplePoke",
+    "Value": 1,
+    "SpecificValue": "Raikou, Entei, Suicune",
+    "Rarity": "legendary",
+    "Title": "Trio de chiens légendaires.",
+    "Description": "Le trio de chiens légendaire de Johto capturé.",
+    "XP": 700,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false,
+    "Group": "Johto"
+  },
+  {
+    "Type": "MultiplePoke",
+    "Value": 1,
+    "SpecificValue": "Lugia, Ho-Oh",
+    "Rarity": "legendary",
+    "Title": "Ciel de Johto.",
+    "Description": "Lugia & Ho-oh capturés.",
+    "XP": 1000,
+    "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
+    "Locked": false,
+    "Group": "Johto"
   },
   {
     "Type": "SpecificPoke",
     "Value": 1,
-    "SpecificValue": "Mewtwo",
+    "SpecificValue": "Celebi",
     "Rarity": "legendary",
-    "Title": "Soldat Rocket.",
-    "Description": "Mewtwo attrapé.",
-    "XP": 300,
+    "Title": "Maitre du temps.",
+    "Description": "Celebi attrapé.",
+    "XP": 1000,
     "IconUrl": "https://cdn-icons-png.flaticon.com/512/8348/8348232.png",
-    "Locked": false
+    "Locked": false,
+    "Group": "Johto"
   }
 ]

@@ -226,12 +226,12 @@ namespace PKServ
                         {
                             foreach(string poke in badge.SpecificValue.Split(','))
                             {
-                                valide = entries.Where(e => e.PokeName.Equals(badge.SpecificValue, StringComparison.CurrentCultureIgnoreCase)).Any();
+                                valide = entries.Where(e => e.PokeName.ToLower().Equals(poke.Trim().ToLower(), StringComparison.CurrentCultureIgnoreCase)).Any();
                                 if (!valide) { break; }
                             }
                         }
-                        badge.Obtained = true;
-                        element += 1;
+                        badge.Obtained = valide;
+                        element += valide ? 1 : 0;
                         break;
                 }
                 
