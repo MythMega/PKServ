@@ -31,6 +31,7 @@ namespace PKServ
             this.CountShiny = Shiny;
             this.dateLastCatch = lastcatch;
             this.dateFirstCatch = firstcatch;
+            this.code = code;
         }
 
         public Entrie(string Pseudo, string Stream, string Platform, string PokeName)
@@ -103,7 +104,7 @@ namespace PKServ
                     }
 
                     command.Parameters.AddWithValue("@Pseudo", this.Pseudo);
-                    command.Parameters.AddWithValue("@CODE_USER", this.code ?? "unset"); // Ajout de la colonne CODE_USER avec valeur par défaut
+                    command.Parameters.AddWithValue("@CODE_USER", this.code); // Ajout de la colonne CODE_USER avec valeur par défaut
                     command.Parameters.AddWithValue("@Stream", this.Stream);
                     command.Parameters.AddWithValue("@Platform", this.Platform);
                     command.Parameters.AddWithValue("@PokeName", this.PokeName);

@@ -741,7 +741,7 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
                         // Mettre à jour les statistiques si l'utilisateur existe
                         string updateQuery = "";
 
-                        switch(mode.ToLower())
+                        switch (mode.ToLower())
                         {
                             case "add":
                                 updateQuery = @"
@@ -860,6 +860,66 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
 
                             insertCommand.ExecuteNonQuery();
                         }
+                    }
+                }
+            }
+        }
+
+        internal void UpdateUserAllStats(User user)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
+            {
+                connection.Open();
+
+                // Vérifier si l'utilisateur existe
+                string checkQuery = @"
+            SELECT COUNT(1)
+            FROM user
+            WHERE Pseudo = @Pseudo AND Platform = @Platform";
+
+                using (var checkCommand = new SqliteCommand(checkQuery, connection))
+                {
+                    checkCommand.Parameters.AddWithValue("@Pseudo", user.Pseudo);
+                    checkCommand.Parameters.AddWithValue("@Platform", user.Platform);
+
+                    int userExists = Convert.ToInt32(checkCommand.ExecuteScalar());
+
+                    if (userExists > 0)
+                    {
+                        // Mettre à jour les statistiques si l'utilisateur existe
+                        string updateQuery = @"
+                    UPDATE user
+                    SET
+                        pokeReceived_normal = @normalAdded,
+                        pokeReceived_shiny = @shinyAdded,
+                        Stat_BallLaunched = @ballLaunched,
+                        pokeScrapped_normal = @normalScrapped,
+                        pokeScrapped_shiny = @shinyScrapped,
+                        customMoney = @customMoney,
+                        Stat_MoneySpent = @MoneySpent
+                    WHERE Pseudo = @Pseudo AND Platform = @Platform";
+
+                        using (var updateCommand = new SqliteCommand(updateQuery, connection))
+                        {
+                            updateCommand.Parameters.AddWithValue("@Pseudo", user.Pseudo);
+                            updateCommand.Parameters.AddWithValue("@Platform", user.Platform);
+                            updateCommand.Parameters.AddWithValue("@normalAdded", user.Stats.giveawayNormal);
+                            updateCommand.Parameters.AddWithValue("@shinyAdded", user.Stats.giveawayShiny);
+                            updateCommand.Parameters.AddWithValue("@ballLaunched", user.Stats.ballLaunched);
+                            updateCommand.Parameters.AddWithValue("@MoneySpent", user.Stats.moneySpent);
+                            updateCommand.Parameters.AddWithValue("@normalScrapped", user.Stats.scrappedNormal);
+                            updateCommand.Parameters.AddWithValue("@shinyScrapped", user.Stats.scrappedShiny);
+                            updateCommand.Parameters.AddWithValue("@customMoney", user.Stats.CustomMoney);
+
+                            Console.WriteLine(updateCommand.CommandText);
+
+                            updateCommand.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("ERROR WHILE MERGING IN DATABASE");
+                        throw new Exception("ERROR WHILE MERGING IN DATABASE");
                     }
                 }
             }

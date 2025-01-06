@@ -261,6 +261,12 @@ namespace PKServ
                                     }
                                     break;
 
+                                case "System/TransfertAccount":
+                                    AccountTransfert transfert = JsonSerializer.Deserialize<AccountTransfert>(requestBody, options);
+                                    transfert.SetEnv(data);
+                                    responseString = transfert.DoTransfert();
+                                    break;
+
                                 default:
                                     ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
                                     responseString = $"Route non reconnue. \nDEBUG : {requestBody}";

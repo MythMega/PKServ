@@ -1230,8 +1230,15 @@ namespace PKServ
             }
             catch { files["special.history.lastCaughtResumeFR.txt"] = ""; files["special.history.lastCaughtResumeEN.txt"] = ""; }
 
-            TimeSpan span = DateTime.Now - allentries.First().dateFirstCatch;
-            files["stats.system.daysCountSinceFirstCatch.txt"] = span.Days.ToString();
+            try
+            {
+                TimeSpan span = DateTime.Now - allentries.First().dateFirstCatch;
+                files["stats.system.daysCountSinceFirstCatch.txt"] = span.Days.ToString();
+            }
+            catch
+            {
+                files["stats.system.daysCountSinceFirstCatch.txt"] = "0";
+            }
 
             writeFile();
         }

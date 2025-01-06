@@ -78,6 +78,9 @@ namespace PKServ
             Stats.giveawayNormal = Data.GetDataUserStats_Giveaway(Pseudo, Platform, false);
             Stats.giveawayShiny = Data.GetDataUserStats_Giveaway(Pseudo, Platform, true);
             Stats.CustomMoney = Data.GetDataUserStats_Money(Pseudo, Platform);
+            Stats.scrappedNormal = Data.GetDataUserStats_Scrap(Pseudo, Platform, shiny: false);
+            Stats.scrappedShiny = Data.GetDataUserStats_Scrap(Pseudo, Platform, shiny: true);
+
             try
             {
                 Stats.firstCatch = entrie.OrderBy(entrie => entrie.dateFirstCatch).FirstOrDefault().dateFirstCatch;
@@ -269,6 +272,19 @@ namespace PKServ
         {
             Data.DeleteUser(this);
         }
+
+        internal bool ValidateStatsBDD()
+        {
+            bool success = true;
+            try
+            {
+                Data.UpdateUserAllStats(this);
+            }
+            catch {
+                success = false;
+            }
+            return success;
+        }
     }
 
     public class Stats
@@ -287,6 +303,8 @@ namespace PKServ
         public int giveawayNormal;
         public int giveawayShiny;
         public List<Badge> badges;
+        public int scrappedShiny = 0;
+        public int scrappedNormal = 0;
         public int level = 0;
         public int totalXP = 0;
         public int currentXP = 0;
