@@ -16,6 +16,9 @@ namespace PKServ
         /// - shiny
         /// - fullnormal
         /// - fullshiny
+        /// - fulldex
+        /// - fulldexnormal
+        /// - fulldexshiny 
         /// </summary>
         public string mode { get; set; }
 
@@ -48,7 +51,7 @@ namespace PKServ
         public bool IsValide()
         {
             return this.dataConnexion.GetEntriesByPseudo(pseudoTriggered: User.Pseudo, platformTriggered: User.Platform).Where(p => p.PokeName.ToLower() == pokename.ToLower()).Count() == 1 &&
-                (new List<string> { "complete", "fullnormal", "fullshiny", "normal", "shiny" }.Contains(mode.ToLower()));
+                (new List<string> { "complete", "fullnormal", "fullshiny", "normal", "shiny", "fulldex", "fulldexnormal", "fulldexshiny" }.Contains(mode.ToLower()));
         }
 
         public string DoResult()
@@ -56,31 +59,87 @@ namespace PKServ
             List<Entrie> entries = this.dataConnexion.GetEntriesByPseudo(User.Pseudo, User.Platform).Where(p => p.PokeName.ToLower() == pokename.ToLower()).ToList();
             string resultat = string.Empty;
 
-            if (!IsValide())
-            {
-                if (entries.Count != 1)
-                {
-                    if (entries.Count < 1)
-                        return globalAppSettings.Texts.TranslationScrapping.ElementNotRegistered;
-                    Console.WriteLine($"Pokemon '{pokename}' has multiples entries ({entries.Count}). Run a FixEntries to fix it");
-                    return globalAppSettings.Texts.error;
-                }
-                if (!new List<string> { "complete", "fullnormal", "fullshiny", "normal", "shiny" }.Contains(mode.ToLower()))
-                {
-                    return globalAppSettings.Texts.TranslationScrapping.ScrapModeDoesNotExist;
-                }
-            }
-
-            #region Work
-
-            Entrie targetEntrie = entries.FirstOrDefault();
             int moneyEarned = 0;
             int scrapCountNormal = 0;
             int scrapCountShiny = 0;
             int multiplierNormal = 1;
             int multiplierShiny = 1;
-            Pokemon poke = appSettings.pokemons.Where(p => p.Name_FR.ToLower() == pokename.ToLower()).FirstOrDefault();
 
+
+            if (this.mode == "complete" || this.mode == "fullnormal" || this.mode == "fullshiny" || this.mode == "normal" || this.mode == "shiny")
+            {
+                if (!IsValide())
+                {
+                    if (entries.Count != 1)
+                    {
+                        if (entries.Count < 1)
+                            return globalAppSettings.Texts.TranslationScrapping.ElementNotRegistered;
+                        Console.WriteLine($"Pokemon '{pokename}' has multiples entries ({entries.Count}). Run a FixEntries to fix it");
+                        return globalAppSettings.Texts.error;
+                    }
+                    return globalAppSettings.Texts.TranslationScrapping.ScrapModeDoesNotExist;
+
+                }
+                Entrie targetEntrie = entries.FirstOrDefault();
+                
+                WorkOnAEntry(targetEntrie, ref resultat, ref moneyEarned, ref scrapCountNormal, ref scrapCountShiny, ref multiplierNormal, ref multiplierShiny);
+            }
+            else if (this.mode == "fulldex" || this.mode == "fulldexnormal" || this.mode == "fulldexshiny")
+            {
+                entries = this.dataConnexion.GetEntriesByPseudo(User.Pseudo, User.Platform);
+                foreach (Entrie each in entries)
+                {
+                    WorkOnAEntry(each, ref resultat, ref moneyEarned, ref scrapCountNormal, ref scrapCountShiny, ref multiplierNormal, ref multiplierShiny);
+                }
+
+            }
+
+            // ajouter la thune générée par le scrap à l'utilisateur
+
+            //patch temporaire
+            moneyEarned = Math.Abs(moneyEarned);
+
+            dataConnexion.UpdateUserStatsMoney(moneyEarned: moneyEarned, user: User, mode: "add");
+
+            // ajouter la quantite d'element scrap aux stats
+            dataConnexion.UpdateUserStatsScrapCount(normal: scrapCountNormal, shiny: scrapCountShiny, user: User);
+
+            if (scrapCountShiny > 0 || scrapCountNormal > 0)
+            {
+
+                resultat = scrapCountNormal > 0 ? $" {scrapCountNormal} normal scrapped," : "";
+                resultat += scrapCountShiny > 0 ? $" {scrapCountShiny} shiny scrapped," : "";
+                resultat += $" +{moneyEarned} money.";
+            }
+            else
+            {
+                if (User.Pseudo == "batgo_")
+                {
+                    resultat = "hé pas toi";
+                }
+                else
+                {
+                    resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
+                }
+            }
+            return resultat;
+            
+        }
+
+        public void WorkOnAEntry(Entrie targetEntrie, ref string resultat, ref int moneyEarned, ref int scrapCountNormal, ref int scrapCountShiny, ref int multiplierNormal, ref int multiplierShiny)
+        {
+
+            #region Work
+
+            Pokemon poke = appSettings.pokemons.Where(p => p.Name_FR.ToLower() == pokename.ToLower()).FirstOrDefault();
+            if (poke == null)
+            {
+                poke = appSettings.pokemons.Where(p => p.Name_FR.ToLower() == targetEntrie.PokeName.ToLower()).FirstOrDefault();
+                if(poke == null)
+                {
+                    return;
+                }
+            }
             if (poke.isLegendary && !poke.valueNormal.HasValue)
             {
                 multiplierNormal = globalAppSettings.ScrapSettings.ValueDefaultNormal * globalAppSettings.ScrapSettings.legendaryMultiplier;
@@ -92,15 +151,16 @@ namespace PKServ
             }
             switch (mode)
             {
+                case "fulldex":
                 case "complete":
                     if (targetEntrie.CountNormal < globalAppSettings.ScrapSettings.minimumToScrap && targetEntrie.CountShiny < globalAppSettings.ScrapSettings.minimumToScrap)
                     {
-                        return globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
+                        resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
                     }
 
-                    if(targetEntrie.CountNormal > globalAppSettings.ScrapSettings.minimumToScrap)
+                    if (targetEntrie.CountNormal > globalAppSettings.ScrapSettings.minimumToScrap)
                     {
-                        scrapCountNormal = targetEntrie.CountNormal - globalAppSettings.ScrapSettings.minimumToScrap;
+                        scrapCountNormal += targetEntrie.CountNormal - globalAppSettings.ScrapSettings.minimumToScrap;
                         if (poke.valueNormal is null)
                             moneyEarned += scrapCountNormal * globalAppSettings.ScrapSettings.ValueDefaultNormal * multiplierNormal;
                         else
@@ -109,9 +169,9 @@ namespace PKServ
 
                         targetEntrie.CountNormal = globalAppSettings.ScrapSettings.minimumToScrap;
                     }
-                    if(targetEntrie.CountShiny > globalAppSettings.ScrapSettings.minimumToScrap)
+                    if (targetEntrie.CountShiny > globalAppSettings.ScrapSettings.minimumToScrap)
                     {
-                        scrapCountShiny = targetEntrie.CountShiny - globalAppSettings.ScrapSettings.minimumToScrap;
+                        scrapCountShiny += targetEntrie.CountShiny - globalAppSettings.ScrapSettings.minimumToScrap;
                         if (poke.valueShiny is null)
                             moneyEarned += scrapCountShiny * globalAppSettings.ScrapSettings.ValueDefaultShiny * multiplierShiny;
                         else
@@ -119,14 +179,14 @@ namespace PKServ
 
 
                         targetEntrie.CountShiny = globalAppSettings.ScrapSettings.minimumToScrap;
-                    }                    
+                    }
 
                     break;
 
                 case "normal":
                     if (targetEntrie.CountNormal < globalAppSettings.ScrapSettings.minimumToScrap)
                     {
-                        return globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
+                        resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
                     }
 
                     scrapCountNormal++;
@@ -140,13 +200,14 @@ namespace PKServ
                     targetEntrie.CountNormal -= 1;
                     break;
 
+                case "fulldexnormal":
                 case "fullnormal":
                     if (targetEntrie.CountNormal < globalAppSettings.ScrapSettings.minimumToScrap)
                     {
-                        return globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
+                        resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
                     }
 
-                    scrapCountNormal = targetEntrie.CountNormal - globalAppSettings.ScrapSettings.minimumToScrap;
+                    scrapCountNormal += targetEntrie.CountNormal - globalAppSettings.ScrapSettings.minimumToScrap;
 
                     if (poke.valueNormal is null)
                         moneyEarned += scrapCountNormal * globalAppSettings.ScrapSettings.ValueDefaultNormal * multiplierNormal;
@@ -159,7 +220,7 @@ namespace PKServ
                 case "shiny":
                     if (targetEntrie.CountShiny < globalAppSettings.ScrapSettings.minimumToScrap)
                     {
-                        return globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
+                        resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
                     }
 
                     scrapCountShiny++;
@@ -173,13 +234,14 @@ namespace PKServ
                     targetEntrie.CountShiny -= 1;
                     break;
 
+                case "fulldexshiny":
                 case "fullshiny":
                     if (targetEntrie.CountShiny < globalAppSettings.ScrapSettings.minimumToScrap)
                     {
-                        return globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
+                        resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
                     }
 
-                    scrapCountShiny = targetEntrie.CountShiny - globalAppSettings.ScrapSettings.minimumToScrap;
+                    scrapCountShiny += targetEntrie.CountShiny - globalAppSettings.ScrapSettings.minimumToScrap;
 
                     if (poke.valueShiny is null)
                         moneyEarned += scrapCountShiny * globalAppSettings.ScrapSettings.ValueDefaultShiny * multiplierShiny;
@@ -192,37 +254,7 @@ namespace PKServ
 
             // valider le modification en base de donnée (sans créer de nouvelle ligne)
             targetEntrie.Validate(NewLine: false);
-
-            // ajouter la thune générée par le scrap à l'utilisateur
-
-            //patch temporaire
-            moneyEarned = Math.Abs(moneyEarned);
-
-            dataConnexion.UpdateUserStatsMoney(moneyEarned: moneyEarned, user: User, mode: "add");
-
-            // ajouter la quantite d'element scrap aux stats
-            dataConnexion.UpdateUserStatsScrapCount(normal: scrapCountNormal, shiny: scrapCountShiny, user: User);
-
             #endregion Work
-            if (scrapCountShiny > 0 || scrapCountNormal > 0)
-            {
-
-                resultat += scrapCountNormal > 0 ? $" {scrapCountNormal} normal scrapped," : "";
-                resultat += scrapCountShiny > 0 ? $" {scrapCountShiny} shiny scrapped," : "";
-                resultat += $" +{moneyEarned} money.";
-            }
-            else
-            {
-                if(User.Pseudo == "batgo_")
-                {
-                    resultat = "hé pas toi";
-                }
-                else
-                {
-                    resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
-                }
-            }
-            return resultat;
         }
 
     }
