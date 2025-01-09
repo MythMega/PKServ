@@ -87,7 +87,7 @@ namespace PKServ
             }
             else if (mode == "fulldex" || mode == "fulldexnormal" || mode == "fulldexshiny")
             {
-                entries = dataConnexion.GetEntriesByPseudo(User.Pseudo, User.Platform);
+                entries = dataConnexion.GetEntriesByPseudo(User.Pseudo, User.Platform).Where(entr => entr.CountNormal >= globalAppSettings.ScrapSettings.minimumToScrap+1 || entr.CountShiny >= globalAppSettings.ScrapSettings.minimumToScrap+1).ToList();
                 foreach (Entrie each in entries)
                 {
                     WorkOnAEntry(each, ref resultat, ref moneyEarned, ref scrapCountNormal, ref scrapCountShiny, ref multiplierNormal, ref multiplierShiny);
@@ -132,6 +132,8 @@ namespace PKServ
 
             int localScrapCountNormal = 0;
             int localScrapCountShiny = 0;
+            multiplierNormal = 1;
+            multiplierShiny = 1;
 
             #region Work
 
@@ -259,8 +261,11 @@ namespace PKServ
             }
 
             // valider le modification en base de donnée (sans créer de nouvelle ligne)
-            targetEntrie.Validate(NewLine: false);
+            //targetEntrie.Validate(NewLine: false);
 
+            Console.WriteLine($@"
+poke {poke.Name_FR} [{localScrapCountNormal} / {localScrapCountShiny}]
+money {moneyEarned}");
             scrapCountNormal += localScrapCountNormal;
             scrapCountShiny += localScrapCountShiny;
 

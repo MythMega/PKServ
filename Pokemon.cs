@@ -59,6 +59,8 @@
         public int? priceShiny { get; set; }
         public int? rarity { get; set; }
 
+        public string? altName { get; set; }
+
 
 
         /// <summary>
@@ -71,7 +73,7 @@
         /// <param name="isCustom">false by default</param>
         /// <param name="isLock">false by default</param>
         /// <param name="isLegendary">false by default</param>
-        public Pokemon(string name_FR, string name_EN, string sprite_Shiny, string sprite_Normal, bool isCustom = false, bool isLock = false, bool isLegendary = false, bool isShinyLock = false, int? valueNormal = null, int? valueShiny = null, int? priceNormal = null, int? priceShiny = null, int? rarity = 1)
+        public Pokemon(string name_FR, string name_EN, string sprite_Shiny, string sprite_Normal, bool isCustom = false, bool isLock = false, bool isLegendary = false, bool isShinyLock = false, int? valueNormal = null, int? valueShiny = null, int? priceNormal = null, int? priceShiny = null, int? rarity = 1, string altName = null)
         {
             Name_FR = name_FR;
             Name_EN = name_EN;
@@ -86,6 +88,7 @@
             this.priceNormal = priceNormal;
             this.priceShiny = priceShiny;
             this.rarity = rarity;
+            this.altName = altName;
         }
     }
 }
