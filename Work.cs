@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -14,7 +15,7 @@ namespace PKServ
 
         public Work(UserRequest uc, DataConnexion connexion, AppSettings appSettings, GlobalAppSettings globalAppSettings)
         {
-            this.msgResult = "NO DATA";
+            msgResult = "NO DATA";
             this.uc = uc;
             this.connexion = connexion;
             this.appSettings = appSettings;
@@ -40,9 +41,9 @@ namespace PKServ
             {
                 pkb = pkbForced;
             }
-            this.CatchPokemon(pkb);
-            this.saveStats();
-            return this.msgResult;
+            CatchPokemon(pkb);
+            saveStats();
+            return msgResult;
         }
 
         private void saveStats()
@@ -90,17 +91,18 @@ namespace PKServ
             if (onePoke.rarity is not null && onePoke.rarity > 1)
             {
                 // si le catchrate est supérieur a 50%, on augmente les chance de non capture
-                if (pkb.catchrate > 50) { 
+                if (pkb.catchrate > 50)
+                {
                     newCatchrate = 100 - (100 - pkb.catchrate) * onePoke.rarity.Value;
                 }
                 // si le catchrate est inférieur ou égal à 50%, on divise le taux de capture
                 else
                 {
-                    newCatchrate = ((int)(pkb.catchrate / onePoke.rarity.Value));
+                    newCatchrate = pkb.catchrate / onePoke.rarity.Value;
                 }
 
                 // on nerf le malus : une ball ne peut pas avoir un taux de capture en dessous de son quart de son taux de base
-                if (newCatchrate < ((int)(pkb.catchrate / 2)))
+                if (newCatchrate < pkb.catchrate / 2)
                     newCatchrate = (int)Math.Floor(decimal.Ceiling(pkb.catchrate / 2));
             }
             //#if DEBUG
@@ -118,12 +120,12 @@ namespace PKServ
             preinfo += onePoke.isCustom ? "CUSTOM ! " : "";
             string str1 = isCaught ? "Le pokémon " + onePoke.Name_FR + " a été capturé. ✅" : "Le pokémon " + onePoke.Name_FR + " s'est échappé. ❌";
             string str2 = isShiny ? ". ✧✧ Le pokémon était shiny. ✧✧" : "";
-            this.msgResult = preinfo + str1;
-            this.msgResult += str2;
+            msgResult = preinfo + str1;
+            msgResult += str2;
             if (!isCaught)
                 return;
-            this.appSettings.catchHistory.Add(new CatchHistory { Ball = pkb, Pokemon = onePoke, User = new User { Pseudo = uc.UserName, Platform = uc.Platform }, shiny = isShiny, price = uc.Price });
-            this.saveData(onePoke);
+            appSettings.catchHistory.Add(new CatchHistory { Ball = pkb, Pokemon = onePoke, User = new User { Pseudo = uc.UserName, Platform = uc.Platform }, shiny = isShiny, price = uc.Price });
+            saveData(onePoke);
             onePoke.isShiny = false;
         }
 
@@ -294,8 +296,8 @@ namespace PKServ
             if (!forced)
             {
                 users = users.Where(user => user.lastCatch() > appSettings.LastFullExport).ToList();
-            }                
-                
+            }
+
             int count = 0;
             foreach (User user in users)
             {

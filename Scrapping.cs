@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -28,14 +29,14 @@ namespace PKServ
 
         public Scrapping()
         {
-            this.dataConnexion = null;
-            this.appSettings = null;
-            this.globalAppSettings = null;
+            dataConnexion = null;
+            appSettings = null;
+            globalAppSettings = null;
         }
 
         public Scrapping(DataConnexion data, AppSettings appSettings, GlobalAppSettings globalAppSettings)
         {
-            this.dataConnexion = data;
+            dataConnexion = data;
             this.appSettings = appSettings;
             this.globalAppSettings = globalAppSettings;
         }
@@ -43,20 +44,20 @@ namespace PKServ
 
         internal void SetEnv(DataConnexion data, AppSettings settings, GlobalAppSettings globalAppSettings)
         {
-            this.dataConnexion = data;
+            dataConnexion = data;
             this.globalAppSettings = globalAppSettings;
-            this.appSettings = settings;
+            appSettings = settings;
         }
 
         public bool IsValide()
         {
-            return this.dataConnexion.GetEntriesByPseudo(pseudoTriggered: User.Pseudo, platformTriggered: User.Platform).Where(p => p.PokeName.ToLower() == pokename.ToLower()).Count() == 1 &&
-                (new List<string> { "complete", "fullnormal", "fullshiny", "normal", "shiny", "fulldex", "fulldexnormal", "fulldexshiny" }.Contains(mode.ToLower()));
+            return dataConnexion.GetEntriesByPseudo(pseudoTriggered: User.Pseudo, platformTriggered: User.Platform).Where(p => p.PokeName.ToLower() == pokename.ToLower()).Count() == 1 &&
+                new List<string> { "complete", "fullnormal", "fullshiny", "normal", "shiny", "fulldex", "fulldexnormal", "fulldexshiny" }.Contains(mode.ToLower());
         }
 
         public string DoResult()
         {
-            List<Entrie> entries = this.dataConnexion.GetEntriesByPseudo(User.Pseudo, User.Platform).Where(p => p.PokeName.ToLower() == pokename.ToLower()).ToList();
+            List<Entrie> entries = dataConnexion.GetEntriesByPseudo(User.Pseudo, User.Platform).Where(p => p.PokeName.ToLower() == pokename.ToLower()).ToList();
             string resultat = string.Empty;
 
             int moneyEarned = 0;
@@ -66,7 +67,7 @@ namespace PKServ
             int multiplierShiny = 1;
 
 
-            if (this.mode == "complete" || this.mode == "fullnormal" || this.mode == "fullshiny" || this.mode == "normal" || this.mode == "shiny")
+            if (mode == "complete" || mode == "fullnormal" || mode == "fullshiny" || mode == "normal" || mode == "shiny")
             {
                 if (!IsValide())
                 {
@@ -81,12 +82,12 @@ namespace PKServ
 
                 }
                 Entrie targetEntrie = entries.FirstOrDefault();
-                
+
                 WorkOnAEntry(targetEntrie, ref resultat, ref moneyEarned, ref scrapCountNormal, ref scrapCountShiny, ref multiplierNormal, ref multiplierShiny);
             }
-            else if (this.mode == "fulldex" || this.mode == "fulldexnormal" || this.mode == "fulldexshiny")
+            else if (mode == "fulldex" || mode == "fulldexnormal" || mode == "fulldexshiny")
             {
-                entries = this.dataConnexion.GetEntriesByPseudo(User.Pseudo, User.Platform);
+                entries = dataConnexion.GetEntriesByPseudo(User.Pseudo, User.Platform);
                 foreach (Entrie each in entries)
                 {
                     WorkOnAEntry(each, ref resultat, ref moneyEarned, ref scrapCountNormal, ref scrapCountShiny, ref multiplierNormal, ref multiplierShiny);
@@ -123,11 +124,14 @@ namespace PKServ
                 }
             }
             return resultat;
-            
+
         }
 
         public void WorkOnAEntry(Entrie targetEntrie, ref string resultat, ref int moneyEarned, ref int scrapCountNormal, ref int scrapCountShiny, ref int multiplierNormal, ref int multiplierShiny)
         {
+
+            int localScrapCountNormal = 0;
+            int localScrapCountShiny = 0;
 
             #region Work
 
@@ -135,7 +139,7 @@ namespace PKServ
             if (poke == null)
             {
                 poke = appSettings.pokemons.Where(p => p.Name_FR.ToLower() == targetEntrie.PokeName.ToLower()).FirstOrDefault();
-                if(poke == null)
+                if (poke == null)
                 {
                     return;
                 }
@@ -160,22 +164,22 @@ namespace PKServ
 
                     if (targetEntrie.CountNormal > globalAppSettings.ScrapSettings.minimumToScrap)
                     {
-                        scrapCountNormal += targetEntrie.CountNormal - globalAppSettings.ScrapSettings.minimumToScrap;
+                        localScrapCountNormal += targetEntrie.CountNormal - globalAppSettings.ScrapSettings.minimumToScrap;
                         if (poke.valueNormal is null)
-                            moneyEarned += scrapCountNormal * globalAppSettings.ScrapSettings.ValueDefaultNormal * multiplierNormal;
+                            moneyEarned += localScrapCountNormal * globalAppSettings.ScrapSettings.ValueDefaultNormal * multiplierNormal;
                         else
-                            moneyEarned += scrapCountNormal * poke.valueNormal.Value * multiplierNormal;
+                            moneyEarned += localScrapCountNormal * poke.valueNormal.Value * multiplierNormal;
 
 
                         targetEntrie.CountNormal = globalAppSettings.ScrapSettings.minimumToScrap;
                     }
                     if (targetEntrie.CountShiny > globalAppSettings.ScrapSettings.minimumToScrap)
                     {
-                        scrapCountShiny += targetEntrie.CountShiny - globalAppSettings.ScrapSettings.minimumToScrap;
+                        localScrapCountShiny += targetEntrie.CountShiny - globalAppSettings.ScrapSettings.minimumToScrap;
                         if (poke.valueShiny is null)
-                            moneyEarned += scrapCountShiny * globalAppSettings.ScrapSettings.ValueDefaultShiny * multiplierShiny;
+                            moneyEarned += localScrapCountShiny * globalAppSettings.ScrapSettings.ValueDefaultShiny * multiplierShiny;
                         else
-                            moneyEarned += scrapCountShiny * poke.valueShiny.Value * multiplierShiny;
+                            moneyEarned += localScrapCountShiny * poke.valueShiny.Value * multiplierShiny;
 
 
                         targetEntrie.CountShiny = globalAppSettings.ScrapSettings.minimumToScrap;
@@ -189,12 +193,12 @@ namespace PKServ
                         resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
                     }
 
-                    scrapCountNormal++;
+                    localScrapCountNormal++;
 
                     if (poke.valueNormal is null)
-                        moneyEarned += scrapCountNormal * globalAppSettings.ScrapSettings.ValueDefaultNormal * multiplierNormal;
+                        moneyEarned += localScrapCountNormal * globalAppSettings.ScrapSettings.ValueDefaultNormal * multiplierNormal;
                     else
-                        moneyEarned += scrapCountNormal * poke.valueNormal.Value * multiplierNormal;
+                        moneyEarned += localScrapCountNormal * poke.valueNormal.Value * multiplierNormal;
 
 
                     targetEntrie.CountNormal -= 1;
@@ -207,12 +211,12 @@ namespace PKServ
                         resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
                     }
 
-                    scrapCountNormal += targetEntrie.CountNormal - globalAppSettings.ScrapSettings.minimumToScrap;
+                    localScrapCountNormal += targetEntrie.CountNormal - globalAppSettings.ScrapSettings.minimumToScrap;
 
                     if (poke.valueNormal is null)
-                        moneyEarned += scrapCountNormal * globalAppSettings.ScrapSettings.ValueDefaultNormal * multiplierNormal;
+                        moneyEarned += localScrapCountNormal * globalAppSettings.ScrapSettings.ValueDefaultNormal * multiplierNormal;
                     else
-                        moneyEarned += scrapCountNormal * poke.valueNormal.Value * multiplierNormal;
+                        moneyEarned += localScrapCountNormal * poke.valueNormal.Value * multiplierNormal;
 
                     targetEntrie.CountNormal = globalAppSettings.ScrapSettings.minimumToScrap;
                     break;
@@ -223,12 +227,12 @@ namespace PKServ
                         resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
                     }
 
-                    scrapCountShiny++;
+                    localScrapCountShiny++;
 
                     if (poke.valueShiny is null)
-                        moneyEarned += scrapCountShiny * globalAppSettings.ScrapSettings.ValueDefaultShiny * multiplierShiny;
+                        moneyEarned += localScrapCountShiny * globalAppSettings.ScrapSettings.ValueDefaultShiny * multiplierShiny;
                     else
-                        moneyEarned += scrapCountShiny * poke.valueShiny.Value * multiplierShiny;
+                        moneyEarned += localScrapCountShiny * poke.valueShiny.Value * multiplierShiny;
 
 
                     targetEntrie.CountShiny -= 1;
@@ -241,19 +245,25 @@ namespace PKServ
                         resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
                     }
 
-                    scrapCountShiny += targetEntrie.CountShiny - globalAppSettings.ScrapSettings.minimumToScrap;
+                    localScrapCountShiny += targetEntrie.CountShiny - globalAppSettings.ScrapSettings.minimumToScrap;
 
                     if (poke.valueShiny is null)
-                        moneyEarned += scrapCountShiny * globalAppSettings.ScrapSettings.ValueDefaultShiny * multiplierShiny;
+                        moneyEarned += localScrapCountShiny * globalAppSettings.ScrapSettings.ValueDefaultShiny * multiplierShiny;
                     else
-                        moneyEarned += scrapCountShiny * poke.valueShiny.Value * multiplierShiny;
+                        moneyEarned += localScrapCountShiny * poke.valueShiny.Value * multiplierShiny;
 
                     targetEntrie.CountShiny = globalAppSettings.ScrapSettings.minimumToScrap;
                     break;
+
+
             }
 
             // valider le modification en base de donnée (sans créer de nouvelle ligne)
             targetEntrie.Validate(NewLine: false);
+
+            scrapCountNormal += localScrapCountNormal;
+            scrapCountShiny += localScrapCountShiny;
+
             #endregion Work
         }
 

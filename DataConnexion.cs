@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 
-namespace PKServ
+namespace PKServ.Configuration
 {
     public class DataConnexion
     {
@@ -365,7 +365,7 @@ VALUES ('SQLVersion', '1');";
 
         public int GetDataUserStats_BallLaunched(string pseudo, string platform)
         {
-            using (var connection = new SqliteConnection($"Data Source={this.dataFilePath}"))
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
             {
                 connection.Open();
 
@@ -400,7 +400,7 @@ VALUES ('SQLVersion', '1');";
 
         public int GetDataUserStats_MoneySpent(string pseudo, string platform)
         {
-            using (var connection = new SqliteConnection($"Data Source={this.dataFilePath}"))
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
             {
                 connection.Open();
 
@@ -437,7 +437,7 @@ VALUES ('SQLVersion', '1');";
         {
             string info = shiny ? "pokeReceived_shiny" : "pokeReceived_normal";
 
-            using (var connection = new SqliteConnection($"Data Source={this.dataFilePath}"))
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
             {
                 connection.Open();
 
@@ -473,7 +473,7 @@ VALUES ('SQLVersion', '1');";
         {
             string info = shiny ? "pokeScrapped_shiny" : "pokeScrapped_normal";
 
-            using (var connection = new SqliteConnection($"Data Source={this.dataFilePath}"))
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
             {
                 connection.Open();
 
@@ -509,7 +509,7 @@ VALUES ('SQLVersion', '1');";
         {
             string info = "customMoney";
 
-            using (var connection = new SqliteConnection($"Data Source={this.dataFilePath}"))
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
             {
                 connection.Open();
 
@@ -547,7 +547,7 @@ VALUES ('SQLVersion', '1');";
             string platform = item.Platform;
             string codeUser = item.Code_user;
             string pseudo = null;
-            using (var connection = new SqliteConnection($"Data Source={this.dataFilePath}"))
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
             {
                 connection.Open();
                 string query = @"
@@ -577,7 +577,7 @@ VALUES ('SQLVersion', '1');";
             string platform = item.Platform;
             string pseudo = item.Pseudo;
             string codeUser = null;
-            using (var connection = new SqliteConnection($"Data Source={this.dataFilePath}"))
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
             {
                 connection.Open();
                 string query = @"
@@ -606,7 +606,7 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
             string pseudo = item.Pseudo;
             string codeUser = item.Code_user;
 
-            using (var connection = new SqliteConnection($"Data Source={this.dataFilePath}"))
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
             {
                 connection.Open();
                 string query = @"
@@ -636,7 +636,7 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
             string codeUser = user.Code_user ?? "unset";
             string platform = user.Platform;
 
-            using (var connection = new SqliteConnection($"Data Source={this.dataFilePath}"))
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
             {
                 connection.Open();
                 string query = @"
@@ -666,7 +666,7 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
             string codeUser = user.Code_user ?? "unset";
             string platform = user.Platform;
 
-            using (var connection = new SqliteConnection($"Data Source={this.dataFilePath}"))
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
             {
                 connection.Open();
                 string query = @"
@@ -697,7 +697,7 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
             string platform = entrie.Platform;
             string pokeName = entrie.PokeName;
 
-            using (var connection = new SqliteConnection($"Data Source={this.dataFilePath}"))
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
             {
                 connection.Open();
                 string query = @"

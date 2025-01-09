@@ -45,6 +45,6 @@ namespace PKServ
         public bool Locked { get; set; }
         public string Group { get; set; } = "Main"; // les badges seront triés par groupes à l'affichage
         public string SubGroup { get; set; } = "Common"; // les badges seront triés par sous groupes au sein d'un groupe
-        public bool Obtained { get; set; } = false; 
+        public bool Obtained { get; set; } = false;
     }
 }

@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+using PKServ.Configuration;
 
 namespace PKServ
 {
     internal class AccountTransfert
     {
         // compte qui va perdre toutes ses données
-        public User AccountToDelete {  get; set; }
+        public User AccountToDelete { get; set; }
         // compte qui va recevoir toutes les données
         public User AccountTarget { get; set; }
         public bool ChangeUsercode { get; set; } = true;
         public DataConnexion DataConnexion { get; set; }
-        
+
 
         public AccountTransfert(User accountToDelete, User accountTarget, DataConnexion dataConnexion, bool changeCode)
         {

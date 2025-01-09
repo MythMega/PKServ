@@ -42,7 +42,7 @@
         /// <param name="alreadyCaughtAdditionalRate">0 by default</param>
         public Pokeball(string name, int catchrate, string rewardSource, int shinyrate = 3, int nightAdditionalRate = 0, int alreadyCaughtAdditionalRate = 0, int dexRelativeBonusCatchrate = 0, int dexRelativeBonusShinyrate = 0)
         {
-            this.Name = name;
+            Name = name;
             this.rewardSource = rewardSource;
             this.catchrate = catchrate;
             this.shinyrate = shinyrate;

@@ -29,9 +29,9 @@
         /// </summary>
         public string effect;
 
-        public string? ballName;
+        public string ballName;
 
-        public Trigger(string name, string description, string type, string effect, string? ballName)
+        public Trigger(string name, string description, string type, string effect, string ballName)
         {
             this.name = name;
             this.description = description;

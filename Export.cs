@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -19,7 +20,7 @@ namespace PKServ
 
         public async Task<string> UploadFileAsync()
         {
-            string filepath = Path.Combine("ExportsSimple", this.filename);
+            string filepath = Path.Combine("ExportsSimple", filename);
             using (var client = new HttpClient())
             {
                 using (var content = new MultipartFormDataContent())
@@ -34,9 +35,9 @@ namespace PKServ
                         if (response.IsSuccessStatusCode)
                         {
                             string responseContent = await response.Content.ReadAsStringAsync();
-                            var jsonResponse = System.Text.Json.JsonDocument.Parse(responseContent);
-                            this.url = jsonResponse.RootElement.GetProperty("link").GetString();
-                            return this.url;
+                            var jsonResponse = JsonDocument.Parse(responseContent);
+                            url = jsonResponse.RootElement.GetProperty("link").GetString();
+                            return url;
                         }
                         else
                         {
@@ -94,11 +95,11 @@ namespace PKServ
         /// </summary>
         public void BuildRapport()
         {
-            this.filename = $"Dex_{userRequest.UserName}_export_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.html";
+            filename = $"Dex_{userRequest.UserName}_export_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.html";
 
             List<string> lineTables = getLineTables();
 
-            this.fileContent = $@"
+            fileContent = $@"
 <!DOCTYPE html>
 <html lang=""en"">
 <head>
@@ -199,9 +200,9 @@ namespace PKServ
         </thead>
         <tbody>";
 
-            lineTables.ForEach(line => this.fileContent += line);
+            lineTables.ForEach(line => fileContent += line);
 
-            this.fileContent += @$"</tbody>
+            fileContent += @$"</tbody>
     </table>
 <br><br>
 <p>Stats :</p><br>
@@ -272,8 +273,8 @@ namespace PKServ
 
             if (utilisateurs.Count > 2)
             {
-                classementLanceurDeBall = $"Classement ball lancées :\nTOP 1 - {utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[0].Pseudo} ({this.getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[0].Stats.ballLaunched)})\n    2 - {utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[1].Pseudo} ({this.getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[1].Stats.ballLaunched)})\n    3 - {utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[2].Pseudo} ({this.getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[2].Stats.ballLaunched)})\n";
-                classementDepenseur = $"Classement money lancées :\nTOP 1 - {utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[0].Pseudo} ({this.getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[0].Stats.moneySpent)})\n    2 - {utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[1].Pseudo} ({this.getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[1].Stats.moneySpent)})\n    3 - {utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[2].Pseudo} ({this.getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[2].Stats.moneySpent)})\n";
+                classementLanceurDeBall = $"Classement ball lancées :\nTOP 1 - {utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[0].Pseudo} ({getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[0].Stats.ballLaunched)})\n    2 - {utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[1].Pseudo} ({getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[1].Stats.ballLaunched)})\n    3 - {utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[2].Pseudo} ({getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[2].Stats.ballLaunched)})\n";
+                classementDepenseur = $"Classement money lancées :\nTOP 1 - {utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[0].Pseudo} ({getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[0].Stats.moneySpent)})\n    2 - {utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[1].Pseudo} ({getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[1].Stats.moneySpent)})\n    3 - {utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[2].Pseudo} ({getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[2].Stats.moneySpent)})\n";
 
                 var top1shinydex = utilisateurs.OrderByDescending(u => dataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).Where(w => w.CountShiny > 0).ToList().Count).ToList()[0];
                 var top2shinydex = utilisateurs.OrderByDescending(u => dataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).Where(w => w.CountShiny > 0).ToList().Count).ToList()[1];
@@ -370,16 +371,16 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
     <h1 class=""mt-5"">Stats globales de la chaîne</h1>
   <div class=""row"">
     <div class=""col-lg-12 col-md-6"">
-      <p>Nombre total pokeball lancées : {this.getStringNumber(NombreTotalPokeball)}</p>
+      <p>Nombre total pokeball lancées : {getStringNumber(NombreTotalPokeball)}</p>
     </div>
     <div class=""col-lg-12 col-md-6"">
-      <p>Money totale dépensée : {this.getStringNumber(NombreTotalSousouDepense)}</p>
+      <p>Money totale dépensée : {getStringNumber(NombreTotalSousouDepense)}</p>
     </div>
     <div class=""col-lg-12 col-md-6"">
-      <p>Nombre total de poké capturés : {this.getStringNumber(NombreTotalPokecapture)}, hors giveaway : {this.getStringNumber(NombreTotalPokecapture - nombreNormalDistribue)}</p>
+      <p>Nombre total de poké capturés : {getStringNumber(NombreTotalPokecapture)}, hors giveaway : {getStringNumber(NombreTotalPokecapture - nombreNormalDistribue)}</p>
     </div>
     <div class=""col-lg-12 col-md-6"">
-      <p>Nombre total de shiny capturés : {this.getStringNumber(NombreTotalShinycapture)}, hors giveaway : {this.getStringNumber(NombreTotalShinycapture - nombreShinyDistribue)}</p>
+      <p>Nombre total de shiny capturés : {getStringNumber(NombreTotalShinycapture)}, hors giveaway : {getStringNumber(NombreTotalShinycapture - nombreShinyDistribue)}</p>
     </div>
   </div>
     <h1 class=""mt-5"">Stats classement</h1>
@@ -471,7 +472,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 ";
 
             all_content += "<center>\n\n<br><br><br><h1> Top 10 ball : </h1><br>\n";
-            top10ball.ForEach(a => all_content += $"<p>{top10ball.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {this.getStringNumber(a.Stats.ballLaunched)} </p>\r");
+            top10ball.ForEach(a => all_content += $"<p>{top10ball.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {getStringNumber(a.Stats.ballLaunched)} </p>\r");
 
             value_youtube = users.Where(u => u.Platform == "youtube").Sum(x => x.Stats.ballLaunched); value_twitch = users.Where(u => u.Platform == "twitch").Sum(x => x.Stats.ballLaunched); value_tiktok = users.Where(u => u.Platform == "tiktok").Sum(x => x.Stats.ballLaunched);
             value_max = value_youtube + value_twitch + value_tiktok; int percent_twitch = (int)Math.Round((double)(100 * value_twitch) / value_max); int percent_youtube = (int)Math.Round((double)(100 * value_youtube) / value_max); int percent_tiktok = (int)Math.Round((double)(100 * value_tiktok) / value_max);
@@ -484,7 +485,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 </div><br><br><br>";
 
             all_content += "\n\n\n<br><br><br><h1> Top 10 money : </h1><br>\n";
-            top10money.ForEach(a => all_content += $"<p>{top10money.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {this.getStringNumber(a.Stats.moneySpent)} </p>\r");
+            top10money.ForEach(a => all_content += $"<p>{top10money.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {getStringNumber(a.Stats.moneySpent)} </p>\r");
 
             value_youtube = users.Where(u => u.Platform == "youtube").Sum(x => x.Stats.moneySpent); value_twitch = users.Where(u => u.Platform == "twitch").Sum(x => x.Stats.moneySpent); value_tiktok = users.Where(u => u.Platform == "tiktok").Sum(x => x.Stats.moneySpent);
             value_max = value_youtube + value_twitch + value_tiktok; percent_twitch = (int)Math.Round((double)(100 * value_twitch) / value_max); percent_youtube = (int)Math.Round((double)(100 * value_youtube) / value_max); percent_tiktok = (int)Math.Round((double)(100 * value_tiktok) / value_max);
@@ -497,7 +498,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 </div><br><br><br>";
 
             all_content += "\n\n\n<br><br><br><h1> Top 10 Dex : </h1><br>\n";
-            top10Dex.ForEach(a => all_content += $"<p>{top10Dex.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {this.getStringNumber(a.Stats.dexCount)} </p>\r");
+            top10Dex.ForEach(a => all_content += $"<p>{top10Dex.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {getStringNumber(a.Stats.dexCount)} </p>\r");
 
             value_youtube = users.Where(u => u.Platform == "youtube").Sum(x => x.Stats.dexCount); value_twitch = users.Where(u => u.Platform == "twitch").Sum(x => x.Stats.dexCount); value_tiktok = users.Where(u => u.Platform == "tiktok").Sum(x => x.Stats.dexCount);
             value_max = value_youtube + value_twitch + value_tiktok; percent_twitch = (int)Math.Round((double)(100 * value_twitch) / value_max); percent_youtube = (int)Math.Round((double)(100 * value_youtube) / value_max); percent_tiktok = (int)Math.Round((double)(100 * value_tiktok) / value_max);
@@ -510,7 +511,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 </div><br><br><br>";
 
             all_content += "\n\n\n<br><br><br><h1> Top 10 shiny Dex : </h1><br>\n";
-            top10shinyDex.ForEach(a => all_content += $"<p>{top10shinyDex.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {this.getStringNumber(a.Stats.shinydex)} </p>\r");
+            top10shinyDex.ForEach(a => all_content += $"<p>{top10shinyDex.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {getStringNumber(a.Stats.shinydex)} </p>\r");
 
             value_youtube = users.Where(u => u.Platform == "youtube").Sum(x => x.Stats.shinydex); value_twitch = users.Where(u => u.Platform == "twitch").Sum(x => x.Stats.shinydex); value_tiktok = users.Where(u => u.Platform == "tiktok").Sum(x => x.Stats.shinydex);
             value_max = value_youtube + value_twitch + value_tiktok; percent_twitch = (int)Math.Round((double)(100 * value_twitch) / value_max); percent_youtube = (int)Math.Round((double)(100 * value_youtube) / value_max); percent_tiktok = (int)Math.Round((double)(100 * value_tiktok) / value_max);
@@ -523,7 +524,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 </div><br><br><br>";
 
             all_content += "\n\n\n<br><br><br><h1> Top 10 caught : </h1><br>\n";
-            top10caught.ForEach(a => all_content += $"<p>{top10caught.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {this.getStringNumber(a.Stats.pokeCaught)} </p>\r");
+            top10caught.ForEach(a => all_content += $"<p>{top10caught.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {getStringNumber(a.Stats.pokeCaught)} </p>\r");
 
             value_youtube = users.Where(u => u.Platform == "youtube").Sum(x => x.Stats.pokeCaught); value_twitch = users.Where(u => u.Platform == "twitch").Sum(x => x.Stats.pokeCaught); value_tiktok = users.Where(u => u.Platform == "tiktok").Sum(x => x.Stats.pokeCaught);
             value_max = value_youtube + value_twitch + value_tiktok; percent_twitch = (int)Math.Round((double)(100 * value_twitch) / value_max); percent_youtube = (int)Math.Round((double)(100 * value_youtube) / value_max); percent_tiktok = (int)Math.Round((double)(100 * value_tiktok) / value_max);
@@ -536,7 +537,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 </div><br><br><br>";
 
             all_content += "\n\n\n<br><br><br><h1> Top 10 shiny caught : </h1><br>\n";
-            top10shinycaught.ForEach(a => all_content += $"<p>{top10shinycaught.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {this.getStringNumber(a.Stats.shinyCaught)} </p>\r");
+            top10shinycaught.ForEach(a => all_content += $"<p>{top10shinycaught.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {getStringNumber(a.Stats.shinyCaught)} </p>\r");
 
             value_youtube = users.Where(u => u.Platform == "youtube").Sum(x => x.Stats.shinyCaught); value_twitch = users.Where(u => u.Platform == "twitch").Sum(x => x.Stats.shinyCaught); value_tiktok = users.Where(u => u.Platform == "tiktok").Sum(x => x.Stats.shinyCaught);
             value_max = value_youtube + value_twitch + value_tiktok; percent_twitch = (int)Math.Round((double)(100 * value_twitch) / value_max); percent_youtube = (int)Math.Round((double)(100 * value_youtube) / value_max); percent_tiktok = (int)Math.Round((double)(100 * value_tiktok) / value_max);
@@ -560,7 +561,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             fileContent = all_content;
             filename = "pokestats.html";
 
-            this.ExportFile(true, true).Wait();
+            ExportFile(true, true).Wait();
         }
     }
 
@@ -581,8 +582,8 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 
         public string GenerateFile()
         {
-            this.BuildRapport();
-            this.ExportFile(true, true).Wait();
+            BuildRapport();
+            ExportFile(true, true).Wait();
             return filename;
         }
 
@@ -655,7 +656,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             }
             else if (poke.isLock)
             {
-                return "only under distribution.";
+                return "only under distribution / events.";
             }
             else
             {
@@ -670,7 +671,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         {
             List<string> lineTables = getLineTables();
 
-            this.fileContent = $@"
+            fileContent = $@"
 <!DOCTYPE html>
 <html lang=""en"">
 <head>
@@ -738,9 +739,9 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         </thead>
         <tbody>";
 
-            lineTables.ForEach(line => this.fileContent += line);
+            lineTables.ForEach(line => fileContent += line);
 
-            this.fileContent += @$"</tbody>
+            fileContent += @$"</tbody>
     </table>
 <br><br>
     <!-- Bootstrap JS, Popper.js, and jQuery -->
@@ -769,9 +770,9 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             this.userRequest = userRequest;
             this.dataConnexion = dataConnexion;
             this.globalAppSettings = globalAppSettings;
-            this.filename = "";
-            this.url = "";
-            this.fileContent = "trick";
+            filename = "";
+            url = "";
+            fileContent = "trick";
             dateExport = DateTime.Now;
         }
 
@@ -785,7 +786,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         public async Task ExportFile(bool fullExport = false, bool main = false)
         {
 
-            this.filename = CleanFileName(this.filename);
+            filename = CleanFileName(filename);
 
 
             // Crée le dossier "Exports" s'il n'existe pas
@@ -816,19 +817,19 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             }
 
             // Chemin complet du fichier
-            string filePath = Path.Combine("ExportsSimple", this.filename);
+            string filePath = Path.Combine("ExportsSimple", filename);
 
             if (fullExport && !main)
             {
-                filePath = Path.Combine("WebExport", userRequest.Platform, this.filename);
+                filePath = Path.Combine("WebExport", userRequest.Platform, filename);
             }
             if (fullExport && main)
             {
-                filePath = Path.Combine("WebExport", this.filename);
+                filePath = Path.Combine("WebExport", filename);
             }
 
             // Écrit le contenu dans le fichier
-            await System.IO.File.WriteAllTextAsync(filePath.ToLower(), this.fileContent);
+            await File.WriteAllTextAsync(filePath.ToLower(), fileContent);
         }
 
         public string GetUserStats()
@@ -838,10 +839,10 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             User utilisateur = new User(userRequest.UserName, userRequest.Platform, userRequest.UserCode, dataConnexion);
 
             data += $"<p>Nombre d'espèce enregistrée : {utilisateur.Stats.dexCount} / {appSettings.pokemons.Count}</p>";
-            float dexProgressPourcent = (utilisateur.Stats.dexCount * 100) / appSettings.pokemons.Count;
+            float dexProgressPourcent = utilisateur.Stats.dexCount * 100 / appSettings.pokemons.Count;
             data += $"<div class=\"progress\">\r\n  <div class=\"progress-bar\" role=\"progressbar\" style=\"width: {dexProgressPourcent}%;\" aria-valuenow=\"{dexProgressPourcent}\" aria-valuemin=\"0\" aria-valuemax=\"100\">{dexProgressPourcent}%</div>\r\n</div>";
             data += $"<p>Nombre d'espèce shiny enregistrée : {utilisateur.Stats.shinydex}</p>";
-            float dexShinyPourcent = (utilisateur.Stats.shinydex * 100) / appSettings.pokemons.Count;
+            float dexShinyPourcent = utilisateur.Stats.shinydex * 100 / appSettings.pokemons.Count;
             data += $"<div class=\"progress\">\r\n  <div class=\"progress-bar\" role=\"progressbar\" style=\"width: {dexShinyPourcent}%;\" aria-valuenow=\"{dexShinyPourcent}\" aria-valuemin=\"0\" aria-valuemax=\"100\">{dexShinyPourcent}%</div>\r\n</div>";
             data += "<br>";
 
@@ -849,9 +850,9 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             data += $"<p>Total de ball lancées : {utilisateur.Stats.ballLaunched}</p>";
             data += "<br>";
 
-            data += $"<p>Nombre de pokémon non shiny capturé : {utilisateur.Stats.normalCaught-utilisateur.Stats.giveawayNormal}</p>";
+            data += $"<p>Nombre de pokémon non shiny capturé : {utilisateur.Stats.normalCaught - utilisateur.Stats.giveawayNormal}</p>";
             data += $"<p>Nombre de pokémon shiny capturé : {utilisateur.Stats.shinyCaught - utilisateur.Stats.giveawayShiny}</p>";
-            data += $"<p>Total de pokémon attrapé : {utilisateur.Stats.pokeCaught - (utilisateur.Stats.giveawayNormal+utilisateur.Stats.giveawayShiny)}</p>";
+            data += $"<p>Total de pokémon attrapé : {utilisateur.Stats.pokeCaught - (utilisateur.Stats.giveawayNormal + utilisateur.Stats.giveawayShiny)}</p>";
             data += $"<p>Pokémon le plus attrapé : {utilisateur.Stats.favoritePoke}</p>";
             TimeSpan diff = DateTime.Now - utilisateur.Stats.firstCatch;
             data += $"<p>Dresseur depuis : {utilisateur.Stats.firstCatch} (depuis {diff.Days} jours.)</p>";
@@ -885,8 +886,8 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                         foreach (Badge badge in badgeOfThisSubgroup)
                         {
                             wip = badge.Obtained ? badge.Description : "????";
-                        wip += $" [+{badge.XP}XP]";
-                        data += $@"
+                            wip += $" [+{badge.XP}XP]";
+                            data += $@"
                             <div style=""width: 29vw;  margin-left: 1vw; margin-bottom: 15px;"">
                                 <div class=""card {badge.Rarity}"" style=""background-color: #222222;  height: 220px;"">
                                   <center><br><img src=""{badge.IconUrl}"" class=""card-img-top trophy-{badge.Obtained}"" alt=""..."" style=""height: 96px; width: auto;""></center>
@@ -908,7 +909,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             {
 
             }
-            
+
 
             return data;
         }
@@ -925,12 +926,12 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             else if (ballLaunched < 1000000)
             {
                 rounded = ballLaunched;
-                result = $"{Math.Round((rounded / 1000), 2)}K";
+                result = $"{Math.Round(rounded / 1000, 2)}K";
             }
             else
             {
                 rounded = ballLaunched;
-                result = $"{Math.Round((rounded / 1000000), 2)}M";
+                result = $"{Math.Round(rounded / 1000000, 2)}M";
             }
             return result;
         }

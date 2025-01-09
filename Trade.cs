@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -17,7 +18,7 @@ namespace PKServ
             this.trader2 = trader2;
             this.pokemon1 = pokemon1;
             this.pokemon2 = pokemon2;
-            this.cnx = new DataConnexion();
+            cnx = new DataConnexion();
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using PKServ.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,7 @@ namespace PKServ
     public class Entrie
     {
         public int id;
-        public string? code;
+        public string code;
         public string Pseudo;
         public string Stream;
         public string Platform;
@@ -27,10 +28,10 @@ namespace PKServ
             this.Stream = Stream;
             this.Platform = Platform;
             this.PokeName = PokeName;
-            this.CountNormal = Normal;
-            this.CountShiny = Shiny;
-            this.dateLastCatch = lastcatch;
-            this.dateFirstCatch = firstcatch;
+            CountNormal = Normal;
+            CountShiny = Shiny;
+            dateLastCatch = lastcatch;
+            dateFirstCatch = firstcatch;
             this.code = code;
         }
 
@@ -40,34 +41,34 @@ namespace PKServ
             this.Stream = Stream;
             this.Platform = Platform;
             this.PokeName = PokeName;
-            this.CountNormal = 0;
-            this.CountShiny = 0;
-            this.dateLastCatch = DateTime.Now;
-            this.dateFirstCatch = DateTime.Now;
+            CountNormal = 0;
+            CountShiny = 0;
+            dateLastCatch = DateTime.Now;
+            dateFirstCatch = DateTime.Now;
         }
 
         public void PreValidate(DataConnexion cnx)
         {
-            this.Validate(NeedNewLine(cnx));
+            Validate(NeedNewLine(cnx));
         }
 
         public bool NeedNewLine(DataConnexion cnx)
         {
-            List<Entrie> entriesByPseudo = cnx.GetEntriesByPseudo(this.Pseudo, this.Platform);
-            return !entriesByPseudo.Where(x => x.PokeName == this.PokeName).Any();
+            List<Entrie> entriesByPseudo = cnx.GetEntriesByPseudo(Pseudo, Platform);
+            return !entriesByPseudo.Where(x => x.PokeName == PokeName).Any();
         }
 
         internal void Validate(bool NewLine)
         {
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "database.sqlite");
 
-            if(this.code is null || this.code == "unset" || this.code == "unset in UserRequest")
+            if (code is null || code == "unset" || code == "unset in UserRequest")
             {
                 try
                 {
-                    this.code = new DataConnexion().GetCodeUserByPlatformPseudo(new User { Pseudo = this.Pseudo, Platform = this.Platform });
+                    code = new DataConnexion().GetCodeUserByPlatformPseudo(new User { Pseudo = Pseudo, Platform = Platform });
                 }
-                catch(Exception e) { Console.WriteLine("Cannot create code user - " + e.Message); }
+                catch (Exception e) { Console.WriteLine("Cannot create code user - " + e.Message); }
             }
 
             using (SqliteConnection connection = new SqliteConnection($"Data Source={path}"))
@@ -100,21 +101,21 @@ namespace PKServ
                 {
                     if (!NewLine)
                     {
-                        command.Parameters.AddWithValue("@Id", this.id);
+                        command.Parameters.AddWithValue("@Id", id);
                     }
 
-                    command.Parameters.AddWithValue("@Pseudo", this.Pseudo);
-                    command.Parameters.AddWithValue("@CODE_USER", this.code); // Ajout de la colonne CODE_USER avec valeur par défaut
-                    command.Parameters.AddWithValue("@Stream", this.Stream);
-                    command.Parameters.AddWithValue("@Platform", this.Platform);
-                    command.Parameters.AddWithValue("@PokeName", this.PokeName);
-                    command.Parameters.AddWithValue("@CountNormal", this.CountNormal);
-                    command.Parameters.AddWithValue("@CountShiny", this.CountShiny);
-                    command.Parameters.AddWithValue("@DataLastCatch", this.dateLastCatch);
+                    command.Parameters.AddWithValue("@Pseudo", Pseudo);
+                    command.Parameters.AddWithValue("@CODE_USER", code); // Ajout de la colonne CODE_USER avec valeur par défaut
+                    command.Parameters.AddWithValue("@Stream", Stream);
+                    command.Parameters.AddWithValue("@Platform", Platform);
+                    command.Parameters.AddWithValue("@PokeName", PokeName);
+                    command.Parameters.AddWithValue("@CountNormal", CountNormal);
+                    command.Parameters.AddWithValue("@CountShiny", CountShiny);
+                    command.Parameters.AddWithValue("@DataLastCatch", dateLastCatch);
 
                     if (NewLine)
                     {
-                        command.Parameters.AddWithValue("@DataFirstCatch", this.dateFirstCatch);
+                        command.Parameters.AddWithValue("@DataFirstCatch", dateFirstCatch);
                     }
 
                     command.ExecuteNonQuery();
@@ -124,7 +125,7 @@ namespace PKServ
 
         internal void setIDPoke(AppSettings appSettings)
         {
-            this.entryPokeID = appSettings.GetIdPokeByName(this.PokeName);
+            entryPokeID = appSettings.GetIdPokeByName(PokeName);
         }
 
         internal void DeleteEntrie()

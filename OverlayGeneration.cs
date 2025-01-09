@@ -2,51 +2,83 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using PKServ.Configuration;
 
 namespace PKServ
 {
-    public class CustomOverlay(string filename, string content, DateTime startTime) : Overlay(filename, content)
+    public class CustomOverlay()
     {
-        private readonly DataConnexion data;
-        private readonly AppSettings settings;
-        private readonly GlobalAppSettings globalAppSettings;
-        private readonly List<User> usersHere;
-        private Dictionary<string, string> textVariables = new Dictionary<string, string>{ };
-        public void BuildOverlay()
+        private DataConnexion data;
+        private AppSettings settings;
+        private GlobalAppSettings globalAppSettings;
+        private List<User> usersHere;
+        private DateTime startTime = DateTime.Now;
+        private readonly string folderLocation = "StreamOverlays";
+        private Dictionary<string, string> textVariables = [];
+        public string Filename { get; set; }
+        public string Content { get; set; }
+
+
+        public void SetEnv(DataConnexion data, AppSettings settings, GlobalAppSettings globalAppSettings, List<User> users)
         {
-            filename = "custom_" + filename;
+            this.data = data;
+            this.settings = settings;
+            this.globalAppSettings = globalAppSettings;
+            usersHere = users;
 
-            // required var
-            var data_newTrainer = data.GetAllUserPlatforms().Where(user => user.Stats.firstCatch > startTime).ToList();
+        }
 
-            textVariables = new Dictionary<string, string>
+        public void BuildOverlay(bool firstLaunch)
+        {
+            try
             {
-                { "$userCount", usersHere.Count.ToString()},
-                { "$allPokemonCount", settings.pokemons.Count.ToString()},
-                { "$allPokemonCustomCount", settings.pokemons.Where(x => x.isCustom).Count().ToString()},
-                { "$allPokemonLegendaryCount", settings.pokemons.Where(x => x.isLegendary).Count().ToString()},
-                { "$allBadgesCount", settings.badges.Count.ToString()},
-                { "$sessionCatchCount", settings.catchHistory.Count.ToString()},
-                { "$lastCatchTrainerPseudo", settings.catchHistory.Last().User.Pseudo},
-                { "$lastCatchTrainerPlatform", settings.catchHistory.Last().User.Platform},
-                { "$lastCatchPokemonCaughtNameEN", settings.catchHistory.Last().Pokemon.Name_EN},
-                { "$lastCatchPokemonCaughtNameFR", settings.catchHistory.Last().Pokemon.Name_FR},
-                { "$lastCatchPokemonCaughtIsShiny", settings.catchHistory.Last().shiny ? "shiny" : "normal"},
-                { "$lastCatchPokeballUsedName", settings.catchHistory.Last().Ball.Name},
-                { "$lastCatchPokeballUsedCatchRate", settings.catchHistory.Last().Ball.catchrate.ToString()},
-                { "$lastCatchPokeballUsedShinyRate", settings.catchHistory.Last().Ball.shinyrate.ToString()},
-                { "$lastCatchDateTime", settings.catchHistory.Last().time.ToString("G")},
-                { "$lastCatchTime", settings.catchHistory.Last().time.ToString("t")},
-                { "$lastCatchDate", settings.catchHistory.Last().time.ToString("d")},
-                { "$sessionNewTrainerCount", data_newTrainer.Count.ToString() },
-                { "$sessionNewTrainerLastName", data_newTrainer.Last().Pseudo },
-                { "$sessionNewTrainerLastName", data_newTrainer.Last().Platform },
-            };
+                // required var
+                var data_newTrainer = data.GetAllUserPlatforms().Where(user => user.Stats.firstCatch > startTime).ToList();
+                List<Entrie> allentries = data.GetAllEntries();
 
-            foreach(string key in textVariables.Keys)
-            {
-                content.Replace(key, textVariables[key]);
+                textVariables = new Dictionary<string, string>
+                {
+                    { "$userCount", usersHere.Count.ToString()},
+                    { "$allPokemonCount", settings.pokemons.Count.ToString()},
+                    { "$allPokemonCustomCount", settings.pokemons.Where(x => x.isCustom).Count().ToString()},
+                    { "$allPokemonLegendaryCount", settings.pokemons.Where(x => x.isLegendary).Count().ToString()},
+                    { "$allBadgesCount", settings.badges.Count.ToString()},
+                    { "$sessionCatchCount", settings.catchHistory.Count.ToString()},
+                    { "$lastCatchTrainerPseudo", settings.catchHistory.Last().User.Pseudo},
+                    { "$lastCatchTrainerPlatform", settings.catchHistory.Last().User.Platform},
+                    { "$lastCatchPokemonCaughtNameEN", settings.catchHistory.Last().Pokemon.Name_EN},
+                    { "$lastCatchPokemonCaughtNameFR", settings.catchHistory.Last().Pokemon.Name_FR},
+                    { "$lastCatchPokemonCaughtIsShiny", settings.catchHistory.Last().shiny ? "shiny" : "normal"},
+                    { "$lastCatchPokeballUsedName", settings.catchHistory.Last().Ball.Name},
+                    { "$lastCatchPokeballUsedCatchRate", settings.catchHistory.Last().Ball.catchrate.ToString()},
+                    { "$lastCatchPokeballUsedShinyRate", settings.catchHistory.Last().Ball.shinyrate.ToString()},
+                    { "$lastCatchDateTime", settings.catchHistory.Last().time.ToString("G")},
+                    { "$lastCatchTime", settings.catchHistory.Last().time.ToString("t")},
+                    { "$lastCatchDate", settings.catchHistory.Last().time.ToString("d")},
+                    { "$sessionNewTrainerCount", data_newTrainer.Count.ToString() },
+                    { "$sessionNewTrainerLastName", data_newTrainer.Last().Pseudo },
+                    { "$sessionNewTrainerLastPlatform", data_newTrainer.Last().Platform },
+                };
+
+                foreach (string key in textVariables.Keys)
+                {
+                    Content = Content.Replace(key, textVariables[key]);
+                }
+
+                WriteFile();
             }
+            catch(Exception e)
+            {
+                if(!firstLaunch)
+                {
+                    Console.WriteLine(Filename + " not yet generated.");
+                }
+            }
+        }
+        public void WriteFile()
+        {
+            // Écrit le contenu de chaque overlay dans un fichier pour chaque
+            File.WriteAllText(Path.Combine(folderLocation, Filename), Content);
         }
     }
     public class Overlay
@@ -79,7 +111,7 @@ namespace PKServ
             this.globalAppSettings = globalAppSettings;
             this.usersHere = usersHere;
 
-            this.lastUpdateTime = DateTime.Now;
+            lastUpdateTime = DateTime.Now;
             folderLocation = "StreamOverlays";
         }
 
@@ -1161,7 +1193,7 @@ namespace PKServ
             // Écrit le contenu de chaque overlay dans un fichier pour chaque
             foreach (string item in files.Keys)
             {
-                System.IO.File.WriteAllText(Path.Combine(folderLocation, item), files[item]);
+                File.WriteAllText(Path.Combine(folderLocation, item), files[item]);
             }
         }
 
@@ -1173,7 +1205,7 @@ namespace PKServ
             // texts
 
             // everyonehere
-            files["everyonehere.count.txt"] = (usersHere.Count -1).ToString();
+            files["everyonehere.count.txt"] = (usersHere.Count - 1).ToString();
             files["everyonehere.lastJoined.txt"] = usersHere.Last().ToString();
 
             // this session

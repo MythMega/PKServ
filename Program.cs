@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -50,12 +51,15 @@ namespace PKServ
             settings.pokeballs.AddRange(JsonSerializer.Deserialize<List<Pokeball>>(File.ReadAllText("./balls.json"), options));
             settings.triggers.AddRange(JsonSerializer.Deserialize<List<Trigger>>(File.ReadAllText("./Triggers.json"), options));
             settings.badges.AddRange(JsonSerializer.Deserialize<List<Badge>>(File.ReadAllText("./badges.json"), options).Where(x => !x.Locked).ToList());
+            settings.customOverlays.AddRange(JsonSerializer.Deserialize<List<CustomOverlay>>(File.ReadAllText("./customOverlays.json"), options));
+            settings.customOverlays.ForEach(overlay => { overlay.SetEnv(data, settings, globalAppSettings, usersHere); overlay.BuildOverlay(true); });
             OverlayGeneration overlays = new OverlayGeneration(data, settings, globalAppSettings, usersHere);
             Logger($"yellow#{globalAppSettings.Texts.serverStarted}");
             Logger($"white#Nombre de pokémon chargé : |red#{settings.pokemons.Count}");
             Logger($"white#Nombre de pokeball chargé : |red#{settings.pokeballs.Count}");
             Logger($"white#Nombre de triggers chargé : |red#{settings.triggers.Count}");
             Logger($"white#Nombre de badges chargé : |red#{settings.badges.Count}");
+            Logger($"white#Nombre de custom overlays chargé : |red#{settings.customOverlays.Count}");
             Logger($"white#Nombre d'utilisateurs chargés dans le giveaway : |red#{usersHere.Where(uh => uh.Platform != "system").Count()}");
             Logger($"aqua#Listening on port |yellow#{globalAppSettings.ServerPort}|aqua# , so send your request at |blue#http://localhost:|yellow#{globalAppSettings.ServerPort}");
             if (globalAppSettings.Log.logConsole.console)
@@ -68,10 +72,10 @@ namespace PKServ
                 Logger($"aqua#Log also on File : |yellow#{globalAppSettings.Log.logFile}");
             }
             DateTime lastExportTime = DateTime.Now;
-            generateOverlays(overlays, First:true );
+            generateOverlays(overlays, First: true);
             checkScheduledTasks(globalAppSettings, true);
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 while (true)
                 {
@@ -102,189 +106,225 @@ namespace PKServ
                                     Console.WriteLine(requestBody);
                                 }
                             }
-
-                            switch (urlPath)
+                            try
                             {
-                                case "CatchPoke":
-                                    ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
-                                    if (globalAppSettings.AutoSignInGiveAway)
-                                    {
-                                        AddToHere(new User(ctx.UserName, ctx.Platform, ctx.UserCode, data), ref usersHere, globalAppSettings);
-                                    }
-                                    responseString = CatchPoke(ctx, data, settings, globalAppSettings);
-                                    break;
+                                switch (urlPath)
+                                {
+                                    case "CatchPoke":
+                                        ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                        if (globalAppSettings.AutoSignInGiveAway)
+                                        {
+                                            AddToHere(new User(ctx.UserName, ctx.Platform, ctx.UserCode, data), ref usersHere, globalAppSettings);
+                                        }
+                                        responseString = CatchPoke(ctx, data, settings, globalAppSettings);
+                                        break;
 
-                                case "SignIn":
-                                    ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
-                                    User a = JsonSerializer.Deserialize<User>(requestBody, options);
-                                    User user = new User
-                                    {
-                                        Code_user = ctx.UserCode,
-                                        Pseudo = a.Pseudo,
-                                        Platform = a.Platform
-                                    };
-                                    responseString = SignIn(user, data, ref usersHere);
-                                    break;
+                                    case "SignIn":
+                                        ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                        User a = JsonSerializer.Deserialize<User>(requestBody, options);
+                                        User user = new User
+                                        {
+                                            Code_user = ctx.UserCode,
+                                            Pseudo = a.Pseudo,
+                                            Platform = a.Platform
+                                        };
+                                        responseString = SignIn(user, data, ref usersHere);
+                                        break;
 
-                                case "GenerateDexSolo":
-                                    ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
-                                    if (globalAppSettings.AutoSignInGiveAway)
-                                    {
-                                        AddToHere(new User(ctx.UserName, ctx.Platform, ctx.UserCode, data), ref usersHere, globalAppSettings);
-                                    }
-                                    responseString = GenerateDexSolo(ctx, data, settings, globalAppSettings);
-                                    break;
+                                    case "GenerateDexSolo":
+                                        ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                        if (globalAppSettings.AutoSignInGiveAway)
+                                        {
+                                            AddToHere(new User(ctx.UserName, ctx.Platform, ctx.UserCode, data), ref usersHere, globalAppSettings);
+                                        }
+                                        responseString = GenerateDexSolo(ctx, data, settings, globalAppSettings);
+                                        break;
 
-                                case "GenerateDexFull":
-                                    ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
-                                    responseString = GenerateDexFull(ctx, data, settings, globalAppSettings);
-                                    break;
+                                    case "GenerateDexFull":
+                                        ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                        responseString = GenerateDexFull(ctx, data, settings, globalAppSettings);
+                                        break;
 
-                                case "GetUserStats":
-                                    ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
-                                    if (globalAppSettings.AutoSignInGiveAway)
-                                    {
-                                        AddToHere(new User(ctx.UserName, ctx.Platform, ctx.UserCode, data), ref usersHere, globalAppSettings);
-                                    }
-                                    responseString = GetUserStats(ctx, data, settings, globalAppSettings);
-                                    break;
+                                    case "GetUserStats":
+                                        ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                        if (globalAppSettings.AutoSignInGiveAway)
+                                        {
+                                            AddToHere(new User(ctx.UserName, ctx.Platform, ctx.UserCode, data), ref usersHere, globalAppSettings);
+                                        }
+                                        responseString = GetUserStats(ctx, data, settings, globalAppSettings);
+                                        break;
 
-                                case "GetUserLevels":
-                                    ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
-                                    if (globalAppSettings.AutoSignInGiveAway)
-                                    {
-                                        AddToHere(new User(ctx.UserName, ctx.Platform, ctx.UserCode, data), ref usersHere, globalAppSettings);
-                                    }
-                                    responseString = GetUserLevels(ctx, data, settings, globalAppSettings);
-                                    break;
+                                    case "GetUserLevels":
+                                        ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                        if (globalAppSettings.AutoSignInGiveAway)
+                                        {
+                                            AddToHere(new User(ctx.UserName, ctx.Platform, ctx.UserCode, data), ref usersHere, globalAppSettings);
+                                        }
+                                        responseString = GetUserLevels(ctx, data, settings, globalAppSettings);
+                                        break;
 
-                                case "ScrapElement":
-                                    Scrapping scrapping = JsonSerializer.Deserialize<Scrapping>(requestBody, options);
-                                    scrapping.SetEnv(data, settings, globalAppSettings);
-                                    responseString = scrapping.DoResult();
-                                    break;
+                                    case "ScrapElement":
+                                        Scrapping scrapping = JsonSerializer.Deserialize<Scrapping>(requestBody, options);
+                                        scrapping.SetEnv(data, settings, globalAppSettings);
+                                        responseString = scrapping.DoResult();
+                                        break;
 
-                                case "BuyElement":
-                                    Buying buying = JsonSerializer.Deserialize<Buying>(requestBody, options);
-                                    buying.SetEnv(data, settings, globalAppSettings);
-                                    responseString = buying.DoResult();
-                                    break;
+                                    case "BuyElement":
+                                        Buying buying = JsonSerializer.Deserialize<Buying>(requestBody, options);
+                                        buying.SetEnv(data, settings, globalAppSettings);
+                                        responseString = buying.DoResult();
+                                        break;
 
-                                case "GetOneValue":
-                                    SearchValue sv = JsonSerializer.Deserialize<SearchValue>(requestBody, options);
-                                    sv.SetEnv(data, settings, globalAppSettings, usersHere);
-                                    responseString = sv.searchResult();
-                                    break;
+                                    case "GetOneValue":
+                                        SearchValue sv = JsonSerializer.Deserialize<SearchValue>(requestBody, options);
+                                        sv.SetEnv(data, settings, globalAppSettings, usersHere);
+                                        responseString = sv.searchResult();
+                                        break;
 
-                                case "Interface/LaunchBall":
-                                    ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
-                                    ctx = tempFixUserRequest(ctx, data);
-                                    responseString = API_SendBall(ctx, data, settings, globalAppSettings);
-                                    break;
+                                    case "Interface/LaunchBall":
+                                        ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                        ctx = tempFixUserRequest(ctx, data);
+                                        responseString = API_SendBall(ctx, data, settings, globalAppSettings);
+                                        break;
 
-                                case "Interface/GiveAway":
-                                    ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
-                                    responseString = API_GiveAway(ctx, data, settings, globalAppSettings, usersHere);
-                                    break;
+                                    case "Interface/GiveAway":
+                                        ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                        responseString = API_GiveAway(ctx, data, settings, globalAppSettings, usersHere);
+                                        break;
 
-                                case "Interface/FullExport":
-                                    ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
-                                    bool forced = ctx.TriggerName == "API_FWE_Force";
-                                    responseString = API_FullExport(ctx, data, settings, globalAppSettings, forced: forced);
-                                    break;
+                                    case "Interface/FullExport":
+                                        ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                        bool forced = ctx.TriggerName == "API_FWE_Force";
+                                        responseString = API_FullExport(ctx, data, settings, globalAppSettings, forced: forced);
+                                        break;
 
-                                case "Interface/Trade":
-                                    Trade trade = JsonSerializer.Deserialize<Trade>(requestBody, options);
-                                    responseString = API_Trade(trade, data, settings, globalAppSettings);
-                                    break;
+                                    case "Interface/Trade":
+                                        Trade trade = JsonSerializer.Deserialize<Trade>(requestBody, options);
+                                        responseString = API_Trade(trade, data, settings, globalAppSettings);
+                                        break;
 
-                                case "Interface/SignList":
-                                    responseString = API_SignedUserHere(usersHere);
-                                    break;
+                                    case "Interface/SignList":
+                                        responseString = API_SignedUserHere(usersHere);
+                                        break;
 
-                                case "Interface/GenerateAvailableDex":
-                                    responseString = API_GenerateAvailableDex(settings, data, globalAppSettings, ctx);
-                                    break;
+                                    case "Interface/GenerateAvailableDex":
+                                        responseString = API_GenerateAvailableDex(settings, data, globalAppSettings, ctx);
+                                        break;
 
-                                case "Interface/ExecuteTask":
-                                    ScheduledTask taskSelected = JsonSerializer.Deserialize<ScheduledTask>(requestBody, options);
-                                    taskSelected = globalAppSettings.ScheduledTasks.FirstOrDefault(t => t.ProcessFilePath == taskSelected.ProcessFilePath);
-                                    API_ExecuteTasks(taskSelected);
-                                    break;
+                                    case "Interface/ExecuteTask":
+                                        ScheduledTask taskSelected = JsonSerializer.Deserialize<ScheduledTask>(requestBody, options);
+                                        taskSelected = globalAppSettings.ScheduledTasks.FirstOrDefault(t => t.ProcessFilePath == taskSelected.ProcessFilePath);
+                                        API_ExecuteTasks(taskSelected);
+                                        break;
+                                    
+                                    case "Debug":
+                                        Debug debug = JsonSerializer.Deserialize<Debug>(requestBody, options);
+                                        debug.SetEnv(usersHere, settings, requestBody);
+                                        responseString = await debug.DoDebug();
+                                        break;
+                                    
 
-                                case "System/FixCodeUser":
-                                    System_FixCodeUser(data);
-                                    break;
+                                    case "System/FixCodeUser":
+                                        System_FixCodeUser(data);
+                                        break;
 
-                                case "System/ClearEmptyAccounts":
-                                    responseString = SYS_GenerateAvailableDex(settings, data, globalAppSettings);
-                                    break;
+                                    case "System/ClearEmptyAccounts":
+                                        responseString = SYS_GenerateAvailableDex(settings, data, globalAppSettings);
+                                        break;
 
-                                case "System/ReloadData":
-                                    try
-                                    {
-                                        settings.allPokemons = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./pokemons.json"), options);
-                                        List<Pokemon> custom = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./customPokemons.json"), options);
-                                        custom.ForEach(p => { p.isCustom = true; });
-                                        settings.allPokemons.AddRange(custom);
-                                        settings.pokemons = settings.allPokemons.Where(p => p.enabled || p == null).ToList();
-                                        settings.pokeballs = JsonSerializer.Deserialize<List<Pokeball>>(File.ReadAllText("./balls.json"), options);
-                                        settings.triggers = JsonSerializer.Deserialize<List<Trigger>>(File.ReadAllText("./Triggers.json"), options);
-                                        globalAppSettings = JsonSerializer.Deserialize<GlobalAppSettings>(File.ReadAllText("./_settings.json"), options);
 
-                                        Logger($"yellow#{globalAppSettings.Texts.serverReloaded}");
-                                        Logger($"white#Nombre de pokémon chargé : |red#{settings.pokemons.Count}");
-                                        Logger($"white#Nombre de pokeball chargé : |red#{settings.pokeballs.Count}");
-                                        Logger($"white#Nombre de triggers chargé : |red#{settings.triggers.Count}");
-                                        Logger($"white#Tous les settings ont été rechargés |red#sauf le port du serveur, cet élement nécessite un redémarre si vous le changez !\n");
+                                    case "System/ReloadData":
+                                        try
+                                        {
+                                            settings.allPokemons = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./pokemons.json"), options);
+                                            List<Pokemon> custom = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./customPokemons.json"), options);
+                                            custom.ForEach(p => { p.isCustom = true; });
+                                            settings.allPokemons.AddRange(custom);
+                                            settings.pokemons = settings.allPokemons.Where(p => p.enabled || p == null).ToList();
+                                            settings.pokeballs = JsonSerializer.Deserialize<List<Pokeball>>(File.ReadAllText("./balls.json"), options);
+                                            settings.triggers = JsonSerializer.Deserialize<List<Trigger>>(File.ReadAllText("./Triggers.json"), options);
+                                            globalAppSettings = JsonSerializer.Deserialize<GlobalAppSettings>(File.ReadAllText("./_settings.json"), options);
+                                            settings.badges = (JsonSerializer.Deserialize<List<Badge>>(File.ReadAllText("./badges.json"), options).Where(x => !x.Locked).ToList());
+                                            settings.customOverlays = (JsonSerializer.Deserialize<List<CustomOverlay>>(File.ReadAllText("./customOverlays.json"), options));
 
-                                        responseString = "system data reloaded";
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Console.WriteLine(ex.ToString());
-                                        responseString = "ERROR" + ex.ToString();
-                                    }
-                                    break;
+                                            Logger($"yellow#{globalAppSettings.Texts.serverReloaded}");
+                                            Logger($"white#Nombre de pokémon chargé : |red#{settings.pokemons.Count}");
+                                            Logger($"white#Nombre de pokeball chargé : |red#{settings.pokeballs.Count}");
+                                            Logger($"white#Nombre de triggers chargé : |red#{settings.triggers.Count}");
+                                            Logger($"white#Nombre de badges chargé : |red#{settings.badges.Count}");
+                                            Logger($"white#Nombre de custom overlays chargé : |red#{settings.customOverlays.Count}");
 
-                                case "System/ClearPeopleHere":
-                                    try
-                                    {
-                                        usersHere = usersHere.Where(x => x.Platform == "system").ToList();
-                                        System.IO.File.WriteAllText("./user.data", "[]");
-                                        responseString = "success";
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Console.WriteLine(ex.ToString());
-                                        responseString = "ERROR" + ex.ToString();
-                                    }
-                                    break;
+                                            Logger($"white#Tous les settings ont été rechargés |red#sauf le port du serveur, cet élement nécessite un redémarre si vous le changez !\n");
 
-                                case "System/TransfertAccount":
-                                    AccountTransfert transfert = JsonSerializer.Deserialize<AccountTransfert>(requestBody, options);
-                                    transfert.SetEnv(data);
-                                    responseString = transfert.DoTransfert();
-                                    break;
+                                            responseString = "system data reloaded";
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine(ex.ToString());
+                                            responseString = "ERROR" + ex.ToString();
+                                        }
+                                        break;
 
-                                default:
-                                    ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
-                                    responseString = $"Route non reconnue. \nDEBUG : {requestBody}";
-                                    break;
+                                    case "System/ClearPeopleHere":
+                                        try
+                                        {
+                                            usersHere = usersHere.Where(x => x.Platform == "system").ToList();
+                                            System.IO.File.WriteAllText("./user.data", "[]");
+                                            responseString = "success";
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine(ex.ToString());
+                                            responseString = "ERROR" + ex.ToString();
+                                        }
+                                        break;
+
+                                    case "System/TransfertAccount":
+                                        AccountTransfert transfert = JsonSerializer.Deserialize<AccountTransfert>(requestBody, options);
+                                        transfert.SetEnv(data);
+                                        responseString = transfert.DoTransfert();
+                                        break;
+
+                                    default:
+                                        ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                        responseString = $"Route non reconnue. \nDEBUG : {requestBody}";
+                                        break;
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("CRITICAL POST ERROR : " + e.Message + "\n" + e.Data);
                             }
 
                             if (globalAppSettings.MustAutoFullExport && lastExportTime.AddMinutes(globalAppSettings.DelayBeforeFullWebUpdate) < DateTime.Now)
                             {
-                                try {
+                                try
+                                {
                                     ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
                                     string a = API_FullExport(ctx, data, settings, globalAppSettings);
                                     lastExportTime = DateTime.Now;
                                     if (globalAppSettings.Log.logConsole.console)
                                         Console.WriteLine("Export done.");
-                                } catch {
-                                    if(globalAppSettings.Log.logConsole.console)
+                                }
+                                catch
+                                {
+                                    if (globalAppSettings.Log.logConsole.console)
                                         Console.WriteLine("Export not possible.");
                                 }
+                            }
+
+                            try
+                            {
+                                List<CustomOverlay> a = JsonSerializer.Deserialize<List<CustomOverlay>>(File.ReadAllText("./customOverlays.json"), options);
+                                foreach (CustomOverlay overlayReset in a)
+                                {
+                                    settings.customOverlays.Where(overlay => overlay.Filename == overlayReset.Filename).FirstOrDefault().Content = overlayReset.Content;
+                                }
+                                settings.customOverlays.ForEach(overlay => { overlay.BuildOverlay(false); });
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("Error while Building custom Overlays : " + e.Message);
                             }
 
                             byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
@@ -293,9 +333,15 @@ namespace PKServ
                             {
                                 output.Write(buffer, 0, buffer.Length);
                             }
-                            checkScheduledTasks(globalAppSettings);
 
-                            generateOverlays(overlays, First: false);
+                            try
+                            {
+                                generateOverlays(overlays, First: false);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("Error while genereting PKServs Overlay :  " + e.Message + "\n" + e.Data);
+                            }
                         }
                     }
                     if (request.HttpMethod == "GET")
@@ -309,38 +355,42 @@ namespace PKServ
 
                             string urlPath = request.Url.LocalPath.Trim('/');
                             string responseString = "";
-                            switch(urlPath)
+                            try
                             {
-                                case "Get":
-                                    switch (queryParameters.AllKeys[0])
-                                    {
-                                        case "Value":
-                                            SearchValue searchValue = new SearchValue();
+                                switch (urlPath)
+                                {
+                                    case "Get":
+                                        switch (queryParameters.AllKeys[0])
+                                        {
+                                            case "Value":
+                                                SearchValue searchValue = new SearchValue();
 
-                                            string info = queryParameters["Value"];
+                                                string info = queryParameters["Value"];
 
-                                            searchValue.SetEnv(data, settings, globalAppSettings, usersHere);
+                                                searchValue.SetEnv(data, settings, globalAppSettings, usersHere);
 
-                                            responseString = searchValue.searchValue(info);
-                                            break;
+                                                responseString = searchValue.searchValue(info);
+                                                break;
 
-                                        default:
-                                            responseString = $"Route non reconnue. \nDEBUG : {requestBody}";
-                                            break;
+                                            default:
+                                                responseString = $"Route non reconnue. \nDEBUG : {requestBody}";
+                                                break;
+                                        }
+                                        break;
 
-                                    }
-                                    break;
+                                    case "Interface/GetUserHere":
+                                        responseString = API_GetUserHere(usersHere);
+                                        break;
 
-                                case "Interface/GetUserHere":
-                                    responseString = API_GetUserHere(usersHere);
-                                    break;
-
-                                default:
-                                    responseString = $"Route non reconnue. \nDEBUG : {requestBody}";
-                                    break;
+                                    default:
+                                        responseString = $"Route non reconnue. \nDEBUG : {requestBody}";
+                                        break;
+                                }
                             }
-
-                            
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("CRITICAL GET ERROR :  " + e.Message + "\n" + e.Data);
+                            }
 
                             byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
                             response.ContentLength64 = buffer.Length;
@@ -348,10 +398,17 @@ namespace PKServ
                             {
                                 output.Write(buffer, 0, buffer.Length);
                             }
-                            checkScheduledTasks(globalAppSettings);
+
+                            try
+                            {
+                                checkScheduledTasks(globalAppSettings);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("Error while executing scheduled task : " + e.Message + "\n" + e.Data);
+                            }
                         }
                     }
-
                 }
             });
 
@@ -361,7 +418,15 @@ namespace PKServ
 
         private static string API_GetUserHere(List<User> usersHere)
         {
-            return JsonSerializer.Serialize(usersHere.Where(x => x.Platform != "system").ToList());
+            try
+            {
+                return JsonSerializer.Serialize(usersHere.Where(x => x.Platform != "system").ToList());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("API Error while genereting User HERE :  " + e.Message + "\n" + e.Data);
+                return "";
+            }
         }
 
         private static void generateOverlays(OverlayGeneration overlay, bool First)
@@ -378,11 +443,18 @@ namespace PKServ
 
         private static void System_FixCodeUser(DataConnexion data)
         {
-            List<User> users = data.GetAllUserPlatforms();
-            users.ForEach(x =>
+            try
             {
-                data.GetEntriesByPseudo(pseudoTriggered: x.Pseudo, platformTriggered: x.Platform).ForEach(a => { a.code = x.Code_user; a.Validate(false); });
-            });
+                List<User> users = data.GetAllUserPlatforms();
+                users.ForEach(x =>
+                {
+                    data.GetEntriesByPseudo(pseudoTriggered: x.Pseudo, platformTriggered: x.Platform).ForEach(a => { a.code = x.Code_user; a.Validate(false); });
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error while genereting PKServs Overlay :  " + e.Message + "\n" + e.Data);
+            }
         }
 
         private static void API_ExecuteTasks(ScheduledTask task)
@@ -508,6 +580,10 @@ namespace PKServ
             }
         }
 
+        /// <summary>
+        /// Méthode spéciale qui récupère les sprites dans un dossiers
+        /// </summary>
+        /// <param name="allPokemons"></param>
         private static void dumpSprite(List<Pokemon> allPokemons)
         {
             WebClient clientweb = new WebClient();
@@ -657,7 +733,7 @@ namespace PKServ
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"---\nERROR : {ex.InnerException}\n{ex.Message}\n---\n");
+                Console.WriteLine($"---\nERROR : {ex.InnerException}\n{ex.Message}\n{ex.Data}---\n");
                 return globalAppSettings.Texts.error;
             }
         }
@@ -783,49 +859,56 @@ namespace PKServ
 
         private static void Logger(string message)
         {
-            Console.WriteLine("\r");
-            List<string> parts = message.Split('|').ToList();
-            foreach (string part in parts)
+            try
             {
-                string color = part.Split('#')[0];
-                string msg = part.Split('#')[1];
-
-                switch (color.ToLower())
+                Console.WriteLine("\r");
+                List<string> parts = message.Split('|').ToList();
+                foreach (string part in parts)
                 {
-                    case "blue":
-                        Console.ForegroundColor = ConsoleColor.DarkBlue;
-                        break;
+                    string color = part.Split('#')[0];
+                    string msg = part.Split('#')[1];
 
-                    case "red":
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        break;
+                    switch (color.ToLower())
+                    {
+                        case "blue":
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            break;
 
-                    case "yellow":
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        break;
+                        case "red":
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            break;
 
-                    case "aqua":
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        break;
+                        case "yellow":
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            break;
 
-                    case "green":
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        break;
+                        case "aqua":
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            break;
 
-                    case "orange":
-                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        break;
+                        case "green":
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            break;
 
-                    case "pink":
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        break;
+                        case "orange":
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            break;
 
-                    default:
-                        Console.ForegroundColor = ConsoleColor.White;
-                        break;
+                        case "pink":
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            break;
+
+                        default:
+                            Console.ForegroundColor = ConsoleColor.White;
+                            break;
+                    }
+                    Console.Write(msg);
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
-                Console.Write(msg);
-                Console.ForegroundColor = ConsoleColor.White;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error while logging :  " + e.Message + "\n" + e.Data);
             }
         }
     }

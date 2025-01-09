@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -17,14 +18,14 @@ namespace PKServ
 
         public SearchValue()
         {
-            this.dataConnexion = null;
-            this.appSettings = null;
-            this.globalAppSettings = null;
+            dataConnexion = null;
+            appSettings = null;
+            globalAppSettings = null;
         }
 
         public SearchValue(DataConnexion data, AppSettings appSettings, GlobalAppSettings globalAppSettings)
         {
-            this.dataConnexion = data;
+            dataConnexion = data;
             this.appSettings = appSettings;
             this.globalAppSettings = globalAppSettings;
         }
@@ -32,9 +33,9 @@ namespace PKServ
 
         internal void SetEnv(DataConnexion data, AppSettings settings, GlobalAppSettings globalAppSettings, List<User> users)
         {
-            this.dataConnexion = data;
+            dataConnexion = data;
             this.globalAppSettings = globalAppSettings;
-            this.appSettings = settings;
+            appSettings = settings;
             UserHere = users;
 
         }
@@ -57,7 +58,7 @@ namespace PKServ
             {
                 switch (value.ToLower())
                 {
-                        // partie globale
+                    // partie globale
 
                     // nombre de poké
                     case "pokecount":
@@ -69,7 +70,7 @@ namespace PKServ
                         result = dataConnexion.GetAllEntries().GroupBy(e => e.PokeName).Select(g => g.First()).Count().ToString();
                         break;
 
-                        // partie user
+                    // partie user
 
                     // pokedex perso
                     case "userDexProgress":
@@ -91,7 +92,7 @@ namespace PKServ
                         result = @$"{{
     ""progress"":{appSettings.catchHistory.Sum(s => s.price)},
     ""total"":{globalAppSettings.OverlaySettings.GlobalShinyCaughtGoal.GoalValue}
-}} "; 
+}} ";
                         break;
                     // bar custom : global money goal
                     case "globalmoneygoal":
@@ -128,7 +129,7 @@ namespace PKServ
                     // bar custom : user here
                     case "sessionparticipantsgoal":
                         result = @$"{{
-    ""progress"":{UserHere.Count-1},
+    ""progress"":{UserHere.Count - 1},
     ""total"":{globalAppSettings.OverlaySettings.SessionParticipantsGoal.GoalValue}
 }} ";
                         break;
@@ -156,13 +157,13 @@ namespace PKServ
                         string sprite = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1200px-HD_transparent_picture.png";
 
                         CatchHistory lastCatchHistory = appSettings.catchHistory.Where(x => x.shownInOverlay_lastCaughtPokeSprite == false).FirstOrDefault();
-                        if(lastCatchHistory != null)
+                        if (lastCatchHistory != null)
                         {
                             sprite = lastCatchHistory.shiny ? lastCatchHistory.Pokemon.Sprite_Shiny : lastCatchHistory.Pokemon.Sprite_Normal;
                             Console.Write("sprite -> " + sprite);
                             appSettings.catchHistory.Where(x => x.shownInOverlay_lastCaughtPokeSprite == false).FirstOrDefault().shownInOverlay_lastCaughtPokeSprite = true;
                         }
-                        
+
 
 
                         result = @$"{{

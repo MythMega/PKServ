@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PKServ
+namespace PKServ.Configuration
 {
     public class CatchHistory
     {
 
         // propriétés de définitions
-        public Pokeball Ball {  get; set; }
+        public Pokeball Ball { get; set; }
         public Pokemon Pokemon { get; set; }
         public User User { get; set; }
 

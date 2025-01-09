@@ -42,11 +42,6 @@ C:\Users\JMorin\source\repos\PKServ\obj\Debug\net8.0\PKServ.pdb
 C:\Users\JMorin\source\repos\PKServ\obj\Debug\net8.0\PKServ.genruntimeconfig.cache
 C:\Users\JMorin\source\repos\PKServ\obj\Debug\net8.0\ref\PKServ.dll
 C:\Users\JMorin\source\repos\PKServ\bin\Debug\net8.0\_settings.json
-C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\balls.json
-C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\customPokemons.json
-C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\pokemons.json
-C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\Triggers.json
-C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\_settings.json
 C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\PKServ.exe
 C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\PKServ.dll.config
 C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\PKServ.deps.json
@@ -87,5 +82,11 @@ C:\Users\mythm\source\repos\PKServ\obj\Debug\net8.0\PKServ.pdb
 C:\Users\mythm\source\repos\PKServ\obj\Debug\net8.0\PKServ.genruntimeconfig.cache
 C:\Users\mythm\source\repos\PKServ\obj\Debug\net8.0\ref\PKServ.dll
 C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\user.data
-C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\badges.json
 C:\Users\mythm\source\repos\PKServ\obj\Debug\net8.0\PKServ.sourcelink.json
+C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\badges.json
+C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\balls.json
+C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\customOverlays.json
+C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\customPokemons.json
+C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\pokemons.json
+C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\Triggers.json
+C:\Users\mythm\source\repos\PKServ\bin\Debug\net8.0\_settings.json
