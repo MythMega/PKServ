@@ -261,11 +261,8 @@ namespace PKServ
             }
 
             // valider le modification en base de donnée (sans créer de nouvelle ligne)
-            //targetEntrie.Validate(NewLine: false);
+            targetEntrie.Validate(NewLine: false);
 
-            Console.WriteLine($@"
-poke {poke.Name_FR} [{localScrapCountNormal} / {localScrapCountShiny}]
-money {moneyEarned}");
             scrapCountNormal += localScrapCountNormal;
             scrapCountShiny += localScrapCountShiny;
 
