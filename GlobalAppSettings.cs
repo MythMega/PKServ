@@ -11,6 +11,7 @@ namespace PKServ
         public bool KeepUserInGiveAwayAfterShutdown { get; set; }
         public bool MustAutoFullExport { get; set; }
         public int DelayBeforeFullWebUpdate { get; set; }
+        public string LanguageCode { get; set; } = "en";
         public GlobalAppLog Log { get; set; }
         public TextTranslation Texts { get; set; }
         public MessageSettings MessageSettings { get; set; }
@@ -18,6 +19,7 @@ namespace PKServ
         public BadgeSettings BadgeSettings { get; set; }
         public ScrapSettings ScrapSettings { get; set; }
         public OverlaySettings OverlaySettings { get; set; }
+        public CommandSettings CommandSettings { get; set; }
 
         
     }
@@ -221,5 +223,10 @@ namespace PKServ
         public int ValueDefaultShiny;
         public int minimumToScrap;
         public int legendaryMultiplier;
+    }
+    public class CommandSettings
+    {
+        public string CmdScrap { get; set; } = "!scrap";
+        public string CmdBuy { get; set; } = "!buy";
     }
 }

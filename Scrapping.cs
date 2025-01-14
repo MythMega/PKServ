@@ -51,13 +51,38 @@ namespace PKServ
 
         public bool IsValide()
         {
-            return dataConnexion.GetEntriesByPseudo(pseudoTriggered: User.Pseudo, platformTriggered: User.Platform).Where(p => p.PokeName.ToLower() == pokename.ToLower()).Count() == 1 &&
-                new List<string> { "complete", "fullnormal", "fullshiny", "normal", "shiny", "fulldex", "fulldexnormal", "fulldexshiny" }.Contains(mode.ToLower());
+            this.pokename = this.pokename.ToLower();
+            Pokemon poke = appSettings.pokemons.Where(p => p.Name_FR.ToLower() == pokename || p.Name_EN.ToLower() == pokename || p.AltName.ToLower() == pokename).FirstOrDefault();
+            if(poke is null)
+                return false;
+
+
+            string nameFR = poke.Name_FR.ToLower();
+            string nameEN = poke.Name_EN.ToLower();
+            string altName = poke.AltName.ToLower();
+            return dataConnexion.GetEntriesByPseudo(pseudoTriggered: User.Pseudo, platformTriggered: User.Platform).Where(p => p.PokeName.ToLower() == nameEN || p.PokeName.ToLower() == nameFR || p.PokeName.ToLower() == altName).Count() == 1 &&
+                new List<string> { "complete", "all", "fullnormal", "fullshiny", "normal", "shiny", "fulldex", "fulldexnormal", "fulldexshiny" }.Contains(mode.ToLower());
         }
 
         public string DoResult()
         {
-            List<Entrie> entries = dataConnexion.GetEntriesByPseudo(User.Pseudo, User.Platform).Where(p => p.PokeName.ToLower() == pokename.ToLower()).ToList();
+
+            this.pokename = pokename.Replace('_', ' ').ToLower();
+            Pokemon poke = appSettings.pokemons.Where(p => p.Name_FR.ToLower() == pokename || p.Name_EN.ToLower() == pokename || p.AltName.ToLower() == pokename).FirstOrDefault();
+
+
+            string nameFR = String.Empty;
+            string nameEN = String.Empty;
+            string altName = String.Empty;
+
+            if (poke is not null)
+            {
+                nameFR = poke.Name_FR.ToLower();
+                nameEN = poke.Name_EN.ToLower();
+                altName = poke.AltName.ToLower();
+            }
+
+            List<Entrie> entries = dataConnexion.GetEntriesByPseudo(pseudoTriggered: User.Pseudo, platformTriggered: User.Platform).Where(p => p.PokeName.ToLower() == nameEN || p.PokeName.ToLower() == nameFR || p.PokeName.ToLower() == altName).ToList();
             string resultat = string.Empty;
 
             int moneyEarned = 0;
@@ -67,7 +92,7 @@ namespace PKServ
             int multiplierShiny = 1;
 
 
-            if (mode == "complete" || mode == "fullnormal" || mode == "fullshiny" || mode == "normal" || mode == "shiny")
+            if (mode == "complete" || mode == "fullnormal" || mode == "fullshiny" || mode == "normal" || mode == "shiny" || mode == "all")
             {
                 if (!IsValide())
                 {
@@ -148,17 +173,18 @@ namespace PKServ
             }
             if (poke.isLegendary && !poke.valueNormal.HasValue)
             {
-                multiplierNormal = globalAppSettings.ScrapSettings.ValueDefaultNormal * globalAppSettings.ScrapSettings.legendaryMultiplier;
+                multiplierNormal = globalAppSettings.ScrapSettings.legendaryMultiplier;
             }
 
             if (poke.isLegendary && !poke.valueShiny.HasValue)
             {
-                multiplierShiny = globalAppSettings.ScrapSettings.ValueDefaultShiny * globalAppSettings.ScrapSettings.legendaryMultiplier;
+                multiplierShiny = globalAppSettings.ScrapSettings.legendaryMultiplier;
             }
             switch (mode)
             {
                 case "fulldex":
                 case "complete":
+                case "all":
                     if (targetEntrie.CountNormal < globalAppSettings.ScrapSettings.minimumToScrap && targetEntrie.CountShiny < globalAppSettings.ScrapSettings.minimumToScrap)
                     {
                         resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;

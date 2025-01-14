@@ -47,13 +47,22 @@ namespace PKServ
             List<Pokemon> custom = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./customPokemons.json"), options);
             custom.ForEach(p => { p.isCustom = true; });
             settings.allPokemons.AddRange(custom);
-            settings.pokemons = settings.allPokemons.Where(p => p.enabled || p == null).ToList();
             settings.pokeballs.AddRange(JsonSerializer.Deserialize<List<Pokeball>>(File.ReadAllText("./balls.json"), options));
             settings.triggers.AddRange(JsonSerializer.Deserialize<List<Trigger>>(File.ReadAllText("./Triggers.json"), options));
             settings.badges.AddRange(JsonSerializer.Deserialize<List<Badge>>(File.ReadAllText("./badges.json"), options).Where(x => !x.Locked).ToList());
             settings.customOverlays.AddRange(JsonSerializer.Deserialize<List<CustomOverlay>>(File.ReadAllText("./customOverlays.json"), options));
             settings.customOverlays.ForEach(overlay => { overlay.SetEnv(data, settings, globalAppSettings, usersHere); overlay.BuildOverlay(true); });
             OverlayGeneration overlays = new OverlayGeneration(data, settings, globalAppSettings, usersHere);
+            globalAppSettings.LanguageCode = globalAppSettings.LanguageCode.ToLower();
+            if(globalAppSettings.LanguageCode == "fr")
+            {
+                settings.allPokemons.ForEach(p => { if (p.AltNameForced) { p.AltName = p.Name_FR; } });
+            }
+            else if (globalAppSettings.LanguageCode == "en")
+            {
+                settings.allPokemons.ForEach(p => { if (p.AltNameForced) { p.AltName = p.Name_EN; } });
+            }
+            settings.pokemons = settings.allPokemons.Where(p => p.enabled || p == null).ToList();
             Logger($"yellow#{globalAppSettings.Texts.serverStarted}");
             Logger($"white#Nombre de pokémon chargé : |red#{settings.pokemons.Count}");
             Logger($"white#Nombre de pokeball chargé : |red#{settings.pokeballs.Count}");
@@ -296,12 +305,13 @@ namespace PKServ
                                 Console.WriteLine("CRITICAL POST ERROR : " + e.Message + "\n" + e.Data);
                             }
 
+                            // Auto Export
                             if (globalAppSettings.MustAutoFullExport && lastExportTime.AddMinutes(globalAppSettings.DelayBeforeFullWebUpdate) < DateTime.Now)
                             {
                                 try
                                 {
                                     ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
-                                    string a = API_FullExport(ctx, data, settings, globalAppSettings);
+                                    string a = API_FullExport(ctx, data, settings, globalAppSettings, forced: false, assets: false);
                                     lastExportTime = DateTime.Now;
                                     if (globalAppSettings.Log.logConsole.console)
                                         Console.WriteLine("Export done.");
@@ -816,16 +826,26 @@ namespace PKServ
             }
         }
 
-        private static string API_FullExport(UserRequest json, DataConnexion cnx, AppSettings appSettings, GlobalAppSettings globalAppSettings, bool forced = false)
+        private static string API_FullExport(UserRequest json, DataConnexion cnx, AppSettings appSettings, GlobalAppSettings globalAppSettings, bool forced = false, bool assets = true)
         {
             try
             {
                 // export main file  + individuals
                 string result = new Work(json, cnx, appSettings, globalAppSettings).DoFullExport(forced: forced);
 
-                //  export availablespokemon.html
-                ExportDexAvailablePokemon a = new ExportDexAvailablePokemon(appSettings, json, cnx, globalAppSettings);
-                a.GenerateFile();
+                if (assets)
+                {
+                    //  export availablespokemon.html
+                    ExportDexAvailablePokemon a = new ExportDexAvailablePokemon(appSettings, json, cnx, globalAppSettings);
+                    a.GenerateFile();
+
+                    // buylist & scraplist
+                    ExportBuyList bl = new ExportBuyList(appSettings, json, cnx, globalAppSettings);
+                    ExportScrapList sl = new ExportScrapList(appSettings, json, cnx, globalAppSettings);
+
+                    bl.BuildDocument();
+                    sl.BuildDocument();
+                }
 
                 //  export pokestats.html
                 ExportStats exportStats = new ExportStats(appSettings, json, cnx, globalAppSettings);

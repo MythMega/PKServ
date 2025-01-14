@@ -4,6 +4,7 @@
   "KeepUserInGiveAwayAfterShutdown": true,
   "MustAutoFullExport": true,
   "DelayBeforeFullWebUpdate": 5,
+  "LanguageCode": "fr",
   "Log": {
     "logConsole": {
       "console": true,
@@ -96,29 +97,33 @@
       "GoalValue": 5000000
     }
   },
-    "BadgeSettings": {
-      "XPPerLevel": 250,
-      "XPCatch": 1,
-      "XPShinyCatch": 5,
-      "XPBallLaunched": 1,
-      "PerDayReward": 2
-    },
-    "ScrapSettings": {
-      "ValueDefaultNormal": 2,
-      "ValueDefaultShiny": 10,
-      "minimumToScrap": 2,
-      "legendaryMultiplier": 20
-    },
-    "MessageSettings": {
-      "showShinyOnFail": false,
-      "showDexCompletion": true
-    },
-    "ScheduledTasks": [
-      {
-        "Delay": 10,
-        "DelayType": "minutes",
-        "ProcessFilePath": "C:\\Users\\mythm\\Desktop\\PKServ\\update.bat",
-        "ExecuteAtStart": true
-      }
-    ]
+  "BadgeSettings": {
+    "XPPerLevel": 250,
+    "XPCatch": 1,
+    "XPShinyCatch": 5,
+    "XPBallLaunched": 1,
+    "PerDayReward": 2
+  },
+  "ScrapSettings": {
+    "ValueDefaultNormal": 2,
+    "ValueDefaultShiny": 10,
+    "minimumToScrap": 2,
+    "legendaryMultiplier": 20
+  },
+  "MessageSettings": {
+    "showShinyOnFail": false,
+    "showDexCompletion": true
+  },
+  "ScheduledTasks": [
+    {
+      "Delay": 10,
+      "DelayType": "minutes",
+      "ProcessFilePath": "C:\\Users\\mythm\\Desktop\\PKServ\\update.bat",
+      "ExecuteAtStart": true
+    }
+  ],
+  "CommandSettings": {
+    "CmdScrap": "!scrap",
+    "CmdBuy": "!buy"
   }
+}

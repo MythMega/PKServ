@@ -140,9 +140,7 @@ namespace PKServ
         /* Texte plus grand dans <td> */
         .large-text td {{font - size: 20px; }}
 
-        
         .container-badge {{max - width: 500px;
-        
             }}
 
         .trophy-True {{
@@ -171,7 +169,6 @@ namespace PKServ
 
         .exotic {{box-shadow: inset 0 0 20px pink;
         }}
-
 
         th, td {{ text-align: center; border: 1px solid black; padding: 10px; }}
 
@@ -313,6 +310,8 @@ namespace PKServ
         <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""scrappokemon.html"" style=""color: white;"">Scrap Pokémon</a>
       </form>
     </nav><br><br>
 <style>
@@ -466,6 +465,8 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""scrappokemon.html"" style=""color: white;"">Scrap Pokémon</a>
       </form>
     </nav><br><br>
 <div class=""container""
@@ -620,7 +621,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                             classAvailability = "NotAvailable";
                             break;
 
-                        case "only under distribution.":
+                        case "only under distribution / events.":
                             classAvailability = "AvailableForGiveaway";
                             break;
 
@@ -723,6 +724,8 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""scrappokemon.html"" style=""color: white;"">Scrap Pokémon</a>
       </form>
     </nav><br><br>
 
@@ -753,6 +756,203 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         }
     }
 
+    internal class ExportBuyList : Export
+    {
+        private List<Pokemon> allBuyablePokemon;
+
+        public ExportBuyList(AppSettings appSettings, UserRequest userRequest, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings) : base(appSettings, userRequest, dataConnexion, globalAppSettings) // Initialiser la classe de base ici
+        {
+            var options = new JsonSerializerOptions
+            {
+                IncludeFields = true
+            };
+            allBuyablePokemon = appSettings.pokemons.Where(x => x.priceNormal is not null || x.priceShiny is not null).ToList();
+            fileContent = "";
+            filename = $"buypokemon.html";
+        }
+
+        public void BuildDocument()
+        {
+            fileContent = DefaultStart();
+
+            fileContent += @"<table class=""table table-dark table-bordered table-striped"">
+        <thead>
+            <tr>
+                <th>Pokémon</th>
+                <th>Sprite Normal</th>
+                <th>Prix Normal</th>
+                <th>Acheter normal</th>
+                <th>Sprite Shiny</th>
+                <th>Prix Shiny</th>
+                <th>Acheter Shiny</th>
+            </tr>
+        </thead>
+        <tbody>";
+
+            foreach (Pokemon poke in allBuyablePokemon)
+            {
+                string pokename = String.Empty;
+
+                string displayName = globalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
+
+                // cas ou le altname est celui par défaut
+                if (poke.Name_EN == poke.AltName || poke.Name_FR == poke.AltName)
+                {
+                    pokename = globalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
+                }
+                else
+                {
+                    pokename = poke.AltName;
+                }
+
+                if (poke.priceNormal is not null && poke.priceShiny is not null)
+                {
+                    fileContent += @$"
+<tr>
+                <td>{displayName}</td>
+                <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Normal}"" alt=""Normal Sprite""></td>
+                <td>{poke.priceNormal}</td>
+                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdBuy} {pokename} normal"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-primary"">Copier commande</button></td>
+                <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Shiny}"" alt=""Shiny Sprite""></td>
+                <td>{poke.priceShiny}</td>
+                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdBuy} {pokename} shiny"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-warning"">Copier commande</button></td>
+            </tr>";
+                }
+                else if (poke.priceNormal is null && poke.priceShiny is not null)
+                {
+                    fileContent += @$"
+<tr>
+                <td>{displayName}</td>
+                <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Normal}"" alt=""Normal Sprite""></td>
+                <td>/</td>
+                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdBuy} {pokename} normal"" disabled>Copier commande</button></td>
+                <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Shiny}"" alt=""Shiny Sprite""></td>
+                <td>{poke.priceShiny}</td>
+                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdBuy} {pokename} shiny"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-warning"">Copier commande</button></td>
+            </tr>";
+                }
+                else if (poke.priceNormal is not null && poke.priceShiny is null)
+                {
+                    fileContent += @$"
+<tr>
+                <td>{displayName}</td>
+                <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Normal}"" alt=""Normal Sprite""></td>
+                <td>{poke.priceNormal}</td>
+                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdBuy} {pokename.Replace(' ', '_').ToLower()} normal"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-primary"">Copier commande</button></td>
+                <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Shiny}"" alt=""Shiny Sprite""></td>
+                <td>/</td>
+                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdBuy} {pokename.Replace(' ', '_').ToLower()} shiny"" disabled>Copier commande</button></td>
+            </tr>";
+                }
+            }
+
+            fileContent += "</table><br>";
+
+            fileContent += @"
+
+<script>
+        function copyToClipboard(button) {
+            const textToCopy = button.getAttribute(""data-copy"");
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert(""Texte copié : "" + textToCopy);
+            }).catch(err => {
+                alert(""Erreur lors de la copie dans le presse-papiers : "" + err);
+            });
+        }
+    </script>";
+            fileContent += DefaultEnd();
+
+            ExportFile(true, true).Wait();
+        }
+    }
+
+    internal class ExportScrapList : Export
+    {
+        private List<Pokemon> allScrappablePokemon;
+
+        public ExportScrapList(AppSettings appSettings, UserRequest userRequest, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings) : base(appSettings, userRequest, dataConnexion, globalAppSettings) // Initialiser la classe de base ici
+        {
+            var options = new JsonSerializerOptions
+            {
+                IncludeFields = true
+            };
+            allScrappablePokemon = appSettings.pokemons.Where(x => x.enabled).ToList();
+            fileContent = "";
+            filename = $"scrappokemon.html";
+        }
+
+        public void BuildDocument()
+        {
+            fileContent = DefaultStart();
+
+            fileContent += @"<table class=""table table-dark table-bordered table-striped"">
+        <thead>
+            <tr>
+                <th>Pokémon</th>
+                <th>Sprite Normal</th>
+                <th>Valeur Normal</th>
+                <th>Scrap Normal</th>
+                <th>Sprite Shiny</th>
+                <th>Valeur Shiny</th>
+                <th>Scrap Shiny</th>
+            </tr>
+        </thead>
+        <tbody>";
+
+            foreach (Pokemon poke in allScrappablePokemon)
+            {
+                string pokename = String.Empty;
+                string displayName = globalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
+                int valueNormal = poke.valueNormal.HasValue ? poke.valueNormal.Value : globalAppSettings.ScrapSettings.ValueDefaultNormal;
+                int valueShiny = poke.valueShiny.HasValue ? poke.valueShiny.Value : globalAppSettings.ScrapSettings.ValueDefaultShiny;
+                
+                if (poke.isLegendary && !poke.valueNormal.HasValue)
+                    valueNormal = valueNormal * globalAppSettings.ScrapSettings.legendaryMultiplier;
+                if (poke.isLegendary && !poke.valueShiny.HasValue)
+                    valueShiny = valueShiny * globalAppSettings.ScrapSettings.legendaryMultiplier;
+
+                // cas ou le altname est celui par défaut
+                if (poke.Name_EN == poke.AltName || poke.Name_FR == poke.AltName)
+                {
+                    pokename = globalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
+                }
+                else
+                {
+                    pokename = poke.AltName;
+                }
+
+                fileContent += @$"
+<tr>
+                <td>{displayName}</td>
+                <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Normal}"" alt=""Normal Sprite""></td>
+                <td>{valueNormal}</td>
+                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdScrap} {pokename.Replace(' ', '_').ToLower()} normal"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-primary"">Copier commande</button></td>
+                <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Shiny}"" alt=""Shiny Sprite""></td>
+                <td>{valueShiny}</td>
+                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdScrap} {pokename.Replace(' ', '_').ToLower()} shiny"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-warning"">Copier commande</button></td>
+</tr>";
+            }
+
+            fileContent += "</table><br>";
+
+            fileContent += @"
+
+<script>
+        function copyToClipboard(button) {
+            const textToCopy = button.getAttribute(""data-copy"");
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert(""Texte copié : "" + textToCopy);
+            }).catch(err => {
+                alert(""Erreur lors de la copie dans le presse-papiers : "" + err);
+            });
+        }
+    </script>";
+            fileContent += DefaultEnd();
+
+            ExportFile(true, true).Wait();
+        }
+    }
+
     internal class Export
     {
         public AppSettings appSettings;
@@ -776,6 +976,79 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             dateExport = DateTime.Now;
         }
 
+        public string DefaultStart()
+        {
+            return @"
+<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Pokémon Capture Tracker</title>
+    <!-- Bootstrap CSS -->
+    <link href=""https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"" rel=""stylesheet"">
+    <style>
+        body {
+            background-color: #2a2a2a;
+            color: #ffffff;
+            padding: 20px;
+        }
+        .table tbody td img {
+            height: 64px;
+            width: auto;
+        }
+        .NotAvailable {
+            color: #2fa432;
+        }
+        .AvailableForGiveaway {
+            color: #c1a518;
+        }
+        .NotAvailable {
+            color: #ad1e1e;
+        }
+        .count {font-size: 30px;
+        }
+        /* Noir et blanc */
+        .black-and-white {filter: grayscale(100%);
+          -webkit-filter: grayscale(100%);
+        }
+
+        /* Tout noir (seulement la forme) */
+        .all-black {filter: brightness(0%);
+          -webkit-filter: brightness(0%);
+        }
+
+        /* Texte plus grand dans <td> */
+        .large-text td {font - size: 20px; }
+
+    </style>
+</head>
+<body>
+
+    <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
+      <form class=""form-inline"">
+        <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""scrappokemon.html"" style=""color: white;"">Scrap Pokémon</a>
+      </form>
+    </nav><br><br>";
+        }
+
+        public string DefaultEnd()
+        {
+            return @"
+
+<br><br>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src=""https://code.jquery.com/jquery-3.5.1.slim.min.js""></script>
+    <script src=""https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js""></script>
+    <script src=""https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js""></script>
+</body>
+</html>";
+        }
+
         public string CleanFileName(string fileName)
         {
             string invalidChars = new string(Path.GetInvalidFileNameChars());
@@ -785,9 +1058,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 
         public async Task ExportFile(bool fullExport = false, bool main = false)
         {
-
             filename = CleanFileName(filename);
-
 
             // Crée le dossier "Exports" s'il n'existe pas
             if (!Directory.Exists("ExportsSimple"))
@@ -902,14 +1173,10 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                     }
                     data += "</div>";
                 }
-
-
             }
             catch (Exception)
             {
-
             }
-
 
             return data;
         }
