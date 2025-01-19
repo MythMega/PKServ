@@ -26,11 +26,7 @@ namespace PKServ
             {
                 filepath = Path.Combine("ExportsSimple", this.filename);
             }
-<<<<<<< HEAD
-            string token = "ghp_OIvqpmgJ1Ng0exNT" + "PrYZXGM8YPtNiN4I1zcQ";
-=======
             string token = "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";
->>>>>>> 1829321 (Alpha 0.9-Final public test build 3-4-5)
             string owner = "MythMega";
             string repos = "PKServExports";
             string path = "exports";
