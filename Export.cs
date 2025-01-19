@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -18,35 +20,68 @@ namespace PKServ
             BuildRapport();
         }
 
-        public async Task<string> UploadFileAsync()
+        public async Task<string> UploadFileAsync(string filepath = null)
         {
-            string filepath = Path.Combine("ExportsSimple", filename);
+            if(filepath is null)
+            {
+                filepath = Path.Combine("ExportsSimple", this.filename);
+            }
+<<<<<<< HEAD
+            string token = "ghp_OIvqpmgJ1Ng0exNT" + "PrYZXGM8YPtNiN4I1zcQ";
+=======
+            string token = "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";
+>>>>>>> 1829321 (Alpha 0.9-Final public test build 3-4-5)
+            string owner = "MythMega";
+            string repos = "PKServExports";
+            string path = "exports";
+
+            string content = Convert.ToBase64String(File.ReadAllBytes(filepath));
+            string message = $"Upload {Path.GetFileName(filepath)}";
+
+            var fileContent = new
+            {
+                message = message,
+                content = content
+            };
+
+            string json = JsonSerializer.Serialize(fileContent);
+
             using (var client = new HttpClient())
             {
-                using (var content = new MultipartFormDataContent())
-                {
-                    using (var fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
-                    {
-                        var fileContent = new StreamContent(fileStream);
-                        fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
-                        content.Add(fileContent, "file", Path.GetFileName(filepath));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", token);
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; GitHubUploader/1.0)");
+                string url = $"https://api.github.com/repos/{owner}/{repos}/contents/{path}/{Path.GetFileName(filepath)}";
 
-                        HttpResponseMessage response = await client.PostAsync("https://file.io", content);
-                        if (response.IsSuccessStatusCode)
-                        {
-                            string responseContent = await response.Content.ReadAsStringAsync();
-                            var jsonResponse = JsonDocument.Parse(responseContent);
-                            url = jsonResponse.RootElement.GetProperty("link").GetString();
-                            return url;
-                        }
-                        else
-                        {
-                            throw new Exception("File upload failed.");
-                        }
+                var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PutAsync(url, requestContent);
+                string responseContent = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("File uploaded successfully.");
+
+                    try
+                    {
+                        var jsonResponse = JsonDocument.Parse(responseContent);
+                        string fileUrl = jsonResponse.RootElement.GetProperty("content").GetProperty("download_url").GetString();
+                        this.url = fileUrl;
+                        return fileUrl;
                     }
+                    catch (JsonException)
+                    {
+                        throw new Exception("La réponse de l'API n'est pas du JSON valide ou ne contient pas les propriétés attendues.");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"File upload failed. Status code: {response.StatusCode}, Reason: {response.ReasonPhrase}");
                 }
             }
         }
+
+
+
+
 
         public List<string> getLineTables()
         {

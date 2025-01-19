@@ -220,8 +220,11 @@ namespace PKServ
                     {
                         resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
                     }
+                    else
+                    {
+                        localScrapCountNormal++;
+                    }
 
-                    localScrapCountNormal++;
 
                     if (poke.valueNormal is null)
                         moneyEarned += localScrapCountNormal * globalAppSettings.ScrapSettings.ValueDefaultNormal * multiplierNormal;
@@ -254,8 +257,11 @@ namespace PKServ
                     {
                         resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
                     }
+                    else
+                    {
+                        localScrapCountShiny++;
+                    }
 
-                    localScrapCountShiny++;
 
                     if (poke.valueShiny is null)
                         moneyEarned += localScrapCountShiny * globalAppSettings.ScrapSettings.ValueDefaultShiny * multiplierShiny;

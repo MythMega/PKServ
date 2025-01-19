@@ -231,12 +231,21 @@ namespace PKServ
         private string GiveAwayPoke(bool isOnlyForActive, Pokemon poke, List<User> usersHere = null)
         {
             string result = "";
+            string[] errors = [];
+
             if (isOnlyForActive)
             {
                 foreach (User user in usersHere)
                 {
-                    ObtainPoke(user, poke);
-                    connexion.UpdateUserStatsGiveaway(pseudo: user.Pseudo, platform: user.Platform, isShiny: poke.isShiny);
+                    try
+                    {
+                        ObtainPoke(user, poke);
+                        connexion.UpdateUserStatsGiveaway(pseudo: user.Pseudo, platform: user.Platform, isShiny: poke.isShiny);
+                    }
+                    catch(Exception e)
+                    {
+                        errors.Append($"Error : Error for {user.Pseudo} [{user.Platform}].\n{e.InnerException}\nError Message : {e.Message}\nError Data : {e.Data}");
+                    }
                 }
                 result = $"{poke.Name_EN}/{poke.Name_FR} distributed to {usersHere.Count} users.";
             }
@@ -245,11 +254,19 @@ namespace PKServ
                 List<User> users = connexion.GetAllUserPlatforms();
                 foreach (User user in users)
                 {
-                    ObtainPoke(user, poke);
-                    connexion.UpdateUserStatsGiveaway(pseudo: user.Pseudo, platform: user.Platform, isShiny: poke.isShiny);
+                    try
+                    {
+                        ObtainPoke(user, poke);
+                        connexion.UpdateUserStatsGiveaway(pseudo: user.Pseudo, platform: user.Platform, isShiny: poke.isShiny);
+                    }
+                    catch (Exception e)
+                    {
+                        errors.Append($"Error : Error for {user.Pseudo} [{user.Platform}].\n{e.InnerException}\nError Message : {e.Message}\nError Data : {e.Data}");
+                    }
                 }
                 result = $"{poke.Name_EN}/{poke.Name_FR} distributed to {users.Count} users.";
             }
+            result += "\n" + string.Join("\n", result);
             return result;
         }
 
