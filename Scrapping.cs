@@ -148,6 +148,8 @@ namespace PKServ
                     resultat = globalAppSettings.Texts.TranslationScrapping.NotEnoughElementCopy;
                 }
             }
+            User.generateStats();
+            resultat += $" Money actuelle : {User.Stats.CustomMoney}.";
             return resultat;
 
         }

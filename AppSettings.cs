@@ -27,6 +27,8 @@ namespace PKServ
 
         public List<CustomOverlay> customOverlays = new List<CustomOverlay>();
 
+        public List<TradeRequest> TradeRequests = new List<TradeRequest>();
+
         public AppSettings()
         {
         }

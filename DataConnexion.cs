@@ -17,6 +17,7 @@ namespace PKServ.Configuration
             {
                 CreateDatabase();
             }
+            UpdateDatabase();
         }
 
         private void CreateDatabase()
@@ -80,6 +81,61 @@ VALUES ('SQLVersion', '1');";
             {
                 command.ExecuteNonQuery();
             }
+        }
+
+        private void UpdateDatabase()
+        {
+            int version = 0;
+            string currentVersion = "SQLVersion";
+            string newVersion = "NewSQLVersion"; // Remplacez par la nouvelle version que vous souhaitez définir
+
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+
+            // Récupérer la version actuelle
+            string selectSql = "SELECT value FROM info WHERE data = @data";
+            using (var selectCommand = new SqliteCommand(selectSql, connection))
+            {
+                selectCommand.Parameters.AddWithValue("@data", currentVersion);
+                using (var reader = selectCommand.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        version = int.Parse(reader.GetString(0));
+                        Console.WriteLine($"Current version: {version}");
+                    }
+                }
+            }
+
+            if (version == 1)
+            {
+                connection.Open();
+
+                string alterTableSql = @"
+        ALTER TABLE user
+        ADD COLUMN Stat_tradeCount INTEGER NOT NULL DEFAULT 0;
+    ";
+
+                using (var command = new SqliteCommand(alterTableSql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                version = 2;
+            }
+
+            // Mettre à jour la version dans la base de données
+            newVersion = $"{version}";
+            string updateSql = "UPDATE info SET value = @newValue WHERE data = @data";
+            using (var updateCommand = new SqliteCommand(updateSql, connection))
+            {
+                updateCommand.Parameters.AddWithValue("@newValue", newVersion);
+                updateCommand.Parameters.AddWithValue("@data", currentVersion);
+                updateCommand.ExecuteNonQuery();
+            }
+
+            Console.WriteLine("Database updated successfully.");
+
         }
 
         private static bool ColumnExists(SqliteConnection connection, string tableName, string columnName)
@@ -541,6 +597,42 @@ VALUES ('SQLVersion', '1');";
                 }
             }
         }
+        public int GetDataUserStats_TradeCount(User user)
+        {
+            string info = "Stat_tradeCount";
+
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
+            {
+                connection.Open();
+
+                string query = $@"
+            SELECT
+                {info}
+            FROM
+                user
+            WHERE
+                Pseudo = @Pseudo AND Platform = @Platform
+            LIMIT 1";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Pseudo", user.Pseudo);
+                    command.Parameters.AddWithValue("@Platform", user.Platform);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return int.Parse($"{reader[info]}");
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                }
+            }
+        }
 
         internal string GetPseudoByPlatformCodeUser(User item)
         {
@@ -896,7 +988,8 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
                         pokeScrapped_normal = @normalScrapped,
                         pokeScrapped_shiny = @shinyScrapped,
                         customMoney = @customMoney,
-                        Stat_MoneySpent = @MoneySpent
+                        Stat_MoneySpent = @MoneySpent,
+                        Stat_tradeCount = @Stat_tradeCount
                     WHERE Pseudo = @Pseudo AND Platform = @Platform";
 
                         using (var updateCommand = new SqliteCommand(updateQuery, connection))
@@ -910,6 +1003,7 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
                             updateCommand.Parameters.AddWithValue("@normalScrapped", user.Stats.scrappedNormal);
                             updateCommand.Parameters.AddWithValue("@shinyScrapped", user.Stats.scrappedShiny);
                             updateCommand.Parameters.AddWithValue("@customMoney", user.Stats.CustomMoney);
+                            updateCommand.Parameters.AddWithValue("@Stat_tradeCount", user.Stats.TradeCount);
 
                             Console.WriteLine(updateCommand.CommandText);
 

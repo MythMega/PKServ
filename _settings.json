@@ -46,6 +46,14 @@
       "ElementDoesNotExist": "Cet element n'existe pas",
       "BuyingModeNotRecognized": "Ce mode d'achat n'a pas été reconnu (shiny/normal)"
     },
+    "TranslationTrading": {
+      "tradeRequestCreated": "Échange demandé. [USER], qui donne [CREATURE_SENT] en échange de [CREATURE_REQUESTED]. Prix : [PRICE]. Si intéressé : [COMMAND-TRADE-ACCEPT] [CODE]. Pour annuler : [COMMAND-TRADE-CANCEL].",
+      "elementNotInPossession": "Vous ne pouvez pas échanger quelque chose que vous n'avez pas.",
+      "tooExpensive": "Échange trop cher. Il coute [PRICE], mais vous n'avez que [CURRENT_MONEY]",
+      "cancelled": "Échange annulé.",
+      "cannotCancelNotOwner": "Tu n'es pas le créateur du trade et ne peut donc pas l'annuler !",
+      "codeInvalidOrExpired": "Le code de trade est invalide ou expiré."        
+    },
     "type": {
       "fire": "feu",
       "water": "eau",
@@ -124,6 +132,19 @@
   ],
   "CommandSettings": {
     "CmdScrap": "!scrap",
-    "CmdBuy": "!buy"
+    "CmdBuy": "!buy",
+    "CmdTradeRequest": "!trade",
+    "CmdTradeAccept": "!trade-accept",
+    "CmdTradeCancel": "!trade-cancel"
+  },
+  "TradeSettings": {
+    "PaidTrade": true,
+    "Prices": {
+      "BasePrice": 5,
+      "PerShinyIncreasement": 10,
+      "PerRarityIncreasement": 0,
+      "PerCustomIncreasement": 0,
+      "PerLegendaryIncreasement": 25
+    }
   }
 }

@@ -20,6 +20,7 @@ namespace PKServ
         public ScrapSettings ScrapSettings { get; set; }
         public OverlaySettings OverlaySettings { get; set; }
         public CommandSettings CommandSettings { get; set; }
+        public TradeSettings TradeSettings { get; set; }
 
         
     }
@@ -162,6 +163,7 @@ namespace PKServ
         public string err_creationCodeUser;
         public TranslationScrapping TranslationScrapping;
         public TranslationBuying TranslationBuying;
+        public TranslationTrading TranslationTrading;
         public Emotes emotes;
         public Types types;
     }
@@ -171,6 +173,15 @@ namespace PKServ
         public string NotEnoughElementCopy;
         public string ElementNotRegistered;
         public string ScrapModeDoesNotExist;
+    }
+    public class TranslationTrading
+    {
+        public string tradeRequestCreated;
+        public string elementNotInPossession;
+        public string tooExpensive;
+        public string cancelled;
+        public string cannotCancelNotOwner;
+        public string codeInvalidOrExpired;
     }
     public class TranslationBuying
     {
@@ -228,5 +239,23 @@ namespace PKServ
     {
         public string CmdScrap { get; set; } = "!scrap";
         public string CmdBuy { get; set; } = "!buy";
+        public string CmdTradeRequest { get; set; } = "!trade";
+        public string CmdTradeAccept { get; set; } = "!trade-accept";
+        public string CmdTradeCancel { get; set; } = "!trade-cancel";
+    }
+
+    public class TradeSettings
+    {
+        public bool PaidTrade { get; set; }
+        public TradeSettingsPrices Prices { get; set; }
+    }
+
+    public class TradeSettingsPrices
+    {
+        public int BasePrice { get; set; }
+        public int PerShinyIncreasement { get; set; }
+        public int PerRarityIncreasement { get; set; }
+        public int PerCustomIncreasement { get; set; }
+        public int PerLegendaryIncreasement { get; set; }
     }
 }

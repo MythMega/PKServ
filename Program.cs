@@ -190,6 +190,80 @@ namespace PKServ
                                         responseString = sv.searchResult();
                                         break;
 
+                                    case "Trade/Request":
+                                        TradeRequest tradeRequest = JsonSerializer.Deserialize<TradeRequest>(requestBody, options);
+                                        if(globalAppSettings.TradeSettings.PaidTrade)
+                                        {
+                                            tradeRequest.CalculatePrice(globalAppSettings);
+                                            tradeRequest.UserWhoMadeRequest.generateStats();
+                                            if(tradeRequest.Price > tradeRequest.UserWhoMadeRequest.Stats.CustomMoney)
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationTrading.tooExpensive;
+                                                break;
+                                            }
+                                            if(!tradeRequest.CheckIfCanTradeThisItem())
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationTrading.elementNotInPossession;
+                                                break;
+                                            }
+                                        }
+                                        
+                                        settings.TradeRequests.Add(tradeRequest);
+                                        responseString = tradeRequest.GetMessageCode(globalAppSettings);
+                                        break;
+
+                                    case "Trade/Cancel":
+                                        TradeCancel tradeCancel = JsonSerializer.Deserialize<TradeCancel>(requestBody, options);
+                                        if (settings.TradeRequests.Where(c => c.ID == tradeCancel.ID).Any())
+                                        {
+                                            TradeRequest TR = settings.TradeRequests.Where(x => x.ID == tradeCancel.ID && !x.Completed).FirstOrDefault();
+                                            if(tradeCancel.User.Code_user == TR.UserWhoMadeRequest.Code_user)
+                                            {
+                                                TR.Complete();
+                                                settings.TradeRequests.Remove(TR);
+                                                responseString = globalAppSettings.Texts.TranslationTrading.cancelled;
+                                            }
+                                            else
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationTrading.cannotCancelNotOwner;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            responseString = globalAppSettings.Texts.TranslationTrading.codeInvalidOrExpired;
+                                        }
+                                        break;
+
+                                    case "Trade/Accept":
+                                        TradeAccept tradeAccept = JsonSerializer.Deserialize<TradeAccept>(requestBody, options);
+                                        if(settings.TradeRequests.Where(c => c.ID == tradeAccept.ID).Any())
+                                        {
+                                            TradeRequest TR = settings.TradeRequests.Where(x => x.ID == tradeAccept.ID && !x.Completed).FirstOrDefault();
+                                            tradeAccept.UserWhoAccepted.generateStats();
+                                            if(!tradeAccept.VerifEligibilityMoney(TR.Price))
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationTrading.tooExpensive;
+                                                break;
+                                            }
+                                            if(!tradeAccept.VerifEligibilityCreature(TR.CreatureRequested, data))
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationTrading.elementNotInPossession;
+                                                break;
+                                            }
+                                            
+                                            TR.UserWhoAccepted = tradeAccept.UserWhoAccepted;
+                                            var tradeAction = new Trade(TR);
+                                            tradeAction.SetEnv(globalAppSettings);
+                                            responseString = tradeAction.DoWork(paid: true);
+                                            TR.Complete();
+                                            settings.TradeRequests.Remove(TR);
+                                        }
+                                        else
+                                        {
+                                            responseString = globalAppSettings.Texts.TranslationTrading.codeInvalidOrExpired;
+                                        }
+                                        break;
+
                                     case "Interface/LaunchBall":
                                         ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
                                         ctx = tempFixUserRequest(ctx, data);
@@ -209,6 +283,7 @@ namespace PKServ
 
                                     case "Interface/Trade":
                                         Trade trade = JsonSerializer.Deserialize<Trade>(requestBody, options);
+                                        trade.SetEnv(globalAppSettings: globalAppSettings);
                                         responseString = API_Trade(trade, data, settings, globalAppSettings);
                                         break;
 
@@ -302,7 +377,7 @@ namespace PKServ
                             }
                             catch (Exception e)
                             {
-                                Console.WriteLine("CRITICAL POST ERROR : " + e.Message + "\n" + e.Data);
+                                Console.WriteLine("CRITICAL POST ERROR : " + e.Message + "\n" + e.Data + "\n" + e.Source + "\n" + e.InnerException + "\n");
                             }
 
                             // Auto Export

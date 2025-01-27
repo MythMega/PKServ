@@ -26,7 +26,7 @@ namespace PKServ
             {
                 filepath = Path.Combine("ExportsSimple", this.filename);
             }
-            string token = "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";
+            string token = "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";
             string owner = "MythMega";
             string repos = "PKServExports";
             string path = "exports";
@@ -44,7 +44,7 @@ namespace PKServ
 
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", token);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; GitHubUploader/1.0)");
                 string url = $"https://api.github.com/repos/{owner}/{repos}/contents/{path}/{Path.GetFileName(filepath)}";
 

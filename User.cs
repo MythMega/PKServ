@@ -81,6 +81,7 @@ namespace PKServ
             Stats.CustomMoney = Data.GetDataUserStats_Money(Pseudo, Platform);
             Stats.scrappedNormal = Data.GetDataUserStats_Scrap(Pseudo, Platform, shiny: false);
             Stats.scrappedShiny = Data.GetDataUserStats_Scrap(Pseudo, Platform, shiny: true);
+            Stats.TradeCount = Data.GetDataUserStats_TradeCount(this);
 
             try
             {
@@ -314,6 +315,7 @@ namespace PKServ
         public int LengendariesRegistered = 0;
         public int CustomRegistered = 0;
         public int CustomMoney = 0;
+        public int TradeCount = 0;
 
         public Stats()
         {
