@@ -26,7 +26,7 @@ namespace PKServ
             {
                 filepath = Path.Combine("ExportsSimple", this.filename);
             }
-            string token = "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";
+            string token = globalAppSettings.GitHubTokenUpload;
             string owner = "MythMega";
             string repos = "PKServExports";
             string path = "exports";

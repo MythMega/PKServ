@@ -18,9 +18,9 @@ namespace PKServ
         /// <param name="filepath"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static async Task<string> UploadFileAsync(string filepath)
+        public static async Task<string> UploadFileAsync(string filepath, GlobalAppSettings globalAppSettings)
         {
-            string token = "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";
+            string token = globalAppSettings.GitHubTokenUpload;
             string owner = "MythMega";
             string repos = "PKServExports";
             string path = "exports";

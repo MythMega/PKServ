@@ -5,6 +5,7 @@
   "MustAutoFullExport": true,
   "DelayBeforeFullWebUpdate": 5,
   "LanguageCode": "fr",
+  "GitHubTokenUpload": "INSERT-GITHUB-TOKEN-HERE",
   "Log": {
     "logConsole": {
       "console": true,
@@ -52,7 +53,7 @@
       "tooExpensive": "Échange trop cher. Il coute [PRICE], mais vous n'avez que [CURRENT_MONEY]",
       "cancelled": "Échange annulé.",
       "cannotCancelNotOwner": "Tu n'es pas le créateur du trade et ne peut donc pas l'annuler !",
-      "codeInvalidOrExpired": "Le code de trade est invalide ou expiré."        
+      "codeInvalidOrExpired": "Le code de trade est invalide ou expiré."
     },
     "type": {
       "fire": "feu",

@@ -303,7 +303,7 @@ namespace PKServ
                                     
                                     case "Debug":
                                         Debug debug = JsonSerializer.Deserialize<Debug>(requestBody, options);
-                                        debug.SetEnv(usersHere, settings, requestBody);
+                                        debug.SetEnv(usersHere, settings, requestBody, globalAppSettings);
                                         responseString = await debug.DoDebug();
                                         break;
                                     

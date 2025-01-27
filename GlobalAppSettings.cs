@@ -12,6 +12,7 @@ namespace PKServ
         public bool MustAutoFullExport { get; set; }
         public int DelayBeforeFullWebUpdate { get; set; }
         public string LanguageCode { get; set; } = "en";
+        public string GitHubTokenUpload { get; set; }
         public GlobalAppLog Log { get; set; }
         public TextTranslation Texts { get; set; }
         public MessageSettings MessageSettings { get; set; }

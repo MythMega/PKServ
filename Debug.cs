@@ -15,6 +15,7 @@ namespace PKServ
         private string folderCurrentDebug {  get; set; }
         public List<User> UsersHere { get; set; }
         public AppSettings AppSettings { get; set; }
+        public GlobalAppSettings GlobalAppSettings { get; set; }
 
         public Debug(string DATA)
         {
@@ -181,7 +182,7 @@ exit /b 0
                     if (process.ExitCode == 0)
                     {
                         Console.WriteLine($"\ntask {Path.GetFileName(ProcessFilePath)} success.");
-                        return await Commun.UploadFileAsync(zipFilePath);
+                        return await Commun.UploadFileAsync(zipFilePath, globalAppSettings: GlobalAppSettings);
                     }
                     else
                     {
@@ -201,11 +202,13 @@ exit /b 0
         }
 
 
-        internal void SetEnv(List<User> users, AppSettings settings, string request)
+        internal void SetEnv(List<User> users, AppSettings settings, string request, GlobalAppSettings globalAppSettings)
         {
             UsersHere = users;
             AppSettings = settings;
             Request = request;
+            GlobalAppSettings = globalAppSettings;
         }
+
     }
 }
