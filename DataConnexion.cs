@@ -175,7 +175,7 @@ VALUES ('SQLVersion', '1');";
                 };
                 List<Pokemon> pokemonsEnabled = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./pokemons.json"), options).Where(w => w.enabled).ToList();
                 string query = @"
-            SELECT Id, Pseudo, Stream, Platform, PokeName, CountNormal, CountShiny, DataLastCatch, DataFirstCatch
+            SELECT Id, Pseudo, Stream, Platform, PokeName, CountNormal, CountShiny, DataLastCatch, DataFirstCatch, CODE_USER
             FROM Entrees
             WHERE Pseudo = @Pseudo AND Platform = @Platform";
 
@@ -197,8 +197,9 @@ VALUES ('SQLVersion', '1');";
                             int countShiny = reader.GetInt32(6);
                             DateTime last = reader.GetDateTime(7);
                             DateTime first = reader.GetDateTime(8);
+                            string Code_User = reader.GetString(9);
 
-                            entriesByPseudo.Add(new Entrie(id, pseudo, stream, platform, pokeName, countNormal, countShiny, last, first));
+                            entriesByPseudo.Add(new Entrie(id, pseudo, stream, platform, pokeName, countNormal, countShiny, last, first, Code_User));
                         }
                     }
                 }

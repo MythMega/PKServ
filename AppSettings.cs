@@ -71,11 +71,11 @@ namespace PKServ
             List<Pokemon> pokemonsAvailable = pokemons.Where(x => !x.isLock).ToList();
             if(pokemonsAvailable.Count == 0)
                 throw new Exception("No Pokemon available (maybe they're all locked = true ?");
-            if (pkb.eclusiveType is not null)
+            if (pkb.exclusiveType is not null)
             {
-                pokemonsAvailable = pokemonsAvailable.Where(p => p.Type1.ToLower() == pkb.eclusiveType.ToLower() || p.Type2.ToLower() == pkb.eclusiveType.ToLower()).ToList();
+                pokemonsAvailable = pokemonsAvailable.Where(p => p.Type1.ToLower() == pkb.exclusiveType.ToLower() || p.Type2.ToLower() == pkb.exclusiveType.ToLower()).ToList();
                 if (pokemonsAvailable.Count == 0)
-                    throw new Exception($"No Pokemon available (found no creature with type {pkb.eclusiveType} forced by the ball).");
+                    throw new Exception($"No Pokemon available (found no creature with type {pkb.exclusiveType} forced by the ball).");
             }
             if (pkb.exlusiveSerie is not null)
             {

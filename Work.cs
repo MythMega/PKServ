@@ -285,8 +285,8 @@ namespace PKServ
                 else
                     entrie.CountNormal++;
                 // a virer a terme
-                if ((entrie.code == null || entrie.code == "" || entrie.code == "unset" || entrie.code == "unset in UserRequest")
-                    && user.Code_user != null && user.Code_user != "" && user.Code_user != "unset" && user.Code_user != "unset in UserRequest")
+                if ((entrie.code == null || entrie.code == "" || entrie.code == "unset" || entrie.code == "unset in UserRequest" || entrie.code == "unset by code")
+                    && user.Code_user != null && user.Code_user != "" && user.Code_user != "unset" && user.Code_user != "unset in UserRequest" && user.Code_user != "unset by code")
                 {
                     entrie.code = user.Code_user;
                     foreach (var item in entriesByPseudo)

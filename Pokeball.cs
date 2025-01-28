@@ -29,7 +29,7 @@
         public int rerollItemForUncaught;
 
         //type that this pokeball can catch
-        public string? eclusiveType;
+        public string? exclusiveType;
 
         //series that pokeball can target
         public string? exlusiveSerie;
@@ -51,7 +51,7 @@
             this.shinyrate = shinyrate;
             this.nightAdditionalRate = nightAdditionalRate;
             this.alreadyCaughtAdditionalRate = alreadyCaughtAdditionalRate;
-            this.eclusiveType = exclusiveType;
+            this.exclusiveType = exclusiveType;
             this.exlusiveSerie = exlusiveSerie;
         }
     }
