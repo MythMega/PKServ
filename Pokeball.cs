@@ -29,7 +29,10 @@
         public int rerollItemForUncaught;
 
         //type that this pokeball can catch
-        public string eclusiveType;
+        public string? eclusiveType;
+
+        //series that pokeball can target
+        public string? exlusiveSerie;
 
         /// <summary>
         /// Constructor
@@ -40,7 +43,7 @@
         /// <param name="shinyrate">3 by default</param>
         /// <param name="nightAdditionalRate">0 by default</param>
         /// <param name="alreadyCaughtAdditionalRate">0 by default</param>
-        public Pokeball(string name, int catchrate, string rewardSource, int shinyrate = 3, int nightAdditionalRate = 0, int alreadyCaughtAdditionalRate = 0, int dexRelativeBonusCatchrate = 0, int dexRelativeBonusShinyrate = 0)
+        public Pokeball(string name, int catchrate, string rewardSource, int shinyrate = 3, int nightAdditionalRate = 0, int alreadyCaughtAdditionalRate = 0, int dexRelativeBonusCatchrate = 0, int dexRelativeBonusShinyrate = 0, string? exclusiveType = null, string exlusiveSerie = null)
         {
             Name = name;
             this.rewardSource = rewardSource;
@@ -48,6 +51,8 @@
             this.shinyrate = shinyrate;
             this.nightAdditionalRate = nightAdditionalRate;
             this.alreadyCaughtAdditionalRate = alreadyCaughtAdditionalRate;
+            this.eclusiveType = exclusiveType;
+            this.exlusiveSerie = exlusiveSerie;
         }
     }
 }

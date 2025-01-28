@@ -65,5 +65,31 @@ namespace PKServ
         public int GetIdPokeByPoke(Pokemon poke) => pokemons.IndexOf(pokemons.Where(w => w.Name_FR == poke.Name_FR).FirstOrDefault());
 
         public int GetIdPokeByName(string pokeName) => pokemons.IndexOf(pokemons.Where(w => w.Name_FR == pokeName).FirstOrDefault());
+
+        internal Pokemon getOnePokeFromBall(Pokeball pkb, bool shinyForced = false)
+        {
+            List<Pokemon> pokemonsAvailable = pokemons.Where(x => !x.isLock).ToList();
+            if(pokemonsAvailable.Count == 0)
+                throw new Exception("No Pokemon available (maybe they're all locked = true ?");
+            if (pkb.eclusiveType is not null)
+            {
+                pokemonsAvailable = pokemonsAvailable.Where(p => p.Type1.ToLower() == pkb.eclusiveType.ToLower() || p.Type2.ToLower() == pkb.eclusiveType.ToLower()).ToList();
+                if (pokemonsAvailable.Count == 0)
+                    throw new Exception($"No Pokemon available (found no creature with type {pkb.eclusiveType} forced by the ball).");
+            }
+            if (pkb.exlusiveSerie is not null)
+            {
+                pokemonsAvailable = pokemonsAvailable.Where(p => p.Serie.ToLower() == pkb.exlusiveSerie.ToLower()).ToList();
+                if (pokemonsAvailable.Count == 0)
+                    throw new Exception($"No Pokemon available (found no creature with serie {pkb.exlusiveSerie} forced by the ball).");
+            }
+            if (shinyForced)
+                return pokemonsAvailable.Where(x => !x.isShinyLock).ToList()[new Random().Next(pokemonsAvailable.Where(x => !x.isShinyLock).Count())];
+            else
+                return pokemonsAvailable[new Random().Next(pokemonsAvailable.Count())];
+
+
+
+        }
     }
 }

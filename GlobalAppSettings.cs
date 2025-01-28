@@ -183,6 +183,12 @@ namespace PKServ
         public string cancelled;
         public string cannotCancelNotOwner;
         public string codeInvalidOrExpired;
+        public string cannotTradeShiny;
+        public string cannotTradeLocked;
+        public string cannotTradeLegendaries;
+        public string cannotTradeShinyAndNormal;
+        public string cannotTradeClassicAndCustom;
+        public string cannotTradeFromDifferentSeries;
     }
     public class TranslationBuying
     {

@@ -53,26 +53,28 @@ namespace PKServ
 
         private void CatchPokemon(Pokeball pkb)
         {
-            Pokemon onePoke = pkb.eclusiveType == null ? appSettings.getOnePoke() : appSettings.getOnePoke(pkb.eclusiveType);
+
+            //Pokemon onePoke = pkb.eclusiveType == null ? appSettings.getOnePoke() : appSettings.getOnePoke(pkb.eclusiveType);
+            Pokemon onePoke = appSettings.getOnePokeFromBall(pkb);
             onePoke.isShiny = false;
             int bonusCatchRate = 0;
             int bonusShinyRate = 0;
             // bonus idée
             if (uc.UserName.ToLower() == "zulwantv")
                 bonusCatchRate = 5;
-            // bonus idée
+            // bonus idée + actif
             if (uc.UserName.ToLower() == "sawancyberpotes")
-                bonusCatchRate = 5;
+                bonusCatchRate = 10;
             // cheat pass
             if (uc.UserName.ToLower() == "mythmega")
             {
                 bonusCatchRate = 35;
                 bonusShinyRate = 15;
-                RerollNewPoke(10, ref onePoke);
+                RerollNewPoke(10, ref onePoke, pkb);
             }
 
             if (pkb.rerollItemForUncaught > 0)
-                RerollNewPoke(pkb.rerollItemForUncaught, ref onePoke);
+                RerollNewPoke(pkb.rerollItemForUncaught, ref onePoke, pkb);
 
             bonusCatchRate += DateTime.Now.Hour < 6 || DateTime.Now.Hour > 18 ? pkb.nightAdditionalRate : 0;
             bonusCatchRate += isAlreadyCatch(onePoke) ? pkb.alreadyCaughtAdditionalRate : 0;
@@ -113,7 +115,7 @@ namespace PKServ
             bool isShiny = random.Next(0, 100) <= pkb.shinyrate + bonusShinyRate;
             if (onePoke.isShinyLock && isShiny)
             {
-                onePoke = appSettings.getOnePokeShiny();
+                onePoke = appSettings.getOnePokeFromBall(pkb, true);
             }
             onePoke.isShiny = isShiny;
             string preinfo = onePoke.isLegendary ? "LEGENDAIRE ! " : "";
@@ -129,12 +131,12 @@ namespace PKServ
             onePoke.isShiny = false;
         }
 
-        private void RerollNewPoke(int reroll, ref Pokemon onePoke)
+        private void RerollNewPoke(int reroll, ref Pokemon onePoke, Pokeball pkb)
         {
             int count = 0;
             while (isAlreadyCatch(onePoke) && reroll <= count)
             {
-                onePoke = appSettings.getOnePoke();
+                onePoke = appSettings.getOnePokeFromBall(pkb);
                 count++;
             }
         }
