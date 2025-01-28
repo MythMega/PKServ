@@ -1,6 +1,6 @@
-﻿using System;
+﻿using PKServ.Configuration;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -9,7 +9,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -22,7 +21,7 @@ namespace PKServ
 
         public async Task<string> UploadFileAsync(string filepath = null)
         {
-            if(filepath is null)
+            if (filepath is null)
             {
                 filepath = Path.Combine("ExportsSimple", this.filename);
             }
@@ -74,10 +73,6 @@ namespace PKServ
                 }
             }
         }
-
-
-
-
 
         public List<string> getLineTables()
         {
@@ -936,7 +931,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                 string displayName = globalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
                 int valueNormal = poke.valueNormal.HasValue ? poke.valueNormal.Value : globalAppSettings.ScrapSettings.ValueDefaultNormal;
                 int valueShiny = poke.valueShiny.HasValue ? poke.valueShiny.Value : globalAppSettings.ScrapSettings.ValueDefaultShiny;
-                
+
                 if (poke.isLegendary && !poke.valueNormal.HasValue)
                     valueNormal = valueNormal * globalAppSettings.ScrapSettings.legendaryMultiplier;
                 if (poke.isLegendary && !poke.valueShiny.HasValue)

@@ -135,7 +135,6 @@ VALUES ('SQLVersion', '1');";
             }
 
             Console.WriteLine("Database updated successfully.");
-
         }
 
         private static bool ColumnExists(SqliteConnection connection, string tableName, string columnName)
@@ -207,6 +206,7 @@ VALUES ('SQLVersion', '1');";
 
             return entriesByPseudo;
         }
+
         public List<Entrie> GetAllEntries(bool includeDisabled = false)
         {
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "database.sqlite");
@@ -526,6 +526,7 @@ VALUES ('SQLVersion', '1');";
                 }
             }
         }
+
         public int GetDataUserStats_Scrap(string pseudo, string platform, bool shiny)
         {
             string info = shiny ? "pokeScrapped_shiny" : "pokeScrapped_normal";
@@ -562,6 +563,7 @@ VALUES ('SQLVersion', '1');";
                 }
             }
         }
+
         public int GetDataUserStats_Money(string pseudo, string platform)
         {
             string info = "customMoney";
@@ -598,6 +600,7 @@ VALUES ('SQLVersion', '1');";
                 }
             }
         }
+
         public int GetDataUserStats_TradeCount(User user)
         {
             string info = "Stat_tradeCount";

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using PKServ.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -53,7 +53,6 @@ namespace PKServ
 
         private void CatchPokemon(Pokeball pkb)
         {
-
             //Pokemon onePoke = pkb.eclusiveType == null ? appSettings.getOnePoke() : appSettings.getOnePoke(pkb.eclusiveType);
             Pokemon onePoke = appSettings.getOnePokeFromBall(pkb);
             onePoke.isShiny = false;
@@ -244,7 +243,7 @@ namespace PKServ
                         ObtainPoke(user, poke);
                         connexion.UpdateUserStatsGiveaway(pseudo: user.Pseudo, platform: user.Platform, isShiny: poke.isShiny);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         errors.Append($"Error : Error for {user.Pseudo} [{user.Platform}].\n{e.InnerException}\nError Message : {e.Message}\nError Data : {e.Data}");
                     }

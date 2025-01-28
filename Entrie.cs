@@ -132,5 +132,17 @@ namespace PKServ
         {
             new DataConnexion().DeleteEntrie(this);
         }
+
+        internal bool IsLinkedWithThatCreatureName(string name)
+        {
+            return this.PokeName.ToLower() == name.ToLower().Replace("_", " ");
+        }
+
+        internal bool IsLinkedWithThatCreature(Pokemon Poke)
+        {
+            return this.PokeName.ToLower() == Poke.AltName ||
+                this.PokeName.ToLower() == Poke.Name_EN ||
+                this.PokeName.ToLower() == Poke.Name_FR;
+        }
     }
 }

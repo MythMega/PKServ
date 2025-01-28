@@ -1,12 +1,10 @@
-﻿using System;
+﻿using PKServ.Configuration;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using PKServ.Configuration;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PKServ
 {
@@ -24,7 +22,6 @@ namespace PKServ
 
         public Trade()
         {
-
         }
 
         [JsonConstructor]
@@ -39,7 +36,6 @@ namespace PKServ
             this.price = 0;
         }
 
-        
         public Trade(TradeRequest request)
         {
             this.trader1 = request.UserWhoAccepted;
@@ -107,21 +103,20 @@ namespace PKServ
             else
                 PokemonLeaveJ1.CountNormal--;
 
-            
             if (pokemon2.isShiny)
                 PokemonLeaveJ2.CountShiny--;
             else
                 PokemonLeaveJ2.CountNormal--;
 
             // on ajoute les pokémon qui arrivent à leurs entrées respectives
-            if(pokemon1.isShiny)
+            if (pokemon1.isShiny)
                 PokemonJoinJ2.CountShiny++;
             else
                 PokemonJoinJ2.CountNormal++;
 
             if (pokemon2.isShiny)
                 PokemonJoinJ1.CountShiny++;
-            else 
+            else
                 PokemonJoinJ1.CountNormal++;
 
             // on valide les données en base de données
@@ -132,12 +127,11 @@ namespace PKServ
             PokemonJoinJ2.Validate(NewLine: J2NeedNewLine);
             PokemonLeaveJ2.Validate(NewLine: false);
 
-            if(paid)
+            if (paid)
             {
                 this.trader1.Stats.CustomMoney -= this.price;
                 this.trader2.Stats.CustomMoney -= this.price;
             }
-            
 
             this.trader1.ValidateStatsBDD();
             this.trader2.ValidateStatsBDD();
@@ -145,7 +139,6 @@ namespace PKServ
             result = "échange réussi";
 
             this.complete = true;
-
 
             return result;
         }
@@ -156,7 +149,6 @@ namespace PKServ
                 ? entries.Any(p => p.PokeName == pokemon.Name_FR && p.CountShiny >= 1)
                 : entries.Any(p => p.PokeName == pokemon.Name_FR && p.CountNormal >= 1);
         }
-
     }
 
     public class TradeRequest
@@ -188,7 +180,6 @@ namespace PKServ
 
         public TradeRequest()
         {
-
         }
 
         [JsonConstructor]
@@ -199,7 +190,7 @@ namespace PKServ
             this.ShinySent = ShinySent;
             this.ShinyWanted = ShinyWanted;
             this.ChannelSource = channelSource;
-            
+
             this.PokeSent = PokeSent.Replace('_', ' ').ToLower();
             this.PokeWanted = PokeWanted.Replace('_', ' ').ToLower();
             bool sentShiny = (this.ShinySent.ToLower() == "shiny" || this.ShinySent.ToLower() == "chromatique");
@@ -244,26 +235,25 @@ namespace PKServ
             int price = globalAppSettings.TradeSettings.Prices.BasePrice;
 
             // shiny
-            if(CreatureSent.isShiny)
+            if (CreatureSent.isShiny)
                 price += globalAppSettings.TradeSettings.Prices.PerShinyIncreasement;
-            if(CreatureRequested.isShiny)
+            if (CreatureRequested.isShiny)
                 price += globalAppSettings.TradeSettings.Prices.PerShinyIncreasement;
 
             // rarity
             price += globalAppSettings.TradeSettings.Prices.PerRarityIncreasement * ((CreatureRequested.rarity.HasValue ? CreatureRequested.rarity.Value : 0) + (CreatureSent.rarity.HasValue ? CreatureSent.rarity.Value : 0));
 
             // custom
-            if(CreatureSent.isCustom)
+            if (CreatureSent.isCustom)
                 price += globalAppSettings.TradeSettings.Prices.PerCustomIncreasement;
-            if(CreatureRequested.isCustom)
+            if (CreatureRequested.isCustom)
                 price += globalAppSettings.TradeSettings.Prices.PerCustomIncreasement;
 
             // legendary
-            if(CreatureSent.isLegendary)
+            if (CreatureSent.isLegendary)
                 price += globalAppSettings.TradeSettings.Prices.PerLegendaryIncreasement;
-            if(CreatureRequested.isLegendary)
+            if (CreatureRequested.isLegendary)
                 price += globalAppSettings.TradeSettings.Prices.PerLegendaryIncreasement;
-
         }
 
         internal string GetMessageCode(GlobalAppSettings globalAppSettings)
@@ -282,7 +272,7 @@ namespace PKServ
         internal bool CheckIfCanTradeThisItem()
         {
             bool result = false;
-           
+
             var entries = new DataConnexion().GetEntriesByPseudo(UserWhoMadeRequest.Pseudo, UserWhoMadeRequest.Platform).Where(e => e.PokeName.ToLower() == CreatureSent.Name_EN.ToLower() || e.PokeName.ToLower() == CreatureSent.Name_FR.ToLower() || e.PokeName.ToLower() == CreatureSent.AltName.ToLower()).FirstOrDefault();
             if (entries != null)
                 result = this.CreatureSent.isShiny ? entries.CountShiny > 0 : entries.CountNormal > 0;
@@ -298,7 +288,6 @@ namespace PKServ
 
         public TradeAccept()
         {
-
         }
 
         public TradeAccept(User user, string ID)

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using PKServ.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -28,7 +28,6 @@ namespace PKServ
             this.appSettings = appSettings;
             this.globalAppSettings = globalAppSettings;
         }
-
 
         internal void SetEnv(DataConnexion data, AppSettings settings, GlobalAppSettings globalAppSettings)
         {
@@ -86,7 +85,6 @@ namespace PKServ
                 {
                     return globalAppSettings.Texts.TranslationBuying.ElementNonBuyable;
                 }
-
             }
 
             return result;

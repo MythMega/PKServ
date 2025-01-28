@@ -22,8 +22,6 @@ namespace PKServ
         public OverlaySettings OverlaySettings { get; set; }
         public CommandSettings CommandSettings { get; set; }
         public TradeSettings TradeSettings { get; set; }
-
-
     }
 
     public class OverlaySettings
@@ -162,6 +160,10 @@ namespace PKServ
         public string warn_userdontexist;
         public string err_request;
         public string err_creationCodeUser;
+        public string noCreatureRegistered;
+        public string CreatureNotRegistered;
+        public string noCreatureWithThatName;
+        public string pokeStatsInfos;
         public TranslationScrapping TranslationScrapping;
         public TranslationBuying TranslationBuying;
         public TranslationTrading TranslationTrading;
@@ -175,6 +177,7 @@ namespace PKServ
         public string ElementNotRegistered;
         public string ScrapModeDoesNotExist;
     }
+
     public class TranslationTrading
     {
         public string tradeRequestCreated;
@@ -190,6 +193,7 @@ namespace PKServ
         public string cannotTradeClassicAndCustom;
         public string cannotTradeFromDifferentSeries;
     }
+
     public class TranslationBuying
     {
         public string ElementNonBuyable;
@@ -235,6 +239,7 @@ namespace PKServ
         public string fighting;
         public string normal;
     }
+
     public class ScrapSettings
     {
         public int ValueDefaultNormal;
@@ -242,6 +247,7 @@ namespace PKServ
         public int minimumToScrap;
         public int legendaryMultiplier;
     }
+
     public class CommandSettings
     {
         public string CmdScrap { get; set; } = "!scrap";
@@ -270,7 +276,7 @@ namespace PKServ
     public class TradeConditions
     {
         public bool EnableShinyInTrade { get; set; }
-        public bool EnableLockedPokemonInTrade { get; set ; }
+        public bool EnableLockedPokemonInTrade { get; set; }
         public bool EnableLegendariesInTrade { get; set; }
         public bool EnableShinyAgainstNormal { get; set; }
         public bool EnableTradeBetweenClassicAndCustom { get; set; }

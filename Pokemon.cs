@@ -64,8 +64,6 @@
         public bool AltNameForced { get; set; } = true;
         public string? Serie { get; set; }
 
-
-
         /// <summary>
         /// constructor
         /// </summary>
@@ -91,7 +89,7 @@
             this.priceNormal = priceNormal;
             this.priceShiny = priceShiny;
             this.rarity = rarity;
-            if(AltName is null)
+            if (AltName is null)
             {
                 this.AltNameForced = true;
                 this.AltName = Name_FR;

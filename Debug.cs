@@ -1,18 +1,18 @@
 ﻿using System;
-using System.IO;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text.Json;
+using System.IO;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace PKServ
 {
     internal class Debug
     {
-        private string DATA {  get; set; }
-        public string Request {  get; set; }
-        private string folderCurrentDebug {  get; set; }
+        private string DATA { get; set; }
+        public string Request { get; set; }
+        private string folderCurrentDebug { get; set; }
         public List<User> UsersHere { get; set; }
         public AppSettings AppSettings { get; set; }
         public GlobalAppSettings GlobalAppSettings { get; set; }
@@ -38,7 +38,6 @@ namespace PKServ
                 string targetDirectory = Path.Combine("ExportsSimple", "DEBUG", folderCurrentDebug);
                 string targetDirectoryFullPath = Path.GetFullPath(targetDirectory);
 
-
                 // Créer les dossiers s'ils n'existent pas
                 Directory.CreateDirectory(targetDirectory);
 
@@ -50,7 +49,6 @@ namespace PKServ
                     // Copier les fichiers JSON
                     foreach (string file in Directory.EnumerateFiles(sourceDirectory, "*.json"))
                     {
-
                         List<string> files = new List<string> { "balls.json", "badges.json", "customOverlays.json", "customPokemons.json", "Triggers.json", "pokemons.json", "_settings.json" };
                         if (files.Contains(Path.GetFileName(file)))
                         {
@@ -70,7 +68,6 @@ namespace PKServ
                         {
                             log.AppendLine($"fichier {Path.GetFileName(file)} ignoré.\n");
                         }
-
                     }
 
                     // full info
@@ -201,7 +198,6 @@ exit /b 0
             }
         }
 
-
         internal void SetEnv(List<User> users, AppSettings settings, string request, GlobalAppSettings globalAppSettings)
         {
             UsersHere = users;
@@ -209,6 +205,5 @@ exit /b 0
             Request = request;
             GlobalAppSettings = globalAppSettings;
         }
-
     }
 }

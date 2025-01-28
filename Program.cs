@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PKServ.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -6,7 +7,6 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -54,7 +54,7 @@ namespace PKServ
             settings.customOverlays.ForEach(overlay => { overlay.SetEnv(data, settings, globalAppSettings, usersHere); overlay.BuildOverlay(true); });
             OverlayGeneration overlays = new OverlayGeneration(data, settings, globalAppSettings, usersHere);
             globalAppSettings.LanguageCode = globalAppSettings.LanguageCode.ToLower();
-            if(globalAppSettings.LanguageCode == "fr")
+            if (globalAppSettings.LanguageCode == "fr")
             {
                 settings.allPokemons.ForEach(p => { if (p.AltNameForced) { p.AltName = p.Name_FR; } });
             }
@@ -163,6 +163,15 @@ namespace PKServ
                                         responseString = GetUserStats(ctx, data, settings, globalAppSettings);
                                         break;
 
+                                    case "GetPokeStats":
+                                        GetPokeStats requestGetPokeStats = JsonSerializer.Deserialize<GetPokeStats>(requestBody, options);
+                                        if (globalAppSettings.AutoSignInGiveAway)
+                                        {
+                                            AddToHere(new User(requestGetPokeStats.User.Pseudo, requestGetPokeStats.User.Platform, requestGetPokeStats.User.Code_user, data), ref usersHere, globalAppSettings);
+                                        }
+                                        responseString = GetOneCreatureStat(requestGetPokeStats, data, settings, globalAppSettings);
+                                        break;
+
                                     case "GetUserLevels":
                                         ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
                                         if (globalAppSettings.AutoSignInGiveAway)
@@ -192,22 +201,24 @@ namespace PKServ
 
                                     case "Trade/Request":
                                         TradeRequest tradeRequest = JsonSerializer.Deserialize<TradeRequest>(requestBody, options);
-                                        if(globalAppSettings.TradeSettings.PaidTrade)
+                                        if (globalAppSettings.TradeSettings.PaidTrade)
                                         {
                                             tradeRequest.CalculatePrice(globalAppSettings);
                                             tradeRequest.UserWhoMadeRequest.generateStats();
-                                            if(tradeRequest.Price > tradeRequest.UserWhoMadeRequest.Stats.CustomMoney)
+                                            if (tradeRequest.Price > tradeRequest.UserWhoMadeRequest.Stats.CustomMoney)
                                             {
                                                 responseString = globalAppSettings.Texts.TranslationTrading.tooExpensive;
                                                 break;
                                             }
-                                            if(!tradeRequest.CheckIfCanTradeThisItem())
+                                            if (!tradeRequest.CheckIfCanTradeThisItem())
                                             {
                                                 responseString = globalAppSettings.Texts.TranslationTrading.elementNotInPossession;
                                                 break;
                                             }
                                         }
+
                                         #region verification
+
                                         if (globalAppSettings.TradeSettings.TradeConditions.EnableShinyInTrade && (tradeRequest.CreatureRequested.isShiny || tradeRequest.CreatureSent.isShiny))
                                         {
                                             responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShiny;
@@ -238,6 +249,7 @@ namespace PKServ
                                             responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShiny;
                                             break;
                                         }
+
                                         #endregion verification
 
                                         settings.TradeRequests.Add(tradeRequest);
@@ -249,7 +261,7 @@ namespace PKServ
                                         if (settings.TradeRequests.Where(c => c.ID == tradeCancel.ID).Any())
                                         {
                                             TradeRequest TR = settings.TradeRequests.Where(x => x.ID == tradeCancel.ID && !x.Completed).FirstOrDefault();
-                                            if(tradeCancel.User.Code_user == TR.UserWhoMadeRequest.Code_user)
+                                            if (tradeCancel.User.Code_user == TR.UserWhoMadeRequest.Code_user)
                                             {
                                                 TR.Complete();
                                                 settings.TradeRequests.Remove(TR);
@@ -268,21 +280,21 @@ namespace PKServ
 
                                     case "Trade/Accept":
                                         TradeAccept tradeAccept = JsonSerializer.Deserialize<TradeAccept>(requestBody, options);
-                                        if(settings.TradeRequests.Where(c => c.ID == tradeAccept.ID).Any())
+                                        if (settings.TradeRequests.Where(c => c.ID == tradeAccept.ID).Any())
                                         {
                                             TradeRequest TR = settings.TradeRequests.Where(x => x.ID == tradeAccept.ID && !x.Completed).FirstOrDefault();
                                             tradeAccept.UserWhoAccepted.generateStats();
-                                            if(!tradeAccept.VerifEligibilityMoney(TR.Price))
+                                            if (!tradeAccept.VerifEligibilityMoney(TR.Price))
                                             {
                                                 responseString = globalAppSettings.Texts.TranslationTrading.tooExpensive;
                                                 break;
                                             }
-                                            if(!tradeAccept.VerifEligibilityCreature(TR.CreatureRequested, data))
+                                            if (!tradeAccept.VerifEligibilityCreature(TR.CreatureRequested, data))
                                             {
                                                 responseString = globalAppSettings.Texts.TranslationTrading.elementNotInPossession;
                                                 break;
                                             }
-                                            
+
                                             TR.UserWhoAccepted = tradeAccept.UserWhoAccepted;
                                             var tradeAction = new Trade(TR);
                                             tradeAction.SetEnv(globalAppSettings);
@@ -332,13 +344,12 @@ namespace PKServ
                                         taskSelected = globalAppSettings.ScheduledTasks.FirstOrDefault(t => t.ProcessFilePath == taskSelected.ProcessFilePath);
                                         API_ExecuteTasks(taskSelected);
                                         break;
-                                    
+
                                     case "Debug":
                                         Debug debug = JsonSerializer.Deserialize<Debug>(requestBody, options);
                                         debug.SetEnv(usersHere, settings, requestBody, globalAppSettings);
                                         responseString = await debug.DoDebug();
                                         break;
-                                    
 
                                     case "System/FixCodeUser":
                                         System_FixCodeUser(data);
@@ -347,7 +358,6 @@ namespace PKServ
                                     case "System/ClearEmptyAccounts":
                                         responseString = SYS_GenerateAvailableDex(settings, data, globalAppSettings);
                                         break;
-
 
                                     case "System/ReloadData":
                                         try
@@ -531,6 +541,35 @@ namespace PKServ
 
             Console.ReadLine();
             listener.Stop();
+        }
+
+        private static string GetOneCreatureStat(GetPokeStats requestGetPokeStats, DataConnexion data, AppSettings settings, GlobalAppSettings globalAppSettings)
+        {
+            requestGetPokeStats.Name.Replace("_", " ").ToLower();
+            List<Entrie> entries = data.GetEntriesByPseudo(requestGetPokeStats.User.Pseudo, requestGetPokeStats.User.Platform);
+            if (entries.Count == 0)
+            {
+                return globalAppSettings.Texts.noCreatureRegistered;
+            }
+            Entrie target = entries.Where(entrie => entrie.IsLinkedWithThatCreatureName(requestGetPokeStats.Name)).FirstOrDefault();
+            if (target != null)
+            {
+                if (settings.allPokemons.Where(poke => poke.Name_EN.ToLower() == requestGetPokeStats.Name || poke.Name_FR.ToLower() == requestGetPokeStats.Name || poke.Name_EN.ToLower() == requestGetPokeStats.Name).Count() > 0)
+                {
+                    return globalAppSettings.Texts.noCreatureWithThatName;
+                }
+                return globalAppSettings.Texts.CreatureNotRegistered;
+            }
+            TimeSpan fc = (DateTime.Now - target.dateFirstCatch);
+            TimeSpan lc = (DateTime.Now - target.dateLastCatch);
+            string TimeSinceFirstCapture = $"{fc.Days} ({target.dateFirstCatch.ToString("g")})";
+            string TimeSinceLastCapture = $"{lc.Days} ({target.dateLastCatch.ToString("g")})";
+
+            return globalAppSettings.Texts.pokeStatsInfos
+                .Replace("[COUNT_NORMAL]", $"{target.CountNormal}")
+                .Replace("[COUNT_SHINY]", $"{target.CountShiny}")
+                .Replace("[TIME_SINCE_FIRST_CAPTURE]", TimeSinceFirstCapture)
+                .Replace("[TIME_SINCE_LAST_CAPTURE]", TimeSinceLastCapture);
         }
 
         private static string API_GetUserHere(List<User> usersHere)

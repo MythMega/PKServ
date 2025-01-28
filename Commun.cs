@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Net.Http.Headers;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Text.Encodings.Web;
 
 namespace PKServ
 {
@@ -67,7 +67,6 @@ namespace PKServ
                 }
             }
         }
-
 
         /// <summary>
         /// Retourne les options nécessaires ç une serialization/deserialization impeccable

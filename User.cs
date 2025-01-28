@@ -1,8 +1,7 @@
-﻿using System;
+﻿using PKServ.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -114,15 +113,16 @@ namespace PKServ
             Stats.badges.ForEach(x => x.Obtained = false);
             foreach (Badge badge in Stats.badges.Where(x => !x.Locked))
             {
-                switch(badge.Type)
+                switch (badge.Type)
                 {
                     case "TotalCatch":
-                        if (badge.Value <= (Stats.pokeCaught-(Stats.giveawayNormal+Stats.giveawayShiny)))
+                        if (badge.Value <= (Stats.pokeCaught - (Stats.giveawayNormal + Stats.giveawayShiny)))
                         {
                             badge.Obtained = true;
                             element += 1;
                         }
                         break;
+
                     case "ShinyCatch":
                         if (badge.Value <= Stats.shinyCaught - Stats.giveawayShiny)
                         {
@@ -130,6 +130,7 @@ namespace PKServ
                             element += 1;
                         }
                         break;
+
                     case "TotalRegistered":
                         if (badge.Value <= entries.Count())
                         {
@@ -137,6 +138,7 @@ namespace PKServ
                             element += 1;
                         }
                         break;
+
                     case "ShinyRegistered":
                         if (badge.Value <= entries.Where(x => x.CountShiny >= 1).Count())
                         {
@@ -144,6 +146,7 @@ namespace PKServ
                             element += 1;
                         }
                         break;
+
                     case "BallLaunched":
                         if (badge.Value <= Stats.ballLaunched)
                         {
@@ -151,6 +154,7 @@ namespace PKServ
                             element += 1;
                         }
                         break;
+
                     case "DaySinceStart":
                         if (badge.Value <= days)
                         {
@@ -158,6 +162,7 @@ namespace PKServ
                             element += 1;
                         }
                         break;
+
                     case "MoneySpent":
                         if (badge.Value <= Stats.moneySpent)
                         {
@@ -165,6 +170,7 @@ namespace PKServ
                             element += 1;
                         }
                         break;
+
                     case "LengendariesRegistered":
                         count = 0;
                         foreach (Pokemon poke in pokemonsLegendaries)
@@ -183,6 +189,7 @@ namespace PKServ
                             element += 1;
                         }
                         break;
+
                     case "CustomRegistered":
                         count = 0;
                         foreach (Pokemon poke in pokemonsCustom)
@@ -203,14 +210,16 @@ namespace PKServ
                         break;
 
                     case "TotalGiven":
-                        if (Stats.giveawayNormal+Stats.giveawayShiny > badge.Value) {
+                        if (Stats.giveawayNormal + Stats.giveawayShiny > badge.Value)
+                        {
                             badge.Obtained = true;
                             element += 1;
                         }
                         break;
 
                     case "ShinyGiven":
-                        if (Stats.giveawayShiny > badge.Value) {
+                        if (Stats.giveawayShiny > badge.Value)
+                        {
                             badge.Obtained = true;
                             element += 1;
                         }
@@ -229,7 +238,7 @@ namespace PKServ
                         bool valide = true;
                         if (badge.SpecificValue.Contains(','))
                         {
-                            foreach(string poke in badge.SpecificValue.Split(','))
+                            foreach (string poke in badge.SpecificValue.Split(','))
                             {
                                 valide = entries.Where(e => e.PokeName.ToLower().Equals(poke.Trim().ToLower(), StringComparison.CurrentCultureIgnoreCase)).Any();
                                 if (!valide) { break; }
@@ -239,11 +248,10 @@ namespace PKServ
                         element += valide ? 1 : 0;
                         break;
                 }
-                
             }
-            foreach(Badge bdg in Stats.badges)
+            foreach (Badge bdg in Stats.badges)
             {
-                if(bdg.Obtained)
+                if (bdg.Obtained)
                 {
                     Stats.totalXP += bdg.XP;
                 }
@@ -255,7 +263,6 @@ namespace PKServ
 
             Stats.currentXP = Stats.totalXP % gas.BadgeSettings.XPPerLevel;
             Stats.level = 1 + ((Stats.totalXP - Stats.currentXP) / gas.BadgeSettings.XPPerLevel);
-
         }
 
         public int getPokeCaught(List<Entrie> entries, bool shiny)
@@ -282,7 +289,8 @@ namespace PKServ
             {
                 Data.UpdateUserAllStats(this);
             }
-            catch {
+            catch
+            {
                 success = false;
             }
             return success;

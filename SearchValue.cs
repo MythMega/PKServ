@@ -1,7 +1,7 @@
-﻿using System;
+﻿using PKServ.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -30,14 +30,12 @@ namespace PKServ
             this.globalAppSettings = globalAppSettings;
         }
 
-
         internal void SetEnv(DataConnexion data, AppSettings settings, GlobalAppSettings globalAppSettings, List<User> users)
         {
             dataConnexion = data;
             this.globalAppSettings = globalAppSettings;
             appSettings = settings;
             UserHere = users;
-
         }
 
         public string searchValue(string value)
@@ -142,7 +140,6 @@ namespace PKServ
 }} ";
                         break;
 
-
                     // bar shinyprogress
                     case "overlayprogressglobalshinydex":
                         result = @$"{{
@@ -164,12 +161,11 @@ namespace PKServ
                             appSettings.catchHistory.Where(x => x.shownInOverlay_lastCaughtPokeSprite == false).FirstOrDefault().shownInOverlay_lastCaughtPokeSprite = true;
                         }
 
-
-
                         result = @$"{{
     ""imageUrl"":""{sprite}""
 }} ";
                         break;
+
                     default:
                         result = "invalid search";
                         break;

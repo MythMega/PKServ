@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PKServ
+﻿namespace PKServ
 {
     public class Badge
     {
@@ -25,6 +19,7 @@ namespace PKServ
         /// - MultiplePoke (multiple pokemon captured) - here the 'value' is useless but must have to be set
         /// </summary>
         public string Type { get; set; }
+
         public int Value { get; set; } = 0;
         public string SpecificValue { get; set; } = "";
 
@@ -38,6 +33,7 @@ namespace PKServ
         /// - exotic
         /// </summary>
         public string Rarity { get; set; }
+
         public string Title { get; set; }
         public string Description { get; set; }
         public int XP { get; set; }

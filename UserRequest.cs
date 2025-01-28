@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using PKServ.Configuration;
+﻿using PKServ.Configuration;
+using System.Linq;
 
 namespace PKServ
 {
@@ -51,6 +51,18 @@ namespace PKServ
                     catch { }
                 }
             }
+        }
+    }
+
+    public class GetPokeStats
+    {
+        public User User { get; set; }
+        public string Name { get; set; }
+
+        public GetPokeStats(User User, string Name)
+        {
+            this.User = User;
+            this.Name = Name;
         }
     }
 }

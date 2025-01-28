@@ -1,7 +1,7 @@
-﻿using System;
+﻿using PKServ.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -19,7 +19,7 @@ namespace PKServ
         /// - fullshiny
         /// - fulldex
         /// - fulldexnormal
-        /// - fulldexshiny 
+        /// - fulldexshiny
         /// </summary>
         public string mode { get; set; }
 
@@ -41,7 +41,6 @@ namespace PKServ
             this.globalAppSettings = globalAppSettings;
         }
 
-
         internal void SetEnv(DataConnexion data, AppSettings settings, GlobalAppSettings globalAppSettings)
         {
             dataConnexion = data;
@@ -53,9 +52,8 @@ namespace PKServ
         {
             this.pokename = this.pokename.ToLower();
             Pokemon poke = appSettings.pokemons.Where(p => p.Name_FR.ToLower() == pokename || p.Name_EN.ToLower() == pokename || p.AltName.ToLower() == pokename).FirstOrDefault();
-            if(poke is null)
+            if (poke is null)
                 return false;
-
 
             string nameFR = poke.Name_FR.ToLower();
             string nameEN = poke.Name_EN.ToLower();
@@ -66,10 +64,8 @@ namespace PKServ
 
         public string DoResult()
         {
-
             this.pokename = pokename.Replace('_', ' ').ToLower();
             Pokemon poke = appSettings.pokemons.Where(p => p.Name_FR.ToLower() == pokename || p.Name_EN.ToLower() == pokename || p.AltName.ToLower() == pokename).FirstOrDefault();
-
 
             string nameFR = String.Empty;
             string nameEN = String.Empty;
@@ -91,7 +87,6 @@ namespace PKServ
             int multiplierNormal = 1;
             int multiplierShiny = 1;
 
-
             if (mode == "complete" || mode == "fullnormal" || mode == "fullshiny" || mode == "normal" || mode == "shiny" || mode == "all")
             {
                 if (!IsValide())
@@ -104,7 +99,6 @@ namespace PKServ
                         return globalAppSettings.Texts.error;
                     }
                     return globalAppSettings.Texts.TranslationScrapping.ScrapModeDoesNotExist;
-
                 }
                 Entrie targetEntrie = entries.FirstOrDefault();
 
@@ -112,12 +106,11 @@ namespace PKServ
             }
             else if (mode == "fulldex" || mode == "fulldexnormal" || mode == "fulldexshiny")
             {
-                entries = dataConnexion.GetEntriesByPseudo(User.Pseudo, User.Platform).Where(entr => entr.CountNormal >= globalAppSettings.ScrapSettings.minimumToScrap+1 || entr.CountShiny >= globalAppSettings.ScrapSettings.minimumToScrap+1).ToList();
+                entries = dataConnexion.GetEntriesByPseudo(User.Pseudo, User.Platform).Where(entr => entr.CountNormal >= globalAppSettings.ScrapSettings.minimumToScrap + 1 || entr.CountShiny >= globalAppSettings.ScrapSettings.minimumToScrap + 1).ToList();
                 foreach (Entrie each in entries)
                 {
                     WorkOnAEntry(each, ref resultat, ref moneyEarned, ref scrapCountNormal, ref scrapCountShiny, ref multiplierNormal, ref multiplierShiny);
                 }
-
             }
 
             // ajouter la thune générée par le scrap à l'utilisateur
@@ -132,7 +125,6 @@ namespace PKServ
 
             if (scrapCountShiny > 0 || scrapCountNormal > 0)
             {
-
                 resultat = scrapCountNormal > 0 ? $" {scrapCountNormal} normal scrapped," : "";
                 resultat += scrapCountShiny > 0 ? $" {scrapCountShiny} shiny scrapped," : "";
                 resultat += $" +{moneyEarned} money.";
@@ -151,12 +143,10 @@ namespace PKServ
             User.generateStats();
             resultat += $" Money actuelle : {User.Stats.CustomMoney}.";
             return resultat;
-
         }
 
         public void WorkOnAEntry(Entrie targetEntrie, ref string resultat, ref int moneyEarned, ref int scrapCountNormal, ref int scrapCountShiny, ref int multiplierNormal, ref int multiplierShiny)
         {
-
             int localScrapCountNormal = 0;
             int localScrapCountShiny = 0;
             multiplierNormal = 1;
@@ -200,7 +190,6 @@ namespace PKServ
                         else
                             moneyEarned += localScrapCountNormal * poke.valueNormal.Value * multiplierNormal;
 
-
                         targetEntrie.CountNormal = globalAppSettings.ScrapSettings.minimumToScrap;
                     }
                     if (targetEntrie.CountShiny > globalAppSettings.ScrapSettings.minimumToScrap)
@@ -210,7 +199,6 @@ namespace PKServ
                             moneyEarned += localScrapCountShiny * globalAppSettings.ScrapSettings.ValueDefaultShiny * multiplierShiny;
                         else
                             moneyEarned += localScrapCountShiny * poke.valueShiny.Value * multiplierShiny;
-
 
                         targetEntrie.CountShiny = globalAppSettings.ScrapSettings.minimumToScrap;
                     }
@@ -227,12 +215,10 @@ namespace PKServ
                         localScrapCountNormal++;
                     }
 
-
                     if (poke.valueNormal is null)
                         moneyEarned += localScrapCountNormal * globalAppSettings.ScrapSettings.ValueDefaultNormal * multiplierNormal;
                     else
                         moneyEarned += localScrapCountNormal * poke.valueNormal.Value * multiplierNormal;
-
 
                     targetEntrie.CountNormal -= 1;
                     break;
@@ -264,12 +250,10 @@ namespace PKServ
                         localScrapCountShiny++;
                     }
 
-
                     if (poke.valueShiny is null)
                         moneyEarned += localScrapCountShiny * globalAppSettings.ScrapSettings.ValueDefaultShiny * multiplierShiny;
                     else
                         moneyEarned += localScrapCountShiny * poke.valueShiny.Value * multiplierShiny;
-
 
                     targetEntrie.CountShiny -= 1;
                     break;
@@ -290,8 +274,6 @@ namespace PKServ
 
                     targetEntrie.CountShiny = globalAppSettings.ScrapSettings.minimumToScrap;
                     break;
-
-
             }
 
             // valider le modification en base de donnée (sans créer de nouvelle ligne)
@@ -302,6 +284,5 @@ namespace PKServ
 
             #endregion Work
         }
-
     }
 }

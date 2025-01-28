@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PKServ.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -18,14 +18,12 @@ namespace PKServ
         public string Filename { get; set; }
         public string Content { get; set; }
 
-
         public void SetEnv(DataConnexion data, AppSettings settings, GlobalAppSettings globalAppSettings, List<User> users)
         {
             this.data = data;
             this.settings = settings;
             this.globalAppSettings = globalAppSettings;
             usersHere = users;
-
         }
 
         public void BuildOverlay(bool firstLaunch)
@@ -67,20 +65,22 @@ namespace PKServ
 
                 WriteFile();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                if(!firstLaunch)
+                if (!firstLaunch)
                 {
                     Console.WriteLine(Filename + " not yet generated.");
                 }
             }
         }
+
         public void WriteFile()
         {
             // Écrit le contenu de chaque overlay dans un fichier pour chaque
             File.WriteAllText(Path.Combine(folderLocation, Filename), Content);
         }
     }
+
     public class Overlay
     {
         public string filename { get; set; }
@@ -1199,7 +1199,6 @@ namespace PKServ
 
         public void TextsUpdate()
         {
-
             List<Entrie> allentries = data.GetAllEntries();
 
             // texts
@@ -1233,14 +1232,12 @@ namespace PKServ
             files["session.pokemon.MostCaught.EN.txt"] = mostCaughtUserGroup?.FirstOrDefault()?.Pokemon?.Name_EN ?? "";
             files["session.pokemon.MostCaught.FR.txt"] = mostCaughtUserGroup?.FirstOrDefault()?.Pokemon?.Name_FR ?? "";
 
-
             var mostUsedPokeball = settings.catchHistory
                 .GroupBy(x => x.Ball.Name)
                 .OrderByDescending(g => g.Count())
                 .FirstOrDefault();
             files["session.ball.LastUsed.txt"] = settings.catchHistory.Any() ? settings.catchHistory.Last().Ball?.Name ?? "" : "";
             files["session.ball.MostUsed.txt"] = mostUsedPokeball?.FirstOrDefault().Ball?.Name ?? "";
-
 
             files["session.money.spent.txt"] = settings.catchHistory.Sum(x => x.price).ToString() ?? "0";
 

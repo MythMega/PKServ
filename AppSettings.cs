@@ -1,7 +1,7 @@
-﻿using System;
+﻿using PKServ.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using PKServ.Configuration;
 
 namespace PKServ
 {
@@ -55,7 +55,6 @@ namespace PKServ
                 {
                     Console.WriteLine($"{poke.Name_FR} does not have type 1");
                 }
-
             }
             return pokemonsCompatibles[new Random().Next(pokemonsCompatibles.Count)];
         }
@@ -69,7 +68,7 @@ namespace PKServ
         internal Pokemon getOnePokeFromBall(Pokeball pkb, bool shinyForced = false)
         {
             List<Pokemon> pokemonsAvailable = pokemons.Where(x => !x.isLock).ToList();
-            if(pokemonsAvailable.Count == 0)
+            if (pokemonsAvailable.Count == 0)
                 throw new Exception("No Pokemon available (maybe they're all locked = true ?");
             if (pkb.exclusiveType is not null)
             {
@@ -87,9 +86,6 @@ namespace PKServ
                 return pokemonsAvailable.Where(x => !x.isShinyLock).ToList()[new Random().Next(pokemonsAvailable.Where(x => !x.isShinyLock).Count())];
             else
                 return pokemonsAvailable[new Random().Next(pokemonsAvailable.Count())];
-
-
-
         }
     }
 }

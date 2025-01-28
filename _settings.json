@@ -27,6 +27,10 @@
     "warn_heavyAction": "Cette action peut être lourde et endommager la base de données, s'il vous plait sauvegarder tous fichier de base de données'",
     "warn_slowRequest": "Attention, cette action peut causer des problèmes lorsqu'une autre requête du serveur est faite en même temps, ne spammez pas cette option. Continuer ?",
     "info_giveawayValidate": "Tu fais bien partie du giveaway.",
+    "noCreatureRegistered": "Tu ne possède pas de poké.",
+    "CreatureNotRegistered": "Tu ne possède pas ce poké.",
+    "noCreatureWithThatName": "Il n'existe aucun poké avec ce nom.",
+    "pokeStatsInfos": "Tu possède [COUNT_NORMAL] normal, et [COUNT_SHINY], tu as capturé le premier il y a [TIME_SINCE_FIRST_CAPTURE], et le dernier [TIME_SINCE_LAST_CAPTURE].",
     "emotes": {
       "shiny": "✨",
       "ball": "㋡",
