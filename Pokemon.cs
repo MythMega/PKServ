@@ -62,6 +62,7 @@
         public string? AltName { get; set; }
 
         public bool AltNameForced { get; set; } = true;
+        public string? Serie { get; set; }
 
 
 
@@ -75,7 +76,7 @@
         /// <param name="isCustom">false by default</param>
         /// <param name="isLock">false by default</param>
         /// <param name="isLegendary">false by default</param>
-        public Pokemon(string name_FR, string name_EN, string sprite_Shiny, string sprite_Normal, bool isCustom = false, bool isLock = false, bool isLegendary = false, bool isShinyLock = false, int? valueNormal = null, int? valueShiny = null, int? priceNormal = null, int? priceShiny = null, int? rarity = 1, string AltName = null)
+        public Pokemon(string name_FR, string name_EN, string sprite_Shiny, string sprite_Normal, bool isCustom = false, bool isLock = false, bool isLegendary = false, bool isShinyLock = false, int? valueNormal = null, int? valueShiny = null, int? priceNormal = null, int? priceShiny = null, int? rarity = 1, string AltName = null, string Serie = "main")
         {
             Name_FR = name_FR;
             Name_EN = name_EN;
@@ -100,6 +101,7 @@
                 this.AltNameForced = false;
                 this.AltName = AltName;
             }
+            this.Serie = Serie;
         }
     }
 }

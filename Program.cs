@@ -207,7 +207,39 @@ namespace PKServ
                                                 break;
                                             }
                                         }
-                                        
+                                        #region verification
+                                        if (globalAppSettings.TradeSettings.TradeConditions.EnableShinyInTrade && (tradeRequest.CreatureRequested.isShiny || tradeRequest.CreatureSent.isShiny))
+                                        {
+                                            responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShiny;
+                                            break;
+                                        }
+                                        if (globalAppSettings.TradeSettings.TradeConditions.EnableLockedPokemonInTrade && (tradeRequest.CreatureRequested.isLock || tradeRequest.CreatureSent.isLock))
+                                        {
+                                            responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeLocked;
+                                            break;
+                                        }
+                                        if (globalAppSettings.TradeSettings.TradeConditions.EnableLegendariesInTrade && (tradeRequest.CreatureRequested.isLegendary || tradeRequest.CreatureSent.isLegendary))
+                                        {
+                                            responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShiny;
+                                            break;
+                                        }
+                                        if (globalAppSettings.TradeSettings.TradeConditions.EnableShinyAgainstNormal && (tradeRequest.CreatureRequested.isShiny != tradeRequest.CreatureSent.isShiny))
+                                        {
+                                            responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShinyAndNormal;
+                                            break;
+                                        }
+                                        if (globalAppSettings.TradeSettings.TradeConditions.EnableTradeBetweenClassicAndCustom && (tradeRequest.CreatureRequested.isCustom != tradeRequest.CreatureSent.isCustom))
+                                        {
+                                            responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeClassicAndCustom;
+                                            break;
+                                        }
+                                        if (globalAppSettings.TradeSettings.TradeConditions.EnableTradeBetweenDifferentSeries && (tradeRequest.CreatureRequested.Serie.ToLower() != tradeRequest.CreatureSent.Serie.ToLower()))
+                                        {
+                                            responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShiny;
+                                            break;
+                                        }
+                                        #endregion verification
+
                                         settings.TradeRequests.Add(tradeRequest);
                                         responseString = tradeRequest.GetMessageCode(globalAppSettings);
                                         break;

@@ -23,7 +23,7 @@ namespace PKServ
         public CommandSettings CommandSettings { get; set; }
         public TradeSettings TradeSettings { get; set; }
 
-        
+
     }
 
     public class OverlaySettings
@@ -249,6 +249,7 @@ namespace PKServ
     {
         public bool PaidTrade { get; set; }
         public TradeSettingsPrices Prices { get; set; }
+        public TradeConditions TradeConditions { get; set; }
     }
 
     public class TradeSettingsPrices
@@ -258,5 +259,15 @@ namespace PKServ
         public int PerRarityIncreasement { get; set; }
         public int PerCustomIncreasement { get; set; }
         public int PerLegendaryIncreasement { get; set; }
+    }
+
+    public class TradeConditions
+    {
+        public bool EnableShinyInTrade { get; set; }
+        public bool EnableLockedPokemonInTrade { get; set ; }
+        public bool EnableLegendariesInTrade { get; set; }
+        public bool EnableShinyAgainstNormal { get; set; }
+        public bool EnableTradeBetweenClassicAndCustom { get; set; }
+        public bool EnableTradeBetweenDifferentSeries { get; set; }
     }
 }

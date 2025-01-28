@@ -53,7 +53,13 @@
       "tooExpensive": "Échange trop cher. Il coute [PRICE], mais vous n'avez que [CURRENT_MONEY]",
       "cancelled": "Échange annulé.",
       "cannotCancelNotOwner": "Tu n'es pas le créateur du trade et ne peut donc pas l'annuler !",
-      "codeInvalidOrExpired": "Le code de trade est invalide ou expiré."
+      "codeInvalidOrExpired": "Le code de trade est invalide ou expiré.",
+      "cannotTradeShiny": "Vous ne pouvez pas trade un élément shiny.",
+      "cannotTradeLocked": "Vous ne pouvez pas trade un élément indisponible a la capture.",
+      "cannotTradeLegendaries": "Vous ne pouvez pas trade un élément légendaire.",
+      "cannotTradeShinyAndNormal": "Vous ne pouvez pas trade un élément shiny contre un élément normal.",
+      "cannotTradeClassicAndCustom": "Vous ne pouvez pas trade un élément classique contre un élément custom.",
+      "cannotTradeFromDifferentSeries": "Vous ne pouvez pas trade deux éléments de différente série ([SERIE_CREATURE_A] / [SERIE_CREATURE_B])"
     },
     "type": {
       "fire": "feu",
@@ -146,6 +152,14 @@
       "PerRarityIncreasement": 0,
       "PerCustomIncreasement": 0,
       "PerLegendaryIncreasement": 25
+    },
+    "TradeConditions": {
+      "EnableShinyInTrade": true,
+      "EnableLockedPokemonInTrade": true,
+      "EnableLegendariesInTrade": true,
+      "EnableShinyAgainstNormal": true,
+      "EnableTradeBetweenClassicAndCustom": true,
+      "EnableTradeBetweenDifferentSeries": true
     }
   }
 }
