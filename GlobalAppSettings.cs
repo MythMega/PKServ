@@ -183,6 +183,7 @@ namespace PKServ
         public string tradeRequestCreated;
         public string elementNotInPossession;
         public string tooExpensive;
+        public string creatureNotFound;
         public string cancelled;
         public string cannotCancelNotOwner;
         public string codeInvalidOrExpired;
@@ -192,6 +193,7 @@ namespace PKServ
         public string cannotTradeShinyAndNormal;
         public string cannotTradeClassicAndCustom;
         public string cannotTradeFromDifferentSeries;
+        public string atLeastOneTradeInitialized;
     }
 
     public class TranslationBuying

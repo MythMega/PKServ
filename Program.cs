@@ -200,60 +200,99 @@ namespace PKServ
                                         break;
 
                                     case "Trade/Request":
-                                        TradeRequest tradeRequest = JsonSerializer.Deserialize<TradeRequest>(requestBody, options);
-                                        if (globalAppSettings.TradeSettings.PaidTrade)
+                                        try
                                         {
-                                            tradeRequest.CalculatePrice(globalAppSettings);
-                                            tradeRequest.UserWhoMadeRequest.generateStats();
-                                            if (tradeRequest.Price > tradeRequest.UserWhoMadeRequest.Stats.CustomMoney)
+                                            TradeRequest tradeRequest = JsonSerializer.Deserialize<TradeRequest>(requestBody, options);
+
+                                            TradeRequest oldTrade = settings.TradeRequests.Where(trade => trade.UserWhoMadeRequest.Code_user == tradeRequest.UserWhoMadeRequest.Code_user && !trade.Completed).FirstOrDefault();
+                                            if (oldTrade is not null)
                                             {
-                                                responseString = globalAppSettings.Texts.TranslationTrading.tooExpensive;
+                                                responseString = $"{globalAppSettings.Texts.TranslationTrading.atLeastOneTradeInitialized} [{globalAppSettings.CommandSettings.CmdTradeCancel} {oldTrade.ID}]";
                                                 break;
                                             }
-                                            if (!tradeRequest.CheckIfCanTradeThisItem())
+
+
+                                            #region verification
+
+                                            if (!globalAppSettings.TradeSettings.TradeConditions.EnableShinyInTrade && (tradeRequest.CreatureRequested.isShiny || tradeRequest.CreatureSent.isShiny))
                                             {
-                                                responseString = globalAppSettings.Texts.TranslationTrading.elementNotInPossession;
+                                                responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShiny;
+                                                break;
+                                            }
+                                            if (!globalAppSettings.TradeSettings.TradeConditions.EnableLockedPokemonInTrade && (tradeRequest.CreatureRequested.isLock || tradeRequest.CreatureSent.isLock))
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeLocked;
+                                                break;
+                                            }
+                                            if (!globalAppSettings.TradeSettings.TradeConditions.EnableLegendariesInTrade && (tradeRequest.CreatureRequested.isLegendary || tradeRequest.CreatureSent.isLegendary))
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShiny;
+                                                break;
+                                            }
+                                            if (!globalAppSettings.TradeSettings.TradeConditions.EnableShinyAgainstNormal && (tradeRequest.CreatureRequested.isShiny != tradeRequest.CreatureSent.isShiny))
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShinyAndNormal;
+                                                break;
+                                            }
+                                            if (!globalAppSettings.TradeSettings.TradeConditions.EnableTradeBetweenClassicAndCustom && (tradeRequest.CreatureRequested.isCustom != tradeRequest.CreatureSent.isCustom))
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeClassicAndCustom;
+                                                break;
+                                            }
+                                            if (!globalAppSettings.TradeSettings.TradeConditions.EnableTradeBetweenDifferentSeries && (tradeRequest.CreatureRequested.Serie.ToLower() != tradeRequest.CreatureSent.Serie.ToLower()))
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShiny;
+                                                break;
+                                            }
+
+                                            #endregion verification
+
+                                            if (globalAppSettings.TradeSettings.PaidTrade)
+                                            {
+                                                tradeRequest.CalculatePrice(globalAppSettings);
+                                                tradeRequest.UserWhoMadeRequest.generateStats();
+                                                if (tradeRequest.Price > tradeRequest.UserWhoMadeRequest.Stats.CustomMoney)
+                                                {
+                                                    responseString = globalAppSettings.Texts.TranslationTrading.tooExpensive
+                                                    .Replace("[PRICE]", $"{tradeRequest.Price}")
+                                                    .Replace("[CURRENT_MONEY]", $"{tradeRequest.UserWhoMadeRequest.Stats.CustomMoney}");
+                                                    break;
+                                                }
+                                                if (!tradeRequest.CheckIfCanTradeThisItem())
+                                                {
+                                                    responseString = globalAppSettings.Texts.TranslationTrading.elementNotInPossession;
+                                                    break;
+                                                }
+                                            }
+
+
+                                            settings.TradeRequests.Add(tradeRequest);
+                                            responseString = tradeRequest.GetMessageCode(globalAppSettings);
+                                        }
+                                        catch(Exception e)
+                                        {
+                                            JsonDocument jsonDocument = JsonDocument.Parse(requestBody);
+                                            JsonElement root = jsonDocument.RootElement;
+                                            try
+                                            {
+                                                string PokeSent = root.GetProperty("PokeSent").GetString();
+                                                string PokeRequested = root.GetProperty("PokeWanted").GetString();
+
+                                                if (e.Message == "Poke Wanted Not Found")
+                                                {
+                                                    responseString = globalAppSettings.Texts.TranslationTrading.creatureNotFound.Replace("[CREATURE]", PokeRequested);
+                                                }
+                                                else if (e.Message == "Poke Sent Not Found")
+                                                {
+                                                    responseString = globalAppSettings.Texts.TranslationTrading.creatureNotFound.Replace("[CREATURE]", PokeSent);
+                                                }
+                                            }
+                                            catch
+                                            {
+                                                responseString = globalAppSettings.Texts.error;
                                                 break;
                                             }
                                         }
-
-                                        #region verification
-
-                                        if (globalAppSettings.TradeSettings.TradeConditions.EnableShinyInTrade && (tradeRequest.CreatureRequested.isShiny || tradeRequest.CreatureSent.isShiny))
-                                        {
-                                            responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShiny;
-                                            break;
-                                        }
-                                        if (globalAppSettings.TradeSettings.TradeConditions.EnableLockedPokemonInTrade && (tradeRequest.CreatureRequested.isLock || tradeRequest.CreatureSent.isLock))
-                                        {
-                                            responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeLocked;
-                                            break;
-                                        }
-                                        if (globalAppSettings.TradeSettings.TradeConditions.EnableLegendariesInTrade && (tradeRequest.CreatureRequested.isLegendary || tradeRequest.CreatureSent.isLegendary))
-                                        {
-                                            responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShiny;
-                                            break;
-                                        }
-                                        if (globalAppSettings.TradeSettings.TradeConditions.EnableShinyAgainstNormal && (tradeRequest.CreatureRequested.isShiny != tradeRequest.CreatureSent.isShiny))
-                                        {
-                                            responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShinyAndNormal;
-                                            break;
-                                        }
-                                        if (globalAppSettings.TradeSettings.TradeConditions.EnableTradeBetweenClassicAndCustom && (tradeRequest.CreatureRequested.isCustom != tradeRequest.CreatureSent.isCustom))
-                                        {
-                                            responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeClassicAndCustom;
-                                            break;
-                                        }
-                                        if (globalAppSettings.TradeSettings.TradeConditions.EnableTradeBetweenDifferentSeries && (tradeRequest.CreatureRequested.Serie.ToLower() != tradeRequest.CreatureSent.Serie.ToLower()))
-                                        {
-                                            responseString = globalAppSettings.Texts.TranslationTrading.cannotTradeShiny;
-                                            break;
-                                        }
-
-                                        #endregion verification
-
-                                        settings.TradeRequests.Add(tradeRequest);
-                                        responseString = tradeRequest.GetMessageCode(globalAppSettings);
                                         break;
 
                                     case "Trade/Cancel":
@@ -280,7 +319,7 @@ namespace PKServ
 
                                     case "Trade/Accept":
                                         TradeAccept tradeAccept = JsonSerializer.Deserialize<TradeAccept>(requestBody, options);
-                                        if (settings.TradeRequests.Where(c => c.ID == tradeAccept.ID).Any())
+                                        if (settings.TradeRequests.Where(c => c.ID == tradeAccept.ID && !c.Completed).Any())
                                         {
                                             TradeRequest TR = settings.TradeRequests.Where(x => x.ID == tradeAccept.ID && !x.Completed).FirstOrDefault();
                                             tradeAccept.UserWhoAccepted.generateStats();
@@ -552,9 +591,9 @@ namespace PKServ
                 return globalAppSettings.Texts.noCreatureRegistered;
             }
             Entrie target = entries.Where(entrie => entrie.IsLinkedWithThatCreatureName(requestGetPokeStats.Name)).FirstOrDefault();
-            if (target != null)
+            if (target == null)
             {
-                if (settings.allPokemons.Where(poke => poke.Name_EN.ToLower() == requestGetPokeStats.Name || poke.Name_FR.ToLower() == requestGetPokeStats.Name || poke.Name_EN.ToLower() == requestGetPokeStats.Name).Count() > 0)
+                if (settings.allPokemons.Where(poke => poke.Name_EN.ToLower() == requestGetPokeStats.Name || poke.Name_FR.ToLower() == requestGetPokeStats.Name || poke.Name_EN.ToLower() == requestGetPokeStats.Name).Count() == 0)
                 {
                     return globalAppSettings.Texts.noCreatureWithThatName;
                 }

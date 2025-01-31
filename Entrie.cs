@@ -135,7 +135,7 @@ namespace PKServ
 
         internal bool IsLinkedWithThatCreatureName(string name)
         {
-            return this.PokeName.ToLower() == name.ToLower().Replace("_", " ");
+            return this.PokeName.ToLower() == name.ToLower();
         }
 
         internal bool IsLinkedWithThatCreature(Pokemon Poke)

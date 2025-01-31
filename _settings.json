@@ -30,7 +30,7 @@
     "noCreatureRegistered": "Tu ne possède pas de poké.",
     "CreatureNotRegistered": "Tu ne possède pas ce poké.",
     "noCreatureWithThatName": "Il n'existe aucun poké avec ce nom.",
-    "pokeStatsInfos": "Tu possède [COUNT_NORMAL] normal, et [COUNT_SHINY], tu as capturé le premier il y a [TIME_SINCE_FIRST_CAPTURE], et le dernier [TIME_SINCE_LAST_CAPTURE].",
+    "pokeStatsInfos": "Tu possède [COUNT_NORMAL] normal, et [COUNT_SHINY] shinies, tu as capturé le premier il y a [TIME_SINCE_FIRST_CAPTURE] jours, et le dernier il y a [TIME_SINCE_LAST_CAPTURE] jours.",
     "emotes": {
       "shiny": "✨",
       "ball": "㋡",
@@ -55,6 +55,7 @@
       "tradeRequestCreated": "Échange demandé. [USER], qui donne [CREATURE_SENT] en échange de [CREATURE_REQUESTED]. Prix : [PRICE]. Si intéressé : [COMMAND-TRADE-ACCEPT] [CODE]. Pour annuler : [COMMAND-TRADE-CANCEL].",
       "elementNotInPossession": "Vous ne pouvez pas échanger quelque chose que vous n'avez pas.",
       "tooExpensive": "Échange trop cher. Il coute [PRICE], mais vous n'avez que [CURRENT_MONEY]",
+      "creatureNotFound": "Pokémon [CREATURE] non trouvé dans la liste des Pokémons.",
       "cancelled": "Échange annulé.",
       "cannotCancelNotOwner": "Tu n'es pas le créateur du trade et ne peut donc pas l'annuler !",
       "codeInvalidOrExpired": "Le code de trade est invalide ou expiré.",
@@ -63,7 +64,8 @@
       "cannotTradeLegendaries": "Vous ne pouvez pas trade un élément légendaire.",
       "cannotTradeShinyAndNormal": "Vous ne pouvez pas trade un élément shiny contre un élément normal.",
       "cannotTradeClassicAndCustom": "Vous ne pouvez pas trade un élément classique contre un élément custom.",
-      "cannotTradeFromDifferentSeries": "Vous ne pouvez pas trade deux éléments de différente série ([SERIE_CREATURE_A] / [SERIE_CREATURE_B])"
+      "cannotTradeFromDifferentSeries": "Vous ne pouvez pas trade deux éléments de différente série ([SERIE_CREATURE_A] / [SERIE_CREATURE_B])",
+      "atLeastOneTradeInitialized": "Vous ne pouvez avoir qu'un trade en cours. Annulez ou complétez le précédent pour en refaire un autre."
     },
     "type": {
       "fire": "feu",
