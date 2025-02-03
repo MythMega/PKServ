@@ -62,7 +62,7 @@ namespace PKServ
         public GetPokeStats(User User, string Name)
         {
             this.User = User;
-            this.Name = Name;
+            this.Name = Name.ToLower().Replace("_", " ");
         }
     }
 }

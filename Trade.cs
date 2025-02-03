@@ -193,8 +193,8 @@ namespace PKServ
 
             this.PokeSent = PokeSent.Replace('_', ' ').ToLower();
             this.PokeWanted = PokeWanted.Replace('_', ' ').ToLower();
-            bool sentShiny = (this.ShinySent.ToLower() == "shiny" || this.ShinySent.ToLower() == "chromatique");
-            bool requestedShiny = (this.ShinyWanted.ToLower() == "shiny" || this.ShinyWanted.ToLower() == "chromatique");
+            bool sentShiny = (this.ShinySent.ToLower() == "shiny" || this.ShinySent.ToLower() == "chromatique" || this.ShinySent.ToLower() == "s");
+            bool requestedShiny = (this.ShinyWanted.ToLower() == "shiny" || this.ShinyWanted.ToLower() == "chromatique" || this.ShinyWanted.ToLower() == "s");
 
             InitializePokemons(this.PokeSent, this.PokeWanted, sentShiny, requestedShiny);
         }
@@ -225,7 +225,7 @@ namespace PKServ
                 throw new Exception("Poke Wanted Not Found");
             }
 
-            this.CreatureSent.isShiny = requestedShiny;
+            this.CreatureSent.isShiny = sentShiny;
             this.CreatureRequested.isShiny = requestedShiny;
         }
 
@@ -254,6 +254,8 @@ namespace PKServ
                 price += globalAppSettings.TradeSettings.Prices.PerLegendaryIncreasement;
             if (CreatureRequested.isLegendary)
                 price += globalAppSettings.TradeSettings.Prices.PerLegendaryIncreasement;
+
+            this.Price = price;
         }
 
         internal string GetMessageCode(GlobalAppSettings globalAppSettings)
@@ -298,7 +300,7 @@ namespace PKServ
 
         internal bool VerifEligibilityMoney(int money)
         {
-            throw new NotImplementedException();
+            return UserWhoAccepted.Stats.CustomMoney > money;
         }
 
         internal bool VerifEligibilityCreature(Pokemon poke, DataConnexion data)

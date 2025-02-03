@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -23,6 +24,7 @@ namespace PKServ
             };
 
             GlobalAppSettings globalAppSettings = JsonSerializer.Deserialize<GlobalAppSettings>(File.ReadAllText("./_settings.json"), options);
+            globalAppSettings.SetDefaultValue();
 
             HttpListener listener = new HttpListener();
             listener.Prefixes.Add($"http://localhost:{globalAppSettings.ServerPort}/");
@@ -128,6 +130,19 @@ namespace PKServ
                                         responseString = CatchPoke(ctx, data, settings, globalAppSettings);
                                         break;
 
+                                    case "Evolve":
+                                        CreatureEvolutionRequest creatureEvolutionRequest = JsonSerializer.Deserialize<CreatureEvolutionRequest>(requestBody, options);
+                                        try
+                                        {
+                                            creatureEvolutionRequest.SetCreatures(settings.pokemons, globalAppSettings);
+                                            responseString = creatureEvolutionRequest.DoEvolve(data, globalAppSettings);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            responseString = e.Message;
+                                        }
+                                        break;
+
                                     case "SignIn":
                                         ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
                                         User a = JsonSerializer.Deserialize<User>(requestBody, options);
@@ -182,9 +197,16 @@ namespace PKServ
                                         break;
 
                                     case "ScrapElement":
-                                        Scrapping scrapping = JsonSerializer.Deserialize<Scrapping>(requestBody, options);
-                                        scrapping.SetEnv(data, settings, globalAppSettings);
-                                        responseString = scrapping.DoResult();
+                                        try
+                                        {
+                                            Scrapping scrapping = JsonSerializer.Deserialize<Scrapping>(requestBody, options);
+                                            scrapping.SetEnv(data, settings, globalAppSettings);
+                                            responseString = scrapping.DoResult();
+                                        }
+                                        catch
+                                        {
+                                            Console.WriteLine("erreur scrap");
+                                        }
                                         break;
 
                                     case "BuyElement":
@@ -210,7 +232,6 @@ namespace PKServ
                                                 responseString = $"{globalAppSettings.Texts.TranslationTrading.atLeastOneTradeInitialized} [{globalAppSettings.CommandSettings.CmdTradeCancel} {oldTrade.ID}]";
                                                 break;
                                             }
-
 
                                             #region verification
 
@@ -265,11 +286,10 @@ namespace PKServ
                                                 }
                                             }
 
-
                                             settings.TradeRequests.Add(tradeRequest);
                                             responseString = tradeRequest.GetMessageCode(globalAppSettings);
                                         }
-                                        catch(Exception e)
+                                        catch (Exception e)
                                         {
                                             JsonDocument jsonDocument = JsonDocument.Parse(requestBody);
                                             JsonElement root = jsonDocument.RootElement;
@@ -347,6 +367,48 @@ namespace PKServ
                                         }
                                         break;
 
+                                    case "Raid/GiveawayPoke":
+                                        if (settings.ActiveRaid is null)
+                                        {
+                                            responseString = globalAppSettings.Texts.TranslationRaid.NoActiveRaid;
+                                            break;
+                                        }
+                                        responseString = settings.ActiveRaid.GivePoke();
+                                        break;
+
+                                    case "Raid/Attack":
+                                        User raidAttacker = JsonSerializer.Deserialize<User>(requestBody, options);
+                                        if (settings.ActiveRaid is null)
+                                        {
+                                            responseString = globalAppSettings.Texts.TranslationRaid.NoActiveRaid;
+                                            break;
+                                        }
+                                        if (settings.ActiveRaid.DefeatedTime is not null)
+                                        {
+                                            if (settings.ActiveRaid.DefeatedTime < DateTime.Now.AddMinutes(globalAppSettings.RaidSettings.TimeMinuteToCatchAfterDefeat))
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationRaid.RaidAlreadyGone
+                                                    .Replace("[TIME-TO-CATCH]", $"{globalAppSettings.RaidSettings.TimeMinuteToCatchAfterDefeat}");
+                                                break;
+                                            }
+                                            responseString = globalAppSettings.Texts.TranslationRaid.BossDeafeatedUseCmdToCatchIt
+                                                .Replace("[CMD-CATCH]", globalAppSettings.CommandSettings.CmdRaidCatch);
+                                            break;
+                                        }
+
+                                        responseString = settings.ActiveRaid.Attack(raidAttacker, globalAppSettings);
+                                        break;
+
+                                    case "Raid/CatchResult":
+                                        User raidCatcher = JsonSerializer.Deserialize<User>(requestBody, options);
+                                        if (settings.ActiveRaid is null)
+                                        {
+                                            responseString = globalAppSettings.Texts.TranslationRaid.NoActiveRaid;
+                                            break;
+                                        }
+                                        responseString = settings.ActiveRaid.Catch(globalAppSettings, raidCatcher);
+                                        break;
+
                                     case "Interface/LaunchBall":
                                         ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
                                         ctx = tempFixUserRequest(ctx, data);
@@ -382,6 +444,25 @@ namespace PKServ
                                         ScheduledTask taskSelected = JsonSerializer.Deserialize<ScheduledTask>(requestBody, options);
                                         taskSelected = globalAppSettings.ScheduledTasks.FirstOrDefault(t => t.ProcessFilePath == taskSelected.ProcessFilePath);
                                         API_ExecuteTasks(taskSelected);
+                                        break;
+
+                                    case "Interface/StartRaid":
+                                        Raid raid = JsonSerializer.Deserialize<Raid>(requestBody, options);
+                                        raid.SetDefaultValues(globalAppSettings, data);
+                                        settings.ActiveRaid = raid;
+                                        responseString = $"Raid {settings.ActiveRaid.Boss.Name_FR} {settings.ActiveRaid.PVMax}PV";
+                                        break;
+
+                                    case "Interface/CancelRaid":
+                                        if (settings.ActiveRaid is not null)
+                                        {
+                                            responseString = "Raid Stopped";
+                                            settings.ActiveRaid = null;
+                                        }
+                                        else
+                                        {
+                                            responseString = "No Active Raid";
+                                        }
                                         break;
 
                                     case "Debug":
@@ -492,7 +573,11 @@ namespace PKServ
                             {
                                 Console.WriteLine("Error while Building custom Overlays : " + e.Message);
                             }
-
+                            if(responseString is null)
+                            {
+                                responseString = "";
+                                Console.WriteLine("ERROR WHILE EXECUTING REQUEST : RESPONSESTRING IS NULL");
+                            }
                             byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
                             response.ContentLength64 = buffer.Length;
                             using (Stream output = response.OutputStream)
@@ -544,6 +629,15 @@ namespace PKServ
                                         }
                                         break;
 
+                                    case "GetRaidStatus":
+                                        if (settings.ActiveRaid is null)
+                                        {
+                                            responseString = globalAppSettings.Texts.TranslationRaid.NoActiveRaid;
+                                            break;
+                                        }
+                                        responseString = settings.ActiveRaid.GetRaidStatuts();
+                                        break;
+
                                     case "Interface/GetUserHere":
                                         responseString = API_GetUserHere(usersHere);
                                         break;
@@ -584,7 +678,6 @@ namespace PKServ
 
         private static string GetOneCreatureStat(GetPokeStats requestGetPokeStats, DataConnexion data, AppSettings settings, GlobalAppSettings globalAppSettings)
         {
-            requestGetPokeStats.Name.Replace("_", " ").ToLower();
             List<Entrie> entries = data.GetEntriesByPseudo(requestGetPokeStats.User.Pseudo, requestGetPokeStats.User.Platform);
             if (entries.Count == 0)
             {

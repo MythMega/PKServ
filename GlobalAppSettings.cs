@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace PKServ
 {
@@ -22,6 +23,56 @@ namespace PKServ
         public OverlaySettings OverlaySettings { get; set; }
         public CommandSettings CommandSettings { get; set; }
         public TradeSettings TradeSettings { get; set; }
+        public RaidSettings RaidSettings { get; set; }
+        public EvolveSettings EvolveSettings { get; set; }
+
+        internal void SetDefaultValue()
+        {
+            bool needUpdate = false;
+            try { ServerPort.ToString(); } catch { ServerPort = 5052; needUpdate = true; }
+            try { AutoSignInGiveAway.ToString(); } catch { AutoSignInGiveAway = true; needUpdate = true; }
+            try { KeepUserInGiveAwayAfterShutdown.ToString(); } catch { KeepUserInGiveAwayAfterShutdown = true; needUpdate = true; }
+            try { MustAutoFullExport.ToString(); } catch { MustAutoFullExport = true; needUpdate = true; }
+            try { DelayBeforeFullWebUpdate.ToString(); } catch { DelayBeforeFullWebUpdate = 10; needUpdate = true; }
+            try { LanguageCode.ToString(); } catch { LanguageCode = "en"; needUpdate = true; }
+            try { GitHubTokenUpload.ToString(); } catch { GitHubTokenUpload = "UNSET"; needUpdate = true; }
+
+            // log
+            try { Log.ToString(); } catch { Log = new GlobalAppLog { logConsole = new GlobalAppLogConsole { console = true, logJsonOnConsole = true }, logFile = false }; }
+            try { Log.logConsole.ToString(); } catch { Log.logConsole = new GlobalAppLogConsole { console = true, logJsonOnConsole = true }; }
+            try { Log.logFile.ToString(); } catch { Log.logFile = false; }
+            try { Log.logConsole.logJsonOnConsole.ToString(); } catch { Log.logConsole.logJsonOnConsole = true; }
+            try { Log.logConsole.console.ToString(); } catch { Log.logConsole.console = true; }
+
+            // texts globaux
+            try { Texts.ToString(); } catch { Texts = new TextTranslation(); }
+            try { Texts.serverStarted.ToString(); } catch { Texts.serverStarted = "UNSET"; }
+            try { Texts.serverStopped.ToString(); } catch { Texts.serverStopped = "UNSET"; }
+            try { Texts.serverReloaded.ToString(); } catch { Texts.serverReloaded = "UNSET"; }
+            try { Texts.error.ToString(); } catch { Texts.error = "UNSET"; }
+            try { Texts.dexName.ToString(); } catch { Texts.dexName = "UNSET"; }
+            try { Texts.msg_selectUserFirst.ToString(); } catch { Texts.msg_selectUserFirst = "UNSET"; }
+            try { Texts.msg_confirmation.ToString(); } catch { Texts.msg_confirmation = "UNSET"; }
+            try { Texts.warn_heavyAction.ToString(); } catch { Texts.warn_heavyAction = "UNSET"; }
+            try { Texts.warn_slowRequest.ToString(); } catch { Texts.warn_slowRequest = "UNSET"; }
+            try { Texts.warn_userdontexist.ToString(); } catch { Texts.warn_userdontexist = "UNSET"; }
+            try { Texts.err_request.ToString(); } catch { Texts.err_request = "UNSET"; }
+            try { Texts.err_creationCodeUser.ToString(); } catch { Texts.err_creationCodeUser = "UNSET"; }
+            try { Texts.noCreatureRegistered.ToString(); } catch { Texts.noCreatureRegistered = "UNSET"; }
+            try { Texts.CreatureNotRegistered.ToString(); } catch { Texts.CreatureNotRegistered = "UNSET"; }
+            try { Texts.noCreatureWithThatName.ToString(); } catch { Texts.noCreatureWithThatName = "UNSET"; }
+            try { Texts.pokeStatsInfos.ToString(); } catch { Texts.pokeStatsInfos = "UNSET"; }
+
+            if (needUpdate)
+            {
+                string ab = JsonSerializer.Serialize(this, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
+
+                System.IO.File.WriteAllText("./_settings.json", ab);
+            }
+        }
     }
 
     public class OverlaySettings
@@ -167,6 +218,8 @@ namespace PKServ
         public TranslationScrapping TranslationScrapping;
         public TranslationBuying TranslationBuying;
         public TranslationTrading TranslationTrading;
+        public TranslationRaid TranslationRaid;
+        public TranslationEvolving TranslationEvolving;
         public Emotes emotes;
         public Types types;
     }
@@ -176,6 +229,15 @@ namespace PKServ
         public string NotEnoughElementCopy;
         public string ElementNotRegistered;
         public string ScrapModeDoesNotExist;
+        public string ScrapModeNotGiven;
+    }
+
+    public class TranslationBuying
+    {
+        public string ElementNonBuyable;
+        public string ElementTooExpensive;
+        public string ElementDoesNotExist;
+        public string BuyingModeNotRecognized;
     }
 
     public class TranslationTrading
@@ -196,12 +258,25 @@ namespace PKServ
         public string atLeastOneTradeInitialized;
     }
 
-    public class TranslationBuying
+    public class TranslationRaid
     {
-        public string ElementNonBuyable;
-        public string ElementTooExpensive;
-        public string ElementDoesNotExist;
-        public string BuyingModeNotRecognized;
+        public string NoActiveRaid;
+        public string DamageDone;
+        public string CaptureState;
+        public string RaidAlreadyGone;
+        public string BossDeafeatedUseCmdToCatchIt;
+    }
+
+    public class TranslationEvolving
+    {
+        public string CreatureNotFound;
+        public string EvolutionNotFound;
+        public string CannotEvolveIfShiny;
+        public string CannotEvolveIfEvolutionLocked;
+        public string CannotEvolveIfEvolutionShinyLocked;
+        public string CreatureBaseNotOwned;
+        public string NotEnoughCreatureToEvolve;
+        public string EvolutionSucceed;
     }
 
     public class MessageSettings
@@ -257,6 +332,7 @@ namespace PKServ
         public string CmdTradeRequest { get; set; } = "!trade";
         public string CmdTradeAccept { get; set; } = "!trade-accept";
         public string CmdTradeCancel { get; set; } = "!trade-cancel";
+        public string CmdRaidCatch { get; set; } = "!capture";
     }
 
     public class TradeSettings
@@ -283,5 +359,21 @@ namespace PKServ
         public bool EnableShinyAgainstNormal { get; set; }
         public bool EnableTradeBetweenClassicAndCustom { get; set; }
         public bool EnableTradeBetweenDifferentSeries { get; set; }
+    }
+
+    public class RaidSettings
+    {
+        public int DefaultPV { get; set; }
+        public int DefaultCatchRate { get; set; }
+        public int DefaultShinyRate { get; set; }
+        public int TimeMinuteToCatchAfterDefeat { get; set; }
+    }
+
+    public class EvolveSettings
+    {
+        public int RequiredCreatureToEvolve;
+        public bool AllowShiny;
+        public bool AllowEvolutionLocked;
+        public bool AllowEvolutionShinyLocked;
     }
 }

@@ -29,6 +29,8 @@ namespace PKServ
 
         public List<TradeRequest> TradeRequests = new List<TradeRequest>();
 
+        public Raid? ActiveRaid = null;
+
         public AppSettings()
         {
         }
@@ -72,15 +74,15 @@ namespace PKServ
                 throw new Exception("No Pokemon available (maybe they're all locked = true ?");
             if (pkb.exclusiveType is not null)
             {
-                pokemonsAvailable = pokemonsAvailable.Where(p => p.Type1.ToLower() == pkb.exclusiveType.ToLower() || p.Type2.ToLower() == pkb.exclusiveType.ToLower()).ToList();
+                pokemonsAvailable = pokemonsAvailable.Where(p => p.Type1.ToLower() == pkb.exclusiveType.ToLower() || (p.Type2 is not null && p.Type2.ToLower() == pkb.exclusiveType.ToLower())).ToList();
                 if (pokemonsAvailable.Count == 0)
                     throw new Exception($"No Pokemon available (found no creature with type {pkb.exclusiveType} forced by the ball).");
             }
-            if (pkb.exlusiveSerie is not null)
+            if (pkb.exclusiveSerie is not null)
             {
-                pokemonsAvailable = pokemonsAvailable.Where(p => p.Serie.ToLower() == pkb.exlusiveSerie.ToLower()).ToList();
+                pokemonsAvailable = pokemonsAvailable.Where(p => p.Serie.ToLower() == pkb.exclusiveSerie.ToLower()).ToList();
                 if (pokemonsAvailable.Count == 0)
-                    throw new Exception($"No Pokemon available (found no creature with serie {pkb.exlusiveSerie} forced by the ball).");
+                    throw new Exception($"No Pokemon available (found no creature with serie {pkb.exclusiveSerie} forced by the ball).");
             }
             if (shinyForced)
                 return pokemonsAvailable.Where(x => !x.isShinyLock).ToList()[new Random().Next(pokemonsAvailable.Where(x => !x.isShinyLock).Count())];

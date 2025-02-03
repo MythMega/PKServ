@@ -30,7 +30,7 @@
     "noCreatureRegistered": "Tu ne possède pas de poké.",
     "CreatureNotRegistered": "Tu ne possède pas ce poké.",
     "noCreatureWithThatName": "Il n'existe aucun poké avec ce nom.",
-    "pokeStatsInfos": "Tu possède [COUNT_NORMAL] normal, et [COUNT_SHINY] shinies, tu as capturé le premier il y a [TIME_SINCE_FIRST_CAPTURE] jours, et le dernier il y a [TIME_SINCE_LAST_CAPTURE] jours.",
+    "pokeStatsInfos": "Tu possède [COUNT_NORMAL] normal, et [COUNT_SHINY] shinies, tu as capturé le premier il y a jours ([TIME_SINCE_FIRST_CAPTURE]), et le dernier il y a jours ([TIME_SINCE_LAST_CAPTURE]).",
     "emotes": {
       "shiny": "✨",
       "ball": "㋡",
@@ -43,7 +43,8 @@
     "TranslationScrapping": {
       "NotEnoughElementCopy": "Pas assez de cet element pour le scrapper",
       "ElementNotRegistered": "Element non enregistré",
-      "ScrapModeDoesNotExist": "Cet element n'existe pas"
+      "ScrapModeDoesNotExist": "Le mode de scrap n'est pas reconnu",
+      "ScrapModeNotGiven": "Le mode de scrap doit être donné (normal/shiny/fullnormal/fullshiny/complete/fulldex)"
     },
     "TranslationBuying": {
       "ElementNonBuyable": "Élement non achetable",
@@ -66,6 +67,23 @@
       "cannotTradeClassicAndCustom": "Vous ne pouvez pas trade un élément classique contre un élément custom.",
       "cannotTradeFromDifferentSeries": "Vous ne pouvez pas trade deux éléments de différente série ([SERIE_CREATURE_A] / [SERIE_CREATURE_B])",
       "atLeastOneTradeInitialized": "Vous ne pouvez avoir qu'un trade en cours. Annulez ou complétez le précédent pour en refaire un autre."
+    },
+    "TranslationRaid": {
+      "NoActiveRaid": "Aucun raid actif.",
+      "DamageDone": "UNSET.",
+      "CaptureState": "UNSET.",
+      "RaidAlreadyGone": "Le raid est déjà terminé.",
+      "BossDeafeatedUseCmdToCatchIt": "Boss Vaincu ! Capturez le avec la commande."
+    },
+    "TranslationEvolving": {
+      "CreatureNotFound": "La créature spécifiée n'a pas été trouvée.",
+      "EvolutionNotFound": "Aucune évolution trouvée / activée pour la créature spécifiée.",
+      "CannotEvolveIfShiny": "Il n'est pas autorisé de trade en shiny.",
+      "CannotEvolveIfEvolutionLocked": "La créature évoluée n'est pas disponible a l'évolution.",
+      "CannotEvolveIfEvolutionShinyLocked": "La créature spécifiée ne peut pas évoluer en shiny.",
+      "CreatureBaseNotOwned": "Vous ne possédez pas la créature que vous souhaitez évoluer.",
+      "NotEnoughCreatureToEvolve": "Vous ne possédez pas assez de la créature pour l'évoluer.",
+      "EvolutionSucceed": "Évolué avec succés. Vous avez fusionné [COUNT] [CREATURE_BASE] pour faire 1 [CREATURE_EVOLVED]."
     },
     "type": {
       "fire": "feu",
@@ -151,21 +169,35 @@
     "CmdTradeCancel": "!trade-cancel"
   },
   "TradeSettings": {
-    "PaidTrade": true,
-    "Prices": {
-      "BasePrice": 5,
-      "PerShinyIncreasement": 10,
-      "PerRarityIncreasement": 0,
-      "PerCustomIncreasement": 0,
-      "PerLegendaryIncreasement": 25
-    },
-    "TradeConditions": {
-      "EnableShinyInTrade": true,
-      "EnableLockedPokemonInTrade": true,
-      "EnableLegendariesInTrade": true,
-      "EnableShinyAgainstNormal": true,
-      "EnableTradeBetweenClassicAndCustom": true,
-      "EnableTradeBetweenDifferentSeries": true
+    "TradeSettings": {
+      "PaidTrade": true,
+      "Prices": {
+        "BasePrice": 5,
+        "PerShinyIncreasement": 10,
+        "PerRarityIncreasement": 0,
+        "PerCustomIncreasement": 0,
+        "PerLegendaryIncreasement": 25
+      },
+      "TradeConditions": {
+        "EnableShinyInTrade": true,
+        "EnableLockedPokemonInTrade": true,
+        "EnableLegendariesInTrade": true,
+        "EnableShinyAgainstNormal": true,
+        "EnableTradeBetweenClassicAndCustom": true,
+        "EnableTradeBetweenDifferentSeries": true
+      }
     }
+  },
+  "RaidSettings": {
+    "DefaultPV": 10000,
+    "DefaultCatchRate": 70,
+    "DefaultShinyRate": 33,
+    "TimeMinuteToCatchAfterDefeat": 15
+  },
+  "EvolveSettings": {
+    "RequiredCreatureToEvolve": 10,
+    "AllowShiny": true,
+    "AllowEvolutionLocked": true,
+    "AllowEvolutionShinyLocked": false
   }
 }

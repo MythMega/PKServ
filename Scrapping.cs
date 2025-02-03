@@ -64,6 +64,10 @@ namespace PKServ
 
         public string DoResult()
         {
+            if (this.mode == "")
+            {
+                return globalAppSettings.Texts.TranslationScrapping.ScrapModeNotGiven;
+            }
             this.pokename = pokename.Replace('_', ' ').ToLower();
             Pokemon poke = appSettings.pokemons.Where(p => p.Name_FR.ToLower() == pokename || p.Name_EN.ToLower() == pokename || p.AltName.ToLower() == pokename).FirstOrDefault();
 

@@ -85,7 +85,7 @@
     "dexRelativeBonusCatchrate": 0,
     "dexRelativeBonusShinyrate": 0,
     "rerollItemForUncaught": 1,
-    "eclusiveType": "fire",
+    "exclusiveType": "fire",
     "rewardSource": "Envoyer une season ball"
   }
 ]

@@ -46,6 +46,28 @@
     "enabled": true
   },
   {
+    "Name_FR": "Mega Dracaufeu X",
+    "Name_EN": "Mega Charizard X",
+    "Type1": "fire",
+    "Type2": "dragon",
+    "isLock": true,
+    "enabled": true,
+    "Sprite_Normal": "https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/charizard-mega-x.png",
+    "Sprite_Shiny": "https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/shiny/charizard-mega-x.png",
+    "EvolveFrom": "Dracaufeu"
+  },
+  {
+    "Name_FR": "Mega Dracaufeu Y",
+    "Name_EN": "Mega Charizard Y",
+    "Type1": "fire",
+    "Type2": "flying",
+    "isLock": true,
+    "enabled": true,
+    "Sprite_Normal": "https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/charizard-mega-y.png",
+    "Sprite_Shiny": "https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/shiny/charizard-mega-y.png",
+    "EvolveFrom": "Dracaufeu"
+  },
+  {
     "Name_FR": "Carapuce",
     "Name_EN": "Squirtle",
     "Type1": "water",

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using PKServ.Configuration;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -80,6 +83,37 @@ namespace PKServ
                 WriteIndented = true,
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
+        }
+
+        public static void ObtainPoke(User user, Pokemon poke, DataConnexion connexion, string ChannelSource)
+        {
+            user.Code_user = connexion.GetCodeUserByPlatformPseudo(user);
+            List<Entrie> entriesByPseudo = connexion.GetEntriesByPseudo(user.Pseudo, user.Platform);
+            int count = entriesByPseudo.Where(x => x.PokeName == poke.Name_FR).Count();
+            if (entriesByPseudo.Where(x => x.PokeName == poke.Name_FR).Any())
+            {
+                Entrie entrie = entriesByPseudo.Where(x => x.PokeName == poke.Name_FR).FirstOrDefault();
+                if (poke.isShiny)
+                    entrie.CountShiny++;
+                else
+                    entrie.CountNormal++;
+                // a virer a terme
+                if ((entrie.code == null || entrie.code == "" || entrie.code == "unset" || entrie.code == "unset in UserRequest" || entrie.code == "unset by code")
+                    && user.Code_user != null && user.Code_user != "" && user.Code_user != "unset" && user.Code_user != "unset in UserRequest" && user.Code_user != "unset by code")
+                {
+                    entrie.code = user.Code_user;
+                    foreach (var item in entriesByPseudo)
+                    {
+                        item.code = user.Code_user;
+                        item.Validate(false);
+                    }
+                }
+                entrie.Validate(false);
+            }
+            else
+            {
+                (!poke.isShiny ? new Entrie(-1, user.Pseudo, ChannelSource, user.Platform, poke.Name_FR, 1, 0, DateTime.Now, DateTime.Now, user.Code_user) : new Entrie(-1, user.Pseudo, ChannelSource, user.Platform, poke.Name_FR, 0, 1, DateTime.Now, DateTime.Now, user.Code_user)).Validate(true);
+            }
         }
     }
 }

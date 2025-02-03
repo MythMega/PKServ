@@ -86,6 +86,7 @@ VALUES ('SQLVersion', '1');";
         private void UpdateDatabase()
         {
             int version = 0;
+            bool updated = false;
             string currentVersion = "SQLVersion";
             string newVersion = "NewSQLVersion"; // Remplacez par la nouvelle version que vous souhaitez définir
 
@@ -109,6 +110,7 @@ VALUES ('SQLVersion', '1');";
 
             if (version == 1)
             {
+                updated = true;
                 connection.Open();
 
                 string alterTableSql = @"
