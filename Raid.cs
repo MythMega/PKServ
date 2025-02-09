@@ -10,7 +10,6 @@ namespace PKServ
 {
     public class Raid
     {
-        public Dictionary<User, int> UserDamageTotal { get; set; }
         public Dictionary<User, int> UserDamageBase { get; set; }
 
         /// <summary>
@@ -26,8 +25,13 @@ namespace PKServ
 
         public DateTime? DefeatedTime { get; set; } = null;
 
+        public DateTime StartedTime { get; set; } = DateTime.Now;
+
         // JSON
         public Pokemon Boss { get; set; }
+
+        public RaidDamageBoost? ActiveBoost { get; set; }
+        public RaidStats Stats { get; set; }
 
         public int? PVMax { get; set; } = -1;
         public int? CatchRate { get; set; } = -1;
@@ -37,7 +41,6 @@ namespace PKServ
         [JsonConstructor]
         public Raid(string bossName, int? PVMax = null, int? catchRate = null, int? shinyRate = null)
         {
-            UserDamageTotal = [];
             this.PVMax = PVMax;
             CatchRate = catchRate;
             ShinyRate = shinyRate;
@@ -45,7 +48,7 @@ namespace PKServ
             InitializeBoss(this.bossName);
             this.UserCodeCatchStatut = [];
             this.UserDamageBase = [];
-            this.UserDamageTotal = [];
+            this.Stats = new RaidStats();
         }
 
         public void InitializeBoss(string Name)
@@ -58,7 +61,7 @@ namespace PKServ
             pokemons.AddRange(JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./pokemons.json"), options));
             pokemons.AddRange(JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./customPokemons.json"), options));
             Name = Name.Trim().Replace("_", " ").ToLower();
-            this.Boss = pokemons.Where(x => x.AltName.ToLower() == Name || x.Name_EN.ToLower() == Name || x.Name_FR.ToLower() == Name).FirstOrDefault();
+            this.Boss = pokemons.Where(x => Commun.isSamePoke(x, Name)).FirstOrDefault();
             if (this.Boss == null)
             {
                 throw new Exception($"No boss with name {Name}");
@@ -96,26 +99,62 @@ namespace PKServ
                     critical = true;
                 }
                 damageDone = UserDamageBase.Where(x => x.Key.Code_user == user.Code_user).FirstOrDefault().Value;
-                damageDone = critical ? (int)(damageDone * 1.5) : damageDone + random.Next(30);
+                damageDone = critical ? (int)(damageDone * 1.5) + random.Next(185) : damageDone + random.Next(130);
             }
             else
             {
                 user.generateStats();
                 damageDone = 50 +
                     (random.Next(100)) +
-                    (user.Stats.dexCount * 2) +
-                    (user.Stats.LengendariesRegistered * 10) +
-                    (user.Stats.shinydex * 3);
+                    (user.Stats.dexCount * 1) +
+                    (user.Stats.LengendariesRegistered * 9) +
+                    (user.Stats.shinydex * 2) +
+                    (user.Stats.level * 4) +
+                    (int)(user.Stats.pokeCaught / 10) +
+                    (int)(user.Stats.shinyCaught / 2)
+                    ;
                 UserDamageBase[user] = damageDone;
             }
-
-            if (UserDamageTotal.Where(u => u.Key.Code_user == user.Code_user).Any())
+            // gestion du boost
+            int multiplier = 1;
+            if (ActiveBoost is not null)
             {
-                UserDamageTotal[UserDamageTotal.FirstOrDefault(u => u.Key.Code_user == user.Code_user).Key] += damageDone;
+                if (!ActiveBoost.Validity())
+                {
+                    ActiveBoost = null;
+                }
+                else
+                {
+                    multiplier = ActiveBoost.Multiplicator;
+                    damageDone *= multiplier;
+                }
+            }
+
+            if (Stats.UserDamageCount.Where(u => u.Key.Code_user == user.Code_user).Any())
+            {
+                Stats.UserDamageCount[Stats.UserDamageCount.FirstOrDefault(u => u.Key.Code_user == user.Code_user).Key] += 1;
             }
             else
             {
-                UserDamageTotal[user] = damageDone;
+                Stats.UserDamageCount[user] = 1;
+            }
+
+            if (Stats.UserDamageTotal.Where(u => u.Key.Code_user == user.Code_user).Any())
+            {
+                Stats.UserDamageTotal[Stats.UserDamageTotal.FirstOrDefault(u => u.Key.Code_user == user.Code_user).Key] += damageDone;
+            }
+            else
+            {
+                Stats.UserDamageTotal[user] = damageDone;
+            }
+
+            if (Stats.PlatformDamage.ContainsKey(user.Platform))
+            {
+                Stats.PlatformDamage[user.Platform] += damageDone;
+            }
+            else
+            {
+                Stats.PlatformDamage[user.Platform] = damageDone;
             }
 
             this.PV -= damageDone;
@@ -125,7 +164,7 @@ namespace PKServ
                 this.DefeatedTime = DateTime.Now;
             }
 
-            return critical ? $"CRITIQUE ! {user.Pseudo} fait {damageDone} dégats !" : $"{user.Pseudo} fait {damageDone} dégats ! [{PV}/{PVMax}].";
+            return critical ? $"[X{multiplier}] CRITIQUE ! {user.Pseudo} fait {damageDone} dégats ! [{PV}/{PVMax}]." : $"[X{multiplier}] {user.Pseudo} fait {damageDone} dégats ! [{PV}/{PVMax}].";
         }
 
         /// <summary>
@@ -161,22 +200,129 @@ namespace PKServ
             return JsonSerializer.Serialize(this);
         }
 
-        public string GivePoke()
+        public string GivePoke(bool shiny)
         {
             string r = string.Empty;
             string r_console = string.Empty;
             int count = 0;
+            Boss.isShiny = shiny;
             foreach (User user in this.UserDamageBase.Keys)
             {
+                if (user == null)
+                {
+                    r += $"Erreur pour un gens ou le user est null\n";
+                }
+
                 count++;
-                Commun.ObtainPoke(user, Boss, DataConnexion, "mythmega");
-                r_console += $"{user.Platform} • {user.Pseudo}\n";
+                try
+                {
+                    Commun.ObtainPoke(user, Boss, DataConnexion, "mythmega");
+                }
+                catch
+                {
+                    r += $"Erreur lors du don de poké à {user.Pseudo} [{user.Platform}]\n";
+                }
             }
+            // Trier par valeur croissante
+            var sortedDict = Stats.UserDamageTotal.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+            // Afficher le dictionnaire trié
+            foreach (var item in sortedDict)
+            {
+                r_console += $"{item.Key.Platform} • {item.Key.Pseudo}, {item.Value} dégats ! [en {Stats.UserDamageCount[item.Key]} Attaques] (avg {item.Value / Stats.UserDamageCount[item.Key]}/hit)\n";
+            }
+
+            r_console += "\n\nDamage per platform :\n";
+
+            foreach (var item in Stats.PlatformDamage)
+            {
+                r_console += $" - {item.Key} : {item.Value}\n";
+            }
+            try
+            {
+                TimeSpan diff = this.DefeatedTime.Value - this.StartedTime;
+                int secondes = (int)diff.TotalSeconds;
+                int minutes = 0;
+                int hours = 0;
+                while (secondes > 60)
+                {
+                    minutes++;
+                    secondes -= 60;
+                }
+                while (minutes > 60)
+                {
+                    hours++;
+                    minutes -= 60;
+                }
+                r_console += $"Durée {diff.TotalMinutes}";
+                r_console += $"Soit {hours} heures, {minutes} minutes, {secondes} secondes";
+            }
+            catch { }
+
             r += $"{count} ont reçu le pokémon, voir console pour + d'info";
             Console.WriteLine("===================RAID===================");
             Console.WriteLine(r_console);
             Console.WriteLine("==========================================");
             return r;
+        }
+    }
+
+    public class RaidStats
+    {
+        public Dictionary<string, int> PlatformDamage { get; set; } = [];
+        public Dictionary<User, int> UserDamageCount { get; set; } = [];
+        public Dictionary<User, int> UserDamageTotal { get; set; } = [];
+
+        public RaidStats()
+        {
+        }
+    }
+
+    public class RaidDamageBoost
+    {
+        public int Multiplicator { get; set; }
+        public DateTime? End { get; set; }
+        public int? Minute { get; set; }
+
+        public RaidDamageBoost()
+        {
+        }
+
+        /// <summary>
+        /// dans le cas ou on veut une durée indéfinie, on met le max
+        /// </summary>
+        /// <param name="Multiplier"></param>
+        public RaidDamageBoost(int Multiplicator)
+        {
+            this.Multiplicator = Multiplicator;
+            End = DateTime.MaxValue;
+        }
+
+        /// <summary>
+        /// dans le cas ou un json contiendrais une entrée "Minute"
+        /// </summary>
+        /// <param name="Multiplier"></param>
+        /// <param name="Minute"></param>
+        public RaidDamageBoost(int Multiplicator, int Minute)
+        {
+            this.Multiplicator = Multiplicator;
+            End = DateTime.Now.AddMinutes(Minute);
+        }
+
+        public void Initialize()
+        {
+            if (Minute.HasValue)
+            {
+                End = DateTime.Now.AddMinutes(Minute.Value);
+            }
+            else
+            {
+                End = DateTime.MaxValue;
+            }
+        }
+
+        public bool Validity()
+        {
+            return DateTime.Now < End;
         }
     }
 }

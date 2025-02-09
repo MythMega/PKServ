@@ -66,29 +66,29 @@ namespace PKServ
             bool trader1FillCondition = CheckCondition(entrie_User1, pokemon1);
             bool trader2FillCondition = CheckCondition(entrie_User2, pokemon2);
 
-            Entrie PokemonLeaveJ1 = entrie_User1.Where(x => x.PokeName.ToLower() == pokemon1.Name_EN.ToLower() || x.PokeName.ToLower() == pokemon1.Name_FR.ToLower() || x.PokeName.ToLower() == pokemon1.AltName.ToLower()).FirstOrDefault();
-            Entrie PokemonLeaveJ2 = entrie_User2.Where(x => x.PokeName.ToLower() == pokemon2.Name_EN.ToLower() || x.PokeName.ToLower() == pokemon2.Name_FR.ToLower() || x.PokeName.ToLower() == pokemon2.AltName.ToLower()).FirstOrDefault();
+            Entrie PokemonLeaveJ1 = entrie_User1.Where(x => Commun.isSamePoke(pokemon1, x.PokeName)).FirstOrDefault();
+            Entrie PokemonLeaveJ2 = entrie_User2.Where(x => Commun.isSamePoke(pokemon2, x.PokeName)).FirstOrDefault();
             bool J1NeedNewLine = false;
             bool J2NeedNewLine = false;
             Entrie PokemonJoinJ1 = null;
             Entrie PokemonJoinJ2 = null;
 
             // l'entrée du pokémon recu par joueur 1 existe
-            if (entrie_User1.Where(x => x.PokeName.ToLower() == pokemon2.Name_EN.ToLower() || x.PokeName.ToLower() == pokemon2.Name_FR.ToLower() || x.PokeName.ToLower() == pokemon2.AltName.ToLower()).Any())
+            if (entrie_User1.Where(x => Commun.isSamePoke(pokemon2, x.PokeName)).Any())
             {
-                PokemonJoinJ1 = entrie_User1.Where(x => x.PokeName.ToLower() == pokemon2.Name_EN.ToLower() || x.PokeName.ToLower() == pokemon2.Name_FR.ToLower() || x.PokeName.ToLower() == pokemon2.AltName.ToLower()).FirstOrDefault();
+                PokemonJoinJ1 = entrie_User1.Where(x => Commun.isSamePoke(pokemon2, x.PokeName)).FirstOrDefault();
             }
             // l'entrée du pokémon recu par joueur 1 n'existe pas
             else
             {
-                PokemonJoinJ1 = new Entrie(-1, trader1.Pseudo, Channel, trader1.Platform, pokemon2.Name_FR, 0, 0, DateTime.Now, DateTime.Now, trader1.Code_user);
+                PokemonJoinJ1 = new Entrie(-1, trader1.Pseudo, Channel, trader2.Platform, pokemon2.Name_FR, 0, 0, DateTime.Now, DateTime.Now, trader1.Code_user);
                 J1NeedNewLine = true;
             }
 
             // l'entrée du pokémon recu par joueur 2 existe
-            if (entrie_User2.Where(x => x.PokeName.ToLower() == pokemon1.Name_EN.ToLower() || x.PokeName.ToLower() == pokemon1.Name_FR.ToLower() || x.PokeName.ToLower() == pokemon1.AltName.ToLower()).Any())
+            if (entrie_User2.Where(x => Commun.isSamePoke(pokemon1, x.PokeName)).Any())
             {
-                PokemonJoinJ2 = entrie_User2.Where(x => x.PokeName.ToLower() == pokemon1.Name_EN.ToLower() || x.PokeName.ToLower() == pokemon1.Name_FR.ToLower() || x.PokeName.ToLower() == pokemon1.AltName.ToLower()).FirstOrDefault();
+                PokemonJoinJ2 = entrie_User2.Where(x => Commun.isSamePoke(pokemon1, x.PokeName)).FirstOrDefault();
             }
             // l'entrée du pokémon recu par joueur 2 n'existe pas
             else
@@ -214,12 +214,12 @@ namespace PKServ
             List<Pokemon> pokeAvailable = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./pokemons.json"), options).Where(p => p.enabled).ToList();
             pokeAvailable.AddRange(JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./customPokemons.json"), options).Where(p => p.enabled).ToList());
 
-            this.CreatureSent = pokeAvailable.Where(p => p.Name_EN.ToLower() == pokeSent || p.Name_FR.ToLower() == pokeSent || p.AltName.ToLower() == pokeSent).FirstOrDefault();
+            this.CreatureSent = pokeAvailable.Where(p => Commun.isSamePoke(p, pokeSent)).FirstOrDefault();
             if (this.CreatureSent == null)
             {
                 throw new Exception("Poke Sent Not Found");
             }
-            this.CreatureRequested = pokeAvailable.Where(p => p.Name_EN.ToLower() == pokeWanted || p.Name_FR.ToLower() == pokeWanted || p.AltName.ToLower() == pokeWanted).FirstOrDefault();
+            this.CreatureRequested = pokeAvailable.Where(p => Commun.isSamePoke(p, pokeWanted)).FirstOrDefault();
             if (this.CreatureRequested == null)
             {
                 throw new Exception("Poke Wanted Not Found");
@@ -275,7 +275,7 @@ namespace PKServ
         {
             bool result = false;
 
-            var entries = new DataConnexion().GetEntriesByPseudo(UserWhoMadeRequest.Pseudo, UserWhoMadeRequest.Platform).Where(e => e.PokeName.ToLower() == CreatureSent.Name_EN.ToLower() || e.PokeName.ToLower() == CreatureSent.Name_FR.ToLower() || e.PokeName.ToLower() == CreatureSent.AltName.ToLower()).FirstOrDefault();
+            var entries = new DataConnexion().GetEntriesByPseudo(UserWhoMadeRequest.Pseudo, UserWhoMadeRequest.Platform).Where(e => Commun.isSamePoke(CreatureSent, e.PokeName)).FirstOrDefault();
             if (entries != null)
                 result = this.CreatureSent.isShiny ? entries.CountShiny > 0 : entries.CountNormal > 0;
             return result;
@@ -306,7 +306,7 @@ namespace PKServ
         internal bool VerifEligibilityCreature(Pokemon poke, DataConnexion data)
         {
             bool result = false;
-            var entries = data.GetEntriesByPseudo(this.UserWhoAccepted.Pseudo, this.UserWhoAccepted.Platform).Where(e => e.PokeName.ToLower() == poke.Name_EN.ToLower() || e.PokeName.ToLower() == poke.Name_FR.ToLower() || e.PokeName.ToLower() == poke.AltName.ToLower()).FirstOrDefault();
+            var entries = data.GetEntriesByPseudo(this.UserWhoAccepted.Pseudo, this.UserWhoAccepted.Platform).Where(e => Commun.isSamePoke(poke, e.PokeName)).FirstOrDefault();
             if (entries != null)
                 result = poke.isShiny ? entries.CountShiny > 0 : entries.CountNormal > 0;
             return result;

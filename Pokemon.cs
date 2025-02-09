@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text.Json.Serialization;
 
 namespace PKServ
@@ -132,10 +133,10 @@ namespace PKServ
 
         public void SetCreatures(List<Pokemon> pokemons, GlobalAppSettings globalAppSettings)
         {
-            this.CreatureBase = pokemons.FirstOrDefault(x => x.AltName.ToLower() == Name || x.Name_EN.ToLower() == Name || x.Name_FR.ToLower() == Name);
+            this.CreatureBase = pokemons.FirstOrDefault(x => Commun.isSamePoke(x, Name));
             if (this.CreatureBase == null)
                 throw new Exception(globalAppSettings.Texts.TranslationEvolving.CreatureNotFound);
-            List<Pokemon> TargetPossibles = pokemons.Where(x => x.EvolveFrom is not null).Where(x => x.EvolveFrom.ToLower() == this.CreatureBase.AltName.ToLower() || x.EvolveFrom.ToLower() == this.CreatureBase.Name_FR.ToLower() || x.EvolveFrom.ToLower() == this.CreatureBase.Name_EN.ToLower()).ToList();
+            List<Pokemon> TargetPossibles = pokemons.Where(x => x.EvolveFrom is not null).Where(x => Commun.isSamePoke(this.CreatureBase, x.EvolveFrom)).ToList();
             if (TargetPossibles.Count == 0)
                 throw new Exception(globalAppSettings.Texts.TranslationEvolving.EvolutionNotFound);
             if (TargetPossibles.Count == 1)

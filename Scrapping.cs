@@ -50,8 +50,7 @@ namespace PKServ
 
         public bool IsValide()
         {
-            this.pokename = this.pokename.ToLower();
-            Pokemon poke = appSettings.pokemons.Where(p => p.Name_FR.ToLower() == pokename || p.Name_EN.ToLower() == pokename || p.AltName.ToLower() == pokename).FirstOrDefault();
+            Pokemon poke = appSettings.pokemons.Where(p => Commun.isSamePoke(p, this.pokename)).FirstOrDefault();
             if (poke is null)
                 return false;
 
@@ -69,7 +68,7 @@ namespace PKServ
                 return globalAppSettings.Texts.TranslationScrapping.ScrapModeNotGiven;
             }
             this.pokename = pokename.Replace('_', ' ').ToLower();
-            Pokemon poke = appSettings.pokemons.Where(p => p.Name_FR.ToLower() == pokename || p.Name_EN.ToLower() == pokename || p.AltName.ToLower() == pokename).FirstOrDefault();
+            Pokemon poke = appSettings.pokemons.Where(p => Commun.isSamePoke(p, this.pokename)).FirstOrDefault();
 
             string nameFR = String.Empty;
             string nameEN = String.Empty;

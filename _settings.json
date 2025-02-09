@@ -169,23 +169,21 @@
     "CmdTradeCancel": "!trade-cancel"
   },
   "TradeSettings": {
-    "TradeSettings": {
-      "PaidTrade": true,
-      "Prices": {
-        "BasePrice": 5,
-        "PerShinyIncreasement": 10,
-        "PerRarityIncreasement": 0,
-        "PerCustomIncreasement": 0,
-        "PerLegendaryIncreasement": 25
-      },
-      "TradeConditions": {
-        "EnableShinyInTrade": true,
-        "EnableLockedPokemonInTrade": true,
-        "EnableLegendariesInTrade": true,
-        "EnableShinyAgainstNormal": true,
-        "EnableTradeBetweenClassicAndCustom": true,
-        "EnableTradeBetweenDifferentSeries": true
-      }
+    "PaidTrade": true,
+    "Prices": {
+      "BasePrice": 5,
+      "PerShinyIncreasement": 10,
+      "PerRarityIncreasement": 0,
+      "PerCustomIncreasement": 0,
+      "PerLegendaryIncreasement": 25
+    },
+    "TradeConditions": {
+      "EnableShinyInTrade": true,
+      "EnableLockedPokemonInTrade": true,
+      "EnableLegendariesInTrade": true,
+      "EnableShinyAgainstNormal": true,
+      "EnableTradeBetweenClassicAndCustom": true,
+      "EnableTradeBetweenDifferentSeries": true
     }
   },
   "RaidSettings": {

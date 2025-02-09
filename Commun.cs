@@ -85,6 +85,13 @@ namespace PKServ
             };
         }
 
+        /// <summary>
+        /// Give a creature to a user, from anywhere
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="poke"></param>
+        /// <param name="connexion"></param>
+        /// <param name="ChannelSource"></param>
         public static void ObtainPoke(User user, Pokemon poke, DataConnexion connexion, string ChannelSource)
         {
             user.Code_user = connexion.GetCodeUserByPlatformPseudo(user);
@@ -114,6 +121,28 @@ namespace PKServ
             {
                 (!poke.isShiny ? new Entrie(-1, user.Pseudo, ChannelSource, user.Platform, poke.Name_FR, 1, 0, DateTime.Now, DateTime.Now, user.Code_user) : new Entrie(-1, user.Pseudo, ChannelSource, user.Platform, poke.Name_FR, 0, 1, DateTime.Now, DateTime.Now, user.Code_user)).Validate(true);
             }
+        }
+
+        /// <summary>
+        /// Make a string withtout '_', accentless, lower
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string StringifyChange(string input)
+        {
+            return input.ToLower()
+                .Replace("_", " ")
+                .Replace("é", "e")
+                .Replace("è", "e")
+                .Replace("ê", "e")
+                .Replace("à", "a")
+                .Replace("â", "a");
+        }
+
+        public static bool isSamePoke(Pokemon pokemonSearched, string name)
+        {
+            name = StringifyChange(name);
+            return (StringifyChange(pokemonSearched.AltName) == name || StringifyChange(pokemonSearched.Name_EN) == name || StringifyChange(pokemonSearched.Name_FR) == name);
         }
     }
 }

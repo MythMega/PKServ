@@ -373,7 +373,7 @@ namespace PKServ
                                             responseString = globalAppSettings.Texts.TranslationRaid.NoActiveRaid;
                                             break;
                                         }
-                                        responseString = settings.ActiveRaid.GivePoke();
+                                        responseString = settings.ActiveRaid.GivePoke(requestBody.StartsWith("s"));
                                         break;
 
                                     case "Raid/Attack":
@@ -446,14 +446,14 @@ namespace PKServ
                                         API_ExecuteTasks(taskSelected);
                                         break;
 
-                                    case "Interface/StartRaid":
+                                    case "Interface/Raid/Start":
                                         Raid raid = JsonSerializer.Deserialize<Raid>(requestBody, options);
                                         raid.SetDefaultValues(globalAppSettings, data);
                                         settings.ActiveRaid = raid;
                                         responseString = $"Raid {settings.ActiveRaid.Boss.Name_FR} {settings.ActiveRaid.PVMax}PV";
                                         break;
 
-                                    case "Interface/CancelRaid":
+                                    case "Interface/Raid/Cancel":
                                         if (settings.ActiveRaid is not null)
                                         {
                                             responseString = "Raid Stopped";
@@ -465,7 +465,23 @@ namespace PKServ
                                         }
                                         break;
 
-                                    case "Debug":
+                                    case "Interface/Raid/Boost/Set":
+                                        RaidDamageBoost raidDamageBoost = JsonSerializer.Deserialize<RaidDamageBoost>(requestBody, options);
+                                        raidDamageBoost.Initialize();
+                                        if (settings.ActiveRaid is not null)
+                                        {
+                                            settings.ActiveRaid.ActiveBoost = raidDamageBoost;
+                                        }
+                                        else
+                                        {
+                                            responseString = "No Active Raid";
+                                        }
+                                        break;
+
+                                    case "Interface/Raid/Boost/Cancel":
+                                        break;
+
+                                    case "Debug/GetAllData":
                                         Debug debug = JsonSerializer.Deserialize<Debug>(requestBody, options);
                                         debug.SetEnv(usersHere, settings, requestBody, globalAppSettings);
                                         responseString = await debug.DoDebug();
@@ -573,7 +589,7 @@ namespace PKServ
                             {
                                 Console.WriteLine("Error while Building custom Overlays : " + e.Message);
                             }
-                            if(responseString is null)
+                            if (responseString is null)
                             {
                                 responseString = "";
                                 Console.WriteLine("ERROR WHILE EXECUTING REQUEST : RESPONSESTRING IS NULL");
@@ -636,6 +652,29 @@ namespace PKServ
                                             break;
                                         }
                                         responseString = settings.ActiveRaid.GetRaidStatuts();
+                                        break;
+
+                                    case "Debug/CatchHistory":
+
+                                        switch (queryParameters.AllKeys[0])
+                                        {
+                                            case "Count":
+
+                                                int CountCatchHistory = int.Parse(queryParameters["Count"]);
+                                                string r_console = string.Empty;
+
+                                                foreach (CatchHistory ch in settings.catchHistory.OrderByDescending(o => o.time).Take(CountCatchHistory))
+                                                {
+                                                    string shinyStatut = ch.shiny ? "shiny" : "normal";
+                                                    r_console += $"{ch.time} {ch.User.ToString()} - {ch.Pokemon.Name_FR} ({shinyStatut}) - {ch.Ball.Name}\n";
+                                                }
+                                                Console.WriteLine(r_console);
+                                                break;
+
+                                            default:
+                                                responseString = $"Route non reconnue. \nDEBUG : {requestBody}";
+                                                break;
+                                        }
                                         break;
 
                                     case "Interface/GetUserHere":

@@ -50,7 +50,7 @@ namespace PKServ
                 return globalAppSettings.Texts.TranslationBuying.ElementDoesNotExist;
             }
 
-            Pokemon poke = appSettings.pokemons.Where(x => x.Name_EN.ToLower() == pokename.ToLower() || x.Name_FR.ToLower() == pokename.ToLower()).FirstOrDefault();
+            Pokemon poke = appSettings.pokemons.Where(x => Commun.isSamePoke(x, this.pokename)).FirstOrDefault();
 
             if (!new List<string> { "normal", "shiny" }.Contains(mode.ToLower()))
             {
