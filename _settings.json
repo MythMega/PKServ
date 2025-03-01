@@ -137,7 +137,8 @@
     }
   },
   "BadgeSettings": {
-    "XPPerLevel": 250,
+    "XPRequiredToLevelUp": 250,
+    "LevelUpXPRequiredMultiplierPercent": 25,
     "XPCatch": 1,
     "XPShinyCatch": 5,
     "XPBallLaunched": 1,
@@ -190,7 +191,7 @@
     "DefaultPV": 10000,
     "DefaultCatchRate": 70,
     "DefaultShinyRate": 33,
-    "TimeMinuteToCatchAfterDefeat": 15
+    "TimeMinuteToCatchAfterDefeat": 2
   },
   "EvolveSettings": {
     "RequiredCreatureToEvolve": 10,

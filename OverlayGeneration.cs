@@ -1183,6 +1183,125 @@ namespace PKServ
 ";
             }
 
+
+            // Last Poké Caught
+            files["raidOverlay.html"] = @$"
+<!DOCTYPE html>
+<html lang=""fr"">
+<head>
+    <meta charset=""UTF-8"">
+    <title>Raid Progress</title>
+    <style>
+        body {{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }}
+
+        /* Classe pour masquer tout le contenu */
+        .hidden {{
+            display: none;
+        }}
+
+        .image-container {{
+            position: relative;
+            width: 128px;
+            height: auto;
+        }}
+
+        .image-container img {{
+            width: 128px;
+            height: 128px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }}
+
+        .progress-bar {{
+			padding-top: 140px;
+            width: 256px;
+            height: 20px;
+            background-color: rgba(0, 90, 45, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }}
+
+        .progress-fill {{
+            height: 100%;
+            background-color: #16f7a0;
+            width: 0%;
+            transition: width 0.5s ease;
+        }}
+    </style>
+</head>
+<body>
+
+    <div id=""content"">
+	<center>
+        <div class=""image-container"">
+            <img id=""image-creature"" src="""" alt=""Créature"">
+            <img id=""image-overlay"" src="""" alt=""Overlay"">
+        </div>
+
+        <div class=""progress-bar"">
+            <div class=""progress-fill"" id=""progress-fill""></div>
+        </div>
+	</center>
+    </div>
+
+    <script>
+        function updateContent() {{
+            fetch('http://localhost:{globalAppSettings.ServerPort}/GetRaidInfos')
+                .then(response => response.json())
+                .then(data => {{
+                    const contentDiv = document.getElementById('content');
+					console.log(contentDiv);
+					console.log(""Element"");
+                    // Vérifier si le JSON est vide
+                    if (Object.keys(data).length === 0) {{
+                        // Masquer tout le contenu avec la classe 'hidden'
+                        contentDiv.classList.add('hidden');
+                    }} else {{
+					
+						console.log(data);
+                        // Afficher le contenu si masqué
+                        contentDiv.classList.remove('hidden');
+
+                        // Mettre à jour les images
+                        document.getElementById('image-creature').src = data.Url_Creature;
+                        document.getElementById('image-overlay').src = data.Url_Overlay;
+
+                        // Facultatif : Gérer le cache des images
+                        /*
+                        const timestamp = new Date().getTime();
+                        document.getElementById('image-creature').src = data.Url_Creature + '?t=' + timestamp;
+                        document.getElementById('image-overlay').src = data.Url_Overlay + '?t=' + timestamp;
+                        */
+
+                        // Mettre à jour la barre de progression
+                        const maxValue = data.Bar_Max;
+                        const currentValue = data.Bar_CurrentValue;
+                        const percentage = (currentValue / maxValue) * 100;
+                        document.getElementById('progress-fill').style.width = percentage + '%';
+                    }}
+                }})
+                .catch(error => {{
+                    console.error('Erreur lors de la récupération des données :', error);
+                    // En cas d'erreur, masquer le contenu
+                    document.getElementById('content').classList.add('hidden');
+                }});
+        }}
+
+        // Actualiser les informations toutes les 10 secondes
+        setInterval(updateContent, 10000);
+
+        // Appel initial pour charger les données au démarrage
+        updateContent();
+    </script>
+</body>
+</html>
+";
+
             TextsUpdate();
 
             writeFile();

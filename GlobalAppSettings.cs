@@ -95,7 +95,9 @@ namespace PKServ
     public class BadgeSettings
     {
         // Required XP to level up
-        public int XPPerLevel { get; set; }
+        public int XPRequiredToLevelUp { get; set; }
+
+        public int LevelUpXPRequiredMultiplierPercent { get; set; }
 
         // XP rewarded for normal catch
         public int XPCatch { get; set; }

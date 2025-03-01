@@ -108,6 +108,7 @@ VALUES ('SQLVersion', '1');";
                 }
             }
 
+            // ajout colonne Stat_tradeCount
             if (version == 1)
             {
                 updated = true;
@@ -124,6 +125,29 @@ VALUES ('SQLVersion', '1');";
                 }
 
                 version = 2;
+            }
+
+            // ajout colonne Stat_RaidCount
+            if (version == 2)
+            {
+                updated = true;
+                connection.Open();
+
+                string alterTableSql = @"
+        ALTER TABLE user
+ADD COLUMN Stat_RaidCount INTEGER NOT NULL DEFAULT 0;
+
+ALTER TABLE user
+ADD COLUMN Stat_RaidTotalDmg INTEGER NOT NULL DEFAULT 0;
+;
+    ";
+
+                using (var command = new SqliteCommand(alterTableSql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                version = 3;
             }
 
             // Mettre à jour la version dans la base de données
@@ -640,6 +664,80 @@ VALUES ('SQLVersion', '1');";
             }
         }
 
+        public int GetDataUserStats_RaidCount(User user)
+        {
+            string info = "Stat_RaidCount";
+
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
+            {
+                connection.Open();
+
+                string query = $@"
+            SELECT
+                {info}
+            FROM
+                user
+            WHERE
+                Pseudo = @Pseudo AND Platform = @Platform
+            LIMIT 1";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Pseudo", user.Pseudo);
+                    command.Parameters.AddWithValue("@Platform", user.Platform);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return int.Parse($"{reader[info]}");
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        public int GetDataUserStats_RaidTotalDmg(User user)
+        {
+            string info = "Stat_RaidTotalDmg";
+
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
+            {
+                connection.Open();
+
+                string query = $@"
+            SELECT
+                {info}
+            FROM
+                user
+            WHERE
+                Pseudo = @Pseudo AND Platform = @Platform
+            LIMIT 1";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Pseudo", user.Pseudo);
+                    command.Parameters.AddWithValue("@Platform", user.Platform);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return int.Parse($"{reader[info]}");
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                }
+            }
+        }
+
         internal string GetPseudoByPlatformCodeUser(User item)
         {
             string platform = item.Platform;
@@ -995,7 +1093,9 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
                         pokeScrapped_shiny = @shinyScrapped,
                         customMoney = @customMoney,
                         Stat_MoneySpent = @MoneySpent,
-                        Stat_tradeCount = @Stat_tradeCount
+                        Stat_tradeCount = @Stat_tradeCount,
+                        Stat_RaidCount = @Stat_RaidCount,
+                        Stat_RaidTotalDmg = @Stat_RaidTotalDmg
                     WHERE Pseudo = @Pseudo AND Platform = @Platform";
 
                         using (var updateCommand = new SqliteCommand(updateQuery, connection))
@@ -1010,6 +1110,8 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
                             updateCommand.Parameters.AddWithValue("@shinyScrapped", user.Stats.scrappedShiny);
                             updateCommand.Parameters.AddWithValue("@customMoney", user.Stats.CustomMoney);
                             updateCommand.Parameters.AddWithValue("@Stat_tradeCount", user.Stats.TradeCount);
+                            updateCommand.Parameters.AddWithValue("@Stat_RaidTotalDmg", user.Stats.RaidTotalDmg);
+                            updateCommand.Parameters.AddWithValue("@Stat_RaidCount", user.Stats.RaidCount);
 
                             Console.WriteLine(updateCommand.CommandText);
 

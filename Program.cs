@@ -1,11 +1,11 @@
-﻿using PKServ.Configuration;
+﻿using PKServ.Admin;
+using PKServ.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -15,6 +15,8 @@ namespace PKServ
     {
         private static void Main(string[] args)
         {
+            #region Initiatlization
+
             DataConnexion data = new DataConnexion();
             data.Initialize();
 
@@ -85,6 +87,21 @@ namespace PKServ
             DateTime lastExportTime = DateTime.Now;
             generateOverlays(overlays, First: true);
             checkScheduledTasks(globalAppSettings, true);
+            try
+            {
+                if (data.GetAllEntries().Where(x => x.code.ToLower().Contains("unset") && x.Platform != "system").Count() > 0)
+                {
+                    if (globalAppSettings.Log.logConsole.console)
+                        Console.WriteLine("Fix usernames in databases");
+                    GlobalDataAction.FixUserCodeDB(_db: data, log: globalAppSettings.Log.logConsole.console);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger(e.ToString());
+            }
+
+            #endregion Initiatlization
 
             Task.Run(async () =>
             {
@@ -396,7 +413,7 @@ namespace PKServ
                                             break;
                                         }
 
-                                        responseString = settings.ActiveRaid.Attack(raidAttacker, globalAppSettings);
+                                        responseString = settings.ActiveRaid.Attack(raidAttacker, globalAppSettings, settings);
                                         break;
 
                                     case "Raid/CatchResult":
@@ -558,6 +575,8 @@ namespace PKServ
                                 Console.WriteLine("CRITICAL POST ERROR : " + e.Message + "\n" + e.Data + "\n" + e.Source + "\n" + e.InnerException + "\n");
                             }
 
+                            #region post-request POST
+
                             // Auto Export
                             if (globalAppSettings.MustAutoFullExport && lastExportTime.AddMinutes(globalAppSettings.DelayBeforeFullWebUpdate) < DateTime.Now)
                             {
@@ -609,6 +628,8 @@ namespace PKServ
                             {
                                 Console.WriteLine("Error while genereting PKServs Overlay :  " + e.Message + "\n" + e.Data);
                             }
+
+                            #endregion post-request POST
                         }
                     }
                     if (request.HttpMethod == "GET")
@@ -643,6 +664,22 @@ namespace PKServ
                                                 responseString = $"Route non reconnue. \nDEBUG : {requestBody}";
                                                 break;
                                         }
+                                        break;
+
+                                    case "GetRaidInfos":
+                                        if (settings.ActiveRaid is not null)
+                                        {
+                                            var ResponseRaidInfos = new
+                                            {
+                                                Url_Creature = settings.ActiveRaid.Boss.Sprite_Normal,
+                                                Url_Overlay = settings.ActiveRaid.PV > 0 ? "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1280px-HD_transparent_picture.png" : "https://png.pngtree.com/png-vector/20230527/ourmid/pngtree-red-cross-paint-clipart-transparent-background-vector-png-image_7110618.png",
+                                                Bar_Max = settings.ActiveRaid.PVMax,
+                                                Bar_CurrentValue = settings.ActiveRaid.PV
+                                            };
+                                            responseString = JsonSerializer.Serialize(ResponseRaidInfos);
+                                        }
+                                        else
+                                            responseString = "{}";
                                         break;
 
                                     case "GetRaidStatus":
@@ -708,6 +745,15 @@ namespace PKServ
                             }
                         }
                     }
+
+                    #region check regulier
+
+                    if (settings.ActiveRaid is not null && settings.ActiveRaid.DefeatedTime is not null && settings.ActiveRaid.DefeatedTime.Value.AddMinutes(globalAppSettings.RaidSettings.TimeMinuteToCatchAfterDefeat) < DateTime.Now)
+                    {
+                        settings.ActiveRaid = null;
+                    }
+
+                    #endregion check regulier
                 }
             });
 
@@ -1025,7 +1071,7 @@ namespace PKServ
                 User user = new User(ctx.UserName, ctx.Platform, ctx.UserCode, data);
                 int nombreDeBadge = settings.badges.Count;
                 user.generateStatsAchievement(settings, globalAppSettings);
-                string sentence = $"@{user.Pseudo} => Level {user.Stats.level} ({user.Stats.currentXP}/{globalAppSettings.BadgeSettings.XPPerLevel}) {user.Stats.badges.Where(x => x.Obtained).Count()}/{settings.badges.Count} badges. Génère ton Pokédex pour plus d'infos.";
+                string sentence = $"@{user.Pseudo} => Level {user.Stats.level} ({user.Stats.currentXP}/{user.Stats.MaxXPLevel}) {user.Stats.badges.Where(x => x.Obtained).Count()}/{settings.badges.Count} badges. Génère ton Pokédex pour plus d'infos.";
                 if (globalAppSettings.Log.logConsole.console)
                     Console.WriteLine($"---\nresult : {sentence}\n---\n");
                 return sentence;

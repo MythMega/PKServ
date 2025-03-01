@@ -17,6 +17,9 @@
         /// - ShinyGiven (total shiny given through giveaway)
         /// - SpecificPoke (specific pokemon captured)
         /// - MultiplePoke (multiple pokemon captured) - here the 'value' is useless but must have to be set
+        /// - TotalRaid
+        /// - TotalRaidDamages
+        /// - TotalTade
         /// </summary>
         public string Type { get; set; }
 

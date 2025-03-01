@@ -133,12 +133,17 @@ namespace PKServ
                 this.trader2.Stats.CustomMoney -= this.price;
             }
 
+            this.trader1.Stats.TradeCount++;
+            this.trader2.Stats.TradeCount++;
+
             this.trader1.ValidateStatsBDD();
             this.trader2.ValidateStatsBDD();
 
             result = "échange réussi";
 
             this.complete = true;
+
+
 
             return result;
         }

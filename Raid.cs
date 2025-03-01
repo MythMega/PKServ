@@ -38,6 +38,8 @@ namespace PKServ
         public int? ShinyRate { get; set; } = -1;
         public string bossName { get; set; }
 
+        public bool? alreadyGiven { get; set; } = false;
+
         [JsonConstructor]
         public Raid(string bossName, int? PVMax = null, int? catchRate = null, int? shinyRate = null)
         {
@@ -87,7 +89,7 @@ namespace PKServ
         /// <param name="user"></param>
         /// <param name="globalAppSettings"></param>
         /// <returns></returns>
-        public string Attack(User user, GlobalAppSettings globalAppSettings)
+        public string Attack(User user, GlobalAppSettings globalAppSettings, AppSettings settings)
         {
             Random random = new Random();
             bool critical = false;
@@ -104,15 +106,18 @@ namespace PKServ
             else
             {
                 user.generateStats();
-                damageDone = 50 +
+                user.generateStatsAchievement(settings, globalAppSettings);
+                damageDone = 150 +
                     (random.Next(100)) +
                     (user.Stats.dexCount * 1) +
                     (user.Stats.LengendariesRegistered * 9) +
                     (user.Stats.shinydex * 2) +
-                    (user.Stats.level * 4) +
+                    (user.Stats.level * 10) +
                     (int)(user.Stats.pokeCaught / 10) +
-                    (int)(user.Stats.shinyCaught / 2)
+                    (int)(user.Stats.shinyCaught / 2) +
+                    user.Stats.RaidCount
                     ;
+                damageDone = (int)Math.Ceiling((float)(damageDone * (1 + (user.Stats.RaidCount / 25))));
                 UserDamageBase[user] = damageDone;
             }
             // gestion du boost
@@ -202,6 +207,38 @@ namespace PKServ
 
         public string GivePoke(bool shiny)
         {
+            try
+            {
+                if (alreadyGiven is not null && !alreadyGiven.Value)
+                {
+                    alreadyGiven = true;
+                    foreach (User user in this.Stats.UserDamageTotal.Keys)
+                    {
+                        try
+                        {
+                            user.generateStats();
+                            user.Stats.RaidTotalDmg += this.Stats.UserDamageTotal[user];
+                            user.Stats.RaidCount++;
+                            user.Stats.CustomMoney += (int)Math.Ceiling((decimal)this.Stats.UserDamageCount[user] / 5);
+                            user.ValidateStatsBDD();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("------");
+                            Console.WriteLine($"erreur stat {user}");
+                            Console.WriteLine(ex.ToString());
+                            Console.WriteLine("------");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("------");
+                Console.WriteLine($"erreur stat globale");
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine("------");
+            }
             string r = string.Empty;
             string r_console = string.Empty;
             int count = 0;
@@ -253,8 +290,7 @@ namespace PKServ
                     hours++;
                     minutes -= 60;
                 }
-                r_console += $"Durée {diff.TotalMinutes}";
-                r_console += $"Soit {hours} heures, {minutes} minutes, {secondes} secondes";
+                r_console += $"Durée {hours} heures, {minutes} minutes, {secondes} secondes";
             }
             catch { }
 
@@ -262,6 +298,19 @@ namespace PKServ
             Console.WriteLine("===================RAID===================");
             Console.WriteLine(r_console);
             Console.WriteLine("==========================================");
+
+            #region csv generation
+
+            string csv = "platform;pseudo;damage;countAtk;baseDmg;level;raidCount\n";
+            foreach (var item in sortedDict)
+            {
+                csv += $"{item.Key.Platform};{item.Key.Pseudo};{item.Value};{Stats.UserDamageCount[item.Key]};{UserDamageBase[item.Key]};{item.Key.Stats.level};{item.Key.Stats.RaidCount}\n";
+            }
+
+            File.WriteAllText("RaidStats.csv", csv);
+
+            #endregion csv generation
+
             return r;
         }
     }

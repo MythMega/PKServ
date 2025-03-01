@@ -878,13 +878,31 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 
 <script>
         function copyToClipboard(button) {
-            const textToCopy = button.getAttribute(""data-copy"");
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                alert(""Texte copié : "" + textToCopy);
-            }).catch(err => {
-                alert(""Erreur lors de la copie dans le presse-papiers : "" + err);
-            });
+    const textToCopy = button.getAttribute(""data-copy"");
+
+    if (!navigator.clipboard) {
+        // Fallback for browsers that don't support the Clipboard API
+        const textArea = document.createElement(""textarea"");
+        textArea.value = textToCopy;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand(""copy"");
+            alert(""Texte copié : "" + textToCopy);
+        } catch (err) {
+            alert(""Erreur lors de la copie dans le presse-papiers : "" + err);
         }
+        document.body.removeChild(textArea);
+        return;
+    }
+
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        alert(""Texte copié : "" + textToCopy);
+    }).catch(err => {
+        alert(""Erreur lors de la copie dans le presse-papiers : "" + err);
+    });
+}
     </script>";
             fileContent += DefaultEnd();
 
@@ -965,13 +983,32 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 
 <script>
         function copyToClipboard(button) {
-            const textToCopy = button.getAttribute(""data-copy"");
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                alert(""Texte copié : "" + textToCopy);
-            }).catch(err => {
-                alert(""Erreur lors de la copie dans le presse-papiers : "" + err);
-            });
+    const textToCopy = button.getAttribute(""data-copy"");
+
+    if (!navigator.clipboard) {
+        // Fallback for browsers that don't support the Clipboard API
+        const textArea = document.createElement(""textarea"");
+        textArea.value = textToCopy;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand(""copy"");
+            alert(""Texte copié : "" + textToCopy);
+        } catch (err) {
+            alert(""Erreur lors de la copie dans le presse-papiers : "" + err);
         }
+        document.body.removeChild(textArea);
+        return;
+    }
+
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        alert(""Texte copié : "" + textToCopy);
+    }).catch(err => {
+        alert(""Erreur lors de la copie dans le presse-papiers : "" + err);
+    });
+}
+
     </script>";
             fileContent += DefaultEnd();
 
@@ -1165,7 +1202,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             {
                 User utilisateur = new User(userRequest.UserName, userRequest.Platform, userRequest.UserCode, dataConnexion);
                 utilisateur.generateStatsAchievement(settings, globalAppSettings);
-                data += $"<p>Level {utilisateur.Stats.level}</p><br><p>{utilisateur.Stats.currentXP} XP/{globalAppSettings.BadgeSettings.XPPerLevel} XP</p><br><p>{utilisateur.Stats.totalXP} XP Totale</p><br>";
+                data += $"<p>Level {utilisateur.Stats.level}</p><br><p>{utilisateur.Stats.currentXP} XP/{utilisateur.Stats.MaxXPLevel} XP</p><br><p>{utilisateur.Stats.totalXP} XP Totale</p><br>";
 
                 List<string> GroupsBadges = utilisateur.Stats.badges.Select(element => element.Group).Distinct().ToList();
                 foreach (string group in GroupsBadges)

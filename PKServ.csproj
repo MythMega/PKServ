@@ -45,7 +45,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Admin\" />
     <Folder Include="Business\" />
     <Folder Include="Configuration\" />
     <Folder Include="DateExport\" />

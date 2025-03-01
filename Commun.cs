@@ -135,8 +135,18 @@ namespace PKServ
                 .Replace("é", "e")
                 .Replace("è", "e")
                 .Replace("ê", "e")
+                .Replace("ë", "e")
                 .Replace("à", "a")
-                .Replace("â", "a");
+                .Replace("â", "a")
+                .Replace("ä", "a")
+                .Replace("î", "i")
+                .Replace("ï", "i")
+                .Replace("ö", "o")
+                .Replace("ô", "o")
+                .Replace("ü", "u")
+                .Replace("û", "u")
+                .Replace("ù", "u")
+                .Replace("ç", "c");
         }
 
         public static bool isSamePoke(Pokemon pokemonSearched, string name)

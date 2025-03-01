@@ -81,6 +81,8 @@ namespace PKServ
             Stats.scrappedNormal = Data.GetDataUserStats_Scrap(Pseudo, Platform, shiny: false);
             Stats.scrappedShiny = Data.GetDataUserStats_Scrap(Pseudo, Platform, shiny: true);
             Stats.TradeCount = Data.GetDataUserStats_TradeCount(this);
+            Stats.RaidCount = Data.GetDataUserStats_RaidCount(this);
+            Stats.RaidTotalDmg = Data.GetDataUserStats_RaidTotalDmg(this);
 
             try
             {
@@ -165,6 +167,30 @@ namespace PKServ
 
                     case "MoneySpent":
                         if (badge.Value <= Stats.moneySpent)
+                        {
+                            badge.Obtained = true;
+                            element += 1;
+                        }
+                        break;
+
+                    case "TotalTade":
+                        if (badge.Value <= Stats.TradeCount)
+                        {
+                            badge.Obtained = true;
+                            element += 1;
+                        }
+                        break;
+
+                    case "TotalRaid":
+                        if (badge.Value <= Stats.RaidCount)
+                        {
+                            badge.Obtained = true;
+                            element += 1;
+                        }
+                        break;
+
+                    case "TotalRaidDamages":
+                        if (badge.Value <= Stats.RaidTotalDmg)
                         {
                             badge.Obtained = true;
                             element += 1;
@@ -260,9 +286,25 @@ namespace PKServ
             Stats.totalXP += Stats.shinyCaught * gas.BadgeSettings.XPShinyCatch;
             Stats.totalXP += Stats.ballLaunched * gas.BadgeSettings.XPBallLaunched;
             Stats.totalXP += days * gas.BadgeSettings.PerDayReward;
+            Stats.MaxXPLevel = gas.BadgeSettings.XPRequiredToLevelUp;
 
-            Stats.currentXP = Stats.totalXP % gas.BadgeSettings.XPPerLevel;
-            Stats.level = 1 + ((Stats.totalXP - Stats.currentXP) / gas.BadgeSettings.XPPerLevel);
+            if (gas.BadgeSettings.LevelUpXPRequiredMultiplierPercent == 0)
+            {
+                Stats.currentXP = Stats.totalXP % gas.BadgeSettings.XPRequiredToLevelUp;
+                Stats.MaxXPLevel = gas.BadgeSettings.XPRequiredToLevelUp;
+                Stats.level = 1 + ((Stats.totalXP - Stats.currentXP) / gas.BadgeSettings.XPRequiredToLevelUp);
+            }
+            else
+            {
+                Stats.currentXP = Stats.totalXP;
+                Stats.level = 1;
+                while (Stats.currentXP > Stats.MaxXPLevel)
+                {
+                    Stats.level++;
+                    Stats.currentXP -= Stats.MaxXPLevel;
+                    Stats.MaxXPLevel += (int)(Stats.MaxXPLevel * gas.BadgeSettings.LevelUpXPRequiredMultiplierPercent / 100);
+                }
+            }
         }
 
         public int getPokeCaught(List<Entrie> entries, bool shiny)
@@ -316,6 +358,7 @@ namespace PKServ
         public int scrappedShiny = 0;
         public int scrappedNormal = 0;
         public int level = 0;
+        public int MaxXPLevel = 0;
         public int totalXP = 0;
         public int currentXP = 0;
         public int achievementCount = 0;
@@ -324,6 +367,8 @@ namespace PKServ
         public int CustomRegistered = 0;
         public int CustomMoney = 0;
         public int TradeCount = 0;
+        public int RaidCount = 0;
+        public int RaidTotalDmg = 0;
 
         public Stats()
         {
