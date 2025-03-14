@@ -14,6 +14,7 @@ namespace PKServ
         public int DelayBeforeFullWebUpdate { get; set; }
         public string LanguageCode { get; set; } = "en";
         public string GitHubTokenUpload { get; set; }
+        public string Namespace { get; set; }
         public GlobalAppLog Log { get; set; }
         public TextTranslation Texts { get; set; }
         public MessageSettings MessageSettings { get; set; }
@@ -25,6 +26,7 @@ namespace PKServ
         public TradeSettings TradeSettings { get; set; }
         public RaidSettings RaidSettings { get; set; }
         public EvolveSettings EvolveSettings { get; set; }
+        public GiveAwaySettings GiveAwaySettings { get; set; }
 
         internal void SetDefaultValue()
         {
@@ -222,6 +224,7 @@ namespace PKServ
         public TranslationTrading TranslationTrading;
         public TranslationRaid TranslationRaid;
         public TranslationEvolving TranslationEvolving;
+        public TranslationGiveaway TranslationGiveaway;
         public Emotes emotes;
         public Types types;
     }
@@ -279,6 +282,14 @@ namespace PKServ
         public string CreatureBaseNotOwned;
         public string NotEnoughCreatureToEvolve;
         public string EvolutionSucceed;
+    }
+
+    public class TranslationGiveaway
+    {
+        public string AlreadyClaimed;
+        public string CodeDoesNotExist;
+        public string CodeExpired;
+        public string CodeNotYetAvailable;
     }
 
     public class MessageSettings
@@ -377,5 +388,9 @@ namespace PKServ
         public bool AllowShiny;
         public bool AllowEvolutionLocked;
         public bool AllowEvolutionShinyLocked;
+    }
+
+    public class GiveAwaySettings
+    {
     }
 }

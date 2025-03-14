@@ -112,7 +112,7 @@ namespace PKServ
                     (user.Stats.dexCount * 1) +
                     (user.Stats.LengendariesRegistered * 9) +
                     (user.Stats.shinydex * 2) +
-                    (user.Stats.level * 10) +
+                    (user.Stats.level * 15) +
                     (int)(user.Stats.pokeCaught / 10) +
                     (int)(user.Stats.shinyCaught / 2) +
                     user.Stats.RaidCount

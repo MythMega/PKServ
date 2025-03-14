@@ -110,6 +110,35 @@ namespace PKServ
             this.Serie = Serie;
             this.EvolveFrom = evolveFrom;
         }
+
+        public Pokemon Clone()
+        {
+            return new Pokemon(
+                this.Name_FR,
+                this.Name_EN,
+                this.Sprite_Shiny,
+                this.Sprite_Normal,
+                this.isCustom,
+                this.isLock,
+                this.isLegendary,
+                this.isShinyLock,
+                this.valueNormal,
+                this.valueShiny,
+                this.priceNormal,
+                this.priceShiny,
+                this.rarity,
+                this.AltName,
+                this.Serie,
+                this.EvolveFrom
+            )
+            {
+                isShiny = this.isShiny,
+                AltNameForced = this.AltNameForced,
+                enabled = this.enabled,
+                Type1 = this.Type1,
+                Type2 = this.Type2
+            };
+        }
     }
 
     public class CreatureEvolutionRequest

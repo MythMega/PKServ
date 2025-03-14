@@ -1,6 +1,8 @@
 ﻿using Microsoft.Data.Sqlite;
+using PKServ.Entity;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -150,6 +152,82 @@ ADD COLUMN Stat_RaidTotalDmg INTEGER NOT NULL DEFAULT 0;
                 version = 3;
             }
 
+            // ajout colonne Stat_RaidCount
+            if (version == 3)
+            {
+                updated = true;
+                connection.Open();
+
+                string alterTableSql = @"
+    CREATE TABLE giveaway (
+        ID INTEGER PRIMARY KEY,
+        Usercode TEXT NOT NULL,
+        Giveawaycode TEXT NOT NULL
+    );
+";
+
+                using (var command = new SqliteCommand(alterTableSql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                version = 4;
+            }
+            // ajout colonne Stat_RaidCount
+            if (version == 4)
+            {
+                updated = true;
+                connection.Open();
+
+                string alterTableSql = @"
+        ALTER TABLE user
+ADD COLUMN favoriteCreature TEXT NULL;
+    ";
+
+                using (var command = new SqliteCommand(alterTableSql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                version = 5;
+            }
+            // ajout colonne date dans giveaway
+            if (version == 5)
+            {
+                updated = true;
+                connection.Open();
+
+                string alterTableSql = @"
+        ALTER TABLE giveaway
+ADD COLUMN date DATETIME NOT NULL;
+    ";
+
+                using (var command = new SqliteCommand(alterTableSql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                version = 6;
+            }
+            // ajout colonne avatar dans users
+            if (version == 6)
+            {
+                updated = true;
+                connection.Open();
+
+                string alterTableSql = @"
+        ALTER TABLE user
+ADD COLUMN avatarUrl TEXT NULL;
+    ";
+
+                using (var command = new SqliteCommand(alterTableSql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                version = 7;
+            }
+
             // Mettre à jour la version dans la base de données
             newVersion = $"{version}";
             string updateSql = "UPDATE info SET value = @newValue WHERE data = @data";
@@ -159,8 +237,8 @@ ADD COLUMN Stat_RaidTotalDmg INTEGER NOT NULL DEFAULT 0;
                 updateCommand.Parameters.AddWithValue("@data", currentVersion);
                 updateCommand.ExecuteNonQuery();
             }
-
-            Console.WriteLine("Database updated successfully.");
+            string result = updated ? $"Database updated successfully to version {version}" : "Database already up-to-date";
+            Console.WriteLine(result);
         }
 
         private static bool ColumnExists(SqliteConnection connection, string tableName, string columnName)
@@ -664,6 +742,43 @@ ADD COLUMN Stat_RaidTotalDmg INTEGER NOT NULL DEFAULT 0;
             }
         }
 
+        public string GetDataUserStats_FavoritePoke(User user)
+        {
+            string info = "favoriteCreature";
+
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
+            {
+                connection.Open();
+
+                string query = $@"
+            SELECT
+                {info}
+            FROM
+                user
+            WHERE
+                Pseudo = @Pseudo AND Platform = @Platform
+            LIMIT 1";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Pseudo", user.Pseudo);
+                    command.Parameters.AddWithValue("@Platform", user.Platform);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return reader["favoriteCreature"].ToString();
+                        }
+                        else
+                        {
+                            return "N/A";
+                        }
+                    }
+                }
+            }
+        }
+
         public int GetDataUserStats_RaidCount(User user)
         {
             string info = "Stat_RaidCount";
@@ -1122,6 +1237,196 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
                     {
                         Console.WriteLine("ERROR WHILE MERGING IN DATABASE");
                         throw new Exception("ERROR WHILE MERGING IN DATABASE");
+                    }
+                }
+            }
+        }
+
+        public List<Giveaway> GetGiveawayUser(AppSettings settings, User user)
+        {
+            List<string> codeList = new List<string>();
+            List<Giveaway> gives = new List<Giveaway>();
+
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
+            {
+                connection.Open();
+                string query = @"
+SELECT Giveawaycode
+FROM giveaway
+WHERE Usercode = @Usercode";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Usercode", user.Code_user);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            codeList.Add(reader["Giveawaycode"].ToString());
+                        }
+                    }
+                }
+            }
+
+            foreach (string code in codeList)
+            {
+                Giveaway gAway = settings.giveaways.FirstOrDefault(x => x.Code == code);
+                if (gAway != null)
+                {
+                    gives.Add(gAway);
+                }
+            }
+
+            return gives;
+        }
+
+        internal void RegisterGiveaway(GiveawayClaim giveawayInfos)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+
+            string alterTableSql = @"
+        INSERT INTO giveaway (Usercode, Giveawaycode, date)
+        VALUES (@Usercode, @Giveawaycode, datetime('now'));
+    ";
+
+            using (var command = new SqliteCommand(alterTableSql, connection))
+            {
+                command.Parameters.AddWithValue("@Usercode", giveawayInfos.User.Code_user);
+                command.Parameters.AddWithValue("@Giveawaycode", giveawayInfos.Code);
+
+                command.ExecuteNonQuery();
+            }
+
+            connection.Close();
+        }
+
+        internal void UpdateAvatar(UserRequest ctx)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+
+            string updateQuery = @"
+                    UPDATE user
+                    SET
+                        avatarUrl = @AVATAR_URL
+                    WHERE CODE_USER = @CODE_USER";
+
+            using (var command = new SqliteCommand(updateQuery, connection))
+            {
+                command.Parameters.AddWithValue("@CODE_USER", ctx.UserCode);
+                command.Parameters.AddWithValue("@AVATAR_URL", ctx.avatarUrl);
+
+                command.ExecuteNonQuery();
+            }
+
+            connection.Close();
+        }
+
+        internal void UpdateFavCreature(User user, string pokename)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+
+            string updateQuery = @"
+                    UPDATE user
+                    SET
+                        favoriteCreature = @FAV_CREATURE
+                    WHERE CODE_USER = @CODE_USER";
+
+            using (var command = new SqliteCommand(updateQuery, connection))
+            {
+                command.Parameters.AddWithValue("@CODE_USER", user.Code_user);
+                command.Parameters.AddWithValue("@FAV_CREATURE", pokename);
+
+                command.ExecuteNonQuery();
+            }
+
+            connection.Close();
+        }
+
+        internal string GetAvatarUrl(User user)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+
+            string query = @"
+            SELECT
+                avatarUrl
+            FROM
+                user
+            WHERE
+                CODE_USER = @CODE_USER
+            LIMIT 1";
+
+            using (var command = new SqliteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@CODE_USER", user.Code_user);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return reader["avatarUrl"].ToString();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
+
+        internal string GetSpriteFavoriteCreature(User user, AppSettings settings)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+
+            string query = @"
+            SELECT
+                favoriteCreature
+            FROM
+                user
+            WHERE
+                CODE_USER = @CODE_USER
+            LIMIT 1";
+
+            string data = string.Empty;
+
+            using (var command = new SqliteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@CODE_USER", user.Code_user);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        if (reader["favoriteCreature"].ToString() is null || reader["favoriteCreature"].ToString().Length < 2)
+                            return "";
+                        data = reader["favoriteCreature"].ToString();
+                        bool shiny = data.Split('-')[1] == "s";
+                        data = data.Split('-')[0];
+                        Pokemon poke = settings.pokemons.FirstOrDefault(x => Commun.isSamePoke(x, data));
+                        if (poke != null)
+                        {
+                            if (shiny)
+                            {
+                                return poke.Sprite_Shiny;
+                            }
+                            else
+                            {
+                                return poke.Sprite_Normal;
+                            }
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        return null;
                     }
                 }
             }

@@ -21,12 +21,11 @@ namespace PKServ
         /// <param name="filepath"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static async Task<string> UploadFileAsync(string filepath, GlobalAppSettings globalAppSettings)
+        public static async Task<string> UploadFileAsync(string filepath, GlobalAppSettings globalAppSettings, string targetFolder)
         {
             string token = globalAppSettings.GitHubTokenUpload;
             string owner = "MythMega";
             string repos = "PKServExports";
-            string path = "exports";
 
             string content = Convert.ToBase64String(File.ReadAllBytes(filepath));
             string message = $"Upload {Path.GetFileName(filepath)}";
@@ -43,7 +42,7 @@ namespace PKServ
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", token);
                 client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; GitHubUploader/1.0)");
-                string url = $"https://api.github.com/repos/{owner}/{repos}/contents/{path}/{Path.GetFileName(filepath)}";
+                string url = $"https://api.github.com/repos/{owner}/{repos}/contents/{globalAppSettings.Namespace}/{targetFolder}/{Path.GetFileName(filepath)}";
 
                 var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PutAsync(url, requestContent);
@@ -153,6 +152,34 @@ namespace PKServ
         {
             name = StringifyChange(name);
             return (StringifyChange(pokemonSearched.AltName) == name || StringifyChange(pokemonSearched.Name_EN) == name || StringifyChange(pokemonSearched.Name_FR) == name);
+        }
+
+        public static string CapitalizePhrase(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return input;
+            }
+            string[] words = input.Split(' ');
+            for (int i = 0; i < words.Length; i++)
+            {
+                words[i] = CapitalizeString(words[i]);
+            }
+            return string.Join(' ', words);
+        }
+
+        public static string CapitalizeString(string input)
+        {
+            return input.First().ToString().ToUpper() + input.Substring(1);
+        }
+
+        public static string FullInfoShinyNormal(string v)
+        {
+            if (v.Split('-').Length == 2)
+            {
+                return v.Split('-')[0];
+            }
+            return v;
         }
     }
 }

@@ -49,7 +49,7 @@ namespace PKServ
                     // Copier les fichiers JSON
                     foreach (string file in Directory.EnumerateFiles(sourceDirectory, "*.json"))
                     {
-                        List<string> files = new List<string> { "balls.json", "badges.json", "customOverlays.json", "customPokemons.json", "Triggers.json", "pokemons.json", "_settings.json" };
+                        List<string> files = new List<string> { "balls.json", "badges.json", "customOverlays.json", "customPokemons.json", "Triggers.json", "pokemons.json", "_settings.json", "giveaways.json" };
                         if (files.Contains(Path.GetFileName(file)))
                         {
                             try
@@ -179,7 +179,7 @@ exit /b 0
                     if (process.ExitCode == 0)
                     {
                         Console.WriteLine($"\ntask {Path.GetFileName(ProcessFilePath)} success.");
-                        return await Commun.UploadFileAsync(zipFilePath, globalAppSettings: GlobalAppSettings);
+                        return await Commun.UploadFileAsync(zipFilePath, globalAppSettings: GlobalAppSettings, "debug");
                     }
                     else
                     {

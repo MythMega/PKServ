@@ -1,11 +1,9 @@
 ﻿using PKServ.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -19,59 +17,10 @@ namespace PKServ
             BuildRapport();
         }
 
-        public async Task<string> UploadFileAsync(string filepath = null)
+        public async Task<string> UploadFileAsync(GlobalAppSettings gas)
         {
-            if (filepath is null)
-            {
-                filepath = Path.Combine("ExportsSimple", this.filename);
-            }
-            string token = globalAppSettings.GitHubTokenUpload;
-            string owner = "MythMega";
-            string repos = "PKServExports";
-            string path = "exports";
-
-            string content = Convert.ToBase64String(File.ReadAllBytes(filepath));
-            string message = $"Upload {Path.GetFileName(filepath)}";
-
-            var fileContent = new
-            {
-                message = message,
-                content = content
-            };
-
-            string json = JsonSerializer.Serialize(fileContent);
-
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; GitHubUploader/1.0)");
-                string url = $"https://api.github.com/repos/{owner}/{repos}/contents/{path}/{Path.GetFileName(filepath)}";
-
-                var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PutAsync(url, requestContent);
-                string responseContent = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine("File uploaded successfully.");
-
-                    try
-                    {
-                        var jsonResponse = JsonDocument.Parse(responseContent);
-                        string fileUrl = jsonResponse.RootElement.GetProperty("content").GetProperty("download_url").GetString();
-                        this.url = fileUrl;
-                        return fileUrl;
-                    }
-                    catch (JsonException)
-                    {
-                        throw new Exception("La réponse de l'API n'est pas du JSON valide ou ne contient pas les propriétés attendues.");
-                    }
-                }
-                else
-                {
-                    throw new Exception($"File upload failed. Status code: {response.StatusCode}, Reason: {response.ReasonPhrase}");
-                }
-            }
+            string filepath = Path.Combine("ExportsSimple", this.filename);
+            return await Commun.UploadFileAsync(filepath, gas, "ExportSimples");
         }
 
         public List<string> getLineTables()
@@ -227,6 +176,9 @@ namespace PKServ
 
             fileContent += @$"</tbody>
     </table>
+<br><br>
+<p>Trainer Card :</p><br>
+{GetUserCards()}
 <br><br>
 <p>Stats :</p><br>
 {GetUserStats()}
@@ -1190,6 +1142,155 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             data += $"<p>Pokémon le plus attrapé : {utilisateur.Stats.favoritePoke}</p>";
             TimeSpan diff = DateTime.Now - utilisateur.Stats.firstCatch;
             data += $"<p>Dresseur depuis : {utilisateur.Stats.firstCatch} (depuis {diff.Days} jours.)</p>";
+
+            return data;
+        }
+
+        public string GetUserCards()
+        {
+            string data = "";
+            User utilisateur = new User(userRequest.UserName, userRequest.Platform, userRequest.UserCode, dataConnexion);
+            utilisateur.Code_user = dataConnexion.GetCodeUserByPlatformPseudo(utilisateur);
+
+            string urlAvatar = dataConnexion.GetAvatarUrl(utilisateur);
+            string urlSpritePokeFav = dataConnexion.GetSpriteFavoriteCreature(utilisateur, appSettings);
+
+            utilisateur.generateStats();
+            utilisateur.generateStatsAchievement(appSettings, globalAppSettings);
+
+            List<Badge> badgeToShow = utilisateur.Stats.badges.Where(x => x.Rarity == "exotic").ToList();
+            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "legendary" && x.Obtained).ToList());
+            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "epic" && x.Obtained).ToList());
+            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "rare" && x.Obtained).ToList());
+            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "uncommon" && x.Obtained).ToList());
+            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "common" && x.Obtained).ToList());
+
+            badgeToShow = badgeToShow.Take(8).ToList();
+
+            string badgePart = "";
+            int count = 1;
+            foreach (Badge badge in badgeToShow)
+            {
+                badgePart += $@"
+<div class=""col"">
+          <img src=""{badge.IconUrl}"" alt=""Badge {count}"" style=""height: 48px; width: 48px;"">
+            <p style=""font-size: 12px; margin-top: 4px"">{badge.Title}</p>
+        </div>";
+                count++;
+            }
+
+            data = @$"
+<style>
+    .generatedCard {{
+      color: white;
+      border: 1px solid #ccc;
+      padding: 20px;
+      width: 856px;
+      height: 540px;
+      border-radius: 10px;
+      background: linear-gradient(to bottom, #0b0b2b, #1b2735 70%, #090a0f);
+    }}
+    #downloadBtn {{
+      margin-top: 35px;
+      font-size: large;
+      border-radius: 3px;
+      border: 5px;
+      padding: 15px;
+      box-shadow: 0px 0px 38px 0px rgba(0,0,0,0.5);
+-webkit-box-shadow: 0px 0px 38px 0px rgba(0,0,0,0.5);
+-moz-box-shadow: 0px 0px 38px 0px rgba(0,0,0,0.5);
+    }}
+    .stars {{
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  background: white;
+  box-shadow: 2vw 5vh 2px white, 10vw 8vh 2px white, 15vw 15vh 1px white,
+    22vw 22vh 1px white, 28vw 12vh 2px white, 32vw 32vh 1px white,
+    38vw 18vh 2px white, 42vw 35vh 1px white, 48vw 25vh 2px white,
+    53vw 42vh 1px white, 58vw 15vh 2px white, 63vw 38vh 1px white,
+    68vw 28vh 2px white, 73vw 45vh 1px white, 78vw 32vh 2px white,
+    83vw 48vh 1px white, 88vw 20vh 2px white, 93vw 52vh 1px white,
+    98vw 35vh 2px white, 5vw 60vh 1px white, 12vw 65vh 2px white,
+    18vw 72vh 1px white, 25vw 78vh 2px white, 30vw 85vh 1px white,
+    35vw 68vh 2px white, 40vw 82vh 1px white, 45vw 92vh 2px white,
+    50vw 75vh 1px white, 55vw 88vh 2px white, 60vw 95vh 1px white,
+    65vw 72vh 2px white, 70vw 85vh 1px white, 75vw 78vh 2px white,
+    80vw 92vh 1px white, 85vw 82vh 2px white, 90vw 88vh 1px white,
+    95vw 75vh 2px white;
+  animation: twinkle 8s infinite linear;
+}}
+@keyframes twinkle {{
+  0%,
+  100% {{
+    opacity: 0.8;
+  }}
+  50% {{
+    opacity: 0.4;
+  }}
+}}
+  </style>
+</head>
+<body>
+  <center>
+  <div class=""generatedCard"">
+  <!-- Partie titre -->
+    <div class=""stars""></div>
+    <h1>Dresseur : {utilisateur.Pseudo}</h1>
+    <h3 style=""margin-bottom: 50px;"">ID : {utilisateur.Code_user}</h3>
+    <!-- Partie Corp -->
+    <div class=""container"">
+      <!-- Photo -->
+      <div class=""row"">
+        <div class=""col"">
+          <img src=""{urlAvatar}"" class=""img-thumbnail"" alt=""userprofile picture"" style=""width: 192px;"" crossorigin=""anonymous"">
+        </div>
+        <!-- Stats -->
+        <div class=""col"">
+          <p>Global dex : {utilisateur.Stats.dexCount}</p>
+          <p>Shiny dex : {utilisateur.Stats.shinydex}</p>
+          <p>Trainer since : {utilisateur.Stats.firstCatch.ToString("d MMM. yy", CultureInfo.InvariantCulture)}</p>
+          <p>Platform : {userRequest.Platform} <img src=""https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{userRequest.Platform.ToLower()}.png"" style=""height: 16px; width: 16px;""></p>
+          <p>Level : {utilisateur.Stats.level}</p>
+          <p>Captures : {utilisateur.Stats.pokeCaught}</p>
+        </div>
+        <!-- Favorite creature -->
+        <div class=""col"">
+          <h6>Creature Favorite :</h6>
+          <p>{Commun.FullInfoShinyNormal(Commun.CapitalizePhrase(utilisateur.Stats.favoritePoke))}</p>
+          <img src=""{urlSpritePokeFav}"" class=""img-thumbnail"" alt=""userprofile fav creature"" style=""width: 128px;"">
+        </div>
+      </div>
+    </div>
+    <!-- Badges -->
+    <div class=""container"">
+      <div class=""row"">
+        {badgePart}
+      </div>
+    </div>
+  </div>
+
+  <button id=""downloadBtn"">Télécharger ma carte</button>
+</center>
+<script src=""https://html2canvas.hertzen.com/dist/html2canvas.min.js""></script>
+  <script>
+    document.getElementById(""downloadBtn"").addEventListener(""click"", function(){{
+      var cardElement = document.querySelector("".generatedCard"");
+
+      html2canvas(cardElement, {{ useCORS: true }}).then(canvas => {{
+        var imageData = canvas.toDataURL(""image/png"");
+        var downloadLink = document.createElement(""a"");
+        downloadLink.href = imageData;
+        downloadLink.download = ""ma-carte.png"";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      }}).catch(err => {{
+        console.error(""Erreur lors de la génération de l'image :"", err);
+      }});
+    }});
+  </script>
+";
 
             return data;
         }

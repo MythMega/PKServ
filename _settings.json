@@ -3,9 +3,10 @@
   "AutoSignInGiveAway": true,
   "KeepUserInGiveAwayAfterShutdown": true,
   "MustAutoFullExport": true,
+  "Namespace": "Global",
   "DelayBeforeFullWebUpdate": 5,
   "LanguageCode": "fr",
-  "GitHubTokenUpload": "INSERT-GITHUB-TOKEN-HERE",
+  "GitHubTokenUpload": "INSERT GITHUB TOKEN HERE",
   "Log": {
     "logConsole": {
       "console": true,
@@ -84,6 +85,12 @@
       "CreatureBaseNotOwned": "Vous ne possédez pas la créature que vous souhaitez évoluer.",
       "NotEnoughCreatureToEvolve": "Vous ne possédez pas assez de la créature pour l'évoluer.",
       "EvolutionSucceed": "Évolué avec succés. Vous avez fusionné [COUNT] [CREATURE_BASE] pour faire 1 [CREATURE_EVOLVED]."
+    },
+    "TranslationGiveaway": {
+      "AlreadyClaimed": "Vous avez déjà réclamé votre prix.",
+      "CodeDoesNotExist": "Le code n'existe pas.",
+      "CodeExpired": "Le code a expiré.",
+      "CodeNotYetAvailable": "Le code n'est pas encore disponible."
     },
     "type": {
       "fire": "feu",
@@ -191,7 +198,7 @@
     "DefaultPV": 10000,
     "DefaultCatchRate": 70,
     "DefaultShinyRate": 33,
-    "TimeMinuteToCatchAfterDefeat": 2
+    "TimeMinuteToCatchAfterDefeat": 15
   },
   "EvolveSettings": {
     "RequiredCreatureToEvolve": 10,

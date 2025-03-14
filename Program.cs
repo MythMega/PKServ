@@ -1,5 +1,7 @@
 ﻿using PKServ.Admin;
+using PKServ.Business;
 using PKServ.Configuration;
+using PKServ.Entity;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -67,6 +69,7 @@ namespace PKServ
                 settings.allPokemons.ForEach(p => { if (p.AltNameForced) { p.AltName = p.Name_EN; } });
             }
             settings.pokemons = settings.allPokemons.Where(p => p.enabled || p == null).ToList();
+            settings.giveaways = GiveawayInitializer.GetGiveaways(settings);
             Logger($"yellow#{globalAppSettings.Texts.serverStarted}");
             Logger($"white#Nombre de pokémon chargé : |red#{settings.pokemons.Count}");
             Logger($"white#Nombre de pokeball chargé : |red#{settings.pokeballs.Count}");
@@ -145,6 +148,14 @@ namespace PKServ
                                             AddToHere(new User(ctx.UserName, ctx.Platform, ctx.UserCode, data), ref usersHere, globalAppSettings);
                                         }
                                         responseString = CatchPoke(ctx, data, settings, globalAppSettings);
+                                        try
+                                        {
+                                            if (ctx.avatarUrl != null)
+                                            {
+                                                data.UpdateAvatar(ctx);
+                                            }
+                                        }
+                                        catch { }
                                         break;
 
                                     case "Evolve":
@@ -170,6 +181,18 @@ namespace PKServ
                                             Platform = a.Platform
                                         };
                                         responseString = SignIn(user, data, ref usersHere);
+                                        break;
+
+                                    case "ChoseFavoriteCreature":
+                                        FavoriteCreatureRequest favoriteCreatureRequest = JsonSerializer.Deserialize<FavoriteCreatureRequest>(requestBody, options);
+                                        if (favoriteCreatureRequest.IsValide(data, settings))
+                                        {
+                                            responseString = favoriteCreatureRequest.Set(favoriteCreatureRequest.User, favoriteCreatureRequest.Name, favoriteCreatureRequest.Mode, data);
+                                        }
+                                        else
+                                        {
+                                            responseString = "invalide";
+                                        }
                                         break;
 
                                     case "GenerateDexSolo":
@@ -230,6 +253,32 @@ namespace PKServ
                                         Buying buying = JsonSerializer.Deserialize<Buying>(requestBody, options);
                                         buying.SetEnv(data, settings, globalAppSettings);
                                         responseString = buying.DoResult();
+                                        break;
+
+                                    case "Giveaway/Claim":
+                                        GiveawayClaim giveawayClaim = JsonSerializer.Deserialize<GiveawayClaim>(requestBody, options);
+                                        if (settings.giveaways.Any(a => a.Code == giveawayClaim.Code))
+                                        {
+                                            Giveaway giveaway = settings.giveaways.First(a => a.Code == giveawayClaim.Code);
+
+                                            // on verifie les dates
+                                            if (DateTime.Now < giveaway.Start)
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationGiveaway.CodeNotYetAvailable;
+                                            }
+                                            else if (DateTime.Now > giveaway.End)
+                                            {
+                                                responseString = globalAppSettings.Texts.TranslationGiveaway.CodeExpired;
+                                            }
+
+                                            // si les dates sont bonnes, on peut faire le giveaway
+                                            else
+                                            {
+                                                responseString = GiveawayImpl.DoGiveaway(giveawayClaim, giveaway, globalAppSettings, settings, data);
+                                            }
+                                        }
+                                        else
+                                            responseString = globalAppSettings.Texts.TranslationGiveaway.CodeDoesNotExist;
                                         break;
 
                                     case "GetOneValue":
@@ -1118,7 +1167,7 @@ namespace PKServ
             {
                 var data = new ExportSoloDex(appSettings, json, cnx, globalAppSettings);
                 data.ExportFile().Wait();
-                data.UploadFileAsync().Wait();
+                data.UploadFileAsync(globalAppSettings).Wait();
                 if (globalAppSettings.Log.logConsole.console)
                     Console.WriteLine($"---\nresult : {data.url}\n---\n");
                 return data.url;

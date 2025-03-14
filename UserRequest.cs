@@ -1,4 +1,6 @@
 ﻿using PKServ.Configuration;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PKServ
@@ -12,8 +14,9 @@ namespace PKServ
         public string ChannelSource;
         public int Price;
         private bool? skip;
+        public string avatarUrl;
 
-        public UserRequest(string userName, string platform, string triggerName, string channelSource, int price, string userCode = "")
+        public UserRequest(string userName, string platform, string triggerName, string channelSource, int price, string userCode = "", string avatarUrl = null)
         {
             UserName = userName;
             Platform = platform;
@@ -21,6 +24,7 @@ namespace PKServ
             ChannelSource = channelSource;
             Price = price;
             UserCode = userCode;
+            this.avatarUrl = avatarUrl;
             bool? skip = false;
 
             if (UserName == null && platform == null && triggerName == null && channelSource == null)
@@ -59,10 +63,42 @@ namespace PKServ
         public User User { get; set; }
         public string Name { get; set; }
 
-        public GetPokeStats(User User, string Name)
+        public GetPokeStats(User User, string Name, string Mode)
         {
             this.User = User;
             this.Name = Name.ToLower().Replace("_", " ");
+        }
+    }
+
+    public class FavoriteCreatureRequest
+    {
+        public User User { get; set; }
+        public string Mode { get; set; }
+        public string Name { get; set; }
+
+        public FavoriteCreatureRequest(User User, string Name, string Mode)
+        {
+            this.User = User;
+            this.Name = Name.ToLower().Replace("_", " ");
+            this.Mode = Mode.ToLower();
+        }
+
+        public bool IsValide(DataConnexion data, AppSettings appSettings)
+        {
+            bool Exist = appSettings.pokemons.Where(x => Commun.isSamePoke(x, Name)).Any();
+            if (!Exist)
+            {
+                Console.WriteLine($"The pokemon {Name} does not exist in the json.");
+                return false;
+            }
+            return data.GetEntriesByPseudo(User.Pseudo, User.Platform).Where(registeredEntrie => Commun.StringifyChange(registeredEntrie.PokeName) == Commun.StringifyChange(Name) &&
+                                                                          (registeredEntrie.CountShiny > 0 && this.Mode.StartsWith('s') || registeredEntrie.CountNormal > 0 && this.Mode.StartsWith('n'))).Any();
+        }
+
+        internal string Set(User user, string name, string mode, DataConnexion data)
+        {
+            data.UpdateFavCreature(user, $"{name}-{mode[0]}");
+            return $"The creature {name} has been set to your favorites.";
         }
     }
 }

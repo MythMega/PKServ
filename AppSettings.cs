@@ -1,4 +1,5 @@
 ﻿using PKServ.Configuration;
+using PKServ.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace PKServ
         public List<TradeRequest> TradeRequests = new List<TradeRequest>();
 
         public Raid? ActiveRaid = null;
+        internal List<Giveaway> giveaways = [];
 
         public AppSettings()
         {

@@ -11,6 +11,7 @@ namespace PKServ
         public string Pseudo { get; set; }
         public string Platform { get; set; }
         public string Code_user { get; set; }
+        public string? AvatarUrl { get; set; }
         public Stats Stats { get; set; }
 
         // Constructeur sans paramètres nécessaire pour la désérialisation
@@ -72,7 +73,7 @@ namespace PKServ
             Stats.shinyCaught = getPokeCaught(entrie, shiny: true) + Data.GetDataUserStats_Scrap(this.Pseudo, this.Platform, shiny: true);
             Stats.pokeCaught = Stats.normalCaught + Stats.shinyCaught;
             Stats.shinydex = entrie.Where(entry => entry.CountShiny > 0).ToList().Count;
-            Stats.favoritePoke = entrie.OrderByDescending(e => e.CountNormal + (e.CountShiny * 2)).FirstOrDefault()?.PokeName;
+            Stats.favoritePoke = Data.GetDataUserStats_FavoritePoke(this);
             Stats.moneySpent = Data.GetDataUserStats_MoneySpent(Pseudo, Platform);
             Stats.ballLaunched = Data.GetDataUserStats_BallLaunched(Pseudo, Platform);
             Stats.giveawayNormal = Data.GetDataUserStats_Giveaway(Pseudo, Platform, false);

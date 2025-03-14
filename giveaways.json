@@ -1,0 +1,44 @@
+[
+  {
+    "Code": "MARCH4KANTO",
+    "pokeList": [
+      {
+        "Name": "Dracaufeu",
+        "shiny": true
+      },
+      {
+        "Name": "Tortank",
+        "shiny": true
+      },
+      {
+        "Name": "Florizarre",
+        "shiny": true
+      }
+    ],
+    "Money": 33,
+    "Mode": "All",
+    "Start": "2025-03-01T10:00:00",
+    "End": "2099-01-01T20:00:00"
+  },
+  {
+    "Code": "MAYIGETJOHTO",
+    "pokeList": [
+      {
+        "Name": "Meganium",
+        "shiny": true
+      },
+      {
+        "Name": "Typhlosion",
+        "shiny": true
+      },
+      {
+        "Name": "Aligatueur",
+        "shiny": true
+      }
+    ],
+    "Money": 10,
+    "Mode": "All",
+    "Start": "2025-05-01T10:00:00",
+    "End": "2099-01-01T20:00:00"
+  }
+]
