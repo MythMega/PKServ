@@ -720,7 +720,7 @@ namespace PKServ
                                         {
                                             var ResponseRaidInfos = new
                                             {
-                                                Url_Creature = settings.ActiveRaid.Boss.Sprite_Normal,
+                                                Url_Creature = settings.ActiveRaid.DisplayShiny ? settings.ActiveRaid.Boss.Sprite_Shiny : settings.ActiveRaid.Boss.Sprite_Normal,
                                                 Url_Overlay = settings.ActiveRaid.PV > 0 ? "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1280px-HD_transparent_picture.png" : "https://png.pngtree.com/png-vector/20230527/ourmid/pngtree-red-cross-paint-clipart-transparent-background-vector-png-image_7110618.png",
                                                 Bar_Max = settings.ActiveRaid.PVMax,
                                                 Bar_CurrentValue = settings.ActiveRaid.PV
@@ -1259,9 +1259,15 @@ namespace PKServ
                     sl.BuildDocument();
                 }
 
+                // export commandGenerator.html
+
+                ExportCommandGenerator commandGenerator = new ExportCommandGenerator(appSettings, json, cnx, globalAppSettings);
+                commandGenerator.ExportFile(true, true).Wait();
+
                 //  export pokestats.html
                 ExportStats exportStats = new ExportStats(appSettings, json, cnx, globalAppSettings);
                 exportStats.ExportFile().Wait();
+
                 if (globalAppSettings.Log.logConsole.console)
                     Console.WriteLine($"---\nresult : {result}\n---\n");
                 return result;

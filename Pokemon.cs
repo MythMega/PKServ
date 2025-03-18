@@ -72,6 +72,8 @@ namespace PKServ
         public string? Serie { get; set; }
         public string? EvolveFrom { get; set; }
 
+        public List<Artist> Artist { get; set; }
+
         /// <summary>
         /// constructor
         /// </summary>
@@ -82,12 +84,12 @@ namespace PKServ
         /// <param name="isCustom">false by default</param>
         /// <param name="isLock">false by default</param>
         /// <param name="isLegendary">false by default</param>
-        public Pokemon(string name_FR, string name_EN, string sprite_Shiny, string sprite_Normal, bool isCustom = false, bool isLock = false, bool isLegendary = false, bool isShinyLock = false, int? valueNormal = null, int? valueShiny = null, int? priceNormal = null, int? priceShiny = null, int? rarity = 1, string AltName = null, string Serie = "main", string evolveFrom = null)
+        public Pokemon(string name_FR, string name_EN, string sprite_Shiny, string sprite_Normal, List<Artist> artist, bool isCustom = false, bool isLock = false, bool isLegendary = false, bool isShinyLock = false, int? valueNormal = null, int? valueShiny = null, int? priceNormal = null, int? priceShiny = null, int? rarity = 1, string AltName = null, string Serie = "main", string evolveFrom = null)
         {
             Name_FR = name_FR;
             Name_EN = name_EN;
-            Sprite_Shiny = string.IsNullOrEmpty(sprite_Shiny) && !isCustom ? $"https://img.pokemondb.net/sprites/black-white/anim/shiny/{name_EN.ToLower()}.gif" : sprite_Shiny;
-            Sprite_Normal = string.IsNullOrEmpty(sprite_Normal) && !isCustom ? $"https://img.pokemondb.net/sprites/black-white/anim/normal/{name_EN.ToLower()}.gif" : sprite_Normal;
+            Sprite_Shiny = string.IsNullOrEmpty(sprite_Shiny) && !isCustom ? $"https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/sprite/poke/vanilla/{Commun.CapitalizeString(name_EN)}_shiny.gif" : sprite_Shiny;
+            Sprite_Normal = string.IsNullOrEmpty(sprite_Normal) && !isCustom ? $"https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/sprite/poke/vanilla/{Commun.CapitalizeString(name_EN)}_normal.gif" : sprite_Normal;
             this.isCustom = isCustom;
             this.isLock = isLock;
             this.isLegendary = isLegendary;
@@ -109,6 +111,7 @@ namespace PKServ
             }
             this.Serie = Serie;
             this.EvolveFrom = evolveFrom;
+            this.Artist = artist is null ? [] : artist;
         }
 
         public Pokemon Clone()
@@ -118,6 +121,7 @@ namespace PKServ
                 this.Name_EN,
                 this.Sprite_Shiny,
                 this.Sprite_Normal,
+                this.Artist,
                 this.isCustom,
                 this.isLock,
                 this.isLegendary,

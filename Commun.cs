@@ -175,9 +175,9 @@ namespace PKServ
 
         public static string FullInfoShinyNormal(string v)
         {
-            if (v.Split('-').Length == 2)
+            if (v.Split('#').Length == 2)
             {
-                return v.Split('-')[0];
+                return v.Split('#')[0];
             }
             return v;
         }

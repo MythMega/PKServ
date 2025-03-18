@@ -1,4 +1,5 @@
-﻿using PKServ.Configuration;
+﻿using PKServ.Business;
+using PKServ.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -383,6 +384,20 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         }
     }
 
+    internal class ExportCommandGenerator : Export
+    {
+        public ExportCommandGenerator(AppSettings appSettings, UserRequest userRequest, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings) : base(appSettings, userRequest, dataConnexion, globalAppSettings) // Initialiser la classe de base ici
+        {
+            GenerateStatsFile();
+        }
+
+        public void GenerateStatsFile()
+        {
+            filename = "CommandGenerator.html";
+            fileContent = CommandGeneratorImpl.GenerateFileContent(appSettings, globalAppSettings, dataConnexion);
+        }
+    }
+
     internal class ExportStats : Export
     {
         public ExportStats(AppSettings appSettings, UserRequest userRequest, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings) : base(appSettings, userRequest, dataConnexion, globalAppSettings) // Initialiser la classe de base ici
@@ -593,6 +608,18 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                     classNormal = CountNormal > 0 ? "" : $@"class = ""all-black"" ";
                     string availability = getPokeAvailability(poke: item);
                     string classAvailability = "";
+                    string artistAndTheirLinks = ""; // "<a href=""{item.Artist}"" {item.Artist}
+                    if (item.Artist.Count != 0)
+                    {
+                        foreach (Artist artist in item.Artist)
+                        {
+                            artistAndTheirLinks += $"<a href=\"{artist.ArtistLink}\">{artist.ArtistName}</a>{(string.IsNullOrEmpty(artist.ArtistCredit) ? "" : $" ({artist.ArtistCredit})")}; ";
+                        }
+                    }
+                    else
+                    {
+                        artistAndTheirLinks = "/";
+                    }
                     switch (availability)
                     {
                         case "Not available at all.":
@@ -615,6 +642,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                 <td><img {classShiny}src=""{item.Sprite_Shiny}"" alt=""Shiny Sprite""></td>
                 <td class=""count"">{CountShiny}</td>
                 <td class=""{classAvailability}"">Dispo : {availability}</td>
+                <td>{artistAndTheirLinks}</td>
             </tr>
 ";
                     linesTable.Add(currline);
@@ -715,7 +743,8 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                 <th>Capturé(s)</th>
                 <th>Sprite Shiny</th>
                 <th>Capturé(s)</th>
-                <th>Disponibilités</th>
+                <th>Disponibilité</th>
+                <th>Artist</th>
             </tr>
         </thead>
         <tbody>";
@@ -1158,7 +1187,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             utilisateur.generateStats();
             utilisateur.generateStatsAchievement(appSettings, globalAppSettings);
 
-            List<Badge> badgeToShow = utilisateur.Stats.badges.Where(x => x.Rarity == "exotic").ToList();
+            List<Badge> badgeToShow = utilisateur.Stats.badges.Where(x => x.Rarity == "exotic" && x.Obtained).ToList();
             badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "legendary" && x.Obtained).ToList());
             badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "epic" && x.Obtained).ToList());
             badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "rare" && x.Obtained).ToList());
@@ -1173,9 +1202,14 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             {
                 badgePart += $@"
 <div class=""col"">
-          <img src=""{badge.IconUrl}"" alt=""Badge {count}"" style=""height: 48px; width: 48px;"">
-            <p style=""font-size: 12px; margin-top: 4px"">{badge.Title}</p>
-        </div>";
+    <img
+        src=""{badge.IconUrl}""
+        alt=""Badge {count}""
+        style=""height: 48px; width: 48px;""
+        class=""img-badge img-badge-{badge.Rarity}""
+        title=""{badge.Description}"">
+    <p style=""font-size: 12px; margin-top: 4px"">{badge.Title}</p>
+</div>";
                 count++;
             }
 
@@ -1190,6 +1224,30 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
       border-radius: 10px;
       background: linear-gradient(to bottom, #0b0b2b, #1b2735 70%, #090a0f);
     }}
+    .img-badge {{
+      position: relative;
+      display: inline-block;
+      transition: transform 0.2s ease-in-out;
+    }}
+
+    .img-badge-common {{filter: drop-shadow(0 0 10px white) drop-shadow(0 0 20px white);
+            }}
+.img-badge-uncommon {{filter: drop-shadow(0 0 10px green) drop-shadow(0 0 20px green);
+            }}
+.img-badge-rare
+            {{filter: drop-shadow(0 0 10px blue) drop-shadow(0 0 20px blue);
+}}
+.img-badge-epic
+            {{filter: drop-shadow(0 0 10px purple) drop-shadow(0 0 20px purple);
+            }}
+.img-badge-legendary {{filter: drop-shadow(0 0 10px yellow) drop-shadow(0 0 20px yellow);
+}}
+.img-badge-exotic {{filter: drop-shadow(0 0 10px pink) drop-shadow(0 0 20px pink);
+}}
+
+    .img-badge:hover {{transform: scale(1.25) rotate(360deg);
+    }}
+
     #downloadBtn {{
       margin-top: 35px;
       font-size: large;
@@ -1258,7 +1316,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         <div class=""col"">
           <h6>Creature Favorite :</h6>
           <p>{Commun.FullInfoShinyNormal(Commun.CapitalizePhrase(utilisateur.Stats.favoritePoke))}</p>
-          <img src=""{urlSpritePokeFav}"" class=""img-thumbnail"" alt=""userprofile fav creature"" style=""width: 128px;"">
+          <img src=""{urlSpritePokeFav}"" alt=""userprofile fav creature"" style=""width: 128px;"">
         </div>
       </div>
     </div>
@@ -1272,24 +1330,22 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 
   <button id=""downloadBtn"">Télécharger ma carte</button>
 </center>
-<script src=""https://html2canvas.hertzen.com/dist/html2canvas.min.js""></script>
-  <script>
-    document.getElementById(""downloadBtn"").addEventListener(""click"", function(){{
-      var cardElement = document.querySelector("".generatedCard"");
-
-      html2canvas(cardElement, {{ useCORS: true }}).then(canvas => {{
-        var imageData = canvas.toDataURL(""image/png"");
-        var downloadLink = document.createElement(""a"");
-        downloadLink.href = imageData;
-        downloadLink.download = ""ma-carte.png"";
-        document.body.appendChild(downloadLink);
+<script src=""https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js""></script>
+<script>
+  document.getElementById(""downloadBtn"").addEventListener(""click"", function(){{
+    var cardElement = document.querySelector("".generatedCard"");
+    domtoimage.toPng(cardElement)
+      .then(function(dataUrl){{
+        var downloadLink = document.createElement('a');
+        downloadLink.href = dataUrl;
+        downloadLink.download = 'ma-carte.png';
         downloadLink.click();
-        document.body.removeChild(downloadLink);
-      }}).catch(err => {{
-        console.error(""Erreur lors de la génération de l'image :"", err);
+      }})
+      .catch(function(error) {{
+        console.error(""Une erreur est survenue :"", error);
       }});
-    }});
-  </script>
+  }});
+</script>
 ";
 
             return data;

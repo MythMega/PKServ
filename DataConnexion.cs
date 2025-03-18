@@ -1210,6 +1210,7 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
                         Stat_MoneySpent = @MoneySpent,
                         Stat_tradeCount = @Stat_tradeCount,
                         Stat_RaidCount = @Stat_RaidCount,
+                        favoriteCreature = @favoriteCreature,
                         Stat_RaidTotalDmg = @Stat_RaidTotalDmg
                     WHERE Pseudo = @Pseudo AND Platform = @Platform";
 
@@ -1227,6 +1228,7 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
                             updateCommand.Parameters.AddWithValue("@Stat_tradeCount", user.Stats.TradeCount);
                             updateCommand.Parameters.AddWithValue("@Stat_RaidTotalDmg", user.Stats.RaidTotalDmg);
                             updateCommand.Parameters.AddWithValue("@Stat_RaidCount", user.Stats.RaidCount);
+                            updateCommand.Parameters.AddWithValue("@favoriteCreature", user.Stats.favoritePoke);
 
                             Console.WriteLine(updateCommand.CommandText);
 
@@ -1405,8 +1407,12 @@ WHERE Usercode = @Usercode";
                         if (reader["favoriteCreature"].ToString() is null || reader["favoriteCreature"].ToString().Length < 2)
                             return "";
                         data = reader["favoriteCreature"].ToString();
-                        bool shiny = data.Split('-')[1] == "s";
-                        data = data.Split('-')[0];
+                        if (data.Split('#').Count() < 2)
+                        {
+                            return null;
+                        }
+                        bool shiny = data.Split('#')[1] == "s";
+                        data = data.Split('#')[0];
                         Pokemon poke = settings.pokemons.FirstOrDefault(x => Commun.isSamePoke(x, data));
                         if (poke != null)
                         {

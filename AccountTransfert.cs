@@ -87,6 +87,10 @@ namespace PKServ
             AccountTarget.Stats.scrappedNormal += AccountToDelete.Stats.scrappedNormal;
             AccountTarget.Stats.scrappedShiny += AccountToDelete.Stats.scrappedShiny;
             AccountTarget.Stats.CustomMoney += AccountToDelete.Stats.CustomMoney;
+            AccountTarget.Stats.TradeCount += AccountToDelete.Stats.TradeCount;
+            AccountTarget.Stats.RaidCount += AccountToDelete.Stats.RaidCount;
+            AccountTarget.Stats.RaidTotalDmg += AccountToDelete.Stats.RaidTotalDmg;
+            AccountTarget.Stats.favoritePoke += AccountToDelete.Stats.favoritePoke;
 
             if (AccountTarget.ValidateStatsBDD())
             {

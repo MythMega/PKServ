@@ -32,6 +32,7 @@ namespace PKServ
 
         public RaidDamageBoost? ActiveBoost { get; set; }
         public RaidStats Stats { get; set; }
+        public bool DisplayShiny { get; set; } = false;
 
         public int? PVMax { get; set; } = -1;
         public int? CatchRate { get; set; } = -1;
@@ -41,7 +42,7 @@ namespace PKServ
         public bool? alreadyGiven { get; set; } = false;
 
         [JsonConstructor]
-        public Raid(string bossName, int? PVMax = null, int? catchRate = null, int? shinyRate = null)
+        public Raid(string bossName, bool displayShiny, int? PVMax = null, int? catchRate = null, int? shinyRate = null)
         {
             this.PVMax = PVMax;
             CatchRate = catchRate;
@@ -50,6 +51,7 @@ namespace PKServ
             InitializeBoss(this.bossName);
             this.UserCodeCatchStatut = [];
             this.UserDamageBase = [];
+            this.DisplayShiny = displayShiny;
             this.Stats = new RaidStats();
         }
 
@@ -117,7 +119,7 @@ namespace PKServ
                     (int)(user.Stats.shinyCaught / 2) +
                     user.Stats.RaidCount
                     ;
-                damageDone = (int)Math.Ceiling((float)(damageDone * (1 + (user.Stats.RaidCount / 25))));
+                damageDone = (int)Math.Ceiling(damageDone * (1 + (user.Stats.RaidCount / 25f)));
                 UserDamageBase[user] = damageDone;
             }
             // gestion du boost

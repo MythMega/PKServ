@@ -63,6 +63,10 @@ namespace PKServ
         public User User { get; set; }
         public string Name { get; set; }
 
+        // Constructeur par défaut requis pour la désérialisation
+        public GetPokeStats()
+        { }
+
         public GetPokeStats(User User, string Name, string Mode)
         {
             this.User = User;
@@ -97,7 +101,7 @@ namespace PKServ
 
         internal string Set(User user, string name, string mode, DataConnexion data)
         {
-            data.UpdateFavCreature(user, $"{name}-{mode[0]}");
+            data.UpdateFavCreature(user, $"{name}#{mode[0]}");
             return $"The creature {name} has been set to your favorites.";
         }
     }
