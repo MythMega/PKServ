@@ -61,7 +61,7 @@ namespace PKServ
                 new List<string> { "complete", "all", "fullnormal", "fullshiny", "normal", "shiny", "fulldex", "fulldexnormal", "fulldexshiny" }.Contains(mode.ToLower());
         }
 
-        public string DoResult()
+        public string DoResult(AppSettings settings)
         {
             if (this.mode == "")
             {
@@ -131,6 +131,8 @@ namespace PKServ
                 resultat = scrapCountNormal > 0 ? $" {scrapCountNormal} normal scrapped," : "";
                 resultat += scrapCountShiny > 0 ? $" {scrapCountShiny} shiny scrapped," : "";
                 resultat += $" +{moneyEarned} money.";
+                if (!settings.UsersToExport.Where(u => u.Code_user == User.Code_user || (u.Pseudo == User.Pseudo && u.Platform == User.Platform)).Any())
+                    settings.UsersToExport.Add(User);
             }
             else
             {

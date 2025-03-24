@@ -1183,9 +1183,9 @@ namespace PKServ
 ";
             }
 
-
             // Last Poké Caught
             files["raidOverlay.html"] = @$"
+
 <!DOCTYPE html>
 <html lang=""fr"">
 <head>
@@ -1204,21 +1204,22 @@ namespace PKServ
         }}
 
         .image-container {{
-            position: relative;
-            width: 128px;
-            height: auto;
+            position: absolute;
+            width: 256px;
+            height: 256px;
+            overflow: hidden;  /* garantit que rien ne déborde du container */
         }}
 
         .image-container img {{
-            width: 128px;
-            height: 128px;
             position: absolute;
+            width: 256px;
+            height: 256px;
             top: 0;
             left: 0;
         }}
 
         .progress-bar {{
-			padding-top: 140px;
+			padding-top: 236px;
             width: 256px;
             height: 20px;
             background-color: rgba(0, 90, 45, 0.2);
@@ -1262,7 +1263,6 @@ namespace PKServ
                         // Masquer tout le contenu avec la classe 'hidden'
                         contentDiv.classList.add('hidden');
                     }} else {{
-					
 						console.log(data);
                         // Afficher le contenu si masqué
                         contentDiv.classList.remove('hidden');
@@ -1300,6 +1300,7 @@ namespace PKServ
     </script>
 </body>
 </html>
+
 ";
 
             TextsUpdate();

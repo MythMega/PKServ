@@ -31,7 +31,12 @@ namespace PKServ
         public List<TradeRequest> TradeRequests = new List<TradeRequest>();
 
         public Raid? ActiveRaid = null;
-        internal List<Giveaway> giveaways = [];
+
+        public List<Background> TrainerCardsBackgrounds = new List<Background>();
+
+        public List<Giveaway> giveaways = [];
+
+        public List<User> UsersToExport = [];
 
         public AppSettings()
         {

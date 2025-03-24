@@ -73,6 +73,9 @@ namespace PKServ
                         int price = poke.isShiny ? poke.priceShiny.Value : poke.priceNormal.Value;
                         // ajouter la thune générée par le scrap à l'utilisateur
                         dataConnexion.UpdateUserStatsMoney(moneyEarned: User.Stats.CustomMoney - price, user: User, mode: "update");
+
+                        if (!appSettings.UsersToExport.Where(u => u.Code_user == User.Code_user || (u.Pseudo == User.Pseudo && u.Platform == User.Platform)).Any())
+                            appSettings.UsersToExport.Add(User);
                         result = $"+1 {poke.Name_FR}/{poke.Name_EN}, -{price} money, restant : {User.Stats.CustomMoney - price}";
                     }
                     else

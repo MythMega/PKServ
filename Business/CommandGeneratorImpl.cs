@@ -1,8 +1,12 @@
-﻿using PKServ.Configuration;
+﻿using Microsoft.VisualBasic.FileIO;
+using PKServ.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PKServ.Business
@@ -57,6 +61,9 @@ namespace PKServ.Business
     </li>
     <li class=""nav-item"" role=""presentation"">
       <button class=""nav-link"" id=""tab-badge-tab"" data-bs-toggle=""tab"" data-bs-target=""#tab-badge"" type=""button"" role=""tab"" aria-controls=""tab-badge"" aria-selected=""false"">Badges</button>
+    </li>
+    <li class=""nav-item"" role=""presentation"">
+      <button class=""nav-link"" id=""tab-background-tab"" data-bs-toggle=""tab"" data-bs-target=""#tab-background"" type=""button"" role=""tab"" aria-controls=""tab-background"" aria-selected=""false"">Fond Carte</button>
     </li>
   </ul>"
 ;
@@ -348,19 +355,174 @@ namespace PKServ.Business
           <option value=""Gray""></option>
         </datalist>
         <div class=""error-message"" id=""error3_tab-badge""></div>
-      </div>"
-;
+      </div>
+    </div>
+  </div>";
+
+            // onglet background
+            // Récupération des groupes distincts
+            List<string> groups = appSettings.TrainerCardsBackgrounds
+                .Select(bg => bg.Group)
+                .Distinct()
+                .ToList();
+
+            // Construction des options pour le select
+            string groupOption = string.Join("", groups.Select(g => $"<option value=\"{g}\">{g}</option>\n"));
+
+            // Sérialisation en JSON de l'ensemble des backgrounds
+            string backgroundsJson = JsonSerializer.Serialize(appSettings.TrainerCardsBackgrounds, Commun.GetJsonSerializerOptions());
+
+            content += @$"
+<!-- Onglet Background -->
+<div class=""tab-pane fade p-3"" id=""tab-background"" role=""tabpanel"" aria-labelledby=""tab-background-tab"">
+  <h3>Fond Carte de dresseur</h3>
+
+  <!-- Combobox 1 : Sélection du groupe -->
+  <div class=""mb-3"">
+    <label for=""combobox1_tab-background"" class=""form-label"">Groupe</label>
+    <select class=""form-select"" id=""combobox1_tab-background"">
+      <option selected disabled>Choisissez une option</option>
+      {groupOption}
+    </select>
+    <div class=""error-message"" id=""error1_tab-background""></div>
+  </div>
+
+  <!-- Zone destinée à accueillir la grille de backgrounds -->
+  <div id=""background-grid"" class=""row row-cols-1 row-cols-md-4 g-3"">
+    <!-- Les images filtrées apparaîtront ici -->
+  </div>
+</div>
+
+<script>
+// On convertit le JSON généré côté serveur en objet JavaScript.
+const trainerBackgroundsList = JSON.parse(`{backgroundsJson}`);
+
+// Fonction de copie dans le presse-papiers avec fallback.
+function copyToClipboard(button) {{
+  const textToCopy = button.getAttribute(""data-copy"");
+
+  if (!navigator.clipboard) {{
+    // Fallback pour les navigateurs qui ne supportent pas l'API Clipboard.
+    const textArea = document.createElement(""textarea"");
+    textArea.value = textToCopy;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {{
+      document.execCommand(""copy"");
+      alert(""Texte copié : "" + textToCopy);
+    }} catch (err) {{
+      alert(""Erreur lors de la copie dans le presse-papiers : "" + err);
+    }}
+    document.body.removeChild(textArea);
+    return;
+  }}
+
+  navigator.clipboard.writeText(textToCopy).then(() => {{
+    alert(""Texte copié : "" + textToCopy);
+  }}).catch(err => {{
+    alert(""Erreur lors de la copie dans le presse-papiers : "" + err);
+  }});
+}}
+
+// Fonction qui se charge d'afficher les backgrounds correspondant au groupe sélectionné.
+function displayBackgroundsByGroup(selectedGroup) {{
+  const container = document.getElementById('background-grid');
+  container.innerHTML = ''; // Réinitialise la zone d'affichage.
+
+  // Filtre des backgrounds correspondant au groupe choisi.
+  const matchingBackgrounds = trainerBackgroundsList.filter(bg => bg.Group === selectedGroup);
+
+  if (matchingBackgrounds.length === 0) {{
+    container.innerHTML = '<p>Aucun background trouvé pour ce groupe.</p>';
+    return;
+  }}
+
+  // Pour chacun des backgrounds filtrés, on crée une colonne contenant une card.
+  matchingBackgrounds.forEach(bg => {{
+    const col = document.createElement('div');
+    col.className = 'col';
+
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    // Ajout de l'image
+    const img = document.createElement('img');
+    img.className = 'card-img-top';
+    img.src = bg.Url; // On utilise la propriété Url pour obtenir l'image.
+    img.alt = bg.Group;
+    card.appendChild(img);
+
+    // Création d'un container pour le contenu textuel de la card.
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body';
+
+    // Titre h4 avec le nom de la carte (bg.Name).
+    const nameHeading = document.createElement('h4');
+    nameHeading.textContent = bg.Name;
+    cardBody.appendChild(nameHeading);
+
+    // Titre h5 ""Requirements :"".
+    const reqHeading = document.createElement('h5');
+    reqHeading.textContent = 'Requirements :';
+    cardBody.appendChild(reqHeading);
+
+    // Création d'une liste des requirements.
+    const reqList = document.createElement('ul');
+    if (bg.requirements && bg.requirements.length > 0) {{
+      bg.requirements.forEach(req => {{
+        const reqItem = document.createElement('li');
+        reqItem.textContent = req.Type + ': ' + req.Value;
+        reqList.appendChild(reqItem);
+      }});
+    }} else {{
+      // Au cas où il n'y aurait pas de requirements.
+      const emptyItem = document.createElement('li');
+      emptyItem.textContent = 'Aucun requirement défini.';
+      reqList.appendChild(emptyItem);
+    }}
+    cardBody.appendChild(reqList);
+
+    // Création du bouton pour copier la commande.
+    const copyButton = document.createElement('button');
+    copyButton.className = 'btn btn-secondary mt-2';
+    copyButton.textContent = 'Copier la commande';
+
+    // Préparation de la commande à copier.
+    // Remplacement des espaces par des underscores dans le nom.
+    const commandText = ""!changeCard "" + bg.Name.replace(/ /g, ""_"");
+
+    // Ajout de l'attribut data-copy contenant la commande.
+    copyButton.setAttribute(""data-copy"", commandText);
+
+    // Ajout de l'événement qui copie le texte dans le presse-papiers lors du clic.
+    copyButton.addEventListener('click', function() {{
+      copyToClipboard(this);
+    }});
+
+    cardBody.appendChild(copyButton);
+
+    // Ajout du container textuel à la card.
+    card.appendChild(cardBody);
+    col.appendChild(card);
+    container.appendChild(col);
+  }});
+}}
+
+// Ajout d'un écouteur sur le select afin de détecter le changement de groupe.
+document.getElementById('combobox1_tab-background').addEventListener('change', function() {{
+  const selectedGroup = this.value;
+  displayBackgroundsByGroup(selectedGroup);
+}});
+
+// Appel initial de la fonction.
+// Attention : Assurez-vous que la variable selectedGroup est définie ou récupérée au préalable.
+displayBackgroundsByGroup(selectedGroup);
+</script>
+";
 
             // fin HTML
             content += @"
-
-      <!-- Boutons générer et copier, zone de texte -->
-      <button class=""btn btn-primary"" id=""generateBtn_tab-badge"">Générer</button>
-      <div class=""mt-3"">
-        <textarea class=""form-control"" id=""resultBox_tab-badge"" rows=""5"" readonly></textarea>
-      </div>
-      <button class=""btn btn-secondary mt-2"" id=""copyBtn_tab-badge"" data-copy="""" disabled>Copier commande</button>
-    </div>
 
   </div>
 </div>

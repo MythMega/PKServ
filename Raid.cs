@@ -1,5 +1,6 @@
 ﻿using PKServ.Configuration;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -112,14 +113,14 @@ namespace PKServ
                 damageDone = 150 +
                     (random.Next(100)) +
                     (user.Stats.dexCount * 1) +
-                    (user.Stats.LengendariesRegistered * 9) +
-                    (user.Stats.shinydex * 2) +
-                    (user.Stats.level * 15) +
+                    (user.Stats.LengendariesRegistered * 12) +
+                    (user.Stats.shinydex * 3) +
+                    (user.Stats.level * 20) +
                     (int)(user.Stats.pokeCaught / 10) +
                     (int)(user.Stats.shinyCaught / 2) +
                     user.Stats.RaidCount
                     ;
-                damageDone = (int)Math.Ceiling(damageDone * (1 + (user.Stats.RaidCount / 25f)));
+                damageDone = (int)Math.Ceiling(damageDone * (1 + (user.Stats.RaidCount / 50f)));
                 UserDamageBase[user] = damageDone;
             }
             // gestion du boost
@@ -207,7 +208,7 @@ namespace PKServ
             return JsonSerializer.Serialize(this);
         }
 
-        public string GivePoke(bool shiny)
+        public string GivePoke(bool shiny, AppSettings appSettings, GlobalAppSettings globalAppSettings)
         {
             try
             {
@@ -223,6 +224,8 @@ namespace PKServ
                             user.Stats.RaidCount++;
                             user.Stats.CustomMoney += (int)Math.Ceiling((decimal)this.Stats.UserDamageCount[user] / 5);
                             user.ValidateStatsBDD();
+                            if (!appSettings.UsersToExport.Where(u => u.Code_user == user.Code_user || (u.Pseudo == user.Pseudo && u.Platform == user.Platform)).Any())
+                                appSettings.UsersToExport.Add(user);
                         }
                         catch (Exception ex)
                         {
@@ -301,19 +304,32 @@ namespace PKServ
             Console.WriteLine(r_console);
             Console.WriteLine("==========================================");
 
+            generateStatsCSV(settings: appSettings, data: DataConnexion, globalAppSettings: globalAppSettings);
+
+            return r;
+        }
+
+        private void generateStatsCSV(AppSettings settings, DataConnexion data, GlobalAppSettings globalAppSettings)
+        {
             #region csv generation
+
+            var sortedDict = Stats.UserDamageTotal.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
 
             string csv = "platform;pseudo;damage;countAtk;baseDmg;level;raidCount\n";
             foreach (var item in sortedDict)
             {
+                item.Key.generateStats();
+                item.Key.generateStatsAchievement(settings, globalAppSettings);
                 csv += $"{item.Key.Platform};{item.Key.Pseudo};{item.Value};{Stats.UserDamageCount[item.Key]};{UserDamageBase[item.Key]};{item.Key.Stats.level};{item.Key.Stats.RaidCount}\n";
             }
-
-            File.WriteAllText("RaidStats.csv", csv);
+            if (!Directory.Exists("WebExport\\assets\\data"))
+            {
+                Directory.CreateDirectory("WebExport\\assets\\data");
+            }
+            File.WriteAllText("WebExport\\assets\\data\\RaidStats.csv", csv);
+            File.WriteAllText("WebExport\\raid.html", Business.RaidStatsReportImpl.GenerateRaidReport(this, settings, globalAppSettings, data));
 
             #endregion csv generation
-
-            return r;
         }
     }
 

@@ -338,6 +338,20 @@ namespace PKServ
             }
             return success;
         }
+
+        public void ChangeBackground(string url)
+        {
+            DataConnexion data = new DataConnexion();
+            data.UpdateCardBackground(this, url);
+        }
+
+        public string GetBackground()
+        {
+            string? url = Data.GetCardBackgroundUrl(this);
+            if (string.IsNullOrEmpty(url))
+                return "https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/background/cards/base/base_card.jpg";
+            return url;
+        }
     }
 
     public class Stats

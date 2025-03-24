@@ -81,7 +81,7 @@ namespace PKServ
             // l'entrée du pokémon recu par joueur 1 n'existe pas
             else
             {
-                PokemonJoinJ1 = new Entrie(-1, trader1.Pseudo, Channel, trader2.Platform, pokemon2.Name_FR, 0, 0, DateTime.Now, DateTime.Now, trader1.Code_user);
+                PokemonJoinJ1 = new Entrie(-1, trader1.Pseudo, Channel, trader1.Platform, pokemon2.Name_FR, 0, 0, DateTime.Now, DateTime.Now, trader1.Code_user);
                 J1NeedNewLine = true;
             }
 
@@ -142,8 +142,6 @@ namespace PKServ
             result = "échange réussi";
 
             this.complete = true;
-
-
 
             return result;
         }

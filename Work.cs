@@ -316,6 +316,18 @@ namespace PKServ
                 users = users.Where(user => user.lastCatch() > appSettings.LastFullExport).ToList();
             }
 
+            // on ajoute les users à exporter, y compris ceux qui n'ont pas "capturer", mais fais des actions modifiant le dex
+            appSettings.UsersToExport.ForEach(user =>
+                {
+                    if (!users.Where(u => u.Code_user == user.Code_user || (u.Pseudo == user.Pseudo && u.Platform == user.Platform)).Any())
+                    {
+                        users.Add(user);
+                    }
+                }
+            );
+            appSettings.UsersToExport = [];
+
+            // on exporte les dex solo
             int count = 0;
             foreach (User user in users)
             {
@@ -327,6 +339,7 @@ namespace PKServ
                 data.ExportFile(true).Wait();
                 count++;
             }
+            // on exporte le main
             var export = new ExportRapport(appSettings, uc, connexion, globalAppSettings);
             export.filename = "main.html";
             export.ExportFile(true, true).Wait();

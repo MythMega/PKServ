@@ -227,6 +227,24 @@ ADD COLUMN avatarUrl TEXT NULL;
 
                 version = 7;
             }
+            // ajout colonne cards dans users
+            if (version == 7)
+            {
+                updated = true;
+                connection.Open();
+
+                string alterTableSql = @"
+        ALTER TABLE user
+ADD COLUMN cardsUrl TEXT NULL;
+    ";
+
+                using (var command = new SqliteCommand(alterTableSql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                version = 8;
+            }
 
             // Mettre à jour la version dans la base de données
             newVersion = $"{version}";
@@ -1326,6 +1344,28 @@ WHERE Usercode = @Usercode";
             connection.Close();
         }
 
+        internal void UpdateCardBackground(User user, string url)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+
+            string updateQuery = @"
+                    UPDATE user
+                    SET
+                        cardsUrl = @CARD_URL
+                    WHERE CODE_USER = @CODE_USER";
+
+            using (var command = new SqliteCommand(updateQuery, connection))
+            {
+                command.Parameters.AddWithValue("@CODE_USER", user.Code_user);
+                command.Parameters.AddWithValue("@CARD_URL", url);
+
+                command.ExecuteNonQuery();
+            }
+
+            connection.Close();
+        }
+
         internal void UpdateFavCreature(User user, string pokename)
         {
             using var connection = new SqliteConnection($"Data Source={dataFilePath}");
@@ -1348,7 +1388,7 @@ WHERE Usercode = @Usercode";
             connection.Close();
         }
 
-        internal string GetAvatarUrl(User user)
+        public string GetAvatarUrl(User user)
         {
             using var connection = new SqliteConnection($"Data Source={dataFilePath}");
             connection.Open();
@@ -1371,6 +1411,38 @@ WHERE Usercode = @Usercode";
                     if (reader.Read())
                     {
                         return reader["avatarUrl"].ToString();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
+
+        public string? GetCardBackgroundUrl(User user)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+
+            string query = @"
+            SELECT
+                cardsUrl
+            FROM
+                user
+            WHERE
+                CODE_USER = @CODE_USER
+            LIMIT 1";
+
+            using (var command = new SqliteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@CODE_USER", user.Code_user);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return reader["cardsUrl"].ToString();
                     }
                     else
                     {

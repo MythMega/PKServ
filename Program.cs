@@ -26,9 +26,13 @@ namespace PKServ
             {
                 IncludeFields = true
             };
-
+            if (!File.Exists("./_settings.json"))
+            {
+                File.WriteAllText("./_settings.json", File.ReadAllText("Admin\\DefaultSettings.json"));
+            }
             GlobalAppSettings globalAppSettings = JsonSerializer.Deserialize<GlobalAppSettings>(File.ReadAllText("./_settings.json"), options);
-            globalAppSettings.SetDefaultValue();
+            GlobalAppSettings globalAppSettingsDefaults = JsonSerializer.Deserialize<GlobalAppSettings>(File.ReadAllText("Admin\\DefaultSettings.json"), options);
+            SettingsHelper.MergeWithDefaults(globalAppSettings, globalAppSettingsDefaults);
 
             HttpListener listener = new HttpListener();
             listener.Prefixes.Add($"http://localhost:{globalAppSettings.ServerPort}/");
@@ -55,6 +59,7 @@ namespace PKServ
             settings.allPokemons.AddRange(custom);
             settings.pokeballs.AddRange(JsonSerializer.Deserialize<List<Pokeball>>(File.ReadAllText("./balls.json"), options));
             settings.triggers.AddRange(JsonSerializer.Deserialize<List<Trigger>>(File.ReadAllText("./Triggers.json"), options));
+            settings.TrainerCardsBackgrounds.AddRange(JsonSerializer.Deserialize<List<Background>>(File.ReadAllText("./TrainerCardBackgrounds.json"), options));
             settings.badges.AddRange(JsonSerializer.Deserialize<List<Badge>>(File.ReadAllText("./badges.json"), options).Where(x => !x.Locked).ToList());
             settings.customOverlays.AddRange(JsonSerializer.Deserialize<List<CustomOverlay>>(File.ReadAllText("./customOverlays.json"), options));
             settings.customOverlays.ForEach(overlay => { overlay.SetEnv(data, settings, globalAppSettings, usersHere); overlay.BuildOverlay(true); });
@@ -164,6 +169,8 @@ namespace PKServ
                                         {
                                             creatureEvolutionRequest.SetCreatures(settings.pokemons, globalAppSettings);
                                             responseString = creatureEvolutionRequest.DoEvolve(data, globalAppSettings);
+                                            if (!settings.UsersToExport.Where(u => u.Code_user == creatureEvolutionRequest.User.Code_user || (u.Pseudo == creatureEvolutionRequest.User.Pseudo && u.Platform == creatureEvolutionRequest.User.Platform)).Any())
+                                                settings.UsersToExport.Add(creatureEvolutionRequest.User);
                                         }
                                         catch (Exception e)
                                         {
@@ -188,6 +195,9 @@ namespace PKServ
                                         if (favoriteCreatureRequest.IsValide(data, settings))
                                         {
                                             responseString = favoriteCreatureRequest.Set(favoriteCreatureRequest.User, favoriteCreatureRequest.Name, favoriteCreatureRequest.Mode, data);
+
+                                            if (!settings.UsersToExport.Where(u => u.Code_user == favoriteCreatureRequest.User.Code_user || (u.Pseudo == favoriteCreatureRequest.User.Pseudo && u.Platform == favoriteCreatureRequest.User.Platform)).Any())
+                                                settings.UsersToExport.Add(favoriteCreatureRequest.User);
                                         }
                                         else
                                         {
@@ -241,7 +251,7 @@ namespace PKServ
                                         {
                                             Scrapping scrapping = JsonSerializer.Deserialize<Scrapping>(requestBody, options);
                                             scrapping.SetEnv(data, settings, globalAppSettings);
-                                            responseString = scrapping.DoResult();
+                                            responseString = scrapping.DoResult(settings);
                                         }
                                         catch
                                         {
@@ -253,6 +263,23 @@ namespace PKServ
                                         Buying buying = JsonSerializer.Deserialize<Buying>(requestBody, options);
                                         buying.SetEnv(data, settings, globalAppSettings);
                                         responseString = buying.DoResult();
+                                        break;
+
+                                    case "ChangeBackground":
+                                        BackgroundChange tcbackgroundChange = JsonSerializer.Deserialize<BackgroundChange>(requestBody, options);
+                                        if (globalAppSettings.AutoSignInGiveAway)
+                                        {
+                                            AddToHere(new User(tcbackgroundChange.User.Pseudo, tcbackgroundChange.User.Platform, tcbackgroundChange.User.Code_user, data), ref usersHere, globalAppSettings);
+                                        }
+                                        if (tcbackgroundChange.IsValide(data, settings))
+                                        {
+                                            responseString = tcbackgroundChange.DoResult(settings);
+
+                                            if (!settings.UsersToExport.Where(u => u.Code_user == tcbackgroundChange.User.Code_user || (u.Pseudo == tcbackgroundChange.User.Pseudo && u.Platform == tcbackgroundChange.User.Platform)).Any())
+                                                settings.UsersToExport.Add(tcbackgroundChange.User);
+                                        }
+                                        else
+                                            responseString = "T'as pas le droit frere";
                                         break;
 
                                     case "Giveaway/Claim":
@@ -275,6 +302,9 @@ namespace PKServ
                                             else
                                             {
                                                 responseString = GiveawayImpl.DoGiveaway(giveawayClaim, giveaway, globalAppSettings, settings, data);
+
+                                                if (!settings.UsersToExport.Where(u => u.Code_user == giveawayClaim.User.Code_user || (u.Pseudo == giveawayClaim.User.Pseudo && u.Platform == giveawayClaim.User.Platform)).Any())
+                                                    settings.UsersToExport.Add(giveawayClaim.User);
                                             }
                                         }
                                         else
@@ -425,6 +455,11 @@ namespace PKServ
                                             tradeAction.SetEnv(globalAppSettings);
                                             responseString = tradeAction.DoWork(paid: true);
                                             TR.Complete();
+
+                                            if (!settings.UsersToExport.Where(u => u.Code_user == tradeAction.trader1.Code_user || (u.Pseudo == tradeAction.trader1.Pseudo && u.Platform == tradeAction.trader1.Platform)).Any())
+                                                settings.UsersToExport.Add(tradeAction.trader1);
+                                            if (!settings.UsersToExport.Where(u => u.Code_user == tradeAction.trader2.Code_user || (u.Pseudo == tradeAction.trader2.Pseudo && u.Platform == tradeAction.trader2.Platform)).Any())
+                                                settings.UsersToExport.Add(tradeAction.trader2);
                                             settings.TradeRequests.Remove(TR);
                                         }
                                         else
@@ -439,7 +474,7 @@ namespace PKServ
                                             responseString = globalAppSettings.Texts.TranslationRaid.NoActiveRaid;
                                             break;
                                         }
-                                        responseString = settings.ActiveRaid.GivePoke(requestBody.StartsWith("s"));
+                                        responseString = settings.ActiveRaid.GivePoke(shiny: requestBody.StartsWith("s"), appSettings: settings, globalAppSettings: globalAppSettings);
                                         break;
 
                                     case "Raid/Attack":
@@ -732,6 +767,11 @@ namespace PKServ
                                         break;
 
                                     case "GetRaidStatus":
+                                        if (settings.ActiveRaid is not null && settings.ActiveRaid.DefeatedTime is not null && settings.ActiveRaid.DefeatedTime.Value.AddMinutes(globalAppSettings.RaidSettings.TimeMinuteToCatchAfterDefeat) < DateTime.Now)
+                                        {
+                                            settings.ActiveRaid = null;
+                                        }
+
                                         if (settings.ActiveRaid is null)
                                         {
                                             responseString = globalAppSettings.Texts.TranslationRaid.NoActiveRaid;
@@ -794,15 +834,6 @@ namespace PKServ
                             }
                         }
                     }
-
-                    #region check regulier
-
-                    if (settings.ActiveRaid is not null && settings.ActiveRaid.DefeatedTime is not null && settings.ActiveRaid.DefeatedTime.Value.AddMinutes(globalAppSettings.RaidSettings.TimeMinuteToCatchAfterDefeat) < DateTime.Now)
-                    {
-                        settings.ActiveRaid = null;
-                    }
-
-                    #endregion check regulier
                 }
             });
 

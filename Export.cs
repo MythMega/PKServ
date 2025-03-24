@@ -35,6 +35,7 @@ namespace PKServ
                 en.setIDPoke(appSettings);
             }
             entriesByPseudo = entriesByPseudo.OrderBy(e => e.entryPokeID).ToList();
+            int delay = 800;
             foreach (Entrie item in entriesByPseudo)
             {
                 string classShiny = string.Empty;
@@ -51,7 +52,7 @@ namespace PKServ
                 else
                 {
                     currline = @$"
-<tr>
+<tr data-aos=""fade-up"" data-aos-delay=""{delay}"">
                 <td class=""pokename"">{item.PokeName}</td>
                 <td><img {classNormal}src=""{currPoke.Sprite_Normal}"" alt=""Normal Sprite""></td>
                 <td class=""count"">{item.CountNormal}</td>
@@ -84,11 +85,14 @@ namespace PKServ
     <title>Pokémon Capture Tracker</title>
     <!-- Bootstrap CSS -->
     <link href=""https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"" rel=""stylesheet"">
-    <link href=""https://unpkg.com/aos@2.3.1/dist/aos.css"" rel=""stylesheet"">
+    <link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"">
 
-    <script>
-  AOS.init();
-    </script>
+    <script src=""https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js""></script>
+<script>
+  AOS.init({{
+    duration: 800, // durée de l'animation en ms
+  }});
+</script>
     <style>
         body {{
             background-color: #2a2a2a;
@@ -154,6 +158,8 @@ namespace PKServ
     <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
       <form class=""form-inline"">
         <a class=""btn btn-sm btn-outline-secondary"" href=""../main.html"" style=""color: white;"">Accueil Pokédex</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""commandgenerator.html"" style=""color: white;"">Command Generator</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""raid.html"" style=""color: white;"">Raid Result</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""../availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""../pokestats.html"" style=""color: white;"">Classements</a>
       </form>
@@ -287,6 +293,8 @@ namespace PKServ
     <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
       <form class=""form-inline"">
         <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""commandgenerator.html"" style=""color: white;"">Command Generator</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""raid.html"" style=""color: white;"">Raid Result</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
@@ -456,6 +464,8 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
     <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
       <form class=""form-inline"">
         <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""commandgenerator.html"" style=""color: white;"">Command Generator</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""raid.html"" style=""color: white;"">Raid Result</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
@@ -569,7 +579,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             {
                 IncludeFields = true
             };
-            allCodedPokemons = appSettings.allPokemons;
+            allCodedPokemons = appSettings.allPokemons.Where(p => p.enabled).ToList();
             fileContent = "";
             filename = $"AvailablePokemon.html";
         }
@@ -635,7 +645,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                             break;
                     }
                     currline = @$"
-<tr>
+<tr data-aos=""fade-up"" data-aos-delay=""800"">
                 <td>{item.Name_FR}</td>
                 <td><img {classNormal}src=""{item.Sprite_Normal}"" alt=""Normal Sprite""></td>
                 <td class=""count"">{CountNormal}</td>
@@ -687,6 +697,14 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
     <title>Pokémon Capture Tracker</title>
     <!-- Bootstrap CSS -->
     <link href=""https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"" rel=""stylesheet"">
+    <link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"">
+    <script src=""https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js""></script>
+<script>
+  AOS.init({{
+    duration: 800, // durée de l'animation en ms
+  }});
+</script>
+
     <style>
         body {{
             background-color: #2a2a2a;
@@ -728,6 +746,8 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
     <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
       <form class=""form-inline"">
         <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""commandgenerator.html"" style=""color: white;"">Command Generator</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""raid.html"" style=""color: white;"">Raid Result</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
@@ -1072,6 +1092,8 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
     <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
       <form class=""form-inline"">
         <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""commandgenerator.html"" style=""color: white;"">Command Generator</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""raid.html"" style=""color: white;"">Raid Result</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
@@ -1208,7 +1230,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         style=""height: 48px; width: 48px;""
         class=""img-badge img-badge-{badge.Rarity}""
         title=""{badge.Description}"">
-    <p style=""font-size: 12px; margin-top: 4px"">{badge.Title}</p>
+    <p style=""font-size: 12px; margin-top: 4px"" class=""textShadow"">{badge.Title}</p>
 </div>";
                 count++;
             }
@@ -1222,7 +1244,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
       width: 856px;
       height: 540px;
       border-radius: 10px;
-      background: linear-gradient(to bottom, #0b0b2b, #1b2735 70%, #090a0f);
+      background-image: url(""{utilisateur.GetBackground()}"");
     }}
     .img-badge {{
       position: relative;
@@ -1258,6 +1280,9 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 -webkit-box-shadow: 0px 0px 38px 0px rgba(0,0,0,0.5);
 -moz-box-shadow: 0px 0px 38px 0px rgba(0,0,0,0.5);
     }}
+    .textShadow {{ text-shadow: 0px 0px 11px #000, 0px 0px 11px #000, 0px 0px 20px #000;
+font-weight: bolder;
+            }}
     .stars {{
   width: 1px;
   height: 1px;
@@ -1291,11 +1316,11 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 </head>
 <body>
   <center>
-  <div class=""generatedCard"">
+  <div class=""generatedCard"" style=""background-color: rgba(0, 0, 0, 0.5);"">
   <!-- Partie titre -->
     <div class=""stars""></div>
-    <h1>Dresseur : {utilisateur.Pseudo}</h1>
-    <h3 style=""margin-bottom: 50px;"">ID : {utilisateur.Code_user}</h3>
+    <h1 class=""textShadow"">Dresseur : {utilisateur.Pseudo}</h1>
+    <h3 class=""textShadow"" style=""margin-bottom: 50px;"">ID : {utilisateur.Code_user}</h3>
     <!-- Partie Corp -->
     <div class=""container"">
       <!-- Photo -->
@@ -1305,17 +1330,19 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         </div>
         <!-- Stats -->
         <div class=""col"">
-          <p>Global dex : {utilisateur.Stats.dexCount}</p>
-          <p>Shiny dex : {utilisateur.Stats.shinydex}</p>
-          <p>Trainer since : {utilisateur.Stats.firstCatch.ToString("d MMM. yy", CultureInfo.InvariantCulture)}</p>
-          <p>Platform : {userRequest.Platform} <img src=""https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{userRequest.Platform.ToLower()}.png"" style=""height: 16px; width: 16px;""></p>
-          <p>Level : {utilisateur.Stats.level}</p>
-          <p>Captures : {utilisateur.Stats.pokeCaught}</p>
+            <div>
+          <p class=""textShadow"">Global dex : {utilisateur.Stats.dexCount}</p>
+          <p class=""textShadow"">Shiny dex : {utilisateur.Stats.shinydex}</p>
+          <p class=""textShadow"">Trainer since : {utilisateur.Stats.firstCatch.ToString("d MMM. yy", CultureInfo.InvariantCulture)}</p>
+          <p class=""textShadow"">Platform : {userRequest.Platform} <img src=""https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{userRequest.Platform.ToLower()}.png"" style=""height: 16px; width: 16px;""></p>
+          <p class=""textShadow"">Level : {utilisateur.Stats.level}</p>
+          <p class=""textShadow"">Captures : {utilisateur.Stats.pokeCaught}</p>
+            </div>
         </div>
         <!-- Favorite creature -->
         <div class=""col"">
-          <h6>Creature Favorite :</h6>
-          <p>{Commun.FullInfoShinyNormal(Commun.CapitalizePhrase(utilisateur.Stats.favoritePoke))}</p>
+          <h6 class=""textShadow"">Creature Favorite :</h6>
+          <p class=""textShadow"">{Commun.FullInfoShinyNormal(Commun.CapitalizePhrase(utilisateur.Stats.favoritePoke))}</p>
           <img src=""{urlSpritePokeFav}"" alt=""userprofile fav creature"" style=""width: 128px;"">
         </div>
       </div>

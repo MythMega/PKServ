@@ -1,4 +1,5 @@
 ﻿using PKServ.Configuration;
+using PKServ.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,10 +68,45 @@ namespace PKServ
         public GetPokeStats()
         { }
 
-        public GetPokeStats(User User, string Name, string Mode)
+        public GetPokeStats(User User, string Name)
         {
             this.User = User;
             this.Name = Name.ToLower().Replace("_", " ");
+        }
+    }
+
+    public class BackgroundChange
+    {
+        public User User { get; set; }
+        public string Name { get; set; }
+
+        // Constructeur par défaut requis pour la désérialisation
+        public BackgroundChange()
+        { }
+
+        public BackgroundChange(User User, string Name)
+        {
+            this.User = User;
+            this.Name = Name.ToLower().Replace("_", " ");
+        }
+
+        public bool IsValide(DataConnexion data, AppSettings appSettings)
+        {
+            if (!appSettings.TrainerCardsBackgrounds.Where(x => x.Name.ToLower() == Name.Replace("_", " ").ToLower()).Any())
+                return false;
+            else
+            {
+                Background bg = appSettings.TrainerCardsBackgrounds.Where(x => x.Name.ToLower().Replace("_", " ") == Name.Replace("_", " ").ToLower()).FirstOrDefault();
+                User.generateStats();
+                return bg.IsUnlocked(User);
+            }
+        }
+
+        public string DoResult(AppSettings appSettings)
+        {
+            Name = Name.ToLower().Replace("_", " ");
+            User.ChangeBackground(appSettings.TrainerCardsBackgrounds.Where(x => x.Name.ToLower().Replace("_", " ") == Name).FirstOrDefault().Url);
+            return $"The background has been changed to {Name}.";
         }
     }
 
