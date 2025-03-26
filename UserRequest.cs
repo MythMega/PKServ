@@ -110,6 +110,33 @@ namespace PKServ
         }
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    public class GiveawayPokeFromRaidRequest
+    {
+        public string Shiny { get; set; }
+        public string ChannelSource { get; set; }
+
+        /// <summary>
+        /// Constructeur complet pour une requete de giveaway de fin de raid
+        /// </summary>
+        /// <param name="Shiny"></param>
+        /// <param name="ChannelSource"></param>
+        public GiveawayPokeFromRaidRequest(string Shiny, string ChannelSource)
+        {
+            this.Shiny = Shiny;
+            this.ChannelSource = ChannelSource;
+        }
+
+        /// <summary>
+        /// utilisé par le désérialisateur
+        /// </summary>
+        public GiveawayPokeFromRaidRequest()
+        {
+        }
+    }
+
     public class FavoriteCreatureRequest
     {
         public User User { get; set; }

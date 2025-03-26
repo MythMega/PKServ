@@ -1,4 +1,5 @@
-﻿using PKServ.Configuration;
+﻿using PKServ.Business;
+using PKServ.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -203,33 +204,42 @@ namespace PKServ
             poke.isShiny = shiny;
 
             string result = "";
+            string mode = "giveaway";
+            int count = 0;
             // cas distribution multiple
             if (uc.UserName.StartsWith('+'))
             {
                 switch (uc.UserName)
                 {
                     case "+Everyone":
-                        result = GiveAwayPoke(false, poke, null);
+                        mode = "Giveaway everyone alltime";
+                        result = GiveAwayPoke(false, poke, ref count, null);
                         break;
 
                     // distribution a tous les gens de la liste de gens actifs (pas encore implémentée)
                     case "+Here":
-                        result = GiveAwayPoke(true, poke, usersHere);
+                        mode = "Giveaway everyone here";
+                        result = GiveAwayPoke(true, poke, ref count, usersHere);
                         break;
                 }
             }
             // cas distribution unique
             else
             {
+                count = 1;
                 User target = new User(uc.UserName, uc.Platform);
                 target.Code_user = connexion.GetCodeUserByPlatformPseudo(target);
                 ObtainPoke(target, poke);
+                mode = $"Giveaway {target.Pseudo} [{target.Platform}]";
                 result = $"{poke.Name_FR}/{poke.Name_EN} succesfully given to {uc.UserName} [on {uc.Platform}]";
             }
+            mode += $" ({count})";
+            Commun.AddRecords(mode, poke, poke.isShiny, connexion);
+            RecordsGeneratorImpl.GenerateRecords(connexion, appSettings);
             return result;
         }
 
-        private string GiveAwayPoke(bool isOnlyForActive, Pokemon poke, List<User> usersHere = null)
+        private string GiveAwayPoke(bool isOnlyForActive, Pokemon poke, ref int count, List<User> usersHere = null)
         {
             string result = "";
             string[] errors = [];
@@ -240,6 +250,7 @@ namespace PKServ
                 {
                     try
                     {
+                        count++;
                         ObtainPoke(user, poke);
                         connexion.UpdateUserStatsGiveaway(pseudo: user.Pseudo, platform: user.Platform, isShiny: poke.isShiny);
                     }
@@ -257,6 +268,7 @@ namespace PKServ
                 {
                     try
                     {
+                        count++;
                         ObtainPoke(user, poke);
                         connexion.UpdateUserStatsGiveaway(pseudo: user.Pseudo, platform: user.Platform, isShiny: poke.isShiny);
                     }

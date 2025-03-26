@@ -27,54 +27,6 @@ namespace PKServ
         public RaidSettings RaidSettings { get; set; }
         public EvolveSettings EvolveSettings { get; set; }
         public GiveAwaySettings GiveAwaySettings { get; set; }
-
-        internal void SetDefaultValue()
-        {
-            bool needUpdate = false;
-            try { ServerPort.ToString(); } catch { ServerPort = 5052; needUpdate = true; }
-            try { AutoSignInGiveAway.ToString(); } catch { AutoSignInGiveAway = true; needUpdate = true; }
-            try { KeepUserInGiveAwayAfterShutdown.ToString(); } catch { KeepUserInGiveAwayAfterShutdown = true; needUpdate = true; }
-            try { MustAutoFullExport.ToString(); } catch { MustAutoFullExport = true; needUpdate = true; }
-            try { DelayBeforeFullWebUpdate.ToString(); } catch { DelayBeforeFullWebUpdate = 10; needUpdate = true; }
-            try { LanguageCode.ToString(); } catch { LanguageCode = "en"; needUpdate = true; }
-            try { GitHubTokenUpload.ToString(); } catch { GitHubTokenUpload = "UNSET"; needUpdate = true; }
-
-            // log
-            try { Log.ToString(); } catch { Log = new GlobalAppLog { logConsole = new GlobalAppLogConsole { console = true, logJsonOnConsole = true }, logFile = false }; }
-            try { Log.logConsole.ToString(); } catch { Log.logConsole = new GlobalAppLogConsole { console = true, logJsonOnConsole = true }; }
-            try { Log.logFile.ToString(); } catch { Log.logFile = false; }
-            try { Log.logConsole.logJsonOnConsole.ToString(); } catch { Log.logConsole.logJsonOnConsole = true; }
-            try { Log.logConsole.console.ToString(); } catch { Log.logConsole.console = true; }
-
-            // texts globaux
-            try { Texts.ToString(); } catch { Texts = new TextTranslation(); }
-            try { Texts.serverStarted.ToString(); } catch { Texts.serverStarted = "UNSET"; }
-            try { Texts.serverStopped.ToString(); } catch { Texts.serverStopped = "UNSET"; }
-            try { Texts.serverReloaded.ToString(); } catch { Texts.serverReloaded = "UNSET"; }
-            try { Texts.error.ToString(); } catch { Texts.error = "UNSET"; }
-            try { Texts.dexName.ToString(); } catch { Texts.dexName = "UNSET"; }
-            try { Texts.msg_selectUserFirst.ToString(); } catch { Texts.msg_selectUserFirst = "UNSET"; }
-            try { Texts.msg_confirmation.ToString(); } catch { Texts.msg_confirmation = "UNSET"; }
-            try { Texts.warn_heavyAction.ToString(); } catch { Texts.warn_heavyAction = "UNSET"; }
-            try { Texts.warn_slowRequest.ToString(); } catch { Texts.warn_slowRequest = "UNSET"; }
-            try { Texts.warn_userdontexist.ToString(); } catch { Texts.warn_userdontexist = "UNSET"; }
-            try { Texts.err_request.ToString(); } catch { Texts.err_request = "UNSET"; }
-            try { Texts.err_creationCodeUser.ToString(); } catch { Texts.err_creationCodeUser = "UNSET"; }
-            try { Texts.noCreatureRegistered.ToString(); } catch { Texts.noCreatureRegistered = "UNSET"; }
-            try { Texts.CreatureNotRegistered.ToString(); } catch { Texts.CreatureNotRegistered = "UNSET"; }
-            try { Texts.noCreatureWithThatName.ToString(); } catch { Texts.noCreatureWithThatName = "UNSET"; }
-            try { Texts.pokeStatsInfos.ToString(); } catch { Texts.pokeStatsInfos = "UNSET"; }
-
-            if (needUpdate)
-            {
-                string ab = JsonSerializer.Serialize(this, new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                });
-
-                System.IO.File.WriteAllText("./_settings.json", ab);
-            }
-        }
     }
 
     public class OverlaySettings
@@ -191,151 +143,151 @@ namespace PKServ
 
     public class GlobalAppLog
     {
-        public GlobalAppLogConsole logConsole;
-        public bool logFile;
+        public GlobalAppLogConsole logConsole { get; set; }
+        public bool logFile { get; set; }
     }
 
     public class GlobalAppLogConsole
     {
-        public bool console;
-        public bool logJsonOnConsole;
+        public bool console { get; set; }
+        public bool logJsonOnConsole { get; set; }
     }
 
     public class TextTranslation
     {
-        public string serverStarted;
-        public string serverStopped;
-        public string serverReloaded;
-        public string error;
-        public string dexName;
-        public string msg_selectUserFirst;
-        public string msg_confirmation;
-        public string warn_heavyAction;
-        public string warn_slowRequest;
-        public string warn_userdontexist;
-        public string err_request;
-        public string err_creationCodeUser;
-        public string noCreatureRegistered;
-        public string CreatureNotRegistered;
-        public string noCreatureWithThatName;
-        public string pokeStatsInfos;
-        public TranslationScrapping TranslationScrapping;
-        public TranslationBuying TranslationBuying;
-        public TranslationTrading TranslationTrading;
-        public TranslationRaid TranslationRaid;
-        public TranslationEvolving TranslationEvolving;
-        public TranslationGiveaway TranslationGiveaway;
-        public Emotes emotes;
-        public Types types;
+        public string serverStarted { get; set; }
+        public string serverStopped { get; set; }
+        public string serverReloaded { get; set; }
+        public string error { get; set; }
+        public string dexName { get; set; }
+        public string msg_selectUserFirst { get; set; }
+        public string msg_confirmation { get; set; }
+        public string warn_heavyAction { get; set; }
+        public string warn_slowRequest { get; set; }
+        public string warn_userdontexist { get; set; }
+        public string err_request { get; set; }
+        public string err_creationCodeUser { get; set; }
+        public string noCreatureRegistered { get; set; }
+        public string CreatureNotRegistered { get; set; }
+        public string noCreatureWithThatName { get; set; }
+        public string pokeStatsInfos { get; set; }
+        public TranslationScrapping TranslationScrapping { get; set; }
+        public TranslationBuying TranslationBuying { get; set; }
+        public TranslationTrading TranslationTrading { get; set; }
+        public TranslationRaid TranslationRaid { get; set; }
+        public TranslationEvolving TranslationEvolving { get; set; }
+        public TranslationGiveaway TranslationGiveaway { get; set; }
+        public Emotes emotes { get; set; }
+        public Types types { get; set; }
     }
 
     public class TranslationScrapping
     {
-        public string NotEnoughElementCopy;
-        public string ElementNotRegistered;
-        public string ScrapModeDoesNotExist;
-        public string ScrapModeNotGiven;
+        public string NotEnoughElementCopy { get; set; }
+        public string ElementNotRegistered { get; set; }
+        public string ScrapModeDoesNotExist { get; set; }
+        public string ScrapModeNotGiven { get; set; }
     }
 
     public class TranslationBuying
     {
-        public string ElementNonBuyable;
-        public string ElementTooExpensive;
-        public string ElementDoesNotExist;
-        public string BuyingModeNotRecognized;
+        public string ElementNonBuyable { get; set; }
+        public string ElementTooExpensive { get; set; }
+        public string ElementDoesNotExist { get; set; }
+        public string BuyingModeNotRecognized { get; set; }
     }
 
     public class TranslationTrading
     {
-        public string tradeRequestCreated;
-        public string elementNotInPossession;
-        public string tooExpensive;
-        public string creatureNotFound;
-        public string cancelled;
-        public string cannotCancelNotOwner;
-        public string codeInvalidOrExpired;
-        public string cannotTradeShiny;
-        public string cannotTradeLocked;
-        public string cannotTradeLegendaries;
-        public string cannotTradeShinyAndNormal;
-        public string cannotTradeClassicAndCustom;
-        public string cannotTradeFromDifferentSeries;
-        public string atLeastOneTradeInitialized;
+        public string tradeRequestCreated { get; set; }
+        public string elementNotInPossession { get; set; }
+        public string tooExpensive { get; set; }
+        public string creatureNotFound { get; set; }
+        public string cancelled { get; set; }
+        public string cannotCancelNotOwner { get; set; }
+        public string codeInvalidOrExpired { get; set; }
+        public string cannotTradeShiny { get; set; }
+        public string cannotTradeLocked { get; set; }
+        public string cannotTradeLegendaries { get; set; }
+        public string cannotTradeShinyAndNormal { get; set; }
+        public string cannotTradeClassicAndCustom { get; set; }
+        public string cannotTradeFromDifferentSeries { get; set; }
+        public string atLeastOneTradeInitialized { get; set; }
     }
 
     public class TranslationRaid
     {
-        public string NoActiveRaid;
-        public string DamageDone;
-        public string CaptureState;
-        public string RaidAlreadyGone;
-        public string BossDeafeatedUseCmdToCatchIt;
+        public string NoActiveRaid { get; set; }
+        public string DamageDone { get; set; }
+        public string CaptureState { get; set; }
+        public string RaidAlreadyGone { get; set; }
+        public string BossDeafeatedUseCmdToCatchIt { get; set; }
     }
 
     public class TranslationEvolving
     {
-        public string CreatureNotFound;
-        public string EvolutionNotFound;
-        public string CannotEvolveIfShiny;
-        public string CannotEvolveIfEvolutionLocked;
-        public string CannotEvolveIfEvolutionShinyLocked;
-        public string CreatureBaseNotOwned;
-        public string NotEnoughCreatureToEvolve;
-        public string EvolutionSucceed;
+        public string CreatureNotFound { get; set; }
+        public string EvolutionNotFound { get; set; }
+        public string CannotEvolveIfShiny { get; set; }
+        public string CannotEvolveIfEvolutionLocked { get; set; }
+        public string CannotEvolveIfEvolutionShinyLocked { get; set; }
+        public string CreatureBaseNotOwned { get; set; }
+        public string NotEnoughCreatureToEvolve { get; set; }
+        public string EvolutionSucceed { get; set; }
     }
 
     public class TranslationGiveaway
     {
-        public string AlreadyClaimed;
-        public string CodeDoesNotExist;
-        public string CodeExpired;
-        public string CodeNotYetAvailable;
+        public string AlreadyClaimed { get; set; }
+        public string CodeDoesNotExist { get; set; }
+        public string CodeExpired { get; set; }
+        public string CodeNotYetAvailable { get; set; }
     }
 
     public class MessageSettings
     {
-        public bool showShinyOnFail;
-        public bool showDexCompletion;
+        public bool showShinyOnFail { get; set; }
+        public bool showDexCompletion { get; set; }
     }
 
     public class Emotes
     {
-        public string shiny;
-        public string dex;
-        public string money;
-        public string ball;
-        public string success;
-        public string failure;
+        public string shiny { get; set; }
+        public string dex { get; set; }
+        public string money { get; set; }
+        public string ball { get; set; }
+        public string success { get; set; }
+        public string failure { get; set; }
     }
 
     public class Types
     {
-        public string fire;
-        public string water;
-        public string grass;
-        public string electric;
-        public string ground;
-        public string rock;
-        public string flying;
-        public string bug;
-        public string poison;
-        public string psychic;
-        public string ghost;
-        public string ice;
-        public string dragon;
-        public string dark;
-        public string steel;
-        public string fairy;
-        public string fighting;
-        public string normal;
+        public string fire { get; set; }
+        public string water { get; set; }
+        public string grass { get; set; }
+        public string electric { get; set; }
+        public string ground { get; set; }
+        public string rock { get; set; }
+        public string flying { get; set; }
+        public string bug { get; set; }
+        public string poison { get; set; }
+        public string psychic { get; set; }
+        public string ghost { get; set; }
+        public string ice { get; set; }
+        public string dragon { get; set; }
+        public string dark { get; set; }
+        public string steel { get; set; }
+        public string fairy { get; set; }
+        public string fighting { get; set; }
+        public string normal { get; set; }
     }
 
     public class ScrapSettings
     {
-        public int ValueDefaultNormal;
-        public int ValueDefaultShiny;
-        public int minimumToScrap;
-        public int legendaryMultiplier;
+        public int ValueDefaultNormal { get; set; }
+        public int ValueDefaultShiny { get; set; }
+        public int minimumToScrap { get; set; }
+        public int legendaryMultiplier { get; set; }
     }
 
     public class CommandSettings
@@ -379,15 +331,15 @@ namespace PKServ
         public int DefaultPV { get; set; }
         public int DefaultCatchRate { get; set; }
         public int DefaultShinyRate { get; set; }
-        public int TimeMinuteToCatchAfterDefeat { get; set; }
+        public int TimeMinuteToCatchAfterDefeat { get; set; } = 50;
     }
 
     public class EvolveSettings
     {
-        public int RequiredCreatureToEvolve;
-        public bool AllowShiny;
-        public bool AllowEvolutionLocked;
-        public bool AllowEvolutionShinyLocked;
+        public int RequiredCreatureToEvolve { get; set; }
+        public bool AllowShiny { get; set; }
+        public bool AllowEvolutionLocked { get; set; }
+        public bool AllowEvolutionShinyLocked { get; set; }
     }
 
     public class GiveAwaySettings

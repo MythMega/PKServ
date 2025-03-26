@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -24,7 +25,9 @@ namespace PKServ
 
             var options = new JsonSerializerOptions
             {
-                IncludeFields = true
+                IncludeFields = true,
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
             if (!File.Exists("./_settings.json"))
             {
@@ -33,6 +36,7 @@ namespace PKServ
             GlobalAppSettings globalAppSettings = JsonSerializer.Deserialize<GlobalAppSettings>(File.ReadAllText("./_settings.json"), options);
             GlobalAppSettings globalAppSettingsDefaults = JsonSerializer.Deserialize<GlobalAppSettings>(File.ReadAllText("Admin\\DefaultSettings.json"), options);
             SettingsHelper.MergeWithDefaults(globalAppSettings, globalAppSettingsDefaults);
+            File.WriteAllText("./_settings.json", JsonSerializer.Serialize(globalAppSettings, options));
 
             HttpListener listener = new HttpListener();
             listener.Prefixes.Add($"http://localhost:{globalAppSettings.ServerPort}/");
@@ -474,7 +478,8 @@ namespace PKServ
                                             responseString = globalAppSettings.Texts.TranslationRaid.NoActiveRaid;
                                             break;
                                         }
-                                        responseString = settings.ActiveRaid.GivePoke(shiny: requestBody.StartsWith("s"), appSettings: settings, globalAppSettings: globalAppSettings);
+                                        GiveawayPokeFromRaidRequest giveawayPokeFromRaidRequest = JsonSerializer.Deserialize<GiveawayPokeFromRaidRequest>(requestBody, options);
+                                        responseString = settings.ActiveRaid.GivePoke(giveawayPokeFromRaidRequest, appSettings: settings, globalAppSettings: globalAppSettings);
                                         break;
 
                                     case "Raid/Attack":

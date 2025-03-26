@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
@@ -8,7 +9,8 @@ namespace PKServ.Admin
     public static class SettingsHelper
     {
         /// <summary>
-        /// Parcourt récursivement toutes les propriétés d'un objet et, pour chaque propriété qui vaut null,
+        /// Parcourt récursivement toutes les propriétés d'un objet et, pour chaque propriété qui vaut null
+        /// ou qui est égale à sa valeur par défaut (pour les types valeur non-nullables),
         /// lui affecte la valeur correspondante issue de l'objet defaults.
         /// </summary>
         /// <param name="target">L'objet à compléter.</param>
@@ -22,29 +24,59 @@ namespace PKServ.Admin
 
             foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                // Ignorer les propriétés qui nécessitent des paramètres (ex : indexées)
+                // Ignorer les propriétés indexées
                 if (property.GetIndexParameters().Length > 0)
                     continue;
 
-                // Nous ne considérons que les propriétés qui sont à la fois lisibles et modifiables
+                // Considérer uniquement les propriétés lisibles et modifiables
                 if (!property.CanRead || !property.CanWrite)
                     continue;
 
-                // Récupère la valeur actuelle dans l'objet target et la valeur par défaut
                 object targetValue = property.GetValue(target);
                 object defaultValue = property.GetValue(defaults);
 
-                // Si la propriété target est null et que defaultValue ne l'est pas, on affecte la valeur par défaut
-                if (targetValue == null && defaultValue != null)
+                // Si la propriété est de type complexe (classe, à l'exception de string)
+                if (property.PropertyType.IsClass && property.PropertyType != typeof(string))
                 {
-                    property.SetValue(target, defaultValue);
+                    // Si targetValue est null alors essayer de créer une nouvelle instance
+                    if (targetValue == null && defaultValue != null)
+                    {
+                        ConstructorInfo ctor = property.PropertyType.GetConstructor(Type.EmptyTypes);
+                        if (ctor != null)
+                        {
+                            // Création d'une nouvelle instance pour target
+                            targetValue = Activator.CreateInstance(property.PropertyType);
+                            property.SetValue(target, targetValue);
+                        }
+                        else
+                        {
+                            // Sinon, on affecte directement l'instance default
+                            property.SetValue(target, defaultValue);
+                            continue;
+                        }
+                    }
+                    // Fusionner récursivement les propriétés imbriquées
+                    if (targetValue != null && defaultValue != null)
+                    {
+                        MergeWithDefaults(targetValue, defaultValue);
+                    }
                 }
-                // Si la propriété est un objet complexe (classe) à l'exclusion des types simples, on parcourt récursivement
-                else if (targetValue != null && defaultValue != null &&
-                         property.PropertyType.IsClass &&
-                         property.PropertyType != typeof(string))
+                else
                 {
-                    MergeWithDefaults(targetValue, defaultValue);
+                    // Traitement pour les types simples
+
+                    // Cas classique pour les types référence (qui peuvent être null)
+                    if (targetValue == null && defaultValue != null)
+                    {
+                        property.SetValue(target, defaultValue);
+                    }
+                    // Cas pour les types valeur non-nullables (int, bool, etc.)
+                    else if (!property.PropertyType.IsClass &&
+                        EqualityComparer<object>.Default.Equals(targetValue, Activator.CreateInstance(property.PropertyType)) &&
+                        !EqualityComparer<object>.Default.Equals(defaultValue, Activator.CreateInstance(property.PropertyType)))
+                    {
+                        property.SetValue(target, defaultValue);
+                    }
                 }
             }
         }

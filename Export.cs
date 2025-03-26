@@ -52,7 +52,7 @@ namespace PKServ
                 else
                 {
                     currline = @$"
-<tr data-aos=""fade-up"" data-aos-delay=""{delay}"">
+<tr>
                 <td class=""pokename"">{item.PokeName}</td>
                 <td><img {classNormal}src=""{currPoke.Sprite_Normal}"" alt=""Normal Sprite""></td>
                 <td class=""count"">{item.CountNormal}</td>
@@ -85,14 +85,6 @@ namespace PKServ
     <title>Pokémon Capture Tracker</title>
     <!-- Bootstrap CSS -->
     <link href=""https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"" rel=""stylesheet"">
-    <link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"">
-
-    <script src=""https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js""></script>
-<script>
-  AOS.init({{
-    duration: 800, // durée de l'animation en ms
-  }});
-</script>
     <style>
         body {{
             background-color: #2a2a2a;
@@ -158,14 +150,17 @@ namespace PKServ
     <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
       <form class=""form-inline"">
         <a class=""btn btn-sm btn-outline-secondary"" href=""../main.html"" style=""color: white;"">Accueil Pokédex</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""commandgenerator.html"" style=""color: white;"">Command Generator</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""raid.html"" style=""color: white;"">Raid Result</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""../commandgenerator.html"" style=""color: white;"">Command Generator</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""../raid.html"" style=""color: white;"">Raid Result</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""../availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""../pokestats.html"" style=""color: white;"">Classements</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""../records.html"" style=""color: white;"">Enregistrements</a>
       </form>
     </nav><br><br>
     <h1>Pokédex {userRequest.UserName} - chez {userRequest.ChannelSource}</h1>
     <p>Pokédex de {userRequest.UserName} [de {userRequest.Platform}] au {DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}, sur le stream de {userRequest.ChannelSource}.</p>
+
+    <input type=""text"" id=""searchInput"" placeholder=""Rechercher Pokémon ou Statut"" class=""form-control"" style=""margin-bottom: 20px; max-width: 300px;"">
     <table class=""table table-dark table-bordered table-striped"">
         <thead class=""thead-light"">
             <tr>
@@ -177,7 +172,7 @@ namespace PKServ
                 <th>Première capture(s)</th>
             </tr>
         </thead>
-        <tbody>";
+        <tbody id=""recordsTable"">";
 
             lineTables.ForEach(line => fileContent += line);
 
@@ -191,11 +186,28 @@ namespace PKServ
 {GetUserStats()}
 <p>Badges :</p><br>
 {GetUserBadge(appSettings)}
+
+    <script>
+        // Fonction pour filtrer les résultats
+        document.getElementById('searchInput').addEventListener('keyup', function() {{
+            const searchValue = this.value.toLowerCase(); // Texte saisi
+            const tableRows = document.querySelectorAll('#recordsTable tr'); // Toutes les lignes du tableau
+
+            tableRows.forEach(row => {{
+                const pokémon = row.cells[0].textContent.toLowerCase(); // Colonne Pokémon
+
+                if (pokémon.includes(searchValue)) {{
+                    row.style.display = ''; // Montrer la ligne
+                }} else {{
+                    row.style.display = 'none'; // Cacher la ligne
+                }}
+            }});
+        }});
+    </script>
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src=""https://code.jquery.com/jquery-3.5.1.slim.min.js""></script>
     <script src=""https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js""></script>
     <script src=""https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js""></script>
-    <script src=""https://unpkg.com/aos@2.3.1/dist/aos.js""></script>
 </body>
 </html>";
         }
@@ -299,6 +311,7 @@ namespace PKServ
         <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""scrappokemon.html"" style=""color: white;"">Scrap Pokémon</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""records.html"" style=""color: white;"">Enregistrements</a>
       </form>
     </nav><br><br>
 <style>
@@ -310,7 +323,7 @@ namespace PKServ
     .table tbody td img {{height: 64px;
         width: auto;
     }}
-    .count {{font - size: 20px;
+    .count {{font-size: 20px;
     }}
     /* Noir et blanc */
     .black-and-white {{filter: grayscale(100%);
@@ -644,8 +657,13 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                             classAvailability = "FullAvailable";
                             break;
                     }
+
+                    if (currPoke.isShinyLock && availability == "fully available")
+                    {
+                        availability += " (shiny locked)";
+                    }
                     currline = @$"
-<tr data-aos=""fade-up"" data-aos-delay=""800"">
+<tr>
                 <td>{item.Name_FR}</td>
                 <td><img {classNormal}src=""{item.Sprite_Normal}"" alt=""Normal Sprite""></td>
                 <td class=""count"">{CountNormal}</td>
@@ -697,13 +715,6 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
     <title>Pokémon Capture Tracker</title>
     <!-- Bootstrap CSS -->
     <link href=""https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"" rel=""stylesheet"">
-    <link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"">
-    <script src=""https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js""></script>
-<script>
-  AOS.init({{
-    duration: 800, // durée de l'animation en ms
-  }});
-</script>
 
     <style>
         body {{
@@ -737,7 +748,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         }}
 
         /* Texte plus grand dans <td> */
-        .large-text td {{font - size: 20px; }}
+        .large-text td {{font-size: 20px; }}
 
     </style>
 </head>
@@ -752,9 +763,10 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""scrappokemon.html"" style=""color: white;"">Scrap Pokémon</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""records.html"" style=""color: white;"">Enregistrements</a>
       </form>
     </nav><br><br>
-
+<input type=""text"" id=""searchInput"" placeholder=""Rechercher Pokémon ou Statut"" class=""form-control"" style=""margin-bottom: 20px; max-width: 300px;"">
     <table class=""table table-dark table-bordered table-striped"">
         <thead>
             <tr>
@@ -767,13 +779,32 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                 <th>Artist</th>
             </tr>
         </thead>
-        <tbody>";
+        <tbody id=""recordsTable"">";
 
             lineTables.ForEach(line => fileContent += line);
 
             fileContent += @$"</tbody>
     </table>
 <br><br>
+    <script>
+        // Fonction pour filtrer les résultats
+        document.getElementById('searchInput').addEventListener('keyup', function() {{
+            const searchValue = this.value.toLowerCase(); // Texte saisi
+            const tableRows = document.querySelectorAll('#recordsTable tr'); // Toutes les lignes du tableau
+
+            tableRows.forEach(row => {{
+                const pokémon = row.cells[0].textContent.toLowerCase(); // Colonne Pokémon
+                const dispo = row.cells[5].textContent.toLowerCase(); // Colonne Statut
+                const artist = row.cells[6].textContent.toLowerCase(); // Colonne Statut
+
+                if (pokémon.includes(searchValue) || dispo.includes(searchValue) || artist.includes(searchValue)) {{
+                    row.style.display = ''; // Montrer la ligne
+                }} else {{
+                    row.style.display = 'none'; // Cacher la ligne
+                }}
+            }});
+        }});
+    </script>
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src=""https://code.jquery.com/jquery-3.5.1.slim.min.js""></script>
     <script src=""https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js""></script>
@@ -1098,6 +1129,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
         <a class=""btn btn-sm btn-outline-secondary"" href=""scrappokemon.html"" style=""color: white;"">Scrap Pokémon</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""records.html"" style=""color: white;"">Enregistrements</a>
       </form>
     </nav><br><br>";
         }

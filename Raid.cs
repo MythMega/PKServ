@@ -1,4 +1,5 @@
-﻿using PKServ.Configuration;
+﻿using PKServ.Business;
+using PKServ.Configuration;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -208,8 +209,9 @@ namespace PKServ
             return JsonSerializer.Serialize(this);
         }
 
-        public string GivePoke(bool shiny, AppSettings appSettings, GlobalAppSettings globalAppSettings)
+        public string GivePoke(GiveawayPokeFromRaidRequest giveawayPokeFromRaidRequest, AppSettings appSettings, GlobalAppSettings globalAppSettings)
         {
+            bool shiny = giveawayPokeFromRaidRequest.Shiny.StartsWith('s');
             try
             {
                 if (alreadyGiven is not null && !alreadyGiven.Value)
@@ -258,7 +260,7 @@ namespace PKServ
                 count++;
                 try
                 {
-                    Commun.ObtainPoke(user, Boss, DataConnexion, "mythmega");
+                    Commun.ObtainPoke(user, Boss, DataConnexion, giveawayPokeFromRaidRequest.ChannelSource);
                 }
                 catch
                 {
@@ -305,7 +307,8 @@ namespace PKServ
             Console.WriteLine("==========================================");
 
             generateStatsCSV(settings: appSettings, data: DataConnexion, globalAppSettings: globalAppSettings);
-
+            Commun.AddRecords($"Raid ({count} users)", this.Boss, shiny, DataConnexion);
+            RecordsGeneratorImpl.GenerateRecords(DataConnexion, appSettings);
             return r;
         }
 

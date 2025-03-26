@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PKServ.Configuration
 {
@@ -244,6 +245,30 @@ ADD COLUMN cardsUrl TEXT NULL;
                 }
 
                 version = 8;
+            }
+
+            // ajout table cards dans users
+            if (version == 8)
+            {
+                updated = true;
+                connection.Open();
+
+                string alterTableSql = @"
+    CREATE TABLE records (
+        ID INTEGER PRIMARY KEY,
+        CreatureName TEXT NOT NULL,
+        Statut TEXT NOT NULL,
+        Type TEXT NOT NULL,
+         Date DATETIME NOT NULL
+    );
+    ";
+
+                using (var command = new SqliteCommand(alterTableSql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                version = 9;
             }
 
             // Mettre à jour la version dans la base de données
@@ -1506,6 +1531,60 @@ WHERE Usercode = @Usercode";
                     {
                         return null;
                     }
+                }
+            }
+        }
+
+        public List<Records> GetRecords()
+        {
+            List<Records> records = new List<Records>();
+
+            using (SqliteConnection connection = new SqliteConnection($"Data Source={dataFilePath}"))
+            {
+                connection.Open();
+
+                string query = @"
+            SELECT ID, CreatureName, Statut, Type, Date
+            FROM records";
+
+                using (SqliteCommand command = new SqliteCommand(query, connection))
+                {
+                    using (SqliteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int ID = reader.GetInt32(0);
+                            string CreatureName = reader.GetString(1);
+                            string Statut = reader.GetString(2);
+                            string Type = reader.GetString(3);
+                            DateTime Date = reader.GetDateTime(4);
+                            records.Add(new Records(ID: ID, creatureName: CreatureName, statut: Statut, type: Type, date: Date));
+                        }
+                    }
+                }
+            }
+
+            return records;
+        }
+
+        public void AddRecord(Records record)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
+            {
+                connection.Open();
+
+                string insertQuery = @"
+                    INSERT INTO records (CreatureName, Statut, Type, Date)
+                    VALUES (@CreatureName, @Statut, @Type, @Date)";
+
+                using (var insertCommand = new SqliteCommand(insertQuery, connection))
+                {
+                    insertCommand.Parameters.AddWithValue("@CreatureName", record.CreatureName);
+                    insertCommand.Parameters.AddWithValue("@Statut", record.Statut);
+                    insertCommand.Parameters.AddWithValue("@Type", record.Type);
+                    insertCommand.Parameters.AddWithValue("@Date", record.Date);
+
+                    insertCommand.ExecuteNonQuery();
                 }
             }
         }

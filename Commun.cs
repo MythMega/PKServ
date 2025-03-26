@@ -1,4 +1,5 @@
 ﻿using PKServ.Configuration;
+using PKServ.Entity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -180,6 +181,12 @@ namespace PKServ
                 return v.Split('#')[0];
             }
             return v;
+        }
+
+        public static void AddRecords(string mode, Pokemon boss, bool shiny, DataConnexion dataConnexion)
+        {
+            Records record = new Records(boss.Name_FR, shiny ? "shiny" : "normal", mode, DateTime.Now);
+            dataConnexion.AddRecord(record);
         }
     }
 }

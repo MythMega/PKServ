@@ -96,6 +96,16 @@ namespace PKServ.Business
   </style>
 </head>
 <body>
+    <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
+      <form class=""form-inline"">
+        <a class=""btn btn-sm btn-outline-secondary"" href=""/main.html"" style=""color: white;"">Accueil Pokédex</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""/commandgenerator.html"" style=""color: white;"">Command Generator</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""/raid.html"" style=""color: white;"">Raid Result</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""/availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""/pokestats.html"" style=""color: white;"">Classements</a>
+        <a class=""btn btn-sm btn-outline-secondary"" href=""/records.html"" style=""color: white;"">Enregistrements</a>
+      </form>
+    </nav><br><br>
   <div class=""container my-4"" data-aos=""fade-up"">
     <h1 class=""text-center mb-4"" data-aos=""fade-down"">Statistiques Raid</h1><br>
     <img style=""width=480px; height=auto;"" src=""{raid.Boss.Sprite_Normal}"" class=""text-center mb-4"" data-aos=""fade-down""></img><br>
