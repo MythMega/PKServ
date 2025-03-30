@@ -488,5 +488,18 @@
     "Locked": false,
     "Group": "Global",
     "SubGroup": "Raid Dmg"
+  },
+  {
+    "Type": "FullColecSeries",
+    "Value": 0,
+    "Rarity": "Exotic",
+    "SpecificValue": "Kanto",
+    "Title": "Full Pokédex 1G.",
+    "Description": "A enregistré tous le pokédex de Kanto.",
+    "XP": 10000,
+    "IconUrl": "https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/sprite/badge/custom/regionalSerie/Kanto.png",
+    "Locked": true,
+    "Group": "Pokédex",
+    "SubGroup": "Fulldex"
   }
 ]

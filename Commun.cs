@@ -188,5 +188,69 @@ namespace PKServ
             Records record = new Records(boss.Name_FR, shiny ? "shiny" : "normal", mode, DateTime.Now);
             dataConnexion.AddRecord(record);
         }
+
+        internal static string GetTranslatedType(GlobalAppSettings gas, string type2)
+        {
+            string resultat = String.Empty;
+            switch(type2.ToLower())
+            {
+                case "fire":
+                    resultat = gas.Texts.types.fire;
+                    break;
+                case "water":
+                    resultat = gas.Texts.types.water;
+                    break;
+                case "grass":
+                    resultat = gas.Texts.types.grass;
+                    break;
+                case "electric":
+                    resultat = gas.Texts.types.electric;
+                    break;
+                case "ground":
+                    resultat = gas.Texts.types.ground;
+                    break;
+                case "rock":
+                    resultat = gas.Texts.types.rock;
+                    break;
+                case "flying":
+                    resultat = gas.Texts.types.flying;
+                    break;
+                case "bug":
+                    resultat = gas.Texts.types.bug;
+                    break;
+                case "poison":
+                    resultat = gas.Texts.types.poison;
+                    break;
+                case "ice":
+                    resultat = gas.Texts.types.ice;
+                    break;
+                case "psychic":
+                    resultat = gas.Texts.types.psychic;
+                    break;
+                case "ghost":
+                    resultat = gas.Texts.types.ghost;
+                    break;
+                case "dragon":
+                    resultat = gas.Texts.types.dragon;
+                    break;
+                case "dark":
+                    resultat = gas.Texts.types.dark;
+                    break;
+                case "steel":
+                    resultat = gas.Texts.types.steel;
+                    break;
+                case "fairy":
+                    resultat = gas.Texts.types.fairy;
+                    break;
+                case "fighting":
+                    resultat = gas.Texts.types.fighting;
+                    break;
+                case "normal":
+                    resultat = gas.Texts.types.normal;
+                    break;
+
+            }
+            return resultat;
+        }
     }
 }

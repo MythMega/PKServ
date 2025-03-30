@@ -11,7 +11,7 @@ namespace PKServ.Business
 {
     public static class RecordsGeneratorImpl
     {
-        public static void GenerateRecords(DataConnexion dataConnexion, AppSettings appSettings)
+        public static void GenerateRecords(DataConnexion dataConnexion, AppSettings appSettings, GlobalAppSettings globalAppSettings)
         {
             List<Records> records = dataConnexion.GetRecords();
             StringBuilder sb = new StringBuilder();
@@ -31,6 +31,7 @@ namespace PKServ.Business
                 <td>{record.Statut}</td>
                 <td>{record.Type}</td>
                 <td>{record.Date}</td>
+                <td class=""d-none"">{creature.GetAdditionalInfosString(gas: globalAppSettings)}</td>
             </tr>");
             }
             string fileContent = $@"
@@ -115,7 +116,13 @@ namespace PKServ.Business
       </form>
     </nav><br><br>
     <h1>Records</h1>
+
+  <div class=""d-flex align-items-center"" style=""max-width: 480px;"">
+    <!-- Input recherche avec max-width -->
     <input type=""text"" id=""searchInput"" placeholder=""Rechercher Pokémon ou Statut"" class=""form-control"" style=""margin-bottom: 20px; max-width: 300px;"">
+    <!-- Compteur -->
+    <span id=""rowCount"" style=""margin-left: 10px; font-size: 16px;"">0 résultat(s)</span>
+  </div>
     <p>{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.</p>
     <table class=""table table-dark table-bordered table-striped"">
         <thead class=""thead-light"">
@@ -125,6 +132,7 @@ namespace PKServ.Business
                 <th>Statut</th>
                 <th>Type</th>
                 <th>Date</th>
+                <th class=""d-none"">Tags</th>
             </tr>
         </thead>
         <tbody id=""recordsTable"">
@@ -135,23 +143,40 @@ namespace PKServ.Business
     </table>
 
     <script>
-        // Fonction pour filtrer les résultats
-        document.getElementById('searchInput').addEventListener('keyup', function() {{
-            const searchValue = this.value.toLowerCase(); // Texte saisi
-            const tableRows = document.querySelectorAll('#recordsTable tr'); // Toutes les lignes du tableau
-            
-            tableRows.forEach(row => {{
-                const pokémon = row.cells[0].textContent.toLowerCase(); // Colonne Pokémon
-                const statut = row.cells[2].textContent.toLowerCase(); // Colonne Statut
+  function filterTable() {{
+    const searchValue = document.getElementById('searchInput').value.toLowerCase();
+    // Découpe la recherche en tokens en supprimant les espaces inutiles
+    const tokens = searchValue.split(' ').filter(token => token.trim() !== '');
 
-                if (pokémon.includes(searchValue) || statut.includes(searchValue)) {{
-                    row.style.display = ''; // Montrer la ligne
-                }} else {{
-                    row.style.display = 'none'; // Cacher la ligne
-                }}
-            }});
-        }});
-    </script>
+    const tableRows = document.querySelectorAll('#recordsTable tr');
+    let visibleCount = 0;
+
+    tableRows.forEach(row => {{
+      // Extraction en minuscules des trois colonnes recherchées
+      const pokemon = row.cells[0].textContent.toLowerCase();
+      const statut  = row.cells[2].textContent.toLowerCase();
+      const tags    = row.cells[5].textContent.toLowerCase();
+
+      // Pour chaque token, on vérifie qu'il se retrouve dans l'un des champs
+      const isMatch = tokens.every(token =>
+        pokemon.includes(token) || statut.includes(token) || tags.includes(token)
+      );
+
+      if (isMatch || tokens.length === 0) {{  // Si aucun token, on affiche toutes les lignes
+        row.style.display = '';
+        visibleCount++;
+      }} else {{
+        row.style.display = 'none';
+      }}
+    }});
+
+    document.getElementById('rowCount').textContent = visibleCount + "" résultat(s)"";
+  }}
+
+  // Met à jour le filtrage lors de la saisie
+  document.getElementById('searchInput').addEventListener('keyup', filterTable);
+  document.addEventListener('DOMContentLoaded', filterTable);
+</script>
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src=""https://code.jquery.com/jquery-3.5.1.slim.min.js""></script>

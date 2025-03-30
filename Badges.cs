@@ -20,6 +20,7 @@
         /// - TotalRaid
         /// - TotalRaidDamages
         /// - TotalTade
+        /// - FullColecSeries
         /// </summary>
         public string Type { get; set; }
 

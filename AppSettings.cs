@@ -38,6 +38,8 @@ namespace PKServ
 
         public List<User> UsersToExport = [];
 
+        public List<(string Serie, int Count)> SeriesData = [];
+
         public AppSettings()
         {
         }

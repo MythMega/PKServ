@@ -303,7 +303,7 @@ namespace PKServ
 
         internal bool VerifEligibilityMoney(int money)
         {
-            return UserWhoAccepted.Stats.CustomMoney > money;
+            return UserWhoAccepted.Stats.CustomMoney >= money;
         }
 
         internal bool VerifEligibilityCreature(Pokemon poke, DataConnexion data)

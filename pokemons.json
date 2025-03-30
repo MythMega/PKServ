@@ -1,5142 +1,5907 @@
 [
   {
-    "Name_FR": "Bulbizarre",
-    "Name_EN": "Bulbasaur",
-    "Type1": "grass",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": true
-  },
-  {
-    "Name_FR": "Herbizarre",
-    "Name_EN": "Ivysaur",
-    "Type1": "grass",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": true
-  },
-  {
-    "Name_FR": "Florizarre",
-    "Name_EN": "Venusaur",
-    "Type1": "grass",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": true
-  },
-  {
-    "Name_FR": "Salamèche",
-    "Name_EN": "Charmander",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": true
-  },
-  {
-    "Name_FR": "Reptincel",
-    "Name_EN": "Charmeleon",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": true
-  },
-  {
-    "Name_FR": "Dracaufeu",
-    "Name_EN": "Charizard",
-    "Type1": "fire",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": true
-  },
-  {
-    "Name_FR": "Mega Dracaufeu X",
-    "Name_EN": "Mega Charizard X",
-    "Type1": "fire",
-    "Type2": "dragon",
-    "isLock": true,
     "enabled": true,
+    "isLock": false,
+    "Name_EN": "Bulbasaur",
+    "Name_FR": "Bulbizarre",
+    "Serie": "Kanto",
+    "Type1": "grass",
+    "Type2": "poison"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Ivysaur",
+    "Name_FR": "Herbizarre",
+    "Serie": "Kanto",
+    "Type1": "grass",
+    "Type2": "poison"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Venusaur",
+    "Name_FR": "Florizarre",
+    "priceNormal": 25,
+    "priceShiny": 100,
+    "Serie": "Kanto",
+    "Type1": "grass",
+    "Type2": "poison"
+  },
+  {
+    "enabled": true,
+    "EvolveFrom": "Florizarre",
+    "isLock": true,
+    "Name_EN": "Mega Venusaur",
+    "Name_FR": "Mega Florizarre",
+    "Serie": "Kanto",
+    "Sprite_Normal": "https://img.pokemondb.net/sprites/x-y/normal/venusaur-mega.png",
+    "Sprite_Shiny": "https://img.pokemondb.net/sprites/x-y/shiny/venusaur-mega.png",
+    "Type1": "fire",
+    "Type2": "dragon"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Charmander",
+    "Name_FR": "Salamèche",
+    "Serie": "Kanto",
+    "Type1": "fire"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Charmeleon",
+    "Name_FR": "Reptincel",
+    "Serie": "Kanto",
+    "Type1": "fire"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Charizard",
+    "Name_FR": "Dracaufeu",
+    "priceNormal": 25,
+    "priceShiny": 100,
+    "Serie": "Kanto",
+    "Type1": "fire",
+    "Type2": "flying"
+  },
+  {
+    "enabled": true,
+    "EvolveFrom": "Dracaufeu",
+    "isLock": true,
+    "Name_EN": "Mega Charizard X",
+    "Name_FR": "Mega Dracaufeu X",
+    "Serie": "Kanto",
     "Sprite_Normal": "https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/charizard-mega-x.png",
     "Sprite_Shiny": "https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/shiny/charizard-mega-x.png",
-    "EvolveFrom": "Dracaufeu"
+    "Type1": "fire",
+    "Type2": "dragon"
   },
   {
-    "Name_FR": "Mega Dracaufeu Y",
-    "Name_EN": "Mega Charizard Y",
-    "Type1": "fire",
-    "Type2": "flying",
-    "isLock": true,
     "enabled": true,
+    "EvolveFrom": "Dracaufeu",
+    "isLock": true,
+    "Name_EN": "Mega Charizard Y",
+    "Name_FR": "Mega Dracaufeu Y",
+    "Serie": "Kanto",
     "Sprite_Normal": "https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/charizard-mega-y.png",
     "Sprite_Shiny": "https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/shiny/charizard-mega-y.png",
-    "EvolveFrom": "Dracaufeu"
+    "Type1": "fire",
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Carapuce",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Squirtle",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Carapuce",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Carabaffe",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Wartortle",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Carabaffe",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Tortank",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Blastoise",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Tortank",
+    "priceNormal": 25,
+    "priceShiny": 100,
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Chenipan",
+    "enabled": true,
+    "EvolveFrom": "Tortank",
+    "isLock": true,
+    "Name_EN": "Mega Blastoise",
+    "Name_FR": "Mega Tortank",
+    "Serie": "Kanto",
+    "Sprite_Normal": "https://img.pokemondb.net/sprites/x-y/normal/blastoise-mega.png",
+    "Sprite_Shiny": "https://img.pokemondb.net/sprites/x-y/shiny/blastoise-mega.png",
+    "Type1": "water"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Caterpie",
-    "Type1": "bug",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Chenipan",
+    "Serie": "Kanto",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Chrysacier",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Metapod",
-    "Type1": "bug",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Chrysacier",
+    "Serie": "Kanto",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Papilusion",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Butterfree",
+    "Name_FR": "Papilusion",
+    "Serie": "Kanto",
     "Type1": "bug",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": true
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Aspicot",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Weedle",
+    "Name_FR": "Aspicot",
+    "Serie": "Kanto",
     "Type1": "bug",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": true
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Coconfort",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Kakuna",
+    "Name_FR": "Coconfort",
+    "Serie": "Kanto",
     "Type1": "bug",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": true
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Dardargnan",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Beedrill",
+    "Name_FR": "Dardargnan",
+    "Serie": "Kanto",
     "Type1": "bug",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": true
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Roucool",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Pidgey",
+    "Name_FR": "Roucool",
+    "Serie": "Kanto",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": true
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Roucoups",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Pidgeotto",
+    "Name_FR": "Roucoups",
+    "Serie": "Kanto",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": true
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Roucarnage",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Pidgeot",
+    "Name_FR": "Roucarnage",
+    "Serie": "Kanto",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": true
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Rattata",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Rattata",
-    "Type1": "normal",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Rattata",
+    "Serie": "Kanto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Rattatac",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Raticate",
-    "Type1": "normal",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Rattatac",
+    "Serie": "Kanto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Piafabec",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Spearow",
+    "Name_FR": "Piafabec",
+    "Serie": "Kanto",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": true
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Rapasdepic",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Fearow",
+    "Name_FR": "Rapasdepic",
+    "Serie": "Kanto",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": true
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Abo",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Ekans",
-    "Type1": "poison",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Abo",
+    "Serie": "Kanto",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Arbok",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Arbok",
-    "Type1": "poison",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Arbok",
+    "Serie": "Kanto",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Pikachu",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Pikachu",
-    "Type1": "electric",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Pikachu",
+    "Serie": "Kanto",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Raichu",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Raichu",
-    "Type1": "electric",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Raichu",
+    "Serie": "Kanto",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Sabelette",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Sandshrew",
-    "Type1": "ground",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Sabelette",
+    "Serie": "Kanto",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Sablaireau",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Sandslash",
-    "Type1": "ground",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Sablaireau",
+    "Serie": "Kanto",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Nidoran♀",
+    "AltName": "Nidoran-f",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Nidoran♀",
+    "Name_FR": "Nidoran♀",
+    "Serie": "Kanto",
     "Sprite_Normal": "https://img.pokemondb.net/sprites/black-white/anim/normal/nidoran-f.gif",
     "Sprite_Shiny": "https://img.pokemondb.net/sprites/black-white/anim/shiny/nidoran-f.gif",
-    "Type1": "poison",
-    "isLock": false,
-    "enabled": true
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Nidorina",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Nidorina",
-    "Type1": "poison",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Nidorina",
+    "priceNormal": 10,
+    "priceShiny": 50,
+    "Serie": "Kanto",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Nidoqueen",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Nidoqueen",
+    "Name_FR": "Nidoqueen",
+    "Serie": "Kanto",
     "Type1": "poison",
-    "Type2": "ground",
-    "isLock": false,
-    "enabled": true
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Nidoran♂",
-    "Name_EN": "Nidoran♂",
     "AltName": "Nidoran-m",
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Nidoran♂",
+    "Name_FR": "Nidoran♂",
+    "Serie": "Kanto",
     "Sprite_Normal": "https://img.pokemondb.net/sprites/black-white/anim/normal/nidoran-m.gif",
     "Sprite_Shiny": "https://img.pokemondb.net/sprites/black-white/anim/shiny/nidoran-m.gif",
-    "Type1": "poison",
-    "isLock": false,
-    "enabled": true
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Nidorino",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Nidorino",
-    "Type1": "poison",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Nidorino",
+    "priceNormal": 10,
+    "priceShiny": 50,
+    "Serie": "Kanto",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Nidoking",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Nidoking",
+    "Name_FR": "Nidoking",
+    "Serie": "Kanto",
     "Type1": "poison",
-    "Type2": "ground",
-    "isLock": false,
-    "enabled": true
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Mélofée",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Clefairy",
-    "Type1": "fairy",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Mélofée",
+    "priceNormal": 10,
+    "priceShiny": 50,
+    "Serie": "Kanto",
+    "Type1": "fairy"
   },
   {
-    "Name_FR": "Mélodelfe",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Clefable",
-    "Type1": "fairy",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Mélodelfe",
+    "Serie": "Kanto",
+    "Type1": "fairy"
   },
   {
-    "Name_FR": "Goupix",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Vulpix",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Goupix",
+    "Serie": "Kanto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Feunard",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Ninetales",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Feunard",
+    "Serie": "Kanto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Rondoudou",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Jigglypuff",
+    "Name_FR": "Rondoudou",
+    "Serie": "Kanto",
     "Type1": "normal",
-    "Type2": "fairy",
-    "isLock": false,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Grodoudou",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Wigglytuff",
+    "Name_FR": "Grodoudou",
+    "Serie": "Kanto",
     "Type1": "normal",
-    "Type2": "fairy",
-    "isLock": false,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Nosferapti",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Zubat",
+    "Name_FR": "Nosferapti",
+    "Serie": "Kanto",
     "Type1": "poison",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Nosferalto",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Golbat",
+    "Name_FR": "Nosferalto",
+    "Serie": "Kanto",
     "Type1": "poison",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Mystherbe",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Oddish",
+    "Name_FR": "Mystherbe",
+    "Serie": "Kanto",
     "Type1": "grass",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Ortide",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Gloom",
+    "Name_FR": "Ortide",
+    "Serie": "Kanto",
     "Type1": "grass",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Rafflesia",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Vileplume",
+    "Name_FR": "Rafflesia",
+    "Serie": "Kanto",
     "Type1": "grass",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Paras",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Paras",
+    "Name_FR": "Paras",
+    "Serie": "Kanto",
     "Type1": "bug",
-    "Type2": "grass",
-    "isLock": false,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Parasect",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Parasect",
+    "Name_FR": "Parasect",
+    "Serie": "Kanto",
     "Type1": "bug",
-    "Type2": "grass",
-    "isLock": false,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Mimitoss",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Venonat",
+    "Name_FR": "Mimitoss",
+    "Serie": "Kanto",
     "Type1": "bug",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": true
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Aéromite",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Venomoth",
+    "Name_FR": "Aéromite",
+    "Serie": "Kanto",
     "Type1": "bug",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": true
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Taupiqueur",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Diglett",
-    "Type1": "ground",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Taupiqueur",
+    "Serie": "Kanto",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Triopikeur",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Dugtrio",
-    "Type1": "ground",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Triopikeur",
+    "Serie": "Kanto",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Miaouss",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Meowth",
-    "Type1": "normal",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Miaouss",
+    "Serie": "Kanto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Persian",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Persian",
-    "Type1": "normal",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Persian",
+    "Serie": "Kanto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Psykokwak",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Psyduck",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Psykokwak",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Akwakwak",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Golduck",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Akwakwak",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Férosinge",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Mankey",
-    "Type1": "fighting",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Férosinge",
+    "Serie": "Kanto",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Colossinge",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Primeape",
-    "Type1": "fighting",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Colossinge",
+    "Serie": "Kanto",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Caninos",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Growlithe",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Caninos",
+    "Serie": "Kanto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Arcanin",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Arcanine",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Arcanin",
+    "Serie": "Kanto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Ptitard",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Poliwag",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Ptitard",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Têtarte",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Poliwhirl",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Têtarte",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Tartard",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Poliwrath",
+    "Name_FR": "Tartard",
+    "Serie": "Kanto",
     "Type1": "water",
-    "Type2": "fighting",
-    "isLock": false,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Abra",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Abra",
-    "Type1": "psychic",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Abra",
+    "priceNormal": 10,
+    "priceShiny": 50,
+    "Serie": "Kanto",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Kadabra",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Kadabra",
-    "Type1": "psychic",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Kadabra",
+    "Serie": "Kanto",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Alakazam",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Alakazam",
-    "Type1": "psychic",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Alakazam",
+    "Serie": "Kanto",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Machoc",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Machop",
-    "Type1": "fighting",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Machoc",
+    "Serie": "Kanto",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Machopeur",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Machoke",
-    "Type1": "fighting",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Machopeur",
+    "Serie": "Kanto",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Mackogneur",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Machamp",
-    "Type1": "fighting",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Mackogneur",
+    "Serie": "Kanto",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Chétiflor",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Bellsprout",
+    "Name_FR": "Chétiflor",
+    "Serie": "Kanto",
     "Type1": "grass",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Boustiflor",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Weepinbell",
+    "Name_FR": "Boustiflor",
+    "Serie": "Kanto",
     "Type1": "grass",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Empiflor",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Victreebel",
+    "Name_FR": "Empiflor",
+    "Serie": "Kanto",
     "Type1": "grass",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Tentacool",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Tentacool",
+    "Name_FR": "Tentacool",
+    "Serie": "Kanto",
     "Type1": "water",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Tentacruel",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Tentacruel",
+    "Name_FR": "Tentacruel",
+    "Serie": "Kanto",
     "Type1": "water",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Racaillou",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Geodude",
+    "Name_FR": "Racaillou",
+    "Serie": "Kanto",
     "Type1": "rock",
-    "Type2": "ground",
-    "isLock": false,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Gravalanch",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Graveler",
+    "Name_FR": "Gravalanch",
+    "Serie": "Kanto",
     "Type1": "rock",
-    "Type2": "ground",
-    "isLock": false,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Grolem",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Golem",
+    "Name_FR": "Grolem",
+    "Serie": "Kanto",
     "Type1": "rock",
-    "Type2": "ground",
-    "isLock": false,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Ponyta",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Ponyta",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Ponyta",
+    "Serie": "Kanto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Galopa",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Rapidash",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Galopa",
+    "Serie": "Kanto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Ramoloss",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Slowpoke",
+    "Name_FR": "Ramoloss",
+    "Serie": "Kanto",
     "Type1": "water",
-    "Type2": "psychic",
-    "isLock": false,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Flagadoss",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Slowbro",
+    "Name_FR": "Flagadoss",
+    "Serie": "Kanto",
     "Type1": "water",
-    "Type2": "psychic",
-    "isLock": false,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Magnéti",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Magnemite",
+    "Name_FR": "Magnéti",
+    "Serie": "Kanto",
     "Type1": "electric",
-    "Type2": "steel",
-    "isLock": false,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Magnéton",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Magneton",
+    "Name_FR": "Magnéton",
+    "Serie": "Kanto",
     "Type1": "electric",
-    "Type2": "steel",
-    "isLock": false,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Canarticho",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Farfetch'd",
+    "Name_FR": "Canarticho",
+    "Serie": "Kanto",
     "Sprite_Normal": "https://img.pokemondb.net/sprites/black-white/anim/normal/farfetchd.gif",
     "Sprite_Shiny": "https://img.pokemondb.net/sprites/black-white/anim/shiny/farfetchd.gif",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Doduo",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Doduo",
+    "Name_FR": "Doduo",
+    "Serie": "Kanto",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Dodrio",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Dodrio",
+    "Name_FR": "Dodrio",
+    "Serie": "Kanto",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Otaria",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Seel",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Otaria",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Lamantine",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Dewgong",
+    "Name_FR": "Lamantine",
+    "Serie": "Kanto",
     "Type1": "water",
-    "Type2": "ice",
-    "isLock": false,
-    "enabled": false
+    "Type2": "ice"
   },
   {
-    "Name_FR": "Tadmorv",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Grimer",
-    "Type1": "poison",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Tadmorv",
+    "Serie": "Kanto",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Grotadmorv",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Muk",
-    "Type1": "poison",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Grotadmorv",
+    "Serie": "Kanto",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Kokiyas",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Shellder",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Kokiyas",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Crustabri",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Cloyster",
+    "Name_FR": "Crustabri",
+    "Serie": "Kanto",
     "Type1": "water",
-    "Type2": "ice",
-    "isLock": false,
-    "enabled": false
+    "Type2": "ice"
   },
   {
-    "Name_FR": "Fantominus",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Gastly",
+    "Name_FR": "Fantominus",
+    "Serie": "Kanto",
     "Type1": "ghost",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": true
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Spectrum",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Haunter",
+    "Name_FR": "Spectrum",
+    "Serie": "Kanto",
     "Type1": "ghost",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": true
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Ectoplasma",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Gengar",
+    "Name_FR": "Ectoplasma",
+    "Serie": "Kanto",
     "Type1": "ghost",
-    "Type2": "poison",
-    "isLock": false,
-    "enabled": true
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Onix",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Onix",
+    "Name_FR": "Onix",
+    "Serie": "Kanto",
     "Type1": "rock",
-    "Type2": "ground",
-    "isLock": false,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Soporifik",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Drowzee",
-    "Type1": "psychic",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Soporifik",
+    "Serie": "Kanto",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Hypnomade",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Hypno",
-    "Type1": "psychic",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Hypnomade",
+    "Serie": "Kanto",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Krabby",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Krabby",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Krabby",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Krabboss",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Kingler",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Krabboss",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Voltorbe",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Voltorb",
-    "Type1": "electric",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Voltorbe",
+    "Serie": "Kanto",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Electrode",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Electrode",
-    "Type1": "electric",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Electrode",
+    "Serie": "Kanto",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Noeunoeuf",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Exeggcute",
+    "Name_FR": "Noeunoeuf",
+    "Serie": "Kanto",
     "Type1": "grass",
-    "Type2": "psychic",
-    "isLock": false,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Noadkoko",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Exeggutor",
+    "Name_FR": "Noadkoko",
+    "Serie": "Kanto",
     "Type1": "grass",
-    "Type2": "psychic",
-    "isLock": false,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Osselait",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Cubone",
-    "Type1": "ground",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Osselait",
+    "Serie": "Kanto",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Ossatueur",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Marowak",
-    "Type1": "ground",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Ossatueur",
+    "Serie": "Kanto",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Kicklee",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Hitmonlee",
-    "Type1": "fighting",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Kicklee",
+    "Serie": "Kanto",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Tygnon",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Hitmonchan",
-    "Type1": "fighting",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Tygnon",
+    "Serie": "Kanto",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Excelangue",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Lickitung",
-    "Type1": "normal",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Excelangue",
+    "Serie": "Kanto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Smogo",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Koffing",
-    "Type1": "poison",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Smogo",
+    "Serie": "Kanto",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Smogogo",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Weezing",
-    "Type1": "poison",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Smogogo",
+    "Serie": "Kanto",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Rhinocorne",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Rhyhorn",
+    "Name_FR": "Rhinocorne",
+    "Serie": "Kanto",
     "Type1": "ground",
-    "Type2": "rock",
-    "isLock": false,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Rhinoféros",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Rhydon",
+    "Name_FR": "Rhinoféros",
+    "Serie": "Kanto",
     "Type1": "ground",
-    "Type2": "rock",
-    "isLock": false,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Leveinard",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Chansey",
-    "Type1": "normal",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Leveinard",
+    "Serie": "Kanto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Saquedeneu",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Tangela",
-    "Type1": "grass",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Saquedeneu",
+    "Serie": "Kanto",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Kangourex",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Kangaskhan",
-    "Type1": "normal",
-    "isLock": false,
-    "enabled": true
+    "Name_FR": "Kangourex",
+    "Serie": "Kanto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Hypotrempe",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Horsea",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Hypotrempe",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Hypocean",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Seadra",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Hypocean",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Poissirène",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Goldeen",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Poissirène",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Poissoroy",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Seaking",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Poissoroy",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Stari",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Staryu",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Stari",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Staross",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Starmie",
+    "Name_FR": "Staross",
+    "Serie": "Kanto",
     "Type1": "water",
-    "Type2": "psychic",
-    "isLock": false,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "M. Mime",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Mr. Mime",
+    "Name_FR": "M. Mime",
+    "Serie": "Kanto",
     "Sprite_Normal": "https://img.pokemondb.net/sprites/black-white/anim/normal/mr-mime.gif",
     "Sprite_Shiny": "https://img.pokemondb.net/sprites/black-white/anim/shiny/mr-mime.gif",
     "Type1": "psychic",
-    "Type2": "fairy",
-    "isLock": false,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Insecateur",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Scyther",
+    "Name_FR": "Insecateur",
+    "priceNormal": 15,
+    "priceShiny": 75,
+    "Serie": "Kanto",
     "Type1": "bug",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Lippoutou",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Jynx",
+    "Name_FR": "Lippoutou",
+    "Serie": "Kanto",
     "Type1": "ice",
-    "Type2": "psychic",
-    "isLock": false,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Elektek",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Electabuzz",
-    "Type1": "electric",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Elektek",
+    "Serie": "Kanto",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Magmar",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Magmar",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Magmar",
+    "Serie": "Kanto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Scarabrute",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Pinsir",
-    "Type1": "bug",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Scarabrute",
+    "priceNormal": 15,
+    "priceShiny": 75,
+    "Serie": "Kanto",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Tauros",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Tauros",
-    "Type1": "normal",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Tauros",
+    "Serie": "Kanto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Magicarpe",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Magikarp",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Magicarpe",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Léviator",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Gyarados",
+    "Name_FR": "Léviator",
+    "Serie": "Kanto",
     "Type1": "water",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Lokhlass",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Lapras",
+    "Name_FR": "Lokhlass",
+    "Serie": "Kanto",
     "Type1": "water",
-    "Type2": "ice",
-    "isLock": false,
-    "enabled": false
+    "Type2": "ice"
   },
   {
-    "Name_FR": "Métamorph",
+    "enabled": true,
+    "isLock": true,
     "Name_EN": "Ditto",
-    "Type1": "normal",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Métamorph",
+    "Serie": "Kanto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Evoli",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Eevee",
-    "Type1": "normal",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Evoli",
+    "Serie": "Kanto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Aquali",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Vaporeon",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Aquali",
+    "Serie": "Kanto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Voltali",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Jolteon",
-    "Type1": "electric",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Voltali",
+    "Serie": "Kanto",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Pyroli",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Flareon",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Pyroli",
+    "Serie": "Kanto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Porygon",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Porygon",
-    "Type1": "normal",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Porygon",
+    "priceNormal": 20,
+    "priceShiny": 100,
+    "Serie": "Kanto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Amonita",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Omanyte",
+    "Name_FR": "Amonita",
+    "Serie": "Kanto",
     "Type1": "rock",
-    "Type2": "water",
-    "isLock": false,
-    "enabled": false
+    "Type2": "water"
   },
   {
-    "Name_FR": "Amonistar",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Omastar",
+    "Name_FR": "Amonistar",
+    "Serie": "Kanto",
     "Type1": "rock",
-    "Type2": "water",
-    "isLock": false,
-    "enabled": false
+    "Type2": "water"
   },
   {
-    "Name_FR": "Kabuto",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Kabuto",
+    "Name_FR": "Kabuto",
+    "Serie": "Kanto",
     "Type1": "rock",
-    "Type2": "water",
-    "isLock": false,
-    "enabled": false
+    "Type2": "water"
   },
   {
-    "Name_FR": "Kabutops",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Kabutops",
+    "Name_FR": "Kabutops",
+    "Serie": "Kanto",
     "Type1": "rock",
-    "Type2": "water",
-    "isLock": false,
-    "enabled": false
+    "Type2": "water"
   },
   {
-    "Name_FR": "Ptéra",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Aerodactyl",
+    "Name_FR": "Ptéra",
+    "Serie": "Kanto",
     "Type1": "rock",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": true
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Ronflex",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Snorlax",
-    "Type1": "normal",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Ronflex",
+    "Serie": "Kanto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Artikodin",
+    "enabled": true,
+    "isLegendary": true,
+    "isLock": true,
+    "isShinyLock": true,
     "Name_EN": "Articuno",
+    "Name_FR": "Artikodin",
+    "Serie": "Kanto",
     "Type1": "ice",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Électhor",
+    "enabled": true,
+    "isLegendary": true,
+    "isLock": true,
+    "isShinyLock": true,
     "Name_EN": "Zapdos",
+    "Name_FR": "Électhor",
+    "Serie": "Kanto",
     "Type1": "electric",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Sulfura",
+    "enabled": true,
+    "isLegendary": true,
+    "isLock": true,
+    "isShinyLock": true,
     "Name_EN": "Moltres",
+    "Name_FR": "Sulfura",
+    "Serie": "Kanto",
     "Type1": "fire",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Minidraco",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Dratini",
-    "Type1": "dragon",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Minidraco",
+    "Serie": "Kanto",
+    "Type1": "dragon"
   },
   {
-    "Name_FR": "Draco",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Dragonair",
-    "Type1": "dragon",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Draco",
+    "Serie": "Kanto",
+    "Type1": "dragon"
   },
   {
-    "Name_FR": "Dracolosse",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Dragonite",
+    "Name_FR": "Dracolosse",
+    "Serie": "Kanto",
     "Type1": "dragon",
-    "Type2": "flying",
-    "isLock": false,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Mewtwo",
+    "enabled": true,
+    "isLegendary": true,
+    "isLock": false,
+    "isShinyLock": true,
     "Name_EN": "Mewtwo",
-    "Type1": "psychic",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Mewtwo",
+    "priceNormal": 500,
+    "priceShiny": 1500,
+    "Serie": "Kanto",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Mew",
+    "enabled": true,
+    "isLegendary": true,
+    "isLock": true,
+    "isShinyLock": true,
     "Name_EN": "Mew",
-    "Type1": "psychic",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Mew",
+    "Serie": "Kanto",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Germignon",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Chikorita",
-    "Type1": "grass",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Germignon",
+    "Serie": "Johto",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Macronium",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Bayleef",
-    "Type1": "grass",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Macronium",
+    "Serie": "Johto",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Meganium",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Meganium",
-    "Type1": "grass",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Meganium",
+    "Serie": "Johto",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Héricendre",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Cyndaquil",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Héricendre",
+    "Serie": "Johto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Feurisson",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Quilava",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Feurisson",
+    "Serie": "Johto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Typhlosion",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Typhlosion",
-    "Type1": "fire",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Typhlosion",
+    "Serie": "Johto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Kaiminus",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Totodile",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Kaiminus",
+    "Serie": "Johto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Crocrodil",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Croconaw",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Crocrodil",
+    "Serie": "Johto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Aligatueur",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Feraligatr",
-    "Type1": "water",
-    "isLock": false,
-    "enabled": false
+    "Name_FR": "Aligatueur",
+    "Serie": "Johto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Fouinette",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Sentret",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Fouinette",
+    "Serie": "Johto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Fouinar",
-    "Name_EN": "Furret",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
-  },
-  {
-    "Name_FR": "Hoothoot",
-    "Name_EN": "Hoothoot",
-    "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
-  },
-  {
-    "Name_FR": "Noarfang",
-    "Name_EN": "Noctowl",
-    "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
-  },
-  {
-    "Name_FR": "Coxy",
-    "Name_EN": "Ledyba",
-    "Type1": "bug",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
-  },
-  {
-    "Name_FR": "Coxyclaque",
-    "Name_EN": "Ledian",
-    "Type1": "bug",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
-  },
-  {
-    "Name_FR": "Mimigal",
-    "Name_EN": "Spinarak",
-    "Type1": "bug",
-    "Type2": "poison",
-    "isLock": true,
-    "enabled": false
-  },
-  {
-    "Name_FR": "Migalos",
-    "Name_EN": "Ariados",
-    "Type1": "bug",
-    "Type2": "poison",
-    "isLock": true,
-    "enabled": false
-  },
-  {
-    "Name_FR": "Nostenfer",
-    "Name_EN": "Crobat",
-    "Type1": "poison",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
-  },
-  {
-    "Name_FR": "Loupio",
-    "Name_EN": "Chinchou",
-    "Type1": "water",
-    "Type2": "electric",
-    "isLock": true,
-    "enabled": false
-  },
-  {
-    "Name_FR": "Lanturn",
-    "Name_EN": "Lanturn",
-    "Type1": "water",
-    "Type2": "electric",
-    "isLock": true,
-    "enabled": false
-  },
-  {
-    "Name_FR": "Pichu",
-    "Name_EN": "Pichu",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
-  },
-  {
-    "Name_FR": "Mélo",
-    "Name_EN": "Cleffa",
-    "Type1": "fairy",
+    "enabled": true,
     "isLock": false,
-    "enabled": true
+    "Name_EN": "Furret",
+    "Name_FR": "Fouinar",
+    "Serie": "Johto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Toudoudou",
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Hoothoot",
+    "Name_FR": "Hoothoot",
+    "Serie": "Johto",
+    "Type1": "normal",
+    "Type2": "flying"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Noctowl",
+    "Name_FR": "Noarfang",
+    "Serie": "Johto",
+    "Type1": "normal",
+    "Type2": "flying"
+  },
+  {
+    "enabled": true,
+    "isLock": true,
+    "Name_EN": "Ledyba",
+    "Name_FR": "Coxy",
+    "Serie": "Johto",
+    "Type1": "bug",
+    "Type2": "flying"
+  },
+  {
+    "enabled": true,
+    "isLock": true,
+    "Name_EN": "Ledian",
+    "Name_FR": "Coxyclaque",
+    "Serie": "Johto",
+    "Type1": "bug",
+    "Type2": "flying"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Spinarak",
+    "Name_FR": "Mimigal",
+    "Serie": "Johto",
+    "Type1": "bug",
+    "Type2": "poison"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Ariados",
+    "Name_FR": "Migalos",
+    "Serie": "Johto",
+    "Type1": "bug",
+    "Type2": "poison"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Crobat",
+    "Name_FR": "Nostenfer",
+    "Serie": "Johto",
+    "Type1": "poison",
+    "Type2": "flying"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Chinchou",
+    "Name_FR": "Loupio",
+    "Serie": "Johto",
+    "Type1": "water",
+    "Type2": "electric"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Lanturn",
+    "Name_FR": "Lanturn",
+    "Serie": "Johto",
+    "Type1": "water",
+    "Type2": "electric"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Pichu",
+    "Name_FR": "Pichu",
+    "Serie": "Johto",
+    "Type1": "electric"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
+    "Name_EN": "Cleffa",
+    "Name_FR": "Mélo",
+    "Serie": "Johto",
+    "Type1": "fairy"
+  },
+  {
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Igglybuff",
+    "Name_FR": "Toudoudou",
+    "Serie": "Johto",
     "Type1": "normal",
-    "Type2": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Togepi",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Togepi",
-    "Type1": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Togepi",
+    "Serie": "Johto",
+    "Type1": "fairy"
   },
   {
-    "Name_FR": "Togetic",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Togetic",
+    "Name_FR": "Togetic",
+    "Serie": "Johto",
     "Type1": "fairy",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Natu",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Natu",
+    "Name_FR": "Natu",
+    "Serie": "Johto",
     "Type1": "psychic",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Xatu",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Xatu",
+    "Name_FR": "Xatu",
+    "Serie": "Johto",
     "Type1": "psychic",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Wattouat",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Mareep",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Wattouat",
+    "Serie": "Johto",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Lainergie",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Flaaffy",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Lainergie",
+    "Serie": "Johto",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Pharamp",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Ampharos",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Pharamp",
+    "Serie": "Johto",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Joliflor",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Bellossom",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Joliflor",
+    "Serie": "Johto",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Marill",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Marill",
+    "Name_FR": "Marill",
+    "Serie": "Johto",
     "Type1": "water",
-    "Type2": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Azumarill",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Azumarill",
+    "Name_FR": "Azumarill",
+    "Serie": "Johto",
     "Type1": "water",
-    "Type2": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Simularbre",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Sudowoodo",
-    "Type1": "rock",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Simularbre",
+    "Serie": "Johto",
+    "Type1": "rock"
   },
   {
-    "Name_FR": "Tarpaud",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Politoed",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Tarpaud",
+    "Serie": "Johto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Granivol",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Hoppip",
+    "Name_FR": "Granivol",
+    "Serie": "Johto",
     "Type1": "grass",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Floravol",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Skiploom",
+    "Name_FR": "Floravol",
+    "Serie": "Johto",
     "Type1": "grass",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Cotovol",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Jumpluff",
+    "Name_FR": "Cotovol",
+    "Serie": "Johto",
     "Type1": "grass",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Capumain",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Aipom",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Capumain",
+    "Serie": "Johto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Tournegrin",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Sunkern",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Tournegrin",
+    "Serie": "Johto",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Héliatronc",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Sunflora",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Héliatronc",
+    "Serie": "Johto",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Yanma",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Yanma",
+    "Name_FR": "Yanma",
+    "Serie": "Johto",
     "Type1": "bug",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Axoloto",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Wooper",
+    "Name_FR": "Axoloto",
+    "Serie": "Johto",
     "Type1": "water",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Maraiste",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Quagsire",
+    "Name_FR": "Maraiste",
+    "Serie": "Johto",
     "Type1": "water",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Mentali",
+    "enabled": true,
+    "EvolveFrom": "Evoli",
+    "isLock": true,
     "Name_EN": "Espeon",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Mentali",
+    "Serie": "Johto",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Noctali",
+    "enabled": true,
+    "EvolveFrom": "Evoli",
+    "isLock": true,
     "Name_EN": "Umbreon",
-    "Type1": "dark",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Noctali",
+    "Serie": "Johto",
+    "Type1": "dark"
   },
   {
-    "Name_FR": "Cornèbre",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Murkrow",
+    "Name_FR": "Cornèbre",
+    "priceNormal": 10,
+    "priceShiny": 50,
+    "Serie": "Johto",
     "Type1": "dark",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Roigada",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Slowking",
+    "Name_FR": "Roigada",
+    "Serie": "Johto",
     "Type1": "water",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Feuforêve",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Misdreavus",
-    "Type1": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Feuforêve",
+    "Serie": "Johto",
+    "Type1": "ghost"
   },
   {
-    "Name_FR": "Zarbi",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Unown",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Zarbi",
+    "Serie": "Johto",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Qulbutoké",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Wobbuffet",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Qulbutoké",
+    "Serie": "Johto",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Girafarig",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Girafarig",
+    "Name_FR": "Girafarig",
+    "Serie": "Johto",
     "Type1": "normal",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Pomdepik",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Pineco",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Pomdepik",
+    "Serie": "Johto",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Foretress",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Forretress",
+    "Name_FR": "Foretress",
+    "Serie": "Johto",
     "Type1": "bug",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Insolourdo",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Dunsparce",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Insolourdo",
+    "Serie": "Johto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Scorplane",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Gligar",
+    "Name_FR": "Scorplane",
+    "Serie": "Johto",
     "Type1": "ground",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Steelix",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Steelix",
+    "Name_FR": "Steelix",
+    "Serie": "Johto",
     "Type1": "steel",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Snubbull",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Snubbull",
-    "Type1": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Snubbull",
+    "Serie": "Johto",
+    "Type1": "fairy"
   },
   {
-    "Name_FR": "Granbull",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Granbull",
-    "Type1": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Granbull",
+    "Serie": "Johto",
+    "Type1": "fairy"
   },
   {
-    "Name_FR": "Qwilfish",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Qwilfish",
+    "Name_FR": "Qwilfish",
+    "Serie": "Johto",
     "Type1": "water",
-    "Type2": "poison",
-    "isLock": true,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Cizayox",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Scizor",
+    "Name_FR": "Cizayox",
+    "Serie": "Johto",
     "Type1": "bug",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Caratroc",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Shuckle",
+    "Name_FR": "Caratroc",
+    "Serie": "Johto",
     "Type1": "bug",
-    "Type2": "rock",
-    "isLock": true,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Scarhino",
+    "enabled": true,
+    "isLock": true,
     "Name_EN": "Heracross",
+    "Name_FR": "Scarhino",
+    "priceNormal": 10,
+    "priceShiny": 50,
+    "Serie": "Johto",
     "Type1": "bug",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Farfuret",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Sneasel",
+    "Name_FR": "Farfuret",
+    "Serie": "Johto",
     "Type1": "dark",
-    "Type2": "ice",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ice"
   },
   {
-    "Name_FR": "Teddiursa",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Teddiursa",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Teddiursa",
+    "Serie": "Johto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Ursaring",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Ursaring",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Ursaring",
+    "Serie": "Johto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Limagma",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Slugma",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Limagma",
+    "Serie": "Johto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Volcaropod",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Magcargo",
+    "Name_FR": "Volcaropod",
+    "Serie": "Johto",
     "Type1": "fire",
-    "Type2": "rock",
-    "isLock": true,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Marcacrin",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Swinub",
+    "Name_FR": "Marcacrin",
+    "Serie": "Johto",
     "Type1": "ice",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Cochignon",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Piloswine",
+    "Name_FR": "Cochignon",
+    "Serie": "Johto",
     "Type1": "ice",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Corayon",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Corsola",
+    "Name_FR": "Corayon",
+    "Serie": "Johto",
     "Type1": "water",
-    "Type2": "rock",
-    "isLock": true,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Rémoraid",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Remoraid",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Rémoraid",
+    "Serie": "Johto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Octillery",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Octillery",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Octillery",
+    "Serie": "Johto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Cadoizo",
+    "enabled": true,
+    "isLock": true,
     "Name_EN": "Delibird",
+    "Name_FR": "Cadoizo",
+    "Serie": "Johto",
     "Type1": "ice",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Démanta",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mantine",
+    "Name_FR": "Démanta",
+    "Serie": "Johto",
     "Type1": "water",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Airmure",
+    "enabled": true,
+    "isLock": true,
     "Name_EN": "Skarmory",
+    "Name_FR": "Airmure",
+    "Serie": "Johto",
     "Type1": "steel",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Malosse",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Houndour",
+    "Name_FR": "Malosse",
+    "Serie": "Johto",
     "Type1": "dark",
-    "Type2": "fire",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fire"
   },
   {
-    "Name_FR": "Démolosse",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Houndoom",
+    "Name_FR": "Démolosse",
+    "Serie": "Johto",
     "Type1": "dark",
-    "Type2": "fire",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fire"
   },
   {
-    "Name_FR": "Hyporoi",
+    "enabled": true,
+    "isLock": false,
     "Name_EN": "Kingdra",
+    "Name_FR": "Hyporoi",
+    "Serie": "Johto",
     "Type1": "water",
-    "Type2": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dragon"
   },
   {
-    "Name_FR": "Phanpy",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Phanpy",
-    "Type1": "ground",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Phanpy",
+    "Serie": "Johto",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Donphan",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Donphan",
-    "Type1": "ground",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Donphan",
+    "Serie": "Johto",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Porygon2",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Porygon2",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Porygon2",
+    "priceNormal": 30,
+    "priceShiny": 150,
+    "Serie": "Johto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Cerfrousse",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Stantler",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Cerfrousse",
+    "Serie": "Johto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Queulorior",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Smeargle",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Queulorior",
+    "Serie": "Johto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Debugant",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Tyrogue",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Debugant",
+    "Serie": "Johto",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Kapoera",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Hitmontop",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Kapoera",
+    "Serie": "Johto",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Lippouti",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Smoochum",
+    "Name_FR": "Lippouti",
+    "Serie": "Johto",
     "Type1": "ice",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Elekid",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Elekid",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Elekid",
+    "Serie": "Johto",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Magby",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Magby",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Magby",
+    "Serie": "Johto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Écrémeuh",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Miltank",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Écrémeuh",
+    "Serie": "Johto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Leuphorie",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Blissey",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Leuphorie",
+    "Serie": "Johto",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Raikou",
+    "enabled": true,
+    "isLegendary": true,
+    "isLock": false,
+    "isShinyLock": true,
     "Name_EN": "Raikou",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Raikou",
+    "Serie": "Johto",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Entei",
+    "enabled": true,
+    "isLegendary": true,
+    "isLock": false,
+    "isShinyLock": true,
     "Name_EN": "Entei",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Entei",
+    "Serie": "Johto",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Suicune",
+    "enabled": true,
+    "isLegendary": true,
+    "isLock": false,
+    "isShinyLock": true,
     "Name_EN": "Suicune",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Suicune",
+    "Serie": "Johto",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Embrylex",
+    "enabled": true,
+    "isLock": true,
     "Name_EN": "Larvitar",
+    "Name_FR": "Embrylex",
+    "priceNormal": 10,
+    "priceShiny": 40,
+    "Serie": "Johto",
     "Type1": "rock",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Ymphect",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Pupitar",
+    "Name_FR": "Ymphect",
+    "Serie": "Johto",
     "Type1": "rock",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Tyranocif",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Tyranitar",
+    "Name_FR": "Tyranocif",
+    "Serie": "Johto",
     "Type1": "rock",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Lugia",
+    "enabled": true,
+    "isLock": true,
     "Name_EN": "Lugia",
+    "Name_FR": "Lugia",
+    "Serie": "Johto",
     "Type1": "psychic",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Ho-Oh",
+    "enabled": true,
+    "isLock": true,
     "Name_EN": "Ho-Oh",
+    "Name_FR": "Ho-Oh",
+    "Serie": "Johto",
     "Type1": "fire",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Celebi",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Celebi",
+    "Name_FR": "Celebi",
+    "Serie": "Johto",
     "Type1": "psychic",
-    "Type2": "grass",
-    "isLock": true,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Arcko",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Treecko",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Arcko",
+    "Serie": "Hoenn",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Massko",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Grovyle",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Massko",
+    "Serie": "Hoenn",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Jungko",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Sceptile",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Jungko",
+    "Serie": "Hoenn",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Poussifeu",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Torchic",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Poussifeu",
+    "Serie": "Hoenn",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Galifeu",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Combusken",
+    "Name_FR": "Galifeu",
+    "Serie": "Hoenn",
     "Type1": "fire",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Braségali",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Blaziken",
+    "Name_FR": "Braségali",
+    "Serie": "Hoenn",
     "Type1": "fire",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Gobou",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mudkip",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Gobou",
+    "Serie": "Hoenn",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Flobio",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Marshtomp",
+    "Name_FR": "Flobio",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Laggron",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Swampert",
+    "Name_FR": "Laggron",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Medhyèna",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Poochyena",
-    "Type1": "dark",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Medhyèna",
+    "Serie": "Hoenn",
+    "Type1": "dark"
   },
   {
-    "Name_FR": "Grahyèna",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mightyena",
-    "Type1": "dark",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Grahyèna",
+    "Serie": "Hoenn",
+    "Type1": "dark"
   },
   {
-    "Name_FR": "Zigzaton",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Zigzagoon",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Zigzaton",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Linéon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Linoone",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Linéon",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Chenipotte",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Wurmple",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Chenipotte",
+    "Serie": "Hoenn",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Armulys",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Silcoon",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Armulys",
+    "Serie": "Hoenn",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Charmillon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Beautifly",
+    "Name_FR": "Charmillon",
+    "Serie": "Hoenn",
     "Type1": "bug",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Blindalys",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cascoon",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Blindalys",
+    "Serie": "Hoenn",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Papinox",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Dustox",
+    "Name_FR": "Papinox",
+    "Serie": "Hoenn",
     "Type1": "bug",
-    "Type2": "poison",
-    "isLock": true,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Nénupiot",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Lotad",
+    "Name_FR": "Nénupiot",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "grass",
-    "isLock": true,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Lombre",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Lombre",
+    "Name_FR": "Lombre",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "grass",
-    "isLock": true,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Ludicolo",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Ludicolo",
+    "Name_FR": "Ludicolo",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "grass",
-    "isLock": true,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Grainipiot",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Seedot",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Grainipiot",
+    "Serie": "Hoenn",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Pifeuil",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Nuzleaf",
+    "Name_FR": "Pifeuil",
+    "Serie": "Hoenn",
     "Type1": "grass",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Tengalice",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Shiftry",
+    "Name_FR": "Tengalice",
+    "Serie": "Hoenn",
     "Type1": "grass",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Nirondelle",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Taillow",
+    "Name_FR": "Nirondelle",
+    "Serie": "Hoenn",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Hélédelle",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Swellow",
+    "Name_FR": "Hélédelle",
+    "Serie": "Hoenn",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Goélise",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Wingull",
+    "Name_FR": "Goélise",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Bekipan",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Pelipper",
+    "Name_FR": "Bekipan",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Tarsal",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Ralts",
+    "Name_FR": "Tarsal",
+    "Serie": "Hoenn",
     "Type1": "psychic",
-    "Type2": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Kirlia",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Kirlia",
+    "Name_FR": "Kirlia",
+    "Serie": "Hoenn",
     "Type1": "psychic",
-    "Type2": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Gardevoir",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gardevoir",
+    "Name_FR": "Gardevoir",
+    "Serie": "Hoenn",
     "Type1": "psychic",
-    "Type2": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Arakdo",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Surskit",
+    "Name_FR": "Arakdo",
+    "Serie": "Hoenn",
     "Type1": "bug",
-    "Type2": "water",
-    "isLock": true,
-    "enabled": false
+    "Type2": "water"
   },
   {
-    "Name_FR": "Maskadra",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Masquerain",
+    "Name_FR": "Maskadra",
+    "Serie": "Hoenn",
     "Type1": "bug",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Balignon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Shroomish",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Balignon",
+    "Serie": "Hoenn",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Chapignon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Breloom",
+    "Name_FR": "Chapignon",
+    "Serie": "Hoenn",
     "Type1": "grass",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Parecool",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Slakoth",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Parecool",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Vigoroth",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Vigoroth",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Vigoroth",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Monaflèmit",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Slaking",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Monaflèmit",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Ningale",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Nincada",
+    "Name_FR": "Ningale",
+    "Serie": "Hoenn",
     "Type1": "bug",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Ninjask",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Ninjask",
+    "Name_FR": "Ninjask",
+    "Serie": "Hoenn",
     "Type1": "bug",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Munja",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Shedinja",
+    "Name_FR": "Munja",
+    "Serie": "Hoenn",
     "Type1": "bug",
-    "Type2": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ghost"
   },
   {
-    "Name_FR": "Chuchmur",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Whismur",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Chuchmur",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Ramboum",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Loudred",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Ramboum",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Brouhabam",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Exploud",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Brouhabam",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Makuhita",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Makuhita",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Makuhita",
+    "Serie": "Hoenn",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Hariyama",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Hariyama",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Hariyama",
+    "Serie": "Hoenn",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Azurill",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Azurill",
+    "Name_FR": "Azurill",
+    "Serie": "Hoenn",
     "Type1": "normal",
-    "Type2": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Tarinor",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Nosepass",
-    "Type1": "rock",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Tarinor",
+    "Serie": "Hoenn",
+    "Type1": "rock"
   },
   {
-    "Name_FR": "Skitty",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Skitty",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Skitty",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Delcatty",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Delcatty",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Delcatty",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Ténéfix",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Sableye",
+    "Name_FR": "Ténéfix",
+    "Serie": "Hoenn",
     "Type1": "dark",
-    "Type2": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ghost"
   },
   {
-    "Name_FR": "Mysdibule",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mawile",
+    "Name_FR": "Mysdibule",
+    "Serie": "Hoenn",
     "Type1": "steel",
-    "Type2": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Galekid",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Aron",
+    "Name_FR": "Galekid",
+    "Serie": "Hoenn",
     "Type1": "steel",
-    "Type2": "rock",
-    "isLock": true,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Galegon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Lairon",
+    "Name_FR": "Galegon",
+    "Serie": "Hoenn",
     "Type1": "steel",
-    "Type2": "rock",
-    "isLock": true,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Galeking",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Aggron",
+    "Name_FR": "Galeking",
+    "Serie": "Hoenn",
     "Type1": "steel",
-    "Type2": "rock",
-    "isLock": true,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Méditikka",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Meditite",
+    "Name_FR": "Méditikka",
+    "Serie": "Hoenn",
     "Type1": "fighting",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Charmina",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Medicham",
+    "Name_FR": "Charmina",
+    "Serie": "Hoenn",
     "Type1": "fighting",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Dynavolt",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Electrike",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Dynavolt",
+    "Serie": "Hoenn",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Élecsprint",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Manectric",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Élecsprint",
+    "Serie": "Hoenn",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Posipi",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Plusle",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Posipi",
+    "Serie": "Hoenn",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Négapi",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Minun",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Négapi",
+    "Serie": "Hoenn",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Muciole",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Volbeat",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Muciole",
+    "Serie": "Hoenn",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Lumivole",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Illumise",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Lumivole",
+    "Serie": "Hoenn",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Rosélia",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Roselia",
+    "Name_FR": "Rosélia",
+    "Serie": "Hoenn",
     "Type1": "grass",
-    "Type2": "poison",
-    "isLock": true,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Gloupti",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gulpin",
-    "Type1": "poison",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Gloupti",
+    "Serie": "Hoenn",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Avaltout",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Swalot",
-    "Type1": "poison",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Avaltout",
+    "Serie": "Hoenn",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Carvanha",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Carvanha",
+    "Name_FR": "Carvanha",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Sharpedo",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Sharpedo",
+    "Name_FR": "Sharpedo",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Wailmer",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Wailmer",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Wailmer",
+    "Serie": "Hoenn",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Wailord",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Wailord",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Wailord",
+    "Serie": "Hoenn",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Chamallot",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Numel",
+    "Name_FR": "Chamallot",
+    "Serie": "Hoenn",
     "Type1": "fire",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Camérupt",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Camerupt",
+    "Name_FR": "Camérupt",
+    "Serie": "Hoenn",
     "Type1": "fire",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Chartor",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Torkoal",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Chartor",
+    "Serie": "Hoenn",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Spoink",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Spoink",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Spoink",
+    "Serie": "Hoenn",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Groret",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Grumpig",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Groret",
+    "Serie": "Hoenn",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Spinda",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Spinda",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Spinda",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Kraknoix",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Trapinch",
-    "Type1": "ground",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Kraknoix",
+    "Serie": "Hoenn",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Vibraninf",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Vibrava",
+    "Name_FR": "Vibraninf",
+    "Serie": "Hoenn",
     "Type1": "ground",
-    "Type2": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dragon"
   },
   {
-    "Name_FR": "Libégon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Flygon",
+    "Name_FR": "Libégon",
+    "Serie": "Hoenn",
     "Type1": "ground",
-    "Type2": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dragon"
   },
   {
-    "Name_FR": "Cacnea",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cacnea",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Cacnea",
+    "Serie": "Hoenn",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Cacturne",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cacturne",
+    "Name_FR": "Cacturne",
+    "Serie": "Hoenn",
     "Type1": "grass",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Tylton",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Swablu",
+    "Name_FR": "Tylton",
+    "Serie": "Hoenn",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Altaria",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Altaria",
+    "Name_FR": "Altaria",
+    "Serie": "Hoenn",
     "Type1": "dragon",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Mangriff",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Zangoose",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Mangriff",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Séviper",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Seviper",
-    "Type1": "poison",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Séviper",
+    "Serie": "Hoenn",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Séléroc",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Lunatone",
+    "Name_FR": "Séléroc",
+    "Serie": "Hoenn",
     "Type1": "rock",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Solaroc",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Solrock",
+    "Name_FR": "Solaroc",
+    "Serie": "Hoenn",
     "Type1": "rock",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Barloche",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Barboach",
+    "Name_FR": "Barloche",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Barbicha",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Whiscash",
+    "Name_FR": "Barbicha",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Écrapince",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Corphish",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Écrapince",
+    "Serie": "Hoenn",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Colhomard",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Crawdaunt",
+    "Name_FR": "Colhomard",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Balbuto",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Baltoy",
+    "Name_FR": "Balbuto",
+    "Serie": "Hoenn",
     "Type1": "ground",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Kaorine",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Claydol",
+    "Name_FR": "Kaorine",
+    "Serie": "Hoenn",
     "Type1": "ground",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Lilia",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Lileep",
+    "Name_FR": "Lilia",
+    "Serie": "Hoenn",
     "Type1": "rock",
-    "Type2": "grass",
-    "isLock": true,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Vacilys",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cradily",
+    "Name_FR": "Vacilys",
+    "Serie": "Hoenn",
     "Type1": "rock",
-    "Type2": "grass",
-    "isLock": true,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Anorith",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Anorith",
+    "Name_FR": "Anorith",
+    "Serie": "Hoenn",
     "Type1": "rock",
-    "Type2": "bug",
-    "isLock": true,
-    "enabled": false
+    "Type2": "bug"
   },
   {
-    "Name_FR": "Armaldo",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Armaldo",
+    "Name_FR": "Armaldo",
+    "Serie": "Hoenn",
     "Type1": "rock",
-    "Type2": "bug",
-    "isLock": true,
-    "enabled": false
+    "Type2": "bug"
   },
   {
-    "Name_FR": "Barpau",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Feebas",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Barpau",
+    "Serie": "Hoenn",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Milobellus",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Milotic",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Milobellus",
+    "Serie": "Hoenn",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Morpheo",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Castform",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Morpheo",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Kecleon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Kecleon",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Kecleon",
+    "Serie": "Hoenn",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Polichombr",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Shuppet",
-    "Type1": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Polichombr",
+    "Serie": "Hoenn",
+    "Type1": "ghost"
   },
   {
-    "Name_FR": "Branette",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Banette",
-    "Type1": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Branette",
+    "Serie": "Hoenn",
+    "Type1": "ghost"
   },
   {
-    "Name_FR": "Skelenox",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Duskull",
-    "Type1": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Skelenox",
+    "Serie": "Hoenn",
+    "Type1": "ghost"
   },
   {
-    "Name_FR": "Teraclope",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Dusclops",
-    "Type1": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Teraclope",
+    "Serie": "Hoenn",
+    "Type1": "ghost"
   },
   {
-    "Name_FR": "Tropius",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Tropius",
+    "Name_FR": "Tropius",
+    "Serie": "Hoenn",
     "Type1": "grass",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Éoko",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Chimecho",
-    "Type1": "psy",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Éoko",
+    "Serie": "Hoenn",
+    "Type1": "psy"
   },
   {
-    "Name_FR": "Absol",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Absol",
-    "Type1": "dark",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Absol",
+    "Serie": "Hoenn",
+    "Type1": "dark"
   },
   {
-    "Name_FR": "Okéoké",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Wynaut",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Okéoké",
+    "Serie": "Hoenn",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Stalgamin",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Snorunt",
-    "Type1": "ice",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Stalgamin",
+    "Serie": "Hoenn",
+    "Type1": "ice"
   },
   {
-    "Name_FR": "Oniglali",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Glalie",
-    "Type1": "ice",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Oniglali",
+    "Serie": "Hoenn",
+    "Type1": "ice"
   },
   {
-    "Name_FR": "Obalie",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Spheal",
+    "Name_FR": "Obalie",
+    "Serie": "Hoenn",
     "Type1": "ice",
-    "Type2": "water",
-    "isLock": true,
-    "enabled": false
+    "Type2": "water"
   },
   {
-    "Name_FR": "Phogleur",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Sealeo",
+    "Name_FR": "Phogleur",
+    "Serie": "Hoenn",
     "Type1": "ice",
-    "Type2": "water",
-    "isLock": true,
-    "enabled": false
+    "Type2": "water"
   },
   {
-    "Name_FR": "Kaimorse",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Walrein",
+    "Name_FR": "Kaimorse",
+    "Serie": "Hoenn",
     "Type1": "ice",
-    "Type2": "water",
-    "isLock": true,
-    "enabled": false
+    "Type2": "water"
   },
   {
-    "Name_FR": "Coquiperl",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Clamperl",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Coquiperl",
+    "Serie": "Hoenn",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Serpang",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Huntail",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Serpang",
+    "Serie": "Hoenn",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Rosabyss",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gorebyss",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Rosabyss",
+    "Serie": "Hoenn",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Relicanth",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Relicanth",
+    "Name_FR": "Relicanth",
+    "Serie": "Hoenn",
     "Type1": "water",
-    "Type2": "rock",
-    "isLock": true,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Lovdisc",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Luvdisc",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Lovdisc",
+    "Serie": "Hoenn",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Draby",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Bagon",
-    "Type1": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Draby",
+    "Serie": "Hoenn",
+    "Type1": "dragon"
   },
   {
-    "Name_FR": "Drackhaus",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Shelgon",
-    "Type1": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Drackhaus",
+    "Serie": "Hoenn",
+    "Type1": "dragon"
   },
   {
-    "Name_FR": "Drattak",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Salamence",
+    "Name_FR": "Drattak",
+    "Serie": "Hoenn",
     "Type1": "dragon",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Terhal",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Beldum",
+    "Name_FR": "Terhal",
+    "Serie": "Hoenn",
     "Type1": "steel",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Métang",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Metang",
+    "Name_FR": "Métang",
+    "Serie": "Hoenn",
     "Type1": "steel",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Métalosse",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Metagross",
+    "Name_FR": "Métalosse",
+    "Serie": "Hoenn",
     "Type1": "steel",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Regirock",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Regirock",
-    "Type1": "rock",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Regirock",
+    "Serie": "Hoenn",
+    "Type1": "rock"
   },
   {
-    "Name_FR": "Regice",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Regice",
-    "Type1": "ice",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Regice",
+    "Serie": "Hoenn",
+    "Type1": "ice"
   },
   {
-    "Name_FR": "Registeel",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Registeel",
-    "Type1": "steel",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Registeel",
+    "Serie": "Hoenn",
+    "Type1": "steel"
   },
   {
-    "Name_FR": "Latias",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Latias",
+    "Name_FR": "Latias",
+    "Serie": "Hoenn",
     "Type1": "dragon",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Latios",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Latios",
+    "Name_FR": "Latios",
+    "Serie": "Hoenn",
     "Type1": "dragon",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Kyogre",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Kyogre",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Kyogre",
+    "Serie": "Hoenn",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Groudon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Groudon",
-    "Type1": "ground",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Groudon",
+    "Serie": "Hoenn",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Rayquaza",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Rayquaza",
+    "Name_FR": "Rayquaza",
+    "Serie": "Hoenn",
     "Type1": "dragon",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Jirachi",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Jirachi",
+    "Name_FR": "Jirachi",
+    "Serie": "Hoenn",
     "Type1": "steel",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Deoxys",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Deoxys",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Deoxys",
+    "Serie": "Hoenn",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Tortipouss",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Turtwig",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Tortipouss",
+    "Serie": "Sinnoh",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Boskara",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Grotle",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Boskara",
+    "Serie": "Sinnoh",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Torterra",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Torterra",
+    "Name_FR": "Torterra",
+    "Serie": "Sinnoh",
     "Type1": "grass",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Ouisticram",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Chimchar",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Ouisticram",
+    "Serie": "Sinnoh",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Chimpenfeu",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Monferno",
+    "Name_FR": "Chimpenfeu",
+    "Serie": "Sinnoh",
     "Type1": "fire",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Simiabraz",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Infernape",
+    "Name_FR": "Simiabraz",
+    "Serie": "Sinnoh",
     "Type1": "fire",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Tiplouf",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Piplup",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Tiplouf",
+    "Serie": "Sinnoh",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Prinplouf",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Prinplup",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Prinplouf",
+    "Serie": "Sinnoh",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Pingoléon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Empoleon",
+    "Name_FR": "Pingoléon",
+    "Serie": "Sinnoh",
     "Type1": "water",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Étourmi",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Starly",
+    "Name_FR": "Étourmi",
+    "Serie": "Sinnoh",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Étourvol",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Staravia",
+    "Name_FR": "Étourvol",
+    "Serie": "Sinnoh",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Étouraptor",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Staraptor",
+    "Name_FR": "Étouraptor",
+    "Serie": "Sinnoh",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Keunotor",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Bidoof",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Keunotor",
+    "Serie": "Sinnoh",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Castorno",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Bibarel",
+    "Name_FR": "Castorno",
+    "Serie": "Sinnoh",
     "Type1": "normal",
-    "Type2": "water",
-    "isLock": true,
-    "enabled": false
+    "Type2": "water"
   },
   {
-    "Name_FR": "Crikzik",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Kricketot",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Crikzik",
+    "Serie": "Sinnoh",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Mélokrik",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Kricketune",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Mélokrik",
+    "Serie": "Sinnoh",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Lixy",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Shinx",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Lixy",
+    "Serie": "Sinnoh",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Luxio",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Luxio",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Luxio",
+    "Serie": "Sinnoh",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Luxray",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Luxray",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Luxray",
+    "Serie": "Sinnoh",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Rozbouton",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Budew",
+    "Name_FR": "Rozbouton",
+    "Serie": "Sinnoh",
     "Type1": "grass",
-    "Type2": "poison",
-    "isLock": true,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Roserade",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Roserade",
+    "Name_FR": "Roserade",
+    "Serie": "Sinnoh",
     "Type1": "grass",
-    "Type2": "poison",
-    "isLock": true,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Kranidos",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cranidos",
-    "Type1": "rock",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Kranidos",
+    "Serie": "Sinnoh",
+    "Type1": "rock"
   },
   {
-    "Name_FR": "Charkos",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Rampardos",
-    "Type1": "rock",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Charkos",
+    "Serie": "Sinnoh",
+    "Type1": "rock"
   },
   {
-    "Name_FR": "Dinoclier",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Shieldon",
+    "Name_FR": "Dinoclier",
+    "Serie": "Sinnoh",
     "Type1": "rock",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Bastiodon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Bastiodon",
+    "Name_FR": "Bastiodon",
+    "Serie": "Sinnoh",
     "Type1": "rock",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Cheniti",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Burmy",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Cheniti",
+    "Serie": "Sinnoh",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Cheniselle",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Wormadam",
+    "Name_FR": "Cheniselle",
+    "Serie": "Sinnoh",
     "Type1": "bug",
-    "Type2": "grass",
-    "isLock": true,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Papilord",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mothim",
+    "Name_FR": "Papilord",
+    "Serie": "Sinnoh",
     "Type1": "bug",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Apitrini",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Combee",
+    "Name_FR": "Apitrini",
+    "Serie": "Sinnoh",
     "Type1": "bug",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Apireine",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Vespiquen",
+    "Name_FR": "Apireine",
+    "Serie": "Sinnoh",
     "Type1": "bug",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Pachirisu",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Pachirisu",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Pachirisu",
+    "Serie": "Sinnoh",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Mustébouée",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Buizel",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Mustébouée",
+    "Serie": "Sinnoh",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Mustéflott",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Floatzel",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Mustéflott",
+    "Serie": "Sinnoh",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Ceribou",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cherubi",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Ceribou",
+    "Serie": "Sinnoh",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Ceriflor",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cherrim",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Ceriflor",
+    "Serie": "Sinnoh",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Sancoki",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Shellos",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Sancoki",
+    "Serie": "Sinnoh",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Tritosor",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gastrodon",
+    "Name_FR": "Tritosor",
+    "Serie": "Sinnoh",
     "Type1": "water",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Capidextre",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Ambipom",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Capidextre",
+    "Serie": "Sinnoh",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Baudrive",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Drifloon",
+    "Name_FR": "Baudrive",
+    "Serie": "Sinnoh",
     "Type1": "ghost",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Grodrive",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Drifblim",
+    "Name_FR": "Grodrive",
+    "Serie": "Sinnoh",
     "Type1": "ghost",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
-
   {
-    "Name_FR": "Laporeille",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Buneary",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Laporeille",
+    "Serie": "Sinnoh",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Lockpin",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Lopunny",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Lockpin",
+    "Serie": "Sinnoh",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Magirêve",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mismagius",
-    "Type1": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Magirêve",
+    "Serie": "Sinnoh",
+    "Type1": "ghost"
   },
   {
-    "Name_FR": "Corboss",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Honchkrow",
+    "Name_FR": "Corboss",
+    "Serie": "Sinnoh",
     "Type1": "dark",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Chaglam",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Glameow",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Chaglam",
+    "Serie": "Sinnoh",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Chaffreux",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Purugly",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Chaffreux",
+    "Serie": "Sinnoh",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Korillon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Chingling",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Korillon",
+    "Serie": "Sinnoh",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Moufouette",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Stunky",
+    "Name_FR": "Moufouette",
+    "Serie": "Sinnoh",
     "Type1": "poison",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Moufflair",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Skuntank",
+    "Name_FR": "Moufflair",
+    "Serie": "Sinnoh",
     "Type1": "poison",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Archéomire",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Bronzor",
+    "Name_FR": "Archéomire",
+    "Serie": "Sinnoh",
     "Type1": "steel",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Archéodong",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Bronzong",
+    "Name_FR": "Archéodong",
+    "Serie": "Sinnoh",
     "Type1": "steel",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Manzaï",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Bonsly",
-    "Type1": "rock",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Manzaï",
+    "Serie": "Sinnoh",
+    "Type1": "rock"
   },
   {
-    "Name_FR": "Mime Jr.",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mime Jr.",
+    "Name_FR": "Mime Jr.",
+    "Serie": "Sinnoh",
     "Sprite_Normal": "https://img.pokemondb.net/sprites/black-white/anim/normal/mime-jr.gif",
     "Sprite_Shiny": "https://img.pokemondb.net/sprites/black-white/anim/shiny/mime-jr.gif",
     "Type1": "psychic",
-    "Type2": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Ptiravi",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Happiny",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Ptiravi",
+    "Serie": "Sinnoh",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Pijako",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Chatot",
+    "Name_FR": "Pijako",
+    "Serie": "Sinnoh",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Spiritomb",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Spiritomb",
+    "Name_FR": "Spiritomb",
+    "Serie": "Sinnoh",
     "Type1": "ghost",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Griknot",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gible",
+    "Name_FR": "Griknot",
+    "Serie": "Sinnoh",
     "Type1": "dragon",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Carmache",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gabite",
+    "Name_FR": "Carmache",
+    "Serie": "Sinnoh",
     "Type1": "dragon",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Carchacrok",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Garchomp",
+    "Name_FR": "Carchacrok",
+    "Serie": "Sinnoh",
     "Type1": "dragon",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Goinfrex",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Munchlax",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Goinfrex",
+    "Serie": "Sinnoh",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Riolu",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Riolu",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Riolu",
+    "Serie": "Sinnoh",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Lucario",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Lucario",
+    "Name_FR": "Lucario",
+    "Serie": "Sinnoh",
     "Type1": "fighting",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Hippopotas",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Hippopotas",
-    "Type1": "ground",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Hippopotas",
+    "Serie": "Sinnoh",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Hippodocus",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Hippowdon",
-    "Type1": "ground",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Hippodocus",
+    "Serie": "Sinnoh",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Rapion",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Skorupi",
+    "Name_FR": "Rapion",
+    "Serie": "Sinnoh",
     "Type1": "poison",
-    "Type2": "bug",
-    "isLock": true,
-    "enabled": false
+    "Type2": "bug"
   },
   {
-    "Name_FR": "Drascore",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Drapion",
+    "Name_FR": "Drascore",
+    "Serie": "Sinnoh",
     "Type1": "poison",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Cradopaud",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Croagunk",
+    "Name_FR": "Cradopaud",
+    "Serie": "Sinnoh",
     "Type1": "poison",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Coatox",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Toxicroak",
+    "Name_FR": "Coatox",
+    "Serie": "Sinnoh",
     "Type1": "poison",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Vortente",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Carnivine",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Vortente",
+    "Serie": "Sinnoh",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Ecayon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Finneon",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Ecayon",
+    "Serie": "Sinnoh",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Luminéon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Lumineon",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Luminéon",
+    "Serie": "Sinnoh",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Babimanta",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mantyke",
+    "Name_FR": "Babimanta",
+    "Serie": "Sinnoh",
     "Type1": "water",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Blizzi",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Snover",
+    "Name_FR": "Blizzi",
+    "Serie": "Sinnoh",
     "Type1": "grass",
-    "Type2": "ice",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ice"
   },
   {
-    "Name_FR": "Blizzaroi",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Abomasnow",
+    "Name_FR": "Blizzaroi",
+    "Serie": "Sinnoh",
     "Type1": "grass",
-    "Type2": "ice",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ice"
   },
   {
-    "Name_FR": "Dimoret",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Weavile",
+    "Name_FR": "Dimoret",
+    "Serie": "Sinnoh",
     "Type1": "dark",
-    "Type2": "ice",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ice"
   },
   {
-    "Name_FR": "Magnézone",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Magnezone",
+    "Name_FR": "Magnézone",
+    "Serie": "Sinnoh",
     "Type1": "electric",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Coudlangue",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Lickilicky",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Coudlangue",
+    "Serie": "Sinnoh",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Rhinastoc",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Rhyperior",
+    "Name_FR": "Rhinastoc",
+    "Serie": "Sinnoh",
     "Type1": "ground",
-    "Type2": "rock",
-    "isLock": true,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Bouldeneu",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Tangrowth",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Bouldeneu",
+    "Serie": "Sinnoh",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Élekable",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Electivire",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Élekable",
+    "Serie": "Sinnoh",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Maganon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Magmortar",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Maganon",
+    "Serie": "Sinnoh",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Togekiss",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Togekiss",
+    "Name_FR": "Togekiss",
+    "Serie": "Sinnoh",
     "Type1": "fairy",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Yanmega",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Yanmega",
+    "Name_FR": "Yanmega",
+    "Serie": "Sinnoh",
     "Type1": "bug",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Phyllali",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Leafeon",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Phyllali",
+    "Serie": "Sinnoh",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Givrali",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Glaceon",
-    "Type1": "ice",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Givrali",
+    "Serie": "Sinnoh",
+    "Type1": "ice"
   },
   {
-    "Name_FR": "Scorvol",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gliscor",
+    "Name_FR": "Scorvol",
+    "Serie": "Sinnoh",
     "Type1": "ground",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Mammochon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mamoswine",
+    "Name_FR": "Mammochon",
+    "Serie": "Sinnoh",
     "Type1": "ice",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Porygon-Z",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Porygon-Z",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Porygon-Z",
+    "Serie": "Sinnoh",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Gallame",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gallade",
+    "Name_FR": "Gallame",
+    "Serie": "Sinnoh",
     "Type1": "psychic",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Tarinorme",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Probopass",
+    "Name_FR": "Tarinorme",
+    "Serie": "Sinnoh",
     "Type1": "rock",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Noctunoir",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Dusknoir",
-    "Type1": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Noctunoir",
+    "Serie": "Sinnoh",
+    "Type1": "ghost"
   },
   {
-    "Name_FR": "Momartik",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Froslass",
+    "Name_FR": "Momartik",
+    "Serie": "Sinnoh",
     "Type1": "ice",
-    "Type2": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ghost"
   },
   {
-    "Name_FR": "Motisma",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Rotom",
+    "Name_FR": "Motisma",
+    "Serie": "Sinnoh",
     "Type1": "electric",
-    "Type2": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ghost"
   },
   {
-    "Name_FR": "Crehelf",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Uxie",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Crehelf",
+    "Serie": "Sinnoh",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Crefollet",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mesprit",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Crefollet",
+    "Serie": "Sinnoh",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Crefadet",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Azelf",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Crefadet",
+    "Serie": "Sinnoh",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Dialga",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Dialga",
+    "Name_FR": "Dialga",
+    "Serie": "Sinnoh",
     "Type1": "steel",
-    "Type2": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dragon"
   },
   {
-    "Name_FR": "Palkia",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Palkia",
+    "Name_FR": "Palkia",
+    "Serie": "Sinnoh",
     "Type1": "water",
-    "Type2": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dragon"
   },
   {
-    "Name_FR": "Heatran",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Heatran",
+    "Name_FR": "Heatran",
+    "Serie": "Sinnoh",
     "Type1": "fire",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Regigigas",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Regigigas",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Regigigas",
+    "Serie": "Sinnoh",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Giratina",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Giratina",
+    "Name_FR": "Giratina",
+    "Serie": "Sinnoh",
     "Type1": "ghost",
-    "Type2": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dragon"
   },
   {
-    "Name_FR": "Cresselia",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cresselia",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Cresselia",
+    "Serie": "Sinnoh",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Phione",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Phione",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Phione",
+    "Serie": "Sinnoh",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Manaphy",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Manaphy",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Manaphy",
+    "Serie": "Sinnoh",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Darkrai",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Darkrai",
-    "Type1": "dark",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Darkrai",
+    "Serie": "Sinnoh",
+    "Type1": "dark"
   },
   {
-    "Name_FR": "Shaymin",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Shaymin",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Shaymin",
+    "Serie": "Sinnoh",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Arceus",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Arceus",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Arceus",
+    "Serie": "Sinnoh",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Victini",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Victini",
+    "Name_FR": "Victini",
+    "Serie": "Unys",
     "Type1": "psychic",
-    "Type2": "fire",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fire"
   },
   {
-    "Name_FR": "Vipélierre",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Snivy",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Vipélierre",
+    "Serie": "Unys",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Lianaja",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Servine",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Lianaja",
+    "Serie": "Unys",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Majaspic",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Serperior",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Majaspic",
+    "Serie": "Unys",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Gruikui",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Tepig",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Gruikui",
+    "Serie": "Unys",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Grotichon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Pignite",
+    "Name_FR": "Grotichon",
+    "Serie": "Unys",
     "Type1": "fire",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Roitiflam",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Emboar",
+    "Name_FR": "Roitiflam",
+    "Serie": "Unys",
     "Type1": "fire",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Moustillon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Oshawott",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Moustillon",
+    "Serie": "Unys",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Mateloutre",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Dewott",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Mateloutre",
+    "Serie": "Unys",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Clamiral",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Samurott",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Clamiral",
+    "Serie": "Unys",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Ratentif",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Patrat",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Ratentif",
+    "Serie": "Unys",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Miradar",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Watchog",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Miradar",
+    "Serie": "Unys",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Ponchiot",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Lillipup",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Ponchiot",
+    "Serie": "Unys",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Ponchien",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Herdier",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Ponchien",
+    "Serie": "Unys",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Mastouffe",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Stoutland",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Mastouffe",
+    "Serie": "Unys",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Chacripan",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Purrloin",
-    "Type1": "dark",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Chacripan",
+    "Serie": "Unys",
+    "Type1": "dark"
   },
   {
-    "Name_FR": "Léopardus",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Liepard",
-    "Type1": "dark",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Léopardus",
+    "Serie": "Unys",
+    "Type1": "dark"
   },
   {
-    "Name_FR": "Feuillajou",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Pansage",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Feuillajou",
+    "Serie": "Unys",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Feuiloutan",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Simisage",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Feuiloutan",
+    "Serie": "Unys",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Flamajou",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Pansear",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Flamajou",
+    "Serie": "Unys",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Flamoutan",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Simisear",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Flamoutan",
+    "Serie": "Unys",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Flotajou",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Panpour",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Flotajou",
+    "Serie": "Unys",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Flotoutan",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Simipour",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Flotoutan",
+    "Serie": "Unys",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Munna",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Munna",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Munna",
+    "Serie": "Unys",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Mushana",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Musharna",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Mushana",
+    "Serie": "Unys",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Poichigeon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Pidove",
+    "Name_FR": "Poichigeon",
+    "Serie": "Unys",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Colombeau",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Tranquill",
+    "Name_FR": "Colombeau",
+    "Serie": "Unys",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Déflaisan",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Unfezant",
+    "Name_FR": "Déflaisan",
+    "Serie": "Unys",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Zébibron",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Blitzle",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Zébibron",
+    "Serie": "Unys",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Zéblitz",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Zebstrika",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Zéblitz",
+    "Serie": "Unys",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Nodulithe",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Roggenrola",
-    "Type1": "rock",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Nodulithe",
+    "Serie": "Unys",
+    "Type1": "rock"
   },
   {
-    "Name_FR": "Géolithe",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Boldore",
-    "Type1": "rock",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Géolithe",
+    "Serie": "Unys",
+    "Type1": "rock"
   },
   {
-    "Name_FR": "Gigalithe",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gigalith",
-    "Type1": "rock",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Gigalithe",
+    "Serie": "Unys",
+    "Type1": "rock"
   },
   {
-    "Name_FR": "Chovsourir",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Woobat",
+    "Name_FR": "Chovsourir",
+    "Serie": "Unys",
     "Type1": "psychic",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Rhinolove",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Swoobat",
+    "Name_FR": "Rhinolove",
+    "Serie": "Unys",
     "Type1": "psychic",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Rototaupe",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Drilbur",
-    "Type1": "ground",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Rototaupe",
+    "Serie": "Unys",
+    "Type1": "ground"
   },
   {
-    "Name_FR": "Minotaupe",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Excadrill",
+    "Name_FR": "Minotaupe",
+    "Serie": "Unys",
     "Type1": "ground",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Nanméouïe",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Audino",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Nanméouïe",
+    "Serie": "Unys",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Charpenti",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Timburr",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Charpenti",
+    "Serie": "Unys",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Ouvrifier",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gurdurr",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Ouvrifier",
+    "Serie": "Unys",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Bétochef",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Conkeldurr",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Bétochef",
+    "Serie": "Unys",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Tritonde",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Tympole",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Tritonde",
+    "Serie": "Unys",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Batracné",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Palpitoad",
+    "Name_FR": "Batracné",
+    "Serie": "Unys",
     "Type1": "water",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Crapustule",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Seismitoad",
+    "Name_FR": "Crapustule",
+    "Serie": "Unys",
     "Type1": "water",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Judokrak",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Throh",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Judokrak",
+    "Serie": "Unys",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Karaclée",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Sawk",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Karaclée",
+    "Serie": "Unys",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Larveyette",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Sewaddle",
+    "Name_FR": "Larveyette",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "grass",
-    "isLock": true,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Couverdure",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Swadloon",
+    "Name_FR": "Couverdure",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "grass",
-    "isLock": true,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Manternel",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Leavanny",
+    "Name_FR": "Manternel",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "grass",
-    "isLock": true,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Venipatte",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Venipede",
+    "Name_FR": "Venipatte",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "poison",
-    "isLock": true,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Scobolide",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Whirlipede",
+    "Name_FR": "Scobolide",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "poison",
-    "isLock": true,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Brutapode",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Scolipede",
+    "Name_FR": "Brutapode",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "poison",
-    "isLock": true,
-    "enabled": false
+    "Type2": "poison"
   },
-
   {
-    "Name_FR": "Doudouvet",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cottonee",
+    "Name_FR": "Doudouvet",
+    "Serie": "Unys",
     "Type1": "grass",
-    "Type2": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Farfaduvet",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Whimsicott",
+    "Name_FR": "Farfaduvet",
+    "Serie": "Unys",
     "Type1": "grass",
-    "Type2": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fairy"
   },
   {
-    "Name_FR": "Chlorobule",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Petilil",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Chlorobule",
+    "Serie": "Unys",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Fragilady",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Lilligant",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Fragilady",
+    "Serie": "Unys",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Bargantua",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Basculin",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Bargantua",
+    "Serie": "Unys",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Mascaïman",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Sandile",
+    "Name_FR": "Mascaïman",
+    "Serie": "Unys",
     "Type1": "ground",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Escroco",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Krokorok",
+    "Name_FR": "Escroco",
+    "Serie": "Unys",
     "Type1": "ground",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Crocorible",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Krookodile",
+    "Name_FR": "Crocorible",
+    "Serie": "Unys",
     "Type1": "ground",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Darumarond",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Darumaka",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Darumarond",
+    "Serie": "Unys",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Darumacho",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Darmanitan",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Darumacho",
+    "Serie": "Unys",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Maracachi",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Maractus",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Maracachi",
+    "Serie": "Unys",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Crabicoque",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Dwebble",
+    "Name_FR": "Crabicoque",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "rock",
-    "isLock": true,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Crabaraque",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Crustle",
+    "Name_FR": "Crabaraque",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "rock",
-    "isLock": true,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Baggiguane",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Scraggy",
+    "Name_FR": "Baggiguane",
+    "Serie": "Unys",
     "Type1": "dark",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Baggaïd",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Scrafty",
+    "Name_FR": "Baggaïd",
+    "Serie": "Unys",
     "Type1": "dark",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Cryptéro",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Sigilyph",
+    "Name_FR": "Cryptéro",
+    "Serie": "Unys",
     "Type1": "psychic",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Tutafeh",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Yamask",
-    "Type1": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Tutafeh",
+    "Serie": "Unys",
+    "Type1": "ghost"
   },
   {
-    "Name_FR": "Tutankafer",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cofagrigus",
-    "Type1": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Tutankafer",
+    "Serie": "Unys",
+    "Type1": "ghost"
   },
   {
-    "Name_FR": "Carapagos",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Tirtouga",
+    "Name_FR": "Carapagos",
+    "Serie": "Unys",
     "Type1": "water",
-    "Type2": "rock",
-    "isLock": true,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Mégapagos",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Carracosta",
+    "Name_FR": "Mégapagos",
+    "Serie": "Unys",
     "Type1": "water",
-    "Type2": "rock",
-    "isLock": true,
-    "enabled": false
+    "Type2": "rock"
   },
   {
-    "Name_FR": "Arkéapti",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Archen",
+    "Name_FR": "Arkéapti",
+    "Serie": "Unys",
     "Type1": "rock",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Aéroptéryx",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Archeops",
+    "Name_FR": "Aéroptéryx",
+    "Serie": "Unys",
     "Type1": "rock",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Miamiasme",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Trubbish",
-    "Type1": "poison",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Miamiasme",
+    "Serie": "Unys",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Miasmax",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Garbodor",
-    "Type1": "poison",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Miasmax",
+    "Serie": "Unys",
+    "Type1": "poison"
   },
   {
-    "Name_FR": "Zorua",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Zorua",
-    "Type1": "dark",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Zorua",
+    "Serie": "Unys",
+    "Type1": "dark"
   },
   {
-    "Name_FR": "Zoroark",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Zoroark",
-    "Type1": "dark",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Zoroark",
+    "Serie": "Unys",
+    "Type1": "dark"
   },
   {
-    "Name_FR": "Chinchidou",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Minccino",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Chinchidou",
+    "Serie": "Unys",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Pashmilla",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cinccino",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Pashmilla",
+    "Serie": "Unys",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Scrutella",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gothita",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Scrutella",
+    "Serie": "Unys",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Mesmérella",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gothorita",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Mesmérella",
+    "Serie": "Unys",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Sidérella",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gothitelle",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Sidérella",
+    "Serie": "Unys",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Nucléos",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Solosis",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Nucléos",
+    "Serie": "Unys",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Méios",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Duosion",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Méios",
+    "Serie": "Unys",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Symbios",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Reuniclus",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Symbios",
+    "Serie": "Unys",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Couaneton",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Ducklett",
+    "Name_FR": "Couaneton",
+    "Serie": "Unys",
     "Type1": "water",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Lakmécygne",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Swanna",
+    "Name_FR": "Lakmécygne",
+    "Serie": "Unys",
     "Type1": "water",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Sorbébé",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Vanillite",
-    "Type1": "ice",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Sorbébé",
+    "Serie": "Unys",
+    "Type1": "ice"
   },
   {
-    "Name_FR": "Sorboul",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Vanillish",
-    "Type1": "ice",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Sorboul",
+    "Serie": "Unys",
+    "Type1": "ice"
   },
   {
-    "Name_FR": "Sorbouboul",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Vanilluxe",
-    "Type1": "ice",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Sorbouboul",
+    "Serie": "Unys",
+    "Type1": "ice"
   },
   {
-    "Name_FR": "Vivaldaim",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Deerling",
+    "Name_FR": "Vivaldaim",
+    "Serie": "Unys",
     "Type1": "normal",
-    "Type2": "grass",
-    "isLock": true,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Haydaim",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Sawsbuck",
+    "Name_FR": "Haydaim",
+    "Serie": "Unys",
     "Type1": "normal",
-    "Type2": "grass",
-    "isLock": true,
-    "enabled": false
+    "Type2": "grass"
   },
   {
-    "Name_FR": "Emolga",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Emolga",
+    "Name_FR": "Emolga",
+    "Serie": "Unys",
     "Type1": "electric",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Carabing",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Karrablast",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Carabing",
+    "Serie": "Unys",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Lançargot",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Escavalier",
+    "Name_FR": "Lançargot",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Trompignon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Foongus",
+    "Name_FR": "Trompignon",
+    "Serie": "Unys",
     "Type1": "grass",
-    "Type2": "poison",
-    "isLock": true,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Gaulet",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Amoonguss",
+    "Name_FR": "Gaulet",
+    "Serie": "Unys",
     "Type1": "grass",
-    "Type2": "poison",
-    "isLock": true,
-    "enabled": false
+    "Type2": "poison"
   },
   {
-    "Name_FR": "Viskuse",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Frillish",
+    "Name_FR": "Viskuse",
+    "Serie": "Unys",
     "Type1": "water",
-    "Type2": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ghost"
   },
   {
-    "Name_FR": "Moyade",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Jellicent",
+    "Name_FR": "Moyade",
+    "Serie": "Unys",
     "Type1": "water",
-    "Type2": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ghost"
   },
   {
-    "Name_FR": "Mamanbo",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Alomomola",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Mamanbo",
+    "Serie": "Unys",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Statitik",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Joltik",
+    "Name_FR": "Statitik",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "electric",
-    "isLock": true,
-    "enabled": false
+    "Type2": "electric"
   },
   {
-    "Name_FR": "Mygavolt",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Galvantula",
+    "Name_FR": "Mygavolt",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "electric",
-    "isLock": true,
-    "enabled": false
+    "Type2": "electric"
   },
   {
-    "Name_FR": "Grindur",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Ferroseed",
+    "Name_FR": "Grindur",
+    "Serie": "Unys",
     "Type1": "grass",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Noacier",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Ferrothorn",
+    "Name_FR": "Noacier",
+    "Serie": "Unys",
     "Type1": "grass",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Tic",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Klink",
-    "Type1": "steel",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Tic",
+    "Serie": "Unys",
+    "Type1": "steel"
   },
   {
-    "Name_FR": "Clic",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Klang",
-    "Type1": "steel",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Clic",
+    "Serie": "Unys",
+    "Type1": "steel"
   },
   {
-    "Name_FR": "Cliticlic",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Klinklang",
-    "Type1": "steel",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Cliticlic",
+    "Serie": "Unys",
+    "Type1": "steel"
   },
-
   {
-    "Name_FR": "Anchwatt",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Tynamo",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Anchwatt",
+    "Serie": "Unys",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Lampéroie",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Eelektrik",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Lampéroie",
+    "Serie": "Unys",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Ohmassacre",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Eelektross",
-    "Type1": "electric",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Ohmassacre",
+    "Serie": "Unys",
+    "Type1": "electric"
   },
   {
-    "Name_FR": "Lewsor",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Elgyem",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Lewsor",
+    "Serie": "Unys",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Neitram",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Beheeyem",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Neitram",
+    "Serie": "Unys",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Funécire",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Litwick",
+    "Name_FR": "Funécire",
+    "Serie": "Unys",
     "Type1": "ghost",
-    "Type2": "fire",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fire"
   },
   {
-    "Name_FR": "Mélancolux",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Lampent",
+    "Name_FR": "Mélancolux",
+    "Serie": "Unys",
     "Type1": "ghost",
-    "Type2": "fire",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fire"
   },
   {
-    "Name_FR": "Lugulabre",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Chandelure",
+    "Name_FR": "Lugulabre",
+    "Serie": "Unys",
     "Type1": "ghost",
-    "Type2": "fire",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fire"
   },
   {
-    "Name_FR": "Coupenotte",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Axew",
-    "Type1": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Coupenotte",
+    "Serie": "Unys",
+    "Type1": "dragon"
   },
   {
-    "Name_FR": "Incisache",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Fraxure",
-    "Type1": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Incisache",
+    "Serie": "Unys",
+    "Type1": "dragon"
   },
   {
-    "Name_FR": "Tranchodon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Haxorus",
-    "Type1": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Tranchodon",
+    "Serie": "Unys",
+    "Type1": "dragon"
   },
   {
-    "Name_FR": "Polarhume",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cubchoo",
-    "Type1": "ice",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Polarhume",
+    "Serie": "Unys",
+    "Type1": "ice"
   },
   {
-    "Name_FR": "Polagriffe",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Beartic",
-    "Type1": "ice",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Polagriffe",
+    "Serie": "Unys",
+    "Type1": "ice"
   },
   {
-    "Name_FR": "Hexagel",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cryogonal",
-    "Type1": "ice",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Hexagel",
+    "Serie": "Unys",
+    "Type1": "ice"
   },
   {
-    "Name_FR": "Escargaume",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Shelmet",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Escargaume",
+    "Serie": "Unys",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Limaspeed",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Accelgor",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Limaspeed",
+    "Serie": "Unys",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Limonde",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Stunfisk",
+    "Name_FR": "Limonde",
+    "Serie": "Unys",
     "Type1": "ground",
-    "Type2": "electric",
-    "isLock": true,
-    "enabled": false
+    "Type2": "electric"
   },
   {
-    "Name_FR": "Kungfouine",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mienfoo",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Kungfouine",
+    "Serie": "Unys",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Shaofouine",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mienshao",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Shaofouine",
+    "Serie": "Unys",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Drakkarmin",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Druddigon",
-    "Type1": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Drakkarmin",
+    "Serie": "Unys",
+    "Type1": "dragon"
   },
   {
-    "Name_FR": "Gringolem",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Golett",
+    "Name_FR": "Gringolem",
+    "Serie": "Unys",
     "Type1": "ground",
-    "Type2": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ghost"
   },
   {
-    "Name_FR": "Golemastoc",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Golurk",
+    "Name_FR": "Golemastoc",
+    "Serie": "Unys",
     "Type1": "ground",
-    "Type2": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ghost"
   },
   {
-    "Name_FR": "Scalpion",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Pawniard",
+    "Name_FR": "Scalpion",
+    "Serie": "Unys",
     "Type1": "dark",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Scalproie",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Bisharp",
+    "Name_FR": "Scalproie",
+    "Serie": "Unys",
     "Type1": "dark",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Frison",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Bouffalant",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Frison",
+    "Serie": "Unys",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Furaiglon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Rufflet",
+    "Name_FR": "Furaiglon",
+    "Serie": "Unys",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Gueriaigle",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Braviary",
+    "Name_FR": "Gueriaigle",
+    "Serie": "Unys",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Vostourno",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Vullaby",
+    "Name_FR": "Vostourno",
+    "Serie": "Unys",
     "Type1": "dark",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Vaututrice",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Mandibuzz",
+    "Name_FR": "Vaututrice",
+    "Serie": "Unys",
     "Type1": "dark",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Aflamanoir",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Heatmor",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Aflamanoir",
+    "Serie": "Unys",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Fermite",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Durant",
+    "Name_FR": "Fermite",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Solochi",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Deino",
+    "Name_FR": "Solochi",
+    "Serie": "Unys",
     "Type1": "dark",
-    "Type2": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dragon"
   },
   {
-    "Name_FR": "Diamat",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Zweilous",
+    "Name_FR": "Diamat",
+    "Serie": "Unys",
     "Type1": "dark",
-    "Type2": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dragon"
   },
   {
-    "Name_FR": "Trioxhydre",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Hydreigon",
+    "Name_FR": "Trioxhydre",
+    "Serie": "Unys",
     "Type1": "dark",
-    "Type2": "dragon",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dragon"
   },
   {
-    "Name_FR": "Pyronille",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Larvesta",
+    "Name_FR": "Pyronille",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "fire",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fire"
   },
   {
-    "Name_FR": "Pyrax",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Volcarona",
+    "Name_FR": "Pyrax",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "fire",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fire"
   },
   {
-    "Name_FR": "Cobaltium",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Cobalion",
+    "Name_FR": "Cobaltium",
+    "Serie": "Unys",
     "Type1": "steel",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Terrakium",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Terrakion",
+    "Name_FR": "Terrakium",
+    "Serie": "Unys",
     "Type1": "rock",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Viridium",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Virizion",
+    "Name_FR": "Viridium",
+    "Serie": "Unys",
     "Type1": "grass",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Boréas",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Tornadus",
-    "Type1": "flying",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Boréas",
+    "Serie": "Unys",
+    "Type1": "flying"
   },
   {
-    "Name_FR": "Fulguris",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Thundurus",
+    "Name_FR": "Fulguris",
+    "Serie": "Unys",
     "Type1": "electric",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Reshiram",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Reshiram",
+    "Name_FR": "Reshiram",
+    "Serie": "Unys",
     "Type1": "dragon",
-    "Type2": "fire",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fire"
   },
   {
-    "Name_FR": "Zekrom",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Zekrom",
+    "Name_FR": "Zekrom",
+    "Serie": "Unys",
     "Type1": "dragon",
-    "Type2": "electric",
-    "isLock": true,
-    "enabled": false
+    "Type2": "electric"
   },
   {
-    "Name_FR": "Démétéros",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Landorus",
+    "Name_FR": "Démétéros",
+    "Serie": "Unys",
     "Type1": "ground",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Kyurem",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Kyurem",
+    "Name_FR": "Kyurem",
+    "Serie": "Unys",
     "Type1": "dragon",
-    "Type2": "ice",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ice"
   },
   {
-    "Name_FR": "Keldeo",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Keldeo",
+    "Name_FR": "Keldeo",
+    "Serie": "Unys",
     "Type1": "water",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Meloetta",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Meloetta",
+    "Name_FR": "Meloetta",
+    "Serie": "Unys",
     "Type1": "normal",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Genesect",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Genesect",
+    "Name_FR": "Genesect",
+    "Serie": "Unys",
     "Type1": "bug",
-    "Type2": "steel",
-    "isLock": true,
-    "enabled": false
+    "Type2": "steel"
   },
   {
-    "Name_FR": "Marisson",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Chespin",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Marisson",
+    "Serie": "Kalos",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Boguérisse",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Quilladin",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Boguérisse",
+    "Serie": "Kalos",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Blindépique",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Chesnaught",
+    "Name_FR": "Blindépique",
+    "Serie": "Kalos",
     "Type1": "grass",
-    "Type2": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Type2": "fighting"
   },
   {
-    "Name_FR": "Feunnec",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Fennekin",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Feunnec",
+    "Serie": "Kalos",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Roussil",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Braixen",
-    "Type1": "fire",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Roussil",
+    "Serie": "Kalos",
+    "Type1": "fire"
   },
   {
-    "Name_FR": "Goupelin",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Delphox",
+    "Name_FR": "Goupelin",
+    "Serie": "Kalos",
     "Type1": "fire",
-    "Type2": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Type2": "psychic"
   },
   {
-    "Name_FR": "Grenousse",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Froakie",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Grenousse",
+    "Serie": "Kalos",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Croâporal",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Frogadier",
-    "Type1": "water",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Croâporal",
+    "Serie": "Kalos",
+    "Type1": "water"
   },
   {
-    "Name_FR": "Amphinobi",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Greninja",
+    "Name_FR": "Amphinobi",
+    "Serie": "Kalos",
     "Type1": "water",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Sapereau",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Bunnelby",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Sapereau",
+    "Serie": "Kalos",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Excavarenne",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Diggersby",
+    "Name_FR": "Excavarenne",
+    "Serie": "Kalos",
     "Type1": "normal",
-    "Type2": "ground",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ground"
   },
   {
-    "Name_FR": "Passerouge",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Fletchling",
+    "Name_FR": "Passerouge",
+    "Serie": "Kalos",
     "Type1": "normal",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Braisillon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Fletchinder",
+    "Name_FR": "Braisillon",
+    "Serie": "Kalos",
     "Type1": "fire",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Flambusard",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Talonflame",
+    "Name_FR": "Flambusard",
+    "Serie": "Kalos",
     "Type1": "fire",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Lépidonille",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Scatterbug",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Lépidonille",
+    "Serie": "Kalos",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Pérégrain",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Spewpa",
-    "Type1": "bug",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Pérégrain",
+    "Serie": "Kalos",
+    "Type1": "bug"
   },
   {
-    "Name_FR": "Prismillon",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Vivillon",
+    "Name_FR": "Prismillon",
+    "Serie": "Kalos",
     "Type1": "bug",
-    "Type2": "flying",
-    "isLock": true,
-    "enabled": false
+    "Type2": "flying"
   },
   {
-    "Name_FR": "Hélionceau",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Litleo",
+    "Name_FR": "Hélionceau",
+    "Serie": "Kalos",
     "Type1": "fire",
-    "Type2": "normal",
-    "isLock": true,
-    "enabled": false
+    "Type2": "normal"
   },
   {
-    "Name_FR": "Némélios",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Pyroar",
+    "Name_FR": "Némélios",
+    "Serie": "Kalos",
     "Type1": "fire",
-    "Type2": "normal",
-    "isLock": true,
-    "enabled": false
+    "Type2": "normal"
   },
   {
-    "Name_FR": "Flabébé",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Flabébé",
-    "Type1": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Flabébé",
+    "Serie": "Kalos",
+    "Type1": "fairy"
   },
   {
-    "Name_FR": "Floette",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Floette",
-    "Type1": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Floette",
+    "Serie": "Kalos",
+    "Type1": "fairy"
   },
   {
-    "Name_FR": "Florges",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Florges",
-    "Type1": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Florges",
+    "Serie": "Kalos",
+    "Type1": "fairy"
   },
   {
-    "Name_FR": "Cabriolaine",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Skiddo",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Cabriolaine",
+    "Serie": "Kalos",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Chevroum",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Gogoat",
-    "Type1": "grass",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Chevroum",
+    "Serie": "Kalos",
+    "Type1": "grass"
   },
   {
-    "Name_FR": "Pandespiègle",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Pancham",
-    "Type1": "fighting",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Pandespiègle",
+    "Serie": "Kalos",
+    "Type1": "fighting"
   },
   {
-    "Name_FR": "Pandarbare",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Pangoro",
+    "Name_FR": "Pandarbare",
+    "Serie": "Kalos",
     "Type1": "fighting",
-    "Type2": "dark",
-    "isLock": true,
-    "enabled": false
+    "Type2": "dark"
   },
   {
-    "Name_FR": "Couafarel",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Furfrou",
-    "Type1": "normal",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Couafarel",
+    "Serie": "Kalos",
+    "Type1": "normal"
   },
   {
-    "Name_FR": "Psystigri",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Espurr",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Psystigri",
+    "Serie": "Kalos",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Mistigrix",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Meowstic",
-    "Type1": "psychic",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Mistigrix",
+    "Serie": "Kalos",
+    "Type1": "psychic"
   },
   {
-    "Name_FR": "Monorpale",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Honedge",
+    "Name_FR": "Monorpale",
+    "Serie": "Kalos",
     "Type1": "steel",
-    "Type2": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ghost"
   },
   {
-    "Name_FR": "Dimoclès",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Doublade",
+    "Name_FR": "Dimoclès",
+    "Serie": "Kalos",
     "Type1": "steel",
-    "Type2": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ghost"
   },
   {
-    "Name_FR": "Exagide",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Aegislash",
+    "Name_FR": "Exagide",
+    "Serie": "Kalos",
     "Type1": "steel",
-    "Type2": "ghost",
-    "isLock": true,
-    "enabled": false
+    "Type2": "ghost"
   },
   {
-    "Name_FR": "Fluvetin",
+    "enabled": false,
+    "isLock": true,
     "Name_EN": "Spritzee",
-    "Type1": "fairy",
-    "isLock": true,
-    "enabled": false
+    "Name_FR": "Fluvetin",
+    "Serie": "Kalos",
+    "Type1": "fairy"
   },
   {
-    "Name_FR": "Cocotine",
-    "Name_EN": "Aromatisse",
-    "Type1": "fairy",
+    "enabled": false,
     "isLock": true,
-    "enabled": false
+    "Name_EN": "Aromatisse",
+    "Name_FR": "Cocotine",
+    "Serie": "Kalos",
+    "Type1": "fairy"
+  },
+  {
+    "Name_FR": "Ossatueur d'Alola",
+    "Name_EN": "Alolan Marowak",
+    "Serie": "Alola",
+    "Sprite_Normal": "https://img.pokemondb.net/sprites/home/normal/marowak-alolan.png",
+    "Sprite_Shiny": "https://img.pokemondb.net/sprites/home/shiny/marowak-alolan.png",
+    "isLock": false,
+    "enabled": true,
+    "Type1": "ghost",
+    "Type2": "fairy"
   }
 ]

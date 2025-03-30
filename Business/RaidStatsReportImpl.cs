@@ -170,7 +170,7 @@ namespace PKServ.Business
         <h3>Le plus ancien : {veteranData.veteran.Pseudo} avec un total de {veteranData.raidCount} raids.</h3><br><br>
       </div>
       <div class=""col-12"" data-aos=""fade-up"">
-        <h3>Le plus chanceux : {rookieData.rookie.Pseudo} avec un ratio de {rookieData.raidCount}</h3><br><br>
+        <h3>Un rookie : {rookieData.rookie.Pseudo} avec un ratio de {rookieData.raidCount}</h3><br><br>
       </div>
     </div>
   </div>
@@ -180,7 +180,7 @@ namespace PKServ.Business
     document.addEventListener(""DOMContentLoaded"", function() {{
       // Initialisation de AOS (animate on scroll)
       AOS.init({{
-        duration: 3000, // Durée de l'animation en ms
+        duration: 1500, // Durée de l'animation en ms
         once: false      // L'animation se déclenche qu'une seule fois
       }});
 

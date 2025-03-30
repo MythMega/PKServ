@@ -308,7 +308,7 @@ namespace PKServ
 
             generateStatsCSV(settings: appSettings, data: DataConnexion, globalAppSettings: globalAppSettings);
             Commun.AddRecords($"Raid ({count} users)", this.Boss, shiny, DataConnexion);
-            RecordsGeneratorImpl.GenerateRecords(DataConnexion, appSettings);
+            RecordsGeneratorImpl.GenerateRecords(DataConnexion, appSettings, globalAppSettings);
             return r;
         }
 

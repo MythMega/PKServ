@@ -3,6 +3,8 @@ using PKServ.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PKServ
 {
@@ -235,7 +237,7 @@ namespace PKServ
             }
             mode += $" ({count})";
             Commun.AddRecords(mode, poke, poke.isShiny, connexion);
-            RecordsGeneratorImpl.GenerateRecords(connexion, appSettings);
+            RecordsGeneratorImpl.GenerateRecords(connexion, appSettings, globalAppSettings);
             return result;
         }
 
@@ -339,18 +341,28 @@ namespace PKServ
             );
             appSettings.UsersToExport = [];
 
-            // on exporte les dex solo
             int count = 0;
-            foreach (User user in users)
-            {
-                uc.UserName = user.Pseudo;
-                uc.Platform = user.Platform;
 
-                var data = new ExportSoloDex(appSettings, uc, connexion, globalAppSettings);
-                data.filename = $"{uc.UserName}.html";
+            // Configurer le parallélisme sur 8 threads maximum
+            ParallelOptions options = new ParallelOptions { MaxDegreeOfParallelism = 8 };
+
+            Parallel.ForEach(users, options, user =>
+            {
+                // Créez une instance locale de UserContext pour éviter tout conflit.
+                UserRequest localUc = new UserRequest(user.Pseudo, user.Platform, "", uc.ChannelSource, 0);
+
+                // Instancier ExportSoloDex pour cet utilisateur
+                var data = new ExportSoloDex(appSettings, localUc, connexion, globalAppSettings);
+
+                // Définir le nom du fichier
+                data.filename = $"{localUc.UserName}.html";
+
+                // Attendre la fin de l'opération d'export
                 data.ExportFile(true).Wait();
-                count++;
-            }
+
+                // Incrémenter le compteur de manière thread-safe
+                Interlocked.Increment(ref count);
+            });
             // on exporte le main
             var export = new ExportRapport(appSettings, uc, connexion, globalAppSettings);
             export.filename = "main.html";

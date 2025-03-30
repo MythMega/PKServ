@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace PKServ
 {
@@ -102,35 +104,39 @@ namespace PKServ
             catch { Stats.personalshinyRate = 0; }
         }
 
-        public void generateStatsAchievement(AppSettings aS, GlobalAppSettings gas)
+        public void generateStatsAchievement(AppSettings apS, GlobalAppSettings gas)
         {
             List<Entrie> entries = Data.GetEntriesByPseudo(Pseudo, Platform);
             TimeSpan diff = DateTime.Now - Stats.firstCatch;
             int days = diff.Days;
-            List<Pokemon> pokemonsLegendaries = aS.pokemons.Where(x => x.isLegendary).ToList();
-            List<Pokemon> pokemonsCustom = aS.pokemons.Where(x => x.isCustom).ToList();
-            Stats.badges = aS.badges;
+            List<Pokemon> pokemonsLegendaries = apS.pokemons.Where(x => x.isLegendary).ToList();
+            List<Pokemon> pokemonsCustom = apS.pokemons.Where(x => x.isCustom).ToList();
+            Stats.badges = apS.badges;
 
-            int count = 0;
             var element = 0;
             Stats.badges.ForEach(x => x.Obtained = false);
-            foreach (Badge badge in Stats.badges.Where(x => !x.Locked))
+
+            var aS = apS.pokemons; // Objet contenant par exemple la liste de tous les pokemons
+
+            Parallel.ForEach(Stats.badges.Where(x => !x.Locked), badge =>
             {
+                // On travaille sur une itération par badge.
+                // Pour modifier "element" de façon thread-safe, on utilisera Interlocked.
                 switch (badge.Type)
                 {
                     case "TotalCatch":
                         if (badge.Value <= (Stats.pokeCaught - (Stats.giveawayNormal + Stats.giveawayShiny)))
                         {
                             badge.Obtained = true;
-                            element += 1;
+                            Interlocked.Increment(ref element);
                         }
                         break;
 
                     case "ShinyCatch":
-                        if (badge.Value <= Stats.shinyCaught - Stats.giveawayShiny)
+                        if (badge.Value <= (Stats.shinyCaught - Stats.giveawayShiny))
                         {
                             badge.Obtained = true;
-                            element += 1;
+                            Interlocked.Increment(ref element);
                         }
                         break;
 
@@ -138,15 +144,15 @@ namespace PKServ
                         if (badge.Value <= entries.Count())
                         {
                             badge.Obtained = true;
-                            element += 1;
+                            Interlocked.Increment(ref element);
                         }
                         break;
 
                     case "ShinyRegistered":
-                        if (badge.Value <= entries.Where(x => x.CountShiny >= 1).Count())
+                        if (badge.Value <= entries.Count(e => e.CountShiny >= 1))
                         {
                             badge.Obtained = true;
-                            element += 1;
+                            Interlocked.Increment(ref element);
                         }
                         break;
 
@@ -154,7 +160,7 @@ namespace PKServ
                         if (badge.Value <= Stats.ballLaunched)
                         {
                             badge.Obtained = true;
-                            element += 1;
+                            Interlocked.Increment(ref element);
                         }
                         break;
 
@@ -162,7 +168,7 @@ namespace PKServ
                         if (badge.Value <= days)
                         {
                             badge.Obtained = true;
-                            element += 1;
+                            Interlocked.Increment(ref element);
                         }
                         break;
 
@@ -170,7 +176,7 @@ namespace PKServ
                         if (badge.Value <= Stats.moneySpent)
                         {
                             badge.Obtained = true;
-                            element += 1;
+                            Interlocked.Increment(ref element);
                         }
                         break;
 
@@ -178,7 +184,7 @@ namespace PKServ
                         if (badge.Value <= Stats.TradeCount)
                         {
                             badge.Obtained = true;
-                            element += 1;
+                            Interlocked.Increment(ref element);
                         }
                         break;
 
@@ -186,7 +192,7 @@ namespace PKServ
                         if (badge.Value <= Stats.RaidCount)
                         {
                             badge.Obtained = true;
-                            element += 1;
+                            Interlocked.Increment(ref element);
                         }
                         break;
 
@@ -194,53 +200,46 @@ namespace PKServ
                         if (badge.Value <= Stats.RaidTotalDmg)
                         {
                             badge.Obtained = true;
-                            element += 1;
+                            Interlocked.Increment(ref element);
                         }
                         break;
 
                     case "LengendariesRegistered":
-                        count = 0;
-                        foreach (Pokemon poke in pokemonsLegendaries)
                         {
-                            foreach (Entrie entrie in entries)
+                            int count = 0;
+                            foreach (Pokemon poke in pokemonsLegendaries)
                             {
-                                if (entrie.PokeName == poke.Name_FR)
-                                {
-                                    count++;
-                                }
+                                // On peut aussi optimiser ici avec LINQ
+                                count += entries.Count(entrie => entrie.PokeName == poke.Name_FR);
                             }
-                        }
-                        if (badge.Value <= count)
-                        {
-                            badge.Obtained = true;
-                            element += 1;
+                            if (badge.Value <= count)
+                            {
+                                badge.Obtained = true;
+                                Interlocked.Increment(ref element);
+                            }
                         }
                         break;
 
                     case "CustomRegistered":
-                        count = 0;
-                        foreach (Pokemon poke in pokemonsCustom)
                         {
-                            foreach (Entrie entrie in entries)
+                            int count = 0;
+                            foreach (Pokemon poke in pokemonsCustom)
                             {
-                                if (entrie.PokeName == poke.Name_FR)
-                                {
-                                    count++;
-                                }
+                                count += entries.Count(entrie => entrie.PokeName == poke.Name_FR);
                             }
-                        }
-                        if (badge.Value <= count)
-                        {
-                            badge.Obtained = true;
-                            element += 1;
+                            if (badge.Value <= count)
+                            {
+                                badge.Obtained = true;
+                                Interlocked.Increment(ref element);
+                            }
                         }
                         break;
 
                     case "TotalGiven":
-                        if (Stats.giveawayNormal + Stats.giveawayShiny > badge.Value)
+                        if ((Stats.giveawayNormal + Stats.giveawayShiny) > badge.Value)
                         {
                             badge.Obtained = true;
-                            element += 1;
+                            Interlocked.Increment(ref element);
                         }
                         break;
 
@@ -248,34 +247,65 @@ namespace PKServ
                         if (Stats.giveawayShiny > badge.Value)
                         {
                             badge.Obtained = true;
-                            element += 1;
+                            Interlocked.Increment(ref element);
                         }
                         break;
 
                     case "SpecificPoke":
-                        Entrie entry = entries.Where(e => e.PokeName.ToLower() == badge.SpecificValue.ToLower()).FirstOrDefault();
-                        if (entry is not null && entry.CountNormal + entry.CountShiny >= badge.Value)
                         {
-                            badge.Obtained = true;
-                            element += 1;
+                            // Note : Pour comparer en minuscules sans changer la culture, on peut utiliser ToLowerInvariant.
+                            Entrie entry = entries
+                                .FirstOrDefault(e => e.PokeName.ToLowerInvariant() == badge.SpecificValue.ToLowerInvariant());
+                            if (entry != null && entry.CountNormal + entry.CountShiny >= badge.Value)
+                            {
+                                badge.Obtained = true;
+                                Interlocked.Increment(ref element);
+                            }
                         }
                         break;
 
                     case "MultiplePoke":
-                        bool valide = true;
-                        if (badge.SpecificValue.Contains(','))
                         {
-                            foreach (string poke in badge.SpecificValue.Split(','))
+                            bool valide = true;
+                            if (badge.SpecificValue.Contains(','))
                             {
-                                valide = entries.Where(e => e.PokeName.ToLower().Equals(poke.Trim().ToLower(), StringComparison.CurrentCultureIgnoreCase)).Any();
-                                if (!valide) { break; }
+                                foreach (string poke in badge.SpecificValue.Split(','))
+                                {
+                                    // On fait la comparaison en utilisant une casse uniforme.
+                                    valide = entries.Any(e => e.PokeName.Equals(poke.Trim(), StringComparison.CurrentCultureIgnoreCase));
+                                    if (!valide)
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                            badge.Obtained = valide;
+                            if (valide)
+                            {
+                                Interlocked.Increment(ref element);
                             }
                         }
-                        badge.Obtained = valide;
-                        element += valide ? 1 : 0;
+                        break;
+
+                    case "FullColecSeries":
+                        {
+                            List<Pokemon> targetList = apS.pokemons.Where(x => x.Serie == badge.SpecificValue).ToList();
+                            int targetCount = targetList.Count;
+                            foreach (Pokemon poke in targetList)
+                            {
+                                if (!entries.Any(e => Commun.isSamePoke(poke, e.PokeName)))
+                                {
+                                    badge.Obtained = false;
+                                    break;
+                                }
+                            }
+                            badge.Obtained = true;
+                            Interlocked.Increment(ref element);
+                        }
                         break;
                 }
-            }
+            });
+
             foreach (Badge bdg in Stats.badges)
             {
                 if (bdg.Obtained)

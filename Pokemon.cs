@@ -143,6 +143,45 @@ namespace PKServ
                 Type2 = this.Type2
             };
         }
+
+        public string GetAdditionalInfosString(GlobalAppSettings gas)
+        {
+            List<string> tags = [];
+
+            if (this.isLegendary)
+            {
+                tags.Add("légendaire legendaire legendary");
+            }
+            if (this.isCustom)
+            {
+                tags.Add("custom");
+            }
+
+            if (this.Type1 is not null)
+            {
+                tags.Add(this.Type1);
+                try
+                {
+                    tags.Add(Commun.GetTranslatedType(gas, this.Type1));
+                } catch { }
+            }
+            if (this.Type2 is not null)
+            {
+                tags.Add(this.Type2);
+                try
+                {
+                    tags.Add(Commun.GetTranslatedType(gas, this.Type2));
+                }
+                catch { }
+            }
+
+            if (this.Serie is not null)
+            {
+                tags.Add(this.Serie);
+            }
+
+            return String.Join(" ; ", tags);
+        }
     }
 
     public class CreatureEvolutionRequest

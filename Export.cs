@@ -2,6 +2,7 @@
 using PKServ.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -35,7 +36,6 @@ namespace PKServ
                 en.setIDPoke(appSettings);
             }
             entriesByPseudo = entriesByPseudo.OrderBy(e => e.entryPokeID).ToList();
-            int delay = 800;
             foreach (Entrie item in entriesByPseudo)
             {
                 string classShiny = string.Empty;
@@ -51,6 +51,7 @@ namespace PKServ
                 }
                 else
                 {
+                    string additionals = currPoke.GetAdditionalInfosString(gas: globalAppSettings);
                     currline = @$"
 <tr>
                 <td class=""pokename"">{item.PokeName}</td>
@@ -59,6 +60,7 @@ namespace PKServ
                 <td><img {classShiny}src=""{currPoke.Sprite_Shiny}"" alt=""Shiny Sprite""></td>
                 <td class=""count"">{item.CountShiny}</td>
                 <td>{item.dateFirstCatch}</td>
+                <td class=""d-none"">{additionals}</td>
             </tr>
 ";
                     lineTables.Add(currline);
@@ -160,7 +162,12 @@ namespace PKServ
     <h1>Pokédex {userRequest.UserName} - chez {userRequest.ChannelSource}</h1>
     <p>Pokédex de {userRequest.UserName} [de {userRequest.Platform}] au {DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}, sur le stream de {userRequest.ChannelSource}.</p>
 
+  <div class=""d-flex align-items-center"" style=""max-width: 480px;"">
+    <!-- Input recherche avec max-width -->
     <input type=""text"" id=""searchInput"" placeholder=""Rechercher Pokémon ou Statut"" class=""form-control"" style=""margin-bottom: 20px; max-width: 300px;"">
+    <!-- Compteur -->
+    <span id=""rowCount"" style=""margin-left: 10px; font-size: 16px;"">0 résultat(s)</span>
+  </div>
     <table class=""table table-dark table-bordered table-striped"">
         <thead class=""thead-light"">
             <tr>
@@ -170,6 +177,7 @@ namespace PKServ
                 <th>Sprite Shiny</th>
                 <th>Capturé(s)</th>
                 <th>Première capture(s)</th>
+                <th class=""d-none"">Tag</th>
             </tr>
         </thead>
         <tbody id=""recordsTable"">";
@@ -187,23 +195,48 @@ namespace PKServ
 <p>Badges :</p><br>
 {GetUserBadge(appSettings)}
 
-    <script>
-        // Fonction pour filtrer les résultats
-        document.getElementById('searchInput').addEventListener('keyup', function() {{
-            const searchValue = this.value.toLowerCase(); // Texte saisi
-            const tableRows = document.querySelectorAll('#recordsTable tr'); // Toutes les lignes du tableau
+   <script>
+  // Fonction qui normalise le texte en supprimant les accents et en le convertissant en minuscules
+  function normalizeText(text) {{
+    return text.normalize(""NFD"").replace(/[\u0300-\u036f]/g, """").toLowerCase();
+  }}
 
-            tableRows.forEach(row => {{
-                const pokémon = row.cells[0].textContent.toLowerCase(); // Colonne Pokémon
+  function filterTable() {{
+    // Récupère et normalise le texte de recherche
+    const searchValue = normalizeText(document.getElementById('searchInput').value);
+    // Découpe la recherche en tokens en éliminant les espaces inutiles
+    const tokens = searchValue.split(' ').filter(token => token.trim() !== '');
+    const tableRows = document.querySelectorAll('#recordsTable tr');
+    let visibleCount = 0;
 
-                if (pokémon.includes(searchValue)) {{
-                    row.style.display = ''; // Montrer la ligne
-                }} else {{
-                    row.style.display = 'none'; // Cacher la ligne
-                }}
-            }});
-        }});
-    </script>
+    tableRows.forEach(row => {{
+      // Extraction et normalisation des contenus des colonnes recherchées
+      const pokemon = normalizeText(row.cells[0].textContent);
+      const tags = normalizeText(row.cells[6].textContent);
+
+      // Chaque token doit se retrouver dans au moins l'un des champs (condition AND)
+      const isMatch = tokens.every(token =>
+        pokemon.includes(token) || tags.includes(token)
+      );
+
+      if (isMatch || tokens.length === 0) {{
+        row.style.display = '';
+        visibleCount++;
+      }} else {{
+        row.style.display = 'none';
+      }}
+    }});
+
+    document.getElementById('rowCount').textContent = visibleCount + "" résultat(s)"";
+  }}
+
+  // Ajoute l'événement keyup pour lancer le filtrage à la saisie
+  document.getElementById('searchInput').addEventListener('keyup', filterTable);
+
+  // Mise à jour du filtrage dès le chargement de la page
+  document.addEventListener('DOMContentLoaded', filterTable);
+</script>
+
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src=""https://code.jquery.com/jquery-3.5.1.slim.min.js""></script>
     <script src=""https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js""></script>
@@ -662,6 +695,9 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                     {
                         availability += " (shiny locked)";
                     }
+
+                    string additionalInfos = item.GetAdditionalInfosString(gas: globalAppSettings);
+
                     currline = @$"
 <tr>
                 <td>{item.Name_FR}</td>
@@ -671,6 +707,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                 <td class=""count"">{CountShiny}</td>
                 <td class=""{classAvailability}"">Dispo : {availability}</td>
                 <td>{artistAndTheirLinks}</td>
+                <td class=""d-none"">{additionalInfos}</td>
             </tr>
 ";
                     linesTable.Add(currline);
@@ -766,7 +803,13 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         <a class=""btn btn-sm btn-outline-secondary"" href=""records.html"" style=""color: white;"">Enregistrements</a>
       </form>
     </nav><br><br>
-<input type=""text"" id=""searchInput"" placeholder=""Rechercher Pokémon ou Statut"" class=""form-control"" style=""margin-bottom: 20px; max-width: 300px;"">
+
+  <div class=""d-flex align-items-center"" style=""max-width: 480px;"">
+    <!-- Input recherche avec max-width -->
+    <input type=""text"" id=""searchInput"" placeholder=""Rechercher Pokémon ou Statut"" class=""form-control"" style=""margin-bottom: 20px; max-width: 300px;"">
+    <!-- Compteur -->
+    <span id=""rowCount"" style=""margin-left: 10px; font-size: 16px;"">0 résultat(s)</span>
+  </div>
     <table class=""table table-dark table-bordered table-striped"">
         <thead>
             <tr>
@@ -777,6 +820,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                 <th>Capturé(s)</th>
                 <th>Disponibilité</th>
                 <th>Artist</th>
+                <th class=""d-none"">Tag</th>
             </tr>
         </thead>
         <tbody id=""recordsTable"">";
@@ -787,24 +831,50 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
     </table>
 <br><br>
     <script>
-        // Fonction pour filtrer les résultats
-        document.getElementById('searchInput').addEventListener('keyup', function() {{
-            const searchValue = this.value.toLowerCase(); // Texte saisi
-            const tableRows = document.querySelectorAll('#recordsTable tr'); // Toutes les lignes du tableau
+  // Fonction qui normalise le texte en supprimant les accents et en le convertissant en minuscules
+  function normalizeText(text) {{
+    return text.normalize(""NFD"").replace(/[\u0300-\u036f]/g, """").toLowerCase();
+  }}
 
-            tableRows.forEach(row => {{
-                const pokémon = row.cells[0].textContent.toLowerCase(); // Colonne Pokémon
-                const dispo = row.cells[5].textContent.toLowerCase(); // Colonne Statut
-                const artist = row.cells[6].textContent.toLowerCase(); // Colonne Statut
+  function filterTable() {{
+    // Récupère et normalise le texte de recherche
+    const searchValue = normalizeText(document.getElementById('searchInput').value);
+    // Découpe le texte en tokens et retire les espaces inutiles
+    const tokens = searchValue.split(' ').filter(token => token.trim() !== '');
+    const tableRows = document.querySelectorAll('#recordsTable tr');
+    let visibleCount = 0;
 
-                if (pokémon.includes(searchValue) || dispo.includes(searchValue) || artist.includes(searchValue)) {{
-                    row.style.display = ''; // Montrer la ligne
-                }} else {{
-                    row.style.display = 'none'; // Cacher la ligne
-                }}
-            }});
-        }});
-    </script>
+    tableRows.forEach(row => {{
+      // Extraction et normalisation des contenus de chaque colonne recherchée
+      const pokemon = normalizeText(row.cells[0].textContent); // Colonne Pokémon
+      const dispo   = normalizeText(row.cells[5].textContent);   // Colonne dispo (statut ou autre)
+      const artist  = normalizeText(row.cells[6].textContent);   // Colonne artist
+      const tags    = normalizeText(row.cells[7].textContent);   // Colonne tags
+
+      // Pour chaque token, vérifie qu'il se retrouve dans au moins un des champs
+      const isMatch = tokens.every(token =>
+        pokemon.includes(token) || dispo.includes(token) || artist.includes(token) || tags.includes(token)
+      );
+
+      // Affiche la ligne si tous les tokens sont trouvés (ou s'il n'y a aucun token)
+      if (isMatch || tokens.length === 0) {{
+        row.style.display = '';
+        visibleCount++;
+      }} else {{
+        row.style.display = 'none';
+      }}
+    }});
+
+    document.getElementById('rowCount').textContent = visibleCount + "" résultat(s)"";
+  }}
+
+  // Ajout de l'événement pour lancer le filtrage à la saisie
+  document.getElementById('searchInput').addEventListener('keyup', filterTable);
+
+  // Mise à jour du filtrage dès le chargement de la page
+  document.addEventListener('DOMContentLoaded', filterTable);
+</script>
+
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src=""https://code.jquery.com/jquery-3.5.1.slim.min.js""></script>
     <script src=""https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js""></script>
@@ -1241,12 +1311,12 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             utilisateur.generateStats();
             utilisateur.generateStatsAchievement(appSettings, globalAppSettings);
 
-            List<Badge> badgeToShow = utilisateur.Stats.badges.Where(x => x.Rarity == "exotic" && x.Obtained).ToList();
-            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "legendary" && x.Obtained).ToList());
-            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "epic" && x.Obtained).ToList());
-            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "rare" && x.Obtained).ToList());
-            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "uncommon" && x.Obtained).ToList());
-            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity == "common" && x.Obtained).ToList());
+            List<Badge> badgeToShow = utilisateur.Stats.badges.Where(x => x.Rarity is not null && x.Rarity.ToLower() == "exotic" && x.Obtained).ToList();
+            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity is not null && x.Rarity.ToLower() == "legendary" && x.Obtained).ToList());
+            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity is not null && x.Rarity.ToLower() == "epic" && x.Obtained).ToList());
+            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity is not null && x.Rarity.ToLower() == "rare" && x.Obtained).ToList());
+            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity is not null && x.Rarity.ToLower() == "uncommon" && x.Obtained).ToList());
+            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity is not null && x.Rarity.ToLower() == "common" && x.Obtained).ToList());
 
             badgeToShow = badgeToShow.Take(8).ToList();
 
@@ -1260,7 +1330,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         src=""{badge.IconUrl}""
         alt=""Badge {count}""
         style=""height: 48px; width: 48px;""
-        class=""img-badge img-badge-{badge.Rarity}""
+        class=""img-badge img-badge-{badge.Rarity.ToLower()}""
         title=""{badge.Description}"">
     <p style=""font-size: 12px; margin-top: 4px"" class=""textShadow"">{badge.Title}</p>
 </div>";
@@ -1439,7 +1509,7 @@ font-weight: bolder;
                             wip += $" [+{badge.XP}XP]";
                             data += $@"
                             <div style=""width: 29vw;  margin-left: 1vw; margin-bottom: 15px;"">
-                                <div class=""card {badge.Rarity}"" style=""background-color: #222222;  height: 220px;"">
+                                <div class=""card {badge.Rarity.ToLower()}"" style=""background-color: #222222;  height: 220px;"">
                                   <center><br><img src=""{badge.IconUrl}"" class=""card-img-top trophy-{badge.Obtained}"" alt=""..."" style=""height: 96px; width: auto;""></center>
                                   <div class=""card-body"">
                                     <h5 class=""card-title"">{badge.Title}</h5>

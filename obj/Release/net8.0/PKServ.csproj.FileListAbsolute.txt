@@ -4,7 +4,6 @@ C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\customPokemons.json
 C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\pokemons.json
 C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\Triggers.json
 C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\user.data
-C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\_settings.json
 C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\PKServ.exe
 C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\PKServ.dll.config
 C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\PKServ.deps.json
@@ -44,3 +43,8 @@ C:\Users\mythm\source\repos\PKServ\obj\Release\net8.0\refint\PKServ.dll
 C:\Users\mythm\source\repos\PKServ\obj\Release\net8.0\PKServ.pdb
 C:\Users\mythm\source\repos\PKServ\obj\Release\net8.0\PKServ.genruntimeconfig.cache
 C:\Users\mythm\source\repos\PKServ\obj\Release\net8.0\ref\PKServ.dll
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\customOverlays.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\giveaways.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\TrainerCardBackgrounds.json
+C:\Users\mythm\source\repos\PKServ\bin\Release\net8.0\Admin\DefaultSettings.json
+C:\Users\mythm\source\repos\PKServ\obj\Release\net8.0\PKServ.sourcelink.json

@@ -79,12 +79,22 @@ namespace PKServ
             }
             settings.pokemons = settings.allPokemons.Where(p => p.enabled || p == null).ToList();
             settings.giveaways = GiveawayInitializer.GetGiveaways(settings);
+
+            List<string> Series = settings.pokemons.Select(a => a.Serie).Distinct().ToList();
+            Series.ForEach(a =>
+            {
+                settings.SeriesData.Add((a, settings.pokemons.Where(poke => poke.Serie == a).Count()));
+            });
+
             Logger($"yellow#{globalAppSettings.Texts.serverStarted}");
             Logger($"white#Nombre de pokémon chargé : |red#{settings.pokemons.Count}");
+            Logger($"white#Nombre de series chargé : |red#{settings.SeriesData.Count}");
             Logger($"white#Nombre de pokeball chargé : |red#{settings.pokeballs.Count}");
             Logger($"white#Nombre de triggers chargé : |red#{settings.triggers.Count}");
             Logger($"white#Nombre de badges chargé : |red#{settings.badges.Count}");
             Logger($"white#Nombre de custom overlays chargé : |red#{settings.customOverlays.Count}");
+            Logger($"white#Nombre de Background Trainer Card chargé : |red#{settings.TrainerCardsBackgrounds.Count}");
+            Logger($"white#Nombre de Code de Distributions chargé : |red#{settings.giveaways.Count}");
             Logger($"white#Nombre d'utilisateurs chargés dans le giveaway : |red#{usersHere.Where(uh => uh.Platform != "system").Count()}");
             Logger($"aqua#Listening on port |yellow#{globalAppSettings.ServerPort}|aqua# , so send your request at |blue#http://localhost:|yellow#{globalAppSettings.ServerPort}");
             if (globalAppSettings.Log.logConsole.console)
@@ -527,9 +537,12 @@ namespace PKServ
                                         break;
 
                                     case "Interface/FullExport":
+                                        DateTime date_a = DateTime.Now;
                                         ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
                                         bool forced = ctx.TriggerName == "API_FWE_Force";
                                         responseString = API_FullExport(ctx, data, settings, globalAppSettings, forced: forced);
+                                        DateTime date_b = DateTime.Now;
+                                        Console.WriteLine((date_b - date_a).TotalSeconds);
                                         break;
 
                                     case "Interface/Trade":
@@ -667,7 +680,7 @@ namespace PKServ
                             #region post-request POST
 
                             // Auto Export
-                            if (globalAppSettings.MustAutoFullExport && lastExportTime.AddMinutes(globalAppSettings.DelayBeforeFullWebUpdate) < DateTime.Now)
+                            if (globalAppSettings.MustAutoFullExport && urlPath != "Interface/FullExport" && lastExportTime.AddMinutes (globalAppSettings.DelayBeforeFullWebUpdate) < DateTime.Now)
                             {
                                 try
                                 {
