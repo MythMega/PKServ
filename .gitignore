@@ -10,3 +10,5 @@ dataFillerPheki.bat
 # ex: **/obj/
 # ex: *.log
 
+
+*.dll
