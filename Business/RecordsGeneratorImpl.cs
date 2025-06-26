@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PKServ.Business
 {
@@ -14,6 +13,7 @@ namespace PKServ.Business
         public static void GenerateRecords(DataConnexion dataConnexion, AppSettings appSettings, GlobalAppSettings globalAppSettings)
         {
             List<Records> records = dataConnexion.GetRecords();
+            records.Reverse();
             StringBuilder sb = new StringBuilder();
             foreach (Records record in records)
             {

@@ -1,28 +1,37 @@
-﻿using PKServ.Business;
+﻿using PKServ.Binding;
+using PKServ.Business;
 using PKServ.Configuration;
+using PKServ.Entity;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PKServ
 {
-    internal class ExportSoloDex : Export
+    internal class ExportSoloDex
     {
-        public ExportSoloDex(AppSettings appSettings, UserRequest userRequest, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings) : base(appSettings, userRequest, dataConnexion, globalAppSettings)
-        {
-            BuildRapport();
-        }
+        private User User { get; set; }
+        private string Source { get; set; }
+        private AppSettings AppSettings { get; set; }
+        private DataConnexion DataConnexion { get; set; }
+        private GlobalAppSettings GlobalAppSettings { get; set; }
 
-        public async Task<string> UploadFileAsync(GlobalAppSettings gas)
+        public string filename { get; set; }
+        public string fileContent { get; set; }
+
+        public ExportSoloDex(AppSettings appSettings, User user, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings)
         {
-            string filepath = Path.Combine("ExportsSimple", this.filename);
-            return await Commun.UploadFileAsync(filepath, gas, "ExportSimples");
+            this.AppSettings = appSettings;
+            this.User = user;
+            this.DataConnexion = dataConnexion;
+            this.GlobalAppSettings = globalAppSettings;
+
+            Source = dataConnexion.GetFirstNonNullStream();
+            BuildRapport();
         }
 
         public List<string> getLineTables()
@@ -30,10 +39,10 @@ namespace PKServ
             List<string> lineTables = new List<string>();
             string currline = "";
             Pokemon currPoke;
-            List<Entrie> entriesByPseudo = dataConnexion.GetEntriesByPseudo(userRequest.UserName, userRequest.Platform);
+            List<Entrie> entriesByPseudo = DataConnexion.GetEntriesByPseudo(User.Pseudo, User.Platform);
             foreach (Entrie en in entriesByPseudo)
             {
-                en.setIDPoke(appSettings);
+                en.setIDPoke(AppSettings);
             }
             entriesByPseudo = entriesByPseudo.OrderBy(e => e.entryPokeID).ToList();
             foreach (Entrie item in entriesByPseudo)
@@ -44,17 +53,17 @@ namespace PKServ
                 classShiny = item.CountShiny > 0 ? "" : $@"class = ""all-black"" ";
                 classNormal = item.CountNormal > 0 ? "" : $@"class = ""all-black"" ";
 
-                currPoke = appSettings.pokemons.Where(poke => poke.Name_FR == item.PokeName).FirstOrDefault();
+                currPoke = AppSettings.pokemons.Where(poke => poke.Name_FR == item.PokeName).FirstOrDefault();
                 if (currPoke == null)
                 {
                     Console.WriteLine($"WARN Le pokémon {item.PokeName} (possédé par {item.Pseudo}) n'a pas été trouvé dans la liste des pokémon activés");
                 }
                 else
                 {
-                    string additionals = currPoke.GetAdditionalInfosString(gas: globalAppSettings);
+                    string additionals = currPoke.GetAdditionalInfosString(gas: GlobalAppSettings);
                     currline = @$"
 <tr>
-                <td class=""pokename"">{item.PokeName}</td>
+                <td class=""pokename""><a href=""../Creature/{item.PokeName}.html"">{item.PokeName}</a></td>
                 <td><img {classNormal}src=""{currPoke.Sprite_Normal}"" alt=""Normal Sprite""></td>
                 <td class=""count"">{item.CountNormal}</td>
                 <td><img {classShiny}src=""{currPoke.Sprite_Shiny}"" alt=""Shiny Sprite""></td>
@@ -65,7 +74,8 @@ namespace PKServ
 ";
                     lineTables.Add(currline);
                 }
-            };
+            }
+            ;
             return lineTables;
         }
 
@@ -74,7 +84,7 @@ namespace PKServ
         /// </summary>
         public void BuildRapport()
         {
-            filename = $"Dex_{userRequest.UserName}_export_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.html";
+            filename = $"Dex_{User.Pseudo}_export_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.html";
 
             List<string> lineTables = getLineTables();
 
@@ -159,8 +169,8 @@ namespace PKServ
         <a class=""btn btn-sm btn-outline-secondary"" href=""../records.html"" style=""color: white;"">Enregistrements</a>
       </form>
     </nav><br><br>
-    <h1>Pokédex {userRequest.UserName} - chez {userRequest.ChannelSource}</h1>
-    <p>Pokédex de {userRequest.UserName} [de {userRequest.Platform}] au {DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}, sur le stream de {userRequest.ChannelSource}.</p>
+    <h1>Pokédex {User.Pseudo} - chez {Source}</h1>
+    <p>Pokédex de {User.Pseudo} [de {User.Platform}] au {DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}</p>
 
   <div class=""d-flex align-items-center"" style=""max-width: 480px;"">
     <!-- Input recherche avec max-width -->
@@ -188,12 +198,12 @@ namespace PKServ
     </table>
 <br><br>
 <p>Trainer Card :</p><br>
-{GetUserCards()}
+{User.GetUserCardsHTML(AppSettings, DataConnexion, GlobalAppSettings)}
 <br><br>
 <p>Stats :</p><br>
-{GetUserStats()}
+{User.GetUserStatsHTML(AppSettings, GlobalAppSettings)}
 <p>Badges :</p><br>
-{GetUserBadge(appSettings)}
+{User.GetUserBadgeHTML(AppSettings, GlobalAppSettings, DataConnexion)}
 
    <script>
   // Fonction qui normalise le texte en supprimant les accents et en le convertissant en minuscules
@@ -244,12 +254,39 @@ namespace PKServ
 </body>
 </html>";
         }
+
+        public void ExportFile()
+        {
+            filename = Commun.CleanFileName(filename);
+
+            // Crée le dossier "Exports" s'il n'existe pas
+            if (!Directory.Exists("WebExport"))
+                Directory.CreateDirectory("WebExport");
+
+            // Crée le dossier "Exports/<platforme>" s'il n'existe pas
+            if (!Directory.Exists(Path.Combine("WebExport", User.Platform)))
+                Directory.CreateDirectory(Path.Combine("WebExport", User.Platform));
+
+            string filePath = Path.Combine("WebExport", User.Platform, filename);
+
+            // Écrit le contenu dans le fichier
+            File.WriteAllText(filePath.ToLower(), fileContent);
+        }
     }
 
-    internal class ExportRapport : Export
+    internal class ExportMain
     {
-        public ExportRapport(AppSettings appSettings, UserRequest userRequest, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings) : base(appSettings, userRequest, dataConnexion, globalAppSettings)
+        private AppSettings AppSettings { get; set; }
+        private DataConnexion DataConnexion { get; set; }
+        private GlobalAppSettings GlobalAppSettings { get; set; }
+        public string filename { get; set; } = "main.html";
+        public string fileContent { get; set; }
+
+        public ExportMain(AppSettings appSettings, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings)
         {
+            AppSettings = appSettings;
+            DataConnexion = dataConnexion;
+            GlobalAppSettings = globalAppSettings;
             BuildDoc();
         }
 
@@ -258,7 +295,7 @@ namespace PKServ
         /// </summary>
         public void BuildDoc()
         {
-            List<User> utilisateurs = dataConnexion.GetAllUserPlatforms();
+            List<User> utilisateurs = DataConnexion.GetAllUserPlatforms();
             string dataPseudoList = string.Join(", ", utilisateurs.Select(x => x.Pseudo));
             int NombreTotalPokeball = 0;
             int NombreTotalSousouDepense = 0;
@@ -300,20 +337,20 @@ namespace PKServ
 
             if (utilisateurs.Count > 2)
             {
-                classementLanceurDeBall = $"Classement ball lancées :\nTOP 1 - {utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[0].Pseudo} ({getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[0].Stats.ballLaunched)})\n    2 - {utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[1].Pseudo} ({getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[1].Stats.ballLaunched)})\n    3 - {utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[2].Pseudo} ({getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[2].Stats.ballLaunched)})\n";
-                classementDepenseur = $"Classement money lancées :\nTOP 1 - {utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[0].Pseudo} ({getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[0].Stats.moneySpent)})\n    2 - {utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[1].Pseudo} ({getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[1].Stats.moneySpent)})\n    3 - {utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[2].Pseudo} ({getStringNumber(utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[2].Stats.moneySpent)})\n";
+                classementLanceurDeBall = $"Classement ball lancées :\nTOP 1 - {utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[0].Pseudo} ({Commun.GetStringNumber(utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[0].Stats.ballLaunched)})\n    2 - {utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[1].Pseudo} ({Commun.GetStringNumber(utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[1].Stats.ballLaunched)})\n    3 - {utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[2].Pseudo} ({Commun.GetStringNumber(utilisateurs.OrderByDescending(u => u.Stats.ballLaunched).ToList()[2].Stats.ballLaunched)})\n";
+                classementDepenseur = $"Classement money lancées :\nTOP 1 - {utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[0].Pseudo} ({Commun.GetStringNumber(utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[0].Stats.moneySpent)})\n    2 - {utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[1].Pseudo} ({Commun.GetStringNumber(utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[1].Stats.moneySpent)})\n    3 - {utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[2].Pseudo} ({Commun.GetStringNumber(utilisateurs.OrderByDescending(u => u.Stats.moneySpent).ToList()[2].Stats.moneySpent)})\n";
 
-                var top1shinydex = utilisateurs.OrderByDescending(u => dataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).Where(w => w.CountShiny > 0).ToList().Count).ToList()[0];
-                var top2shinydex = utilisateurs.OrderByDescending(u => dataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).Where(w => w.CountShiny > 0).ToList().Count).ToList()[1];
-                var top3shinydex = utilisateurs.OrderByDescending(u => dataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).Where(w => w.CountShiny > 0).ToList().Count).ToList()[2];
+                var top1shinydex = utilisateurs.OrderByDescending(u => DataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).Where(w => w.CountShiny > 0).ToList().Count).ToList()[0];
+                var top2shinydex = utilisateurs.OrderByDescending(u => DataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).Where(w => w.CountShiny > 0).ToList().Count).ToList()[1];
+                var top3shinydex = utilisateurs.OrderByDescending(u => DataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).Where(w => w.CountShiny > 0).ToList().Count).ToList()[2];
 
-                classementShinyHunter = $" Shinydex TOP 1 : {top1shinydex.Pseudo} avec {dataConnexion.GetEntriesByPseudo(top1shinydex.Pseudo, top1shinydex.Platform).Where(w => w.CountShiny > 0).ToList().Count} espèces shiny enregistrées ; TOP 2 : {top2shinydex.Pseudo} avec {dataConnexion.GetEntriesByPseudo(top2shinydex.Pseudo, top2shinydex.Platform).Where(w => w.CountShiny > 0).ToList().Count} espèces shiny enregistrées ; TOP 3 : {top3shinydex.Pseudo} avec {dataConnexion.GetEntriesByPseudo(top3shinydex.Pseudo, top3shinydex.Platform).Where(w => w.CountShiny > 0).ToList().Count} espèces shiny enregistrées ;";
+                classementShinyHunter = $" Shinydex TOP 1 : {top1shinydex.Pseudo} avec {DataConnexion.GetEntriesByPseudo(top1shinydex.Pseudo, top1shinydex.Platform).Where(w => w.CountShiny > 0).ToList().Count} espèces shiny enregistrées ; TOP 2 : {top2shinydex.Pseudo} avec {DataConnexion.GetEntriesByPseudo(top2shinydex.Pseudo, top2shinydex.Platform).Where(w => w.CountShiny > 0).ToList().Count} espèces shiny enregistrées ; TOP 3 : {top3shinydex.Pseudo} avec {DataConnexion.GetEntriesByPseudo(top3shinydex.Pseudo, top3shinydex.Platform).Where(w => w.CountShiny > 0).ToList().Count} espèces shiny enregistrées ;";
 
-                var top1dex = utilisateurs.OrderByDescending(u => dataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).ToList().Count).ToList()[0];
-                var top2dex = utilisateurs.OrderByDescending(u => dataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).ToList().Count).ToList()[1];
-                var top3dex = utilisateurs.OrderByDescending(u => dataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).ToList().Count).ToList()[2];
+                var top1dex = utilisateurs.OrderByDescending(u => DataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).ToList().Count).ToList()[0];
+                var top2dex = utilisateurs.OrderByDescending(u => DataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).ToList().Count).ToList()[1];
+                var top3dex = utilisateurs.OrderByDescending(u => DataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).ToList().Count).ToList()[2];
 
-                classementDexProgress = $"TOP 1 : {top1dex.Pseudo} avec {dataConnexion.GetEntriesByPseudo(top1dex.Pseudo, top1dex.Platform).ToList().Count} espèces enregistrées ; TOP 2 : {top2dex.Pseudo} avec {dataConnexion.GetEntriesByPseudo(top2dex.Pseudo, top2dex.Platform).ToList().Count} espèces enregistrées ; TOP 3 : {top3dex.Pseudo} avec {dataConnexion.GetEntriesByPseudo(top3dex.Pseudo, top3dex.Platform).ToList().Count} espèces enregistrées ;";
+                classementDexProgress = $"TOP 1 : {top1dex.Pseudo} avec {DataConnexion.GetEntriesByPseudo(top1dex.Pseudo, top1dex.Platform).ToList().Count} espèces enregistrées ; TOP 2 : {top2dex.Pseudo} avec {DataConnexion.GetEntriesByPseudo(top2dex.Pseudo, top2dex.Platform).ToList().Count} espèces enregistrées ; TOP 3 : {top3dex.Pseudo} avec {DataConnexion.GetEntriesByPseudo(top3dex.Pseudo, top3dex.Platform).ToList().Count} espèces enregistrées ;";
             }
 
             if (utilisateurs.Count > 1)
@@ -403,16 +440,16 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
     <h1 class=""mt-5"">Stats globales de la chaîne</h1>
   <div class=""row"">
     <div class=""col-lg-12 col-md-6"">
-      <p>Nombre total pokeball lancées : {getStringNumber(NombreTotalPokeball)}</p>
+      <p>Nombre total pokeball lancées : {Commun.GetStringNumber(NombreTotalPokeball)}</p>
     </div>
     <div class=""col-lg-12 col-md-6"">
-      <p>Money totale dépensée : {getStringNumber(NombreTotalSousouDepense)}</p>
+      <p>Money totale dépensée : {Commun.GetStringNumber(NombreTotalSousouDepense)}</p>
     </div>
     <div class=""col-lg-12 col-md-6"">
-      <p>Nombre total de poké capturés : {getStringNumber(NombreTotalPokecapture)}, hors giveaway : {getStringNumber(NombreTotalPokecapture - nombreNormalDistribue)}</p>
+      <p>Nombre total de poké capturés : {Commun.GetStringNumber(NombreTotalPokecapture)}, hors giveaway : {Commun.GetStringNumber(NombreTotalPokecapture - nombreNormalDistribue)}</p>
     </div>
     <div class=""col-lg-12 col-md-6"">
-      <p>Nombre total de shiny capturés : {getStringNumber(NombreTotalShinycapture)}, hors giveaway : {getStringNumber(NombreTotalShinycapture - nombreShinyDistribue)}</p>
+      <p>Nombre total de shiny capturés : {Commun.GetStringNumber(NombreTotalShinycapture)}, hors giveaway : {Commun.GetStringNumber(NombreTotalShinycapture - nombreShinyDistribue)}</p>
     </div>
   </div>
     <h1 class=""mt-5"">Stats classement</h1>
@@ -433,35 +470,78 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 ";
             fileContent = start;
             fileContent += end;
+        }
 
-            filename = $"FullExport_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.html";
+        public async Task ExportFile()
+        {
+            filename = Commun.CleanFileName(filename);
+
+            // Crée le dossier "Exports" s'il n'existe pas
+            if (!Directory.Exists("WebExport"))
+                Directory.CreateDirectory("WebExport");
+
+            string filePath = Path.Combine("WebExport", filename);
+
+            // Écrit le contenu dans le fichier
+            await File.WriteAllTextAsync(filePath.ToLower(), fileContent);
         }
     }
 
-    internal class ExportCommandGenerator : Export
+    internal class ExportCommandGenerator
     {
-        public ExportCommandGenerator(AppSettings appSettings, UserRequest userRequest, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings) : base(appSettings, userRequest, dataConnexion, globalAppSettings) // Initialiser la classe de base ici
+        public AppSettings AppSettings { get; set; }
+        public DataConnexion DataConnexion { get; set; }
+        public GlobalAppSettings GlobalAppSettings { get; set; }
+        public string FileName { get; set; } = "commandgenerator.html";
+        public string FileContent { get; set; }
+
+        public ExportCommandGenerator(AppSettings appSettings, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings)
         {
+            AppSettings = appSettings;
+            DataConnexion = dataConnexion;
+            GlobalAppSettings = globalAppSettings;
             GenerateStatsFile();
         }
 
         public void GenerateStatsFile()
         {
-            filename = "CommandGenerator.html";
-            fileContent = CommandGeneratorImpl.GenerateFileContent(appSettings, globalAppSettings, dataConnexion);
+            FileContent = CommandGeneratorImpl.GenerateFileContent(AppSettings, GlobalAppSettings, DataConnexion);
+        }
+
+        internal void ExportFile()
+        {
+            FileName = Commun.CleanFileName(FileName);
+
+            // Crée le dossier "Exports" s'il n'existe pas
+            if (!Directory.Exists("WebExport"))
+                Directory.CreateDirectory("WebExport");
+
+            string filePath = Path.Combine("WebExport", FileName);
+
+            // Écrit le contenu dans le fichier
+            File.WriteAllText(filePath.ToLower(), FileContent);
         }
     }
 
-    internal class ExportStats : Export
+    internal class ExportStats
     {
-        public ExportStats(AppSettings appSettings, UserRequest userRequest, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings) : base(appSettings, userRequest, dataConnexion, globalAppSettings) // Initialiser la classe de base ici
+        public string FileName { get; set; }
+        public string FileContent { get; set; }
+        public AppSettings AppSettings { get; set; }
+        public DataConnexion DataConnexion { get; set; }
+        public GlobalAppSettings GlobalAppSettings { get; set; }
+
+        public ExportStats(AppSettings appSettings, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings)
         {
+            AppSettings = appSettings;
+            DataConnexion = dataConnexion;
+            GlobalAppSettings = globalAppSettings;
             GenerateStatsFile();
         }
 
         public void GenerateStatsFile()
         {
-            List<User> users = dataConnexion.GetAllUserPlatforms();
+            List<User> users = DataConnexion.GetAllUserPlatforms();
 
             List<User> top10ball = users.OrderByDescending(w => w.Stats.ballLaunched).Take(10).ToList();
             List<User> top10money = users.OrderByDescending(w => w.Stats.moneySpent).Take(10).ToList();
@@ -522,7 +602,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 ";
 
             all_content += "<center>\n\n<br><br><br><h1> Top 10 ball : </h1><br>\n";
-            top10ball.ForEach(a => all_content += $"<p>{top10ball.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {getStringNumber(a.Stats.ballLaunched)} </p>\r");
+            top10ball.ForEach(a => all_content += $"<p>{top10ball.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {Commun.GetStringNumber(a.Stats.ballLaunched)} </p>\r");
 
             value_youtube = users.Where(u => u.Platform == "youtube").Sum(x => x.Stats.ballLaunched); value_twitch = users.Where(u => u.Platform == "twitch").Sum(x => x.Stats.ballLaunched); value_tiktok = users.Where(u => u.Platform == "tiktok").Sum(x => x.Stats.ballLaunched);
             value_max = value_youtube + value_twitch + value_tiktok; int percent_twitch = (int)Math.Round((double)(100 * value_twitch) / value_max); int percent_youtube = (int)Math.Round((double)(100 * value_youtube) / value_max); int percent_tiktok = (int)Math.Round((double)(100 * value_tiktok) / value_max);
@@ -535,7 +615,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 </div><br><br><br>";
 
             all_content += "\n\n\n<br><br><br><h1> Top 10 money : </h1><br>\n";
-            top10money.ForEach(a => all_content += $"<p>{top10money.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {getStringNumber(a.Stats.moneySpent)} </p>\r");
+            top10money.ForEach(a => all_content += $"<p>{top10money.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {Commun.GetStringNumber(a.Stats.moneySpent)} </p>\r");
 
             value_youtube = users.Where(u => u.Platform == "youtube").Sum(x => x.Stats.moneySpent); value_twitch = users.Where(u => u.Platform == "twitch").Sum(x => x.Stats.moneySpent); value_tiktok = users.Where(u => u.Platform == "tiktok").Sum(x => x.Stats.moneySpent);
             value_max = value_youtube + value_twitch + value_tiktok; percent_twitch = (int)Math.Round((double)(100 * value_twitch) / value_max); percent_youtube = (int)Math.Round((double)(100 * value_youtube) / value_max); percent_tiktok = (int)Math.Round((double)(100 * value_tiktok) / value_max);
@@ -548,7 +628,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 </div><br><br><br>";
 
             all_content += "\n\n\n<br><br><br><h1> Top 10 Dex : </h1><br>\n";
-            top10Dex.ForEach(a => all_content += $"<p>{top10Dex.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {getStringNumber(a.Stats.dexCount)} </p>\r");
+            top10Dex.ForEach(a => all_content += $"<p>{top10Dex.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {Commun.GetStringNumber(a.Stats.dexCount)} </p>\r");
 
             value_youtube = users.Where(u => u.Platform == "youtube").Sum(x => x.Stats.dexCount); value_twitch = users.Where(u => u.Platform == "twitch").Sum(x => x.Stats.dexCount); value_tiktok = users.Where(u => u.Platform == "tiktok").Sum(x => x.Stats.dexCount);
             value_max = value_youtube + value_twitch + value_tiktok; percent_twitch = (int)Math.Round((double)(100 * value_twitch) / value_max); percent_youtube = (int)Math.Round((double)(100 * value_youtube) / value_max); percent_tiktok = (int)Math.Round((double)(100 * value_tiktok) / value_max);
@@ -561,7 +641,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 </div><br><br><br>";
 
             all_content += "\n\n\n<br><br><br><h1> Top 10 shiny Dex : </h1><br>\n";
-            top10shinyDex.ForEach(a => all_content += $"<p>{top10shinyDex.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {getStringNumber(a.Stats.shinydex)} </p>\r");
+            top10shinyDex.ForEach(a => all_content += $"<p>{top10shinyDex.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {Commun.GetStringNumber(a.Stats.shinydex)} </p>\r");
 
             value_youtube = users.Where(u => u.Platform == "youtube").Sum(x => x.Stats.shinydex); value_twitch = users.Where(u => u.Platform == "twitch").Sum(x => x.Stats.shinydex); value_tiktok = users.Where(u => u.Platform == "tiktok").Sum(x => x.Stats.shinydex);
             value_max = value_youtube + value_twitch + value_tiktok; percent_twitch = (int)Math.Round((double)(100 * value_twitch) / value_max); percent_youtube = (int)Math.Round((double)(100 * value_youtube) / value_max); percent_tiktok = (int)Math.Round((double)(100 * value_tiktok) / value_max);
@@ -574,7 +654,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 </div><br><br><br>";
 
             all_content += "\n\n\n<br><br><br><h1> Top 10 caught : </h1><br>\n";
-            top10caught.ForEach(a => all_content += $"<p>{top10caught.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {getStringNumber(a.Stats.pokeCaught)} </p>\r");
+            top10caught.ForEach(a => all_content += $"<p>{top10caught.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {Commun.GetStringNumber(a.Stats.pokeCaught)} </p>\r");
 
             value_youtube = users.Where(u => u.Platform == "youtube").Sum(x => x.Stats.pokeCaught); value_twitch = users.Where(u => u.Platform == "twitch").Sum(x => x.Stats.pokeCaught); value_tiktok = users.Where(u => u.Platform == "tiktok").Sum(x => x.Stats.pokeCaught);
             value_max = value_youtube + value_twitch + value_tiktok; percent_twitch = (int)Math.Round((double)(100 * value_twitch) / value_max); percent_youtube = (int)Math.Round((double)(100 * value_youtube) / value_max); percent_tiktok = (int)Math.Round((double)(100 * value_tiktok) / value_max);
@@ -587,7 +667,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 </div><br><br><br>";
 
             all_content += "\n\n\n<br><br><br><h1> Top 10 shiny caught : </h1><br>\n";
-            top10shinycaught.ForEach(a => all_content += $"<p>{top10shinycaught.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {getStringNumber(a.Stats.shinyCaught)} </p>\r");
+            top10shinycaught.ForEach(a => all_content += $"<p>{top10shinycaught.IndexOf(a) + 1} : <img src='https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{a.Platform}.png'> {a.Pseudo} => {Commun.GetStringNumber(a.Stats.shinyCaught)} </p>\r");
 
             value_youtube = users.Where(u => u.Platform == "youtube").Sum(x => x.Stats.shinyCaught); value_twitch = users.Where(u => u.Platform == "twitch").Sum(x => x.Stats.shinyCaught); value_tiktok = users.Where(u => u.Platform == "tiktok").Sum(x => x.Stats.shinyCaught);
             value_max = value_youtube + value_twitch + value_tiktok; percent_twitch = (int)Math.Round((double)(100 * value_twitch) / value_max); percent_youtube = (int)Math.Round((double)(100 * value_youtube) / value_max); percent_tiktok = (int)Math.Round((double)(100 * value_tiktok) / value_max);
@@ -608,33 +688,75 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 </body>
 </html>";
 
-            fileContent = all_content;
-            filename = "pokestats.html";
+            FileContent = all_content;
+            FileName = "pokestats.html";
 
-            ExportFile(true, true).Wait();
+            ExportFile();
+        }
+
+        public void ExportFile()
+        {
+            FileName = Commun.CleanFileName(FileName);
+
+            // Crée le dossier "Exports" s'il n'existe pas
+            if (!Directory.Exists("WebExport"))
+                Directory.CreateDirectory("WebExport");
+
+            string filePath = Path.Combine("WebExport", FileName);
+
+            // Écrit le contenu dans le fichier
+            File.WriteAllText(filePath.ToLower(), FileContent);
         }
     }
 
-    internal class ExportDexAvailablePokemon : Export
+    internal class ExportDexAvailablePokemon
     {
         private List<Pokemon> allCodedPokemons;
+        private AppSettings AppSettings { get; set; }
+        private DataConnexion DataConnexion { get; set; }
+        private GlobalAppSettings GlobalAppSettings { get; set; }
+        public string fileContent { get; set; }
+        public string filename { get; set; } = "availablepokemon.html";
 
-        public ExportDexAvailablePokemon(AppSettings appSettings, UserRequest userRequest, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings) : base(appSettings, userRequest, dataConnexion, globalAppSettings) // Initialiser la classe de base ici
+        public ExportDexAvailablePokemon(AppSettings appSettings, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings)
         {
-            var options = new JsonSerializerOptions
-            {
-                IncludeFields = true
-            };
             allCodedPokemons = appSettings.allPokemons.Where(p => p.enabled).ToList();
             fileContent = "";
             filename = $"AvailablePokemon.html";
+            AppSettings = appSettings;
+            DataConnexion = dataConnexion;
+            GlobalAppSettings = globalAppSettings;
         }
 
         public string GenerateFile()
         {
             BuildRapport();
-            ExportFile(true, true).Wait();
+            ExportFile();
             return filename;
+        }
+
+        private void ExportFile()
+        {
+            filename = Commun.CleanFileName(filename);
+
+            // Crée le dossier "Exports" s'il n'existe pas
+            if (!Directory.Exists("WebExport"))
+                Directory.CreateDirectory("WebExport");
+
+            string filePath = Path.Combine("WebExport", filename);
+
+            // Écrit le contenu dans le fichier
+            File.WriteAllText(filePath.ToLower(), fileContent);
+        }
+
+        private string getPokeZoneNameAndLink(List<Zone> zonesList)
+        {
+            string r = "";
+            foreach (Zone zone in zonesList)
+            {
+                r += $"<a href=\"./Zone/{Commun.CleanFileName(zone.Name)}.html\">{zone.Name}</a>; ";
+            }
+            return r.TrimEnd(' ', ';').TrimStart(' ', ';'); // Enlève le dernier espace et le point-virgule
         }
 
         public List<string> getLineTables()
@@ -645,17 +767,17 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             string classNormal;
             List<string> linesTable = new List<string>();
             List<Entrie> entriesByPseudo = new List<Entrie>();
-            List<User> users = dataConnexion.GetAllUserPlatforms();
+            List<User> users = DataConnexion.GetAllUserPlatforms();
             foreach (User u in users)
             {
-                entriesByPseudo.AddRange(dataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).ToList());
+                entriesByPseudo.AddRange(DataConnexion.GetEntriesByPseudo(u.Pseudo, u.Platform).ToList());
             }
             foreach (Pokemon item in allCodedPokemons)
             {
                 try
                 {
                     //Console.WriteLine($"generating line for {item.Name_FR}/{item.Name_EN}");
-                    currPoke = appSettings.pokemons.Where(poke => poke.Name_FR == item.Name_FR).FirstOrDefault();
+                    currPoke = AppSettings.pokemons.Where(poke => poke.Name_FR == item.Name_FR).FirstOrDefault();
                     int CountShiny = 0;
                     int CountNormal = 0;
                     entriesByPseudo.Where(x => x.PokeName == item.Name_FR).ToList().ForEach(x => { CountShiny += x.CountShiny; CountNormal += x.CountNormal; });
@@ -696,16 +818,20 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                         availability += " (shiny locked)";
                     }
 
-                    string additionalInfos = item.GetAdditionalInfosString(gas: globalAppSettings);
+                    string additionalInfos = item.GetAdditionalInfosString(gas: GlobalAppSettings);
+                    string spawn = !item.enabled ? "????????" : !item.ZonesNames.Any() ?
+                    @$"<a href=""./Zone/_void_.html"">void</a>" :
+                    getPokeZoneNameAndLink(item.ZonesList);
 
                     currline = @$"
 <tr>
-                <td>{item.Name_FR}</td>
+                <td style=""font-size: 1.2em;""><a href=""./Creature/{item.Name_FR}.html"">{item.Name_FR}</a> {CreatureRarity.IconHTML(item.Rarity, IconSize.Medium)}</td>
                 <td><img {classNormal}src=""{item.Sprite_Normal}"" alt=""Normal Sprite""></td>
                 <td class=""count"">{CountNormal}</td>
                 <td><img {classShiny}src=""{item.Sprite_Shiny}"" alt=""Shiny Sprite""></td>
                 <td class=""count"">{CountShiny}</td>
                 <td class=""{classAvailability}"">Dispo : {availability}</td>
+                <td>{spawn}</td>
                 <td>{artistAndTheirLinks}</td>
                 <td class=""d-none"">{additionalInfos}</td>
             </tr>
@@ -743,22 +869,8 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         {
             List<string> lineTables = getLineTables();
 
-            fileContent = $@"
-<!DOCTYPE html>
-<html lang=""en"">
-<head>
-    <meta charset=""UTF-8"">
-    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-    <title>Pokémon Capture Tracker</title>
-    <!-- Bootstrap CSS -->
-    <link href=""https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"" rel=""stylesheet"">
-
-    <style>
-        body {{
-            background-color: #2a2a2a;
-            color: #ffffff;
-            padding: 20px;
-        }}
+            fileContent = Commun.DefaultHTMLStart(false) + $@"
+<style>
         .table tbody td img {{
             height: 64px;
             width: auto;
@@ -783,27 +895,14 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         .all-black {{filter: brightness(0%);
           -webkit-filter: brightness(0%);
         }}
+        a {{
+            textDecoration = 'none';
+        }}
 
         /* Texte plus grand dans <td> */
         .large-text td {{font-size: 20px; }}
 
     </style>
-</head>
-<body>
-
-    <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
-      <form class=""form-inline"">
-        <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""commandgenerator.html"" style=""color: white;"">Command Generator</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""raid.html"" style=""color: white;"">Raid Result</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""scrappokemon.html"" style=""color: white;"">Scrap Pokémon</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""records.html"" style=""color: white;"">Enregistrements</a>
-      </form>
-    </nav><br><br>
-
   <div class=""d-flex align-items-center"" style=""max-width: 480px;"">
     <!-- Input recherche avec max-width -->
     <input type=""text"" id=""searchInput"" placeholder=""Rechercher Pokémon ou Statut"" class=""form-control"" style=""margin-bottom: 20px; max-width: 300px;"">
@@ -819,6 +918,7 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                 <th>Sprite Shiny</th>
                 <th>Capturé(s)</th>
                 <th>Disponibilité</th>
+                <th>Localisation</th>
                 <th>Artist</th>
                 <th class=""d-none"">Tag</th>
             </tr>
@@ -884,24 +984,513 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
         }
     }
 
-    internal class ExportBuyList : Export
+    internal class ExportIndividualPoke
+    {
+        private List<Pokemon> allCodedPokemons;
+        private AppSettings AppSettings { get; set; }
+        private DataConnexion DataConnexion { get; set; }
+        private GlobalAppSettings GlobalAppSettings { get; set; }
+
+        public string fileContent { get; set; }
+        public string filename { get; set; } = "";
+
+        public ExportIndividualPoke(AppSettings appSettings, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings)
+        {
+            this.AppSettings = appSettings;
+            this.DataConnexion = dataConnexion;
+            this.GlobalAppSettings = globalAppSettings;
+            allCodedPokemons = appSettings.allPokemons.ToList();
+            fileContent = "";
+        }
+
+        /// <summary>
+        /// Rapport de dex
+        /// </summary>
+        public void BuildRapport()
+        { }
+
+        private string getPokeAvailability(Pokemon poke)
+        {
+            if (!poke.enabled)
+            {
+                return "Not available at all.";
+            }
+            else if (poke.isLock)
+            {
+                return "only under distribution / events.";
+            }
+            else
+            {
+                return "fully available";
+            }
+        }
+
+        public async Task ExportAllFile()
+        {
+            if (!Directory.Exists(Path.Combine("WebExport", "Creature")))
+            {
+                Directory.CreateDirectory(Path.Combine("WebExport", "Creature"));
+            }
+            foreach (Pokemon poke in allCodedPokemons)
+            {
+                string availability = getPokeAvailability(poke: poke);
+                string type = poke.Type1 is not null || poke.Type2 is not null ? "" : "(no infos)";
+                string spawn = !poke.enabled ? "????????" : !poke.ZonesNames.Any() ?
+                    @$"<a href=""../Zone/_void_.html"">void</a>" :
+                    getPokeZoneNameAndLink(poke.ZonesList);
+                string infos = "";
+                if (poke.isLegendary)
+                    infos += "Légendaire; ";
+                if (poke.isCustom)
+                    infos += "Custom; ";
+                if (poke.Serie is not null)
+                    infos += $"<Série : {poke.Serie};> ";
+                if (poke.Type1 != null)
+                {
+                    type += $"<img class=\"type\" src=\"{TypeBinding.GetImageUrl(poke.Type1)}\">";
+                }
+                if (poke.Type2 != null)
+                {
+                    type += $"<img class=\"type\" src=\"{TypeBinding.GetImageUrl(poke.Type2)}\">";
+                }
+
+                int defaultValueNormal = poke.isLegendary ? GlobalAppSettings.ScrapSettings.ValueDefaultNormal * GlobalAppSettings.ScrapSettings.legendaryMultiplier : GlobalAppSettings.ScrapSettings.ValueDefaultNormal;
+                int defaultValueShiny = poke.isLegendary ? GlobalAppSettings.ScrapSettings.ValueDefaultShiny * GlobalAppSettings.ScrapSettings.legendaryMultiplier : GlobalAppSettings.ScrapSettings.ValueDefaultShiny;
+
+                string prix = $"<br>Normal <img class=\"icon\" src=\"{ShinyBinding.GetIcon(false)}\"> : {(poke.priceNormal?.ToString() ?? "N/A")} <br> Shiny <img class=\"icon\" src=\"{ShinyBinding.GetIcon(true)}\"> : {(poke.priceShiny?.ToString() ?? "N/A")}";
+                string value = $"<br>Normal <img class=\"icon\" src=\"{ShinyBinding.GetIcon(false)}\"> : {(poke.valueNormal?.ToString() ?? defaultValueNormal.ToString())} <br> Shiny <img class=\"icon\" src=\"{ShinyBinding.GetIcon(true)}\"> : {(poke.valueShiny?.ToString() ?? defaultValueShiny.ToString())}";
+
+                filename = $"{poke.Name_FR}.html";
+                string artisteInfos = string.Join("; ", poke.Artist.Select(a => $"<a href=\"{a.ArtistLink}\"> {a.ArtistName}</a>")); ;
+                try
+                {
+                    fileContent = $@"
+<!DOCTYPE html>
+<html lang=""fr"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1"">
+    <title>{poke.Name_FR}</title>
+    <link href=""https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"" rel=""stylesheet"">
+    <style>
+        body {{
+            background-color: #121212; /* Fond sombre */
+            color: white;
+        }}
+        .image-container {{
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }}
+        .info-container {{
+            flex: 1;
+            padding: 20px;
+        }}
+        .sprite {{
+            width: 100%; /* Prend toute la largeur du conteneur */
+            height: auto;
+            image-rendering: pixelated;          /* Pour Chrome, Edge, etc. */
+            image-rendering: -moz-crisp-edges;     /* Pour Firefox */
+            image-rendering: crisp-edges;          /* Alternative pour certains navigateurs */
+            -ms-interpolation-mode: nearest-neighbor; /* Pour IE */
+        }}
+        .type {{
+            max-height: 20px;
+            width: auto;
+        }}
+        a {{
+            textDecoration = 'none';
+        }}
+        .icon {{
+            max-height: 16px;
+            width: auto;
+        }}
+    </style>
+</head>
+<body>
+    <div class=""container mt-5"">
+        <div class=""row"">
+            <div class=""col-md-4 image-container"">
+                <img class=""sprite"" src=""{poke.Sprite_Normal}"" alt=""Image"">
+            </div>
+            <div class=""col-md-8 info-container"">
+                <h2>Informations</h2>
+                <ul class=""list-group"">
+                    <li class=""list-group-item bg-dark text-white""><strong>Nom :</strong> {poke.Name_FR}</li>
+                    <li class=""list-group-item bg-dark text-white""><strong>Name :</strong> {poke.Name_EN}</li>
+                    <li class=""list-group-item bg-dark text-white""><strong>Type :</strong> {type}</li>
+                    <li class=""list-group-item bg-dark text-white""><strong>Spawn :</strong> {spawn}</li>
+                    <li class=""list-group-item bg-dark text-white""><strong>Availability :</strong> {availability}</li>
+                    <li class=""list-group-item bg-dark text-white""><strong>Artist :</strong> {artisteInfos}</li>
+                    <li class=""list-group-item bg-dark text-white""><strong>Infos :</strong> {infos}</li>
+                    <li class=""list-group-item bg-dark text-white""><strong>Buy Price / Prix d'achat :</strong> {prix}</li>
+                    <li class=""list-group-item bg-dark text-white""><strong>Value / Valeur :</strong> {value}</li>
+                    <li class=""list-group-item bg-dark text-white""><strong>Rareté :</strong> {CreatureRarity.IconHTML(poke.Rarity, IconSize.Medium)}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src=""https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js""></script>
+</body>
+</html>
+
+";
+
+                    fileContent = Commun.DefaultHTMLStart(true) + fileContent + Commun.DefaultHTMLEnd();
+                    await File.WriteAllTextAsync(Path.Combine("WebExport", "Creature", filename), fileContent);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error while exporting individual file for {poke.Name_FR}/{poke.Name_EN}: {ex.Message}");
+                }
+            }
+        }
+
+        private string getPokeZoneNameAndLink(List<Zone> zonesList)
+        {
+            string r = "";
+            foreach (Zone zone in zonesList)
+            {
+                r += $"<a href=\"../Zone/{Commun.CleanFileName(zone.Name)}.html\">{zone.Name}</a>; ";
+            }
+            return r.TrimEnd(' ', ';').TrimStart(' ', ';'); // Enlève le dernier espace et le point-virgule
+        }
+    }
+
+    internal class ExportIndividualZone
+    {
+        private AppSettings AppSettings { get; set; }
+        private DataConnexion DataConnexion { get; set; }
+        private GlobalAppSettings GlobalAppSettings { get; set; }
+        public string fileContent { get; set; }
+        public string filename { get; set; } = "";
+
+        public ExportIndividualZone(AppSettings appSettings, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings)
+        {
+            fileContent = "";
+            filename = $"AvailablePokemon.html";
+            GlobalAppSettings = globalAppSettings;
+            AppSettings = appSettings;
+            DataConnexion = dataConnexion;
+        }
+
+        /// <summary>
+        /// Rapport de dex
+        /// </summary>
+        public void BuildRapport()
+        { }
+
+        public async Task ExportZonePage(Zone zone)
+        {
+            // Chemin du dossier pour la page zone
+            string directoryPath = Path.Combine("WebExport", "Zone");
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            // Filtrer les pokémons activés selon la condition donnée
+            var filteredPokemons = AppSettings.allPokemons
+                .Where(pokemon => pokemon.enabled && !pokemon.isLock &&
+                       (!pokemon.IsZoneExclusive || pokemon.ZonesList.Any(z => z.Name.Equals(zone.Name, StringComparison.OrdinalIgnoreCase))))
+                .ToList();
+
+            // Séparer et ordonner les pokémons : exclusifs d'abord
+            var exclusivePokemons = filteredPokemons.Where(p => p.IsZoneExclusive && p.ZonesList.Count == 1).ToList();
+            var nonExclusivePokemons = filteredPokemons.Where(p => !p.IsZoneExclusive || p.ZonesList.Count != 1).ToList();
+            var orderedPokemons = exclusivePokemons.Concat(nonExclusivePokemons).ToList();
+            var orderedPokemonsByName = orderedPokemons
+                .OrderByDescending(p => p.IsZoneExclusive)
+                .ThenByDescending(pokemon => Commun.CompareStrings(pokemon.ZonesList.OrderBy(zone => zone.DexRequirement).FirstOrDefault().Name, zone.Name))
+                .ToList();
+
+            // Construction des cards pour chaque pokémon
+            StringBuilder cardsBuilder = new StringBuilder();
+            foreach (var pokemon in orderedPokemonsByName)
+            {
+                // Définir la classe de la card et y ajouter un style pour les exclusifs
+                string cardClass = "card bg-dark text-white h-100";
+                if (pokemon.isLegendary)
+                {
+                    cardClass += " card-legendary";
+                }
+                else if (pokemon.IsZoneExclusive && pokemon.ZonesList.Count == 1)
+                {
+                    cardClass += " card-exclusive";
+                }
+                else if (pokemon.IsZoneExclusive)
+                {
+                    cardClass += " card-not-everywhere";
+                }
+                else
+                {
+                    cardClass += " card-common";
+                }
+
+                // string displayName = Commun.CompareStrings(pokemon.Name_FR, pokemon.Name_EN) ? $"{pokemon.Name_EN}" : $"{pokemon.Name_FR} - {pokemon.Name_EN}";
+                string displayName = GlobalAppSettings.LanguageCode.ToUpper() == LanguageBinding.FRENCH ? $"{pokemon.Name_FR}" : $"{pokemon.Name_EN}";
+
+                // icône shiny (ou non)
+                string additionalInfos = CreatureRarity.IconHTML(pokemon.Rarity, IconSize.Medium);
+                additionalInfos += @$"<img class=""icon"" src=""{ShinyBinding.GetIcon(!pokemon.isShinyLock)}"">";
+                if (Commun.CompareStrings(pokemon.ZonesList.OrderBy(zone => zone.DexRequirement).FirstOrDefault().Name, zone.Name))
+                {
+                    additionalInfos += @$"<img class=""icon"" src=""{IconBinding.GetIconURL("NEW")}"">";
+                }
+
+                cardsBuilder.AppendLine($@"
+            <div class=""col"">
+                <div class=""{cardClass}"">
+                    <div class=""sprite-container"">
+                        <img src=""{pokemon.Sprite_Normal}"" alt=""{pokemon.Name_FR}"" style=""object-fit:contain;"">
+                    </div>
+                    <div class=""card-body"">
+                        <h5 class=""card-title"">
+                            <a href=""../Creature/{pokemon.Name_FR}.html"">{displayName}</a> {additionalInfos}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        ");
+            }
+
+            // Création du contenu HTML complet de la page
+            string content = $@"
+<!DOCTYPE html>
+<html lang=""fr"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1"">
+    <title>{zone.Name} - Détails de la zone</title>
+    <link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"">
+    <style>
+        body {{
+            background-color: #121212;
+            color: white;
+        }}
+        /* Bannière zoomée pour l'image de la zone */
+        .zone-image {{
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }}
+        .sprite-container {{
+            height: 256px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }}
+        h5 {{
+            display: inline;
+            margin: 0;
+            padding: 0;
+            font-weight: bold;
+        }}
+        .icon {{
+            max-height: 16px;
+            width: auto;
+        }}
+        .sprite-container img {{
+            width: 100%;
+            height: auto;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            -ms-interpolation-mode: nearest-neighbor;
+        }}
+        a {{
+            text-decoration: none;
+            color: inherit;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.9);
+        }}
+        /* Style pour les cartes de pokémon exclusifs : effet doré */
+        .card-exclusive {{
+            border: 2px solid #d4af37;
+            box-shadow: 0 0 10px #ffd700;
+            background-color: #212529;
+            text-align: center;
+        }}
+        /* Style pour les cartes de pokémon exclusifs : effet doré */
+        .card-common {{
+            border: 2px solid #000000;
+            box-shadow: 0 0 5px #000000;
+            background-color: #212529;
+            text-align: center;
+        }}
+        /* Style pour les cartes de pokémon dispo partout : effet blanc */
+        .card-not-everywhere {{
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 5px #ccc;
+            background-color: #212529;
+            text-align: center;
+        }}
+        /* Style pour les cartes de pokémon légendaires : effet inner shadow multicolore */
+        .card-legendary {{
+            border: 2px solid #e0e0ff;
+            background: radial-gradient(circle at center, #121212, #e0e0ff);
+            box-shadow: inset 0 0 20px red, inset 0 0 40px blue, inset 0 0 60px green;
+            text-align: center;
+        }}
+    </style>
+</head>
+<body>
+    <div class=""container my-5"">
+        <!-- Section de la zone -->
+        <div class=""text-center"">
+            <img src=""{zone.Image}"" alt=""Zone Image"" class=""img-fluid zone-image"">
+            <h1>{zone.Name}</h1>
+            <p>Level Cap : {zone.LevelRequirement}</p>
+            <p>Dex Cap : {zone.DexRequirement}</p>
+            <p>Description : {zone.Description}</p>
+        </div>
+
+        <!-- Bouton de copie de commande -->
+        <div class=""row mb-4"">
+            <div class=""col text-center"">
+                <button id=""copyZoneButton"" class=""btn btn-secondary"" onclick=""copyZoneCommand()"">Copier commande zone</button>
+            </div>
+        </div>
+
+        <!-- Affichage du résultat de recherche -->
+        <div class=""row mb-4"">
+            <div class=""col text-center"">
+                <span id=""resultCount""></span>
+            </div>
+        </div>
+
+        <!-- Barre de recherche -->
+        <div class=""row mb-4"">
+            <div class=""col"">
+                <input type=""text"" id=""searchInput"" class=""form-control"" placeholder=""Rechercher un Pokémon..."">
+            </div>
+        </div>
+
+        <!-- Quelques exemples de cartes catégories bien identifiées -->
+        <div class=""row mb-3"">
+            <div class=""col"">
+                <div class=""card-legendary"">
+                    <div class=""card-body"">
+                        <h5 class=""card-title"">Légendaires</h5>
+                    </div>
+                </div>
+            </div>
+            <div class=""col"">
+                <div class=""card-exclusive"">
+                    <div class=""card-body"">
+                        <h5 class=""card-title"">Exclusifs</h5>
+                    </div>
+                </div>
+            </div>
+            <div class=""col"">
+                <div class=""card-not-everywhere"">
+                    <div class=""card-body"">
+                        <h5 class=""card-title"">Zonaux</h5>
+                    </div>
+                </div>
+            </div>
+            <div class=""col"">
+                <div class=""card-common"">
+                    <div class=""card-body"">
+                        <h5 class=""card-title"">Commun</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grille Bootstrap affichant les pokémons ciblés -->
+        <div class=""row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4 mt-5"" id=""cardsContainer"">
+            {cardsBuilder.ToString()}
+        </div>
+    </div>
+    <script src=""https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js""></script>
+    <script>
+        // Définit la commande à copier avec le nom de la zone formaté
+        var zoneCommand = '!changeZone {zone.Name.Replace(" ", "_")}';
+
+        function copyZoneCommand() {{
+            navigator.clipboard.writeText(zoneCommand).then(function() {{
+                alert('Commande copiée : ' + zoneCommand);
+            }}, function(err) {{
+                console.error('Erreur de copie : ', err);
+            }});
+        }}
+
+        // Fonction pour mettre à jour le nombre de Pokémon affichés
+        function updateResultCount() {{
+            var cards = document.querySelectorAll('#cardsContainer .col');
+            var visibleCount = 0;
+            cards.forEach(function(card) {{
+                if (card.style.display !== 'none') {{
+                    visibleCount++;
+                }}
+            }});
+            document.getElementById('resultCount').textContent = visibleCount + ' Pokémon(s) affiché(s)';
+        }}
+
+        document.getElementById('searchInput').addEventListener('keyup', function() {{
+            var query = this.value.toLowerCase();
+            var cards = document.querySelectorAll('#cardsContainer .col');
+            cards.forEach(function(card) {{
+                var title = card.querySelector('.card-title').textContent.toLowerCase();
+                card.style.display = (title.indexOf(query) !== -1) ? '' : 'none';
+            }});
+            updateResultCount();
+        }});
+
+        // Mise à jour dès le chargement de la page
+        window.addEventListener('load', updateResultCount);
+    </script>
+</body>
+</html>
+    ";
+            content = Commun.DefaultHTMLStart(true) + content + Commun.DefaultHTMLEnd();
+            // Sauvegarder la page
+            string fileName = $"{zone.Name}.html";
+            string filePath = Path.Combine(directoryPath, Commun.CleanFileName(fileName));
+            File.WriteAllText(filePath, content);
+
+            await Task.CompletedTask;
+        }
+
+        public async Task ExportAllFile()
+        {
+            if (!Directory.Exists(Path.Combine("WebExport", "Creature")))
+            {
+                Directory.CreateDirectory(Path.Combine("WebExport", "Creature"));
+            }
+            foreach (Zone zone in AppSettings.Zones)
+            {
+                await ExportZonePage(zone);
+            }
+        }
+    }
+
+    internal class ExportBuyList
     {
         private List<Pokemon> allBuyablePokemon;
+        private AppSettings AppSettings { get; set; }
+        private DataConnexion DataConnexion { get; set; }
+        private GlobalAppSettings GlobalAppSettings { get; set; }
+        public string fileContent { get; set; }
+        public string filename { get; set; } = "";
 
-        public ExportBuyList(AppSettings appSettings, UserRequest userRequest, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings) : base(appSettings, userRequest, dataConnexion, globalAppSettings) // Initialiser la classe de base ici
+        public ExportBuyList(AppSettings appSettings, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings)
         {
-            var options = new JsonSerializerOptions
-            {
-                IncludeFields = true
-            };
             allBuyablePokemon = appSettings.pokemons.Where(x => x.priceNormal is not null || x.priceShiny is not null).ToList();
             fileContent = "";
             filename = $"buypokemon.html";
+            AppSettings = appSettings;
+            DataConnexion = dataConnexion;
+            GlobalAppSettings = globalAppSettings;
         }
 
         public void BuildDocument()
         {
-            fileContent = DefaultStart();
+            fileContent = Commun.DefaultHTMLStart(false);
 
             fileContent += @"<table class=""table table-dark table-bordered table-striped"">
         <thead>
@@ -921,30 +1510,52 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             {
                 string pokename = String.Empty;
 
-                string displayName = globalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
+                string displayName = GlobalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
 
                 // cas ou le altname est celui par défaut
                 if (poke.Name_EN == poke.AltName || poke.Name_FR == poke.AltName)
                 {
-                    pokename = globalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
+                    pokename = GlobalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
                 }
                 else
                 {
                     pokename = poke.AltName;
                 }
 
+                string priceNormal = poke.priceNormal.HasValue ? poke.priceNormal.ToString() : "/";
+                string priceShiny = poke.priceShiny.HasValue ? poke.priceShiny.ToString() : "/";
+
+                string commandName = displayName
+                    .Replace(" ", "_");
+
                 if (poke.priceNormal is not null && poke.priceShiny is not null)
                 {
-                    fileContent += @$"
+                    fileContent += $@"
 <tr>
-                <td>{displayName}</td>
-                <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Normal}"" alt=""Normal Sprite""></td>
-                <td>{poke.priceNormal}</td>
-                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdBuy} {pokename} normal"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-primary"">Copier commande</button></td>
-                <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Shiny}"" alt=""Shiny Sprite""></td>
-                <td>{poke.priceShiny}</td>
-                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdBuy} {pokename} shiny"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-warning"">Copier commande</button></td>
-            </tr>";
+    <td>{displayName}</td>
+    <td>
+        <img style=""height: 96px;"" src=""{poke.Sprite_Normal}"" alt=""Normal Sprite"">
+    </td>
+    <td>{priceNormal} </td>
+    <td>
+        <button
+            data-copy=""{GlobalAppSettings.CommandSettings.CmdBuy} {commandName} normal""
+            {(poke.priceNormal is null ? "disabled" : @"onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-primary""")}>
+            Copier commande
+        </button>
+    </td>
+    <td>
+        <img style=""height: 96px;"" src=""{poke.Sprite_Shiny}"" alt=""Shiny Sprite"">
+    </td>
+    <td>{priceShiny} </td>
+    <td>
+        <button
+            data-copy=""{GlobalAppSettings.CommandSettings.CmdBuy} {commandName} shiny""
+            {(poke.priceShiny is null ? "disabled" : @"onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-warning""")}>
+            Copier commande
+        </button>
+    </td>
+</tr>";
                 }
                 else if (poke.priceNormal is null && poke.priceShiny is not null)
                 {
@@ -953,10 +1564,10 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                 <td>{displayName}</td>
                 <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Normal}"" alt=""Normal Sprite""></td>
                 <td>/</td>
-                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdBuy} {pokename} normal"" disabled>Copier commande</button></td>
+                <td><button data-copy=""{GlobalAppSettings.CommandSettings.CmdBuy} {pokename} normal"" disabled>Copier commande</button></td>
                 <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Shiny}"" alt=""Shiny Sprite""></td>
                 <td>{poke.priceShiny}</td>
-                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdBuy} {pokename} shiny"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-warning"">Copier commande</button></td>
+                <td><button data-copy=""{GlobalAppSettings.CommandSettings.CmdBuy} {pokename} shiny"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-warning"">Copier commande</button></td>
             </tr>";
                 }
                 else if (poke.priceNormal is not null && poke.priceShiny is null)
@@ -966,10 +1577,10 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                 <td>{displayName}</td>
                 <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Normal}"" alt=""Normal Sprite""></td>
                 <td>{poke.priceNormal}</td>
-                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdBuy} {pokename.Replace(' ', '_').ToLower()} normal"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-primary"">Copier commande</button></td>
+                <td><button data-copy=""{GlobalAppSettings.CommandSettings.CmdBuy} {pokename.Replace(' ', '_').ToLower()} normal"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-primary"">Copier commande</button></td>
                 <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Shiny}"" alt=""Shiny Sprite""></td>
                 <td>/</td>
-                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdBuy} {pokename.Replace(' ', '_').ToLower()} shiny"" disabled>Copier commande</button></td>
+                <td><button data-copy=""{GlobalAppSettings.CommandSettings.CmdBuy} {pokename.Replace(' ', '_').ToLower()} shiny"" disabled>Copier commande</button></td>
             </tr>";
                 }
             }
@@ -1006,17 +1617,36 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
     });
 }
     </script>";
-            fileContent += DefaultEnd();
+            fileContent += Commun.DefaultHTMLEnd();
 
-            ExportFile(true, true).Wait();
+            ExportFile();
+        }
+
+        private void ExportFile()
+        {
+            filename = Commun.CleanFileName(filename);
+
+            // Crée le dossier "Exports" s'il n'existe pas
+            if (!Directory.Exists("WebExport"))
+                Directory.CreateDirectory("WebExport");
+
+            string filePath = Path.Combine("WebExport", filename);
+
+            // Écrit le contenu dans le fichier
+            File.WriteAllText(filePath.ToLower(), fileContent);
         }
     }
 
-    internal class ExportScrapList : Export
+    internal class ExportScrapList
     {
         private List<Pokemon> allScrappablePokemon;
+        private AppSettings AppSettings { get; set; }
+        private DataConnexion DataConnexion { get; set; }
+        private GlobalAppSettings GlobalAppSettings { get; set; }
+        public string fileContent { get; set; }
+        public string filename { get; set; } = "scrappokemon.html";
 
-        public ExportScrapList(AppSettings appSettings, UserRequest userRequest, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings) : base(appSettings, userRequest, dataConnexion, globalAppSettings) // Initialiser la classe de base ici
+        public ExportScrapList(AppSettings appSettings, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings)
         {
             var options = new JsonSerializerOptions
             {
@@ -1024,12 +1654,14 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             };
             allScrappablePokemon = appSettings.pokemons.Where(x => x.enabled).ToList();
             fileContent = "";
-            filename = $"scrappokemon.html";
+            AppSettings = appSettings;
+            DataConnexion = dataConnexion;
+            GlobalAppSettings = globalAppSettings;
         }
 
         public void BuildDocument()
         {
-            fileContent = DefaultStart();
+            fileContent = Commun.DefaultHTMLStart(false);
 
             fileContent += @"<table class=""table table-dark table-bordered table-striped"">
         <thead>
@@ -1048,19 +1680,19 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
             foreach (Pokemon poke in allScrappablePokemon)
             {
                 string pokename = String.Empty;
-                string displayName = globalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
-                int valueNormal = poke.valueNormal.HasValue ? poke.valueNormal.Value : globalAppSettings.ScrapSettings.ValueDefaultNormal;
-                int valueShiny = poke.valueShiny.HasValue ? poke.valueShiny.Value : globalAppSettings.ScrapSettings.ValueDefaultShiny;
+                string displayName = GlobalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
+                int valueNormal = poke.valueNormal.HasValue ? poke.valueNormal.Value : GlobalAppSettings.ScrapSettings.ValueDefaultNormal;
+                int valueShiny = poke.valueShiny.HasValue ? poke.valueShiny.Value : GlobalAppSettings.ScrapSettings.ValueDefaultShiny;
 
                 if (poke.isLegendary && !poke.valueNormal.HasValue)
-                    valueNormal = valueNormal * globalAppSettings.ScrapSettings.legendaryMultiplier;
+                    valueNormal = valueNormal * GlobalAppSettings.ScrapSettings.legendaryMultiplier;
                 if (poke.isLegendary && !poke.valueShiny.HasValue)
-                    valueShiny = valueShiny * globalAppSettings.ScrapSettings.legendaryMultiplier;
+                    valueShiny = valueShiny * GlobalAppSettings.ScrapSettings.legendaryMultiplier;
 
                 // cas ou le altname est celui par défaut
                 if (poke.Name_EN == poke.AltName || poke.Name_FR == poke.AltName)
                 {
-                    pokename = globalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
+                    pokename = GlobalAppSettings.LanguageCode == "fr" ? poke.Name_FR : poke.Name_EN;
                 }
                 else
                 {
@@ -1072,10 +1704,10 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
                 <td>{displayName}</td>
                 <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Normal}"" alt=""Normal Sprite""></td>
                 <td>{valueNormal}</td>
-                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdScrap} {pokename.Replace(' ', '_').ToLower()} normal"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-primary"">Copier commande</button></td>
+                <td><button data-copy=""{GlobalAppSettings.CommandSettings.CmdScrap} {pokename.Replace(' ', '_').ToLower()} normal"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-primary"">Copier commande</button></td>
                 <td><img style=""height: 96px; width: auto;"" src=""{poke.Sprite_Shiny}"" alt=""Shiny Sprite""></td>
                 <td>{valueShiny}</td>
-                <td><button data-copy=""{globalAppSettings.CommandSettings.CmdScrap} {pokename.Replace(' ', '_').ToLower()} shiny"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-warning"">Copier commande</button></td>
+                <td><button data-copy=""{GlobalAppSettings.CommandSettings.CmdScrap} {pokename.Replace(' ', '_').ToLower()} shiny"" onclick=""copyToClipboard(this)"" type=""button"" class=""btn btn-warning"">Copier commande</button></td>
 </tr>";
             }
 
@@ -1112,444 +1744,23 @@ document.getElementById('redirectForm').onsubmit = function(event) {{
 }
 
     </script>";
-            fileContent += DefaultEnd();
+            fileContent += Commun.DefaultHTMLEnd();
 
-            ExportFile(true, true).Wait();
+            ExportFile();
         }
-    }
 
-    internal class Export
-    {
-        public AppSettings appSettings;
-        public UserRequest userRequest;
-        public DataConnexion dataConnexion;
-        public GlobalAppSettings globalAppSettings;
-        public string filename;
-        public string url;
-        public string fileContent;
-        public DateTime dateExport;
-
-        public Export(AppSettings appSettings, UserRequest userRequest, DataConnexion dataConnexion, GlobalAppSettings globalAppSettings)
+        private void ExportFile()
         {
-            this.appSettings = appSettings;
-            this.userRequest = userRequest;
-            this.dataConnexion = dataConnexion;
-            this.globalAppSettings = globalAppSettings;
-            filename = "";
-            url = "";
-            fileContent = "trick";
-            dateExport = DateTime.Now;
-        }
-
-        public string DefaultStart()
-        {
-            return @"
-<!DOCTYPE html>
-<html lang=""en"">
-<head>
-    <meta charset=""UTF-8"">
-    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-    <title>Pokémon Capture Tracker</title>
-    <!-- Bootstrap CSS -->
-    <link href=""https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"" rel=""stylesheet"">
-    <style>
-        body {
-            background-color: #2a2a2a;
-            color: #ffffff;
-            padding: 20px;
-        }
-        .table tbody td img {
-            height: 64px;
-            width: auto;
-        }
-        .NotAvailable {
-            color: #2fa432;
-        }
-        .AvailableForGiveaway {
-            color: #c1a518;
-        }
-        .NotAvailable {
-            color: #ad1e1e;
-        }
-        .count {font-size: 30px;
-        }
-        /* Noir et blanc */
-        .black-and-white {filter: grayscale(100%);
-          -webkit-filter: grayscale(100%);
-        }
-
-        /* Tout noir (seulement la forme) */
-        .all-black {filter: brightness(0%);
-          -webkit-filter: brightness(0%);
-        }
-
-        /* Texte plus grand dans <td> */
-        .large-text td {font - size: 20px; }
-
-    </style>
-</head>
-<body>
-
-    <nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
-      <form class=""form-inline"">
-        <a class=""btn btn-sm btn-outline-secondary"" href=""main.html"" style=""color: white;"">Accueil Pokédex</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""commandgenerator.html"" style=""color: white;"">Command Generator</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""raid.html"" style=""color: white;"">Raid Result</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""pokestats.html"" style=""color: white;"">Classements</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""buypokemon.html"" style=""color: white;"">Acheter Pokémon</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""scrappokemon.html"" style=""color: white;"">Scrap Pokémon</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""records.html"" style=""color: white;"">Enregistrements</a>
-      </form>
-    </nav><br><br>";
-        }
-
-        public string DefaultEnd()
-        {
-            return @"
-
-<br><br>
-    <!-- Bootstrap JS, Popper.js, and jQuery -->
-    <script src=""https://code.jquery.com/jquery-3.5.1.slim.min.js""></script>
-    <script src=""https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js""></script>
-    <script src=""https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js""></script>
-</body>
-</html>";
-        }
-
-        public string CleanFileName(string fileName)
-        {
-            string invalidChars = new string(Path.GetInvalidFileNameChars());
-            string cleanedFileName = Regex.Replace(fileName, "[" + Regex.Escape(invalidChars) + "]", "_");
-            return cleanedFileName;
-        }
-
-        public async Task ExportFile(bool fullExport = false, bool main = false)
-        {
-            filename = CleanFileName(filename);
-
-            // Crée le dossier "Exports" s'il n'existe pas
-            if (!Directory.Exists("ExportsSimple"))
-                Directory.CreateDirectory("ExportsSimple");
+            filename = Commun.CleanFileName(filename);
 
             // Crée le dossier "Exports" s'il n'existe pas
             if (!Directory.Exists("WebExport"))
                 Directory.CreateDirectory("WebExport");
 
-            if (!main)
-            {
-                // Crée le dossier "youtube" s'il n'existe pas
-                if (!Directory.Exists(Path.Combine("WebExport", "youtube")))
-                    Directory.CreateDirectory(Path.Combine("WebExport", "youtube"));
-
-                // Crée le dossier "twitch" s'il n'existe pas
-                if (!Directory.Exists(Path.Combine("WebExport", "twitch")))
-                    Directory.CreateDirectory(Path.Combine("WebExport", "twitch"));
-
-                // Crée le dossier "twitch" s'il n'existe pas
-                if (!Directory.Exists(Path.Combine("WebExport", "system")))
-                    Directory.CreateDirectory(Path.Combine("WebExport", "system"));
-
-                // Crée le dossier "twitch" s'il n'existe pas
-                if (!Directory.Exists(Path.Combine("WebExport", "tiktok")))
-                    Directory.CreateDirectory(Path.Combine("WebExport", "tiktok"));
-            }
-
-            // Chemin complet du fichier
-            string filePath = Path.Combine("ExportsSimple", filename);
-
-            if (fullExport && !main)
-            {
-                filePath = Path.Combine("WebExport", userRequest.Platform, filename);
-            }
-            if (fullExport && main)
-            {
-                filePath = Path.Combine("WebExport", filename);
-            }
+            string filePath = Path.Combine("WebExport", filename);
 
             // Écrit le contenu dans le fichier
-            await File.WriteAllTextAsync(filePath.ToLower(), fileContent);
-        }
-
-        public string GetUserStats()
-        {
-            string data = "";
-
-            User utilisateur = new User(userRequest.UserName, userRequest.Platform, userRequest.UserCode, dataConnexion);
-
-            data += $"<p>Nombre d'espèce enregistrée : {utilisateur.Stats.dexCount} / {appSettings.pokemons.Count}</p>";
-            float dexProgressPourcent = utilisateur.Stats.dexCount * 100 / appSettings.pokemons.Count;
-            data += $"<div class=\"progress\">\r\n  <div class=\"progress-bar\" role=\"progressbar\" style=\"width: {dexProgressPourcent}%;\" aria-valuenow=\"{dexProgressPourcent}\" aria-valuemin=\"0\" aria-valuemax=\"100\">{dexProgressPourcent}%</div>\r\n</div>";
-            data += $"<p>Nombre d'espèce shiny enregistrée : {utilisateur.Stats.shinydex}</p>";
-            float dexShinyPourcent = utilisateur.Stats.shinydex * 100 / appSettings.pokemons.Count;
-            data += $"<div class=\"progress\">\r\n  <div class=\"progress-bar\" role=\"progressbar\" style=\"width: {dexShinyPourcent}%;\" aria-valuenow=\"{dexShinyPourcent}\" aria-valuemin=\"0\" aria-valuemax=\"100\">{dexShinyPourcent}%</div>\r\n</div>";
-            data += "<br>";
-
-            data += $"<p>Total argent dépensé : {utilisateur.Stats.moneySpent}</p>";
-            data += $"<p>Total de ball lancées : {utilisateur.Stats.ballLaunched}</p>";
-            data += "<br>";
-
-            data += $"<p>Nombre de pokémon non shiny capturé : {utilisateur.Stats.normalCaught - utilisateur.Stats.giveawayNormal}</p>";
-            data += $"<p>Nombre de pokémon shiny capturé : {utilisateur.Stats.shinyCaught - utilisateur.Stats.giveawayShiny}</p>";
-            data += $"<p>Total de pokémon attrapé : {utilisateur.Stats.pokeCaught - (utilisateur.Stats.giveawayNormal + utilisateur.Stats.giveawayShiny)}</p>";
-            data += $"<p>Pokémon le plus attrapé : {utilisateur.Stats.favoritePoke}</p>";
-            TimeSpan diff = DateTime.Now - utilisateur.Stats.firstCatch;
-            data += $"<p>Dresseur depuis : {utilisateur.Stats.firstCatch} (depuis {diff.Days} jours.)</p>";
-
-            return data;
-        }
-
-        public string GetUserCards()
-        {
-            string data = "";
-            User utilisateur = new User(userRequest.UserName, userRequest.Platform, userRequest.UserCode, dataConnexion);
-            utilisateur.Code_user = dataConnexion.GetCodeUserByPlatformPseudo(utilisateur);
-
-            string urlAvatar = dataConnexion.GetAvatarUrl(utilisateur);
-            string urlSpritePokeFav = dataConnexion.GetSpriteFavoriteCreature(utilisateur, appSettings);
-
-            utilisateur.generateStats();
-            utilisateur.generateStatsAchievement(appSettings, globalAppSettings);
-
-            List<Badge> badgeToShow = utilisateur.Stats.badges.Where(x => x.Rarity is not null && x.Rarity.ToLower() == "exotic" && x.Obtained).ToList();
-            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity is not null && x.Rarity.ToLower() == "legendary" && x.Obtained).ToList());
-            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity is not null && x.Rarity.ToLower() == "epic" && x.Obtained).ToList());
-            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity is not null && x.Rarity.ToLower() == "rare" && x.Obtained).ToList());
-            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity is not null && x.Rarity.ToLower() == "uncommon" && x.Obtained).ToList());
-            badgeToShow.AddRange(utilisateur.Stats.badges.Where(x => x.Rarity is not null && x.Rarity.ToLower() == "common" && x.Obtained).ToList());
-
-            badgeToShow = badgeToShow.Take(8).ToList();
-
-            string badgePart = "";
-            int count = 1;
-            foreach (Badge badge in badgeToShow)
-            {
-                badgePart += $@"
-<div class=""col"">
-    <img
-        src=""{badge.IconUrl}""
-        alt=""Badge {count}""
-        style=""height: 48px; width: 48px;""
-        class=""img-badge img-badge-{badge.Rarity.ToLower()}""
-        title=""{badge.Description}"">
-    <p style=""font-size: 12px; margin-top: 4px"" class=""textShadow"">{badge.Title}</p>
-</div>";
-                count++;
-            }
-
-            data = @$"
-<style>
-    .generatedCard {{
-      color: white;
-      border: 1px solid #ccc;
-      padding: 20px;
-      width: 856px;
-      height: 540px;
-      border-radius: 10px;
-      background-image: url(""{utilisateur.GetBackground()}"");
-    }}
-    .img-badge {{
-      position: relative;
-      display: inline-block;
-      transition: transform 0.2s ease-in-out;
-    }}
-
-    .img-badge-common {{filter: drop-shadow(0 0 10px white) drop-shadow(0 0 20px white);
-            }}
-.img-badge-uncommon {{filter: drop-shadow(0 0 10px green) drop-shadow(0 0 20px green);
-            }}
-.img-badge-rare
-            {{filter: drop-shadow(0 0 10px blue) drop-shadow(0 0 20px blue);
-}}
-.img-badge-epic
-            {{filter: drop-shadow(0 0 10px purple) drop-shadow(0 0 20px purple);
-            }}
-.img-badge-legendary {{filter: drop-shadow(0 0 10px yellow) drop-shadow(0 0 20px yellow);
-}}
-.img-badge-exotic {{filter: drop-shadow(0 0 10px pink) drop-shadow(0 0 20px pink);
-}}
-
-    .img-badge:hover {{transform: scale(1.25) rotate(360deg);
-    }}
-
-    #downloadBtn {{
-      margin-top: 35px;
-      font-size: large;
-      border-radius: 3px;
-      border: 5px;
-      padding: 15px;
-      box-shadow: 0px 0px 38px 0px rgba(0,0,0,0.5);
--webkit-box-shadow: 0px 0px 38px 0px rgba(0,0,0,0.5);
--moz-box-shadow: 0px 0px 38px 0px rgba(0,0,0,0.5);
-    }}
-    .textShadow {{ text-shadow: 0px 0px 11px #000, 0px 0px 11px #000, 0px 0px 20px #000;
-font-weight: bolder;
-            }}
-    .stars {{
-  width: 1px;
-  height: 1px;
-  position: absolute;
-  background: white;
-  box-shadow: 2vw 5vh 2px white, 10vw 8vh 2px white, 15vw 15vh 1px white,
-    22vw 22vh 1px white, 28vw 12vh 2px white, 32vw 32vh 1px white,
-    38vw 18vh 2px white, 42vw 35vh 1px white, 48vw 25vh 2px white,
-    53vw 42vh 1px white, 58vw 15vh 2px white, 63vw 38vh 1px white,
-    68vw 28vh 2px white, 73vw 45vh 1px white, 78vw 32vh 2px white,
-    83vw 48vh 1px white, 88vw 20vh 2px white, 93vw 52vh 1px white,
-    98vw 35vh 2px white, 5vw 60vh 1px white, 12vw 65vh 2px white,
-    18vw 72vh 1px white, 25vw 78vh 2px white, 30vw 85vh 1px white,
-    35vw 68vh 2px white, 40vw 82vh 1px white, 45vw 92vh 2px white,
-    50vw 75vh 1px white, 55vw 88vh 2px white, 60vw 95vh 1px white,
-    65vw 72vh 2px white, 70vw 85vh 1px white, 75vw 78vh 2px white,
-    80vw 92vh 1px white, 85vw 82vh 2px white, 90vw 88vh 1px white,
-    95vw 75vh 2px white;
-  animation: twinkle 8s infinite linear;
-}}
-@keyframes twinkle {{
-  0%,
-  100% {{
-    opacity: 0.8;
-  }}
-  50% {{
-    opacity: 0.4;
-  }}
-}}
-  </style>
-</head>
-<body>
-  <center>
-  <div class=""generatedCard"" style=""background-color: rgba(0, 0, 0, 0.5);"">
-  <!-- Partie titre -->
-    <div class=""stars""></div>
-    <h1 class=""textShadow"">Dresseur : {utilisateur.Pseudo}</h1>
-    <h3 class=""textShadow"" style=""margin-bottom: 50px;"">ID : {utilisateur.Code_user}</h3>
-    <!-- Partie Corp -->
-    <div class=""container"">
-      <!-- Photo -->
-      <div class=""row"">
-        <div class=""col"">
-          <img src=""{urlAvatar}"" class=""img-thumbnail"" alt=""userprofile picture"" style=""width: 192px;"" crossorigin=""anonymous"">
-        </div>
-        <!-- Stats -->
-        <div class=""col"">
-            <div>
-          <p class=""textShadow"">Global dex : {utilisateur.Stats.dexCount}</p>
-          <p class=""textShadow"">Shiny dex : {utilisateur.Stats.shinydex}</p>
-          <p class=""textShadow"">Trainer since : {utilisateur.Stats.firstCatch.ToString("d MMM. yy", CultureInfo.InvariantCulture)}</p>
-          <p class=""textShadow"">Platform : {userRequest.Platform} <img src=""https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/platform/{userRequest.Platform.ToLower()}.png"" style=""height: 16px; width: 16px;""></p>
-          <p class=""textShadow"">Level : {utilisateur.Stats.level}</p>
-          <p class=""textShadow"">Captures : {utilisateur.Stats.pokeCaught}</p>
-            </div>
-        </div>
-        <!-- Favorite creature -->
-        <div class=""col"">
-          <h6 class=""textShadow"">Creature Favorite :</h6>
-          <p class=""textShadow"">{Commun.FullInfoShinyNormal(Commun.CapitalizePhrase(utilisateur.Stats.favoritePoke))}</p>
-          <img src=""{urlSpritePokeFav}"" alt=""userprofile fav creature"" style=""width: 128px;"">
-        </div>
-      </div>
-    </div>
-    <!-- Badges -->
-    <div class=""container"">
-      <div class=""row"">
-        {badgePart}
-      </div>
-    </div>
-  </div>
-
-  <button id=""downloadBtn"">Télécharger ma carte</button>
-</center>
-<script src=""https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js""></script>
-<script>
-  document.getElementById(""downloadBtn"").addEventListener(""click"", function(){{
-    var cardElement = document.querySelector("".generatedCard"");
-    domtoimage.toPng(cardElement)
-      .then(function(dataUrl){{
-        var downloadLink = document.createElement('a');
-        downloadLink.href = dataUrl;
-        downloadLink.download = 'ma-carte.png';
-        downloadLink.click();
-      }})
-      .catch(function(error) {{
-        console.error(""Une erreur est survenue :"", error);
-      }});
-  }});
-</script>
-";
-
-            return data;
-        }
-
-        public string GetUserBadge(AppSettings settings)
-        {
-            string data = "";
-            string wip = "";
-            try
-            {
-                User utilisateur = new User(userRequest.UserName, userRequest.Platform, userRequest.UserCode, dataConnexion);
-                utilisateur.generateStatsAchievement(settings, globalAppSettings);
-                data += $"<p>Level {utilisateur.Stats.level}</p><br><p>{utilisateur.Stats.currentXP} XP/{utilisateur.Stats.MaxXPLevel} XP</p><br><p>{utilisateur.Stats.totalXP} XP Totale</p><br>";
-
-                List<string> GroupsBadges = utilisateur.Stats.badges.Select(element => element.Group).Distinct().ToList();
-                foreach (string group in GroupsBadges)
-                {
-                    List<Badge> badgesOfThisGroup = utilisateur.Stats.badges.Where(g => g.Group == group).ToList();
-                    List<string> SubGroupsBadges = badgesOfThisGroup.Select(element => element.SubGroup).Distinct().ToList();
-                    data += $"<br><br><br><h2 class=\"col-12\" style=\"margin-top:25px\"><b>{group.ToString()} [{badgesOfThisGroup.Where(x => x.Obtained).Count().ToString()}/{badgesOfThisGroup.Count}]</b></h2>";
-                    data += "<div class=\"row\">";
-                    foreach (string subgroup in SubGroupsBadges)
-                    {
-                        List<Badge> badgeOfThisSubgroup = badgesOfThisGroup.Where(element => element.SubGroup == subgroup).ToList();
-                        data += $"  <br><br><h4 class=\"col-12\" style=\"margin-top:15px\"><b>{subgroup.ToString()} [{badgeOfThisSubgroup.Where(x => x.Obtained).Count().ToString()}/{badgeOfThisSubgroup.Count}]</b></h4>";
-                        data += "   <div class=\"row\">";
-
-                        foreach (Badge badge in badgeOfThisSubgroup)
-                        {
-                            wip = badge.Obtained ? badge.Description : "????";
-                            wip += $" [+{badge.XP}XP]";
-                            data += $@"
-                            <div style=""width: 29vw;  margin-left: 1vw; margin-bottom: 15px;"">
-                                <div class=""card {badge.Rarity.ToLower()}"" style=""background-color: #222222;  height: 220px;"">
-                                  <center><br><img src=""{badge.IconUrl}"" class=""card-img-top trophy-{badge.Obtained}"" alt=""..."" style=""height: 96px; width: auto;""></center>
-                                  <div class=""card-body"">
-                                    <h5 class=""card-title"">{badge.Title}</h5>
-                                    <p class=""card-text"">{wip}</p>
-                                  </div>
-                                </div>
-                            </div>";
-                        }
-                        data += "   </div>";
-                    }
-                    data += "</div>";
-                }
-            }
-            catch (Exception)
-            {
-            }
-
-            return data;
-        }
-
-        public string getStringNumber(int ballLaunched)
-        {
-            string result = string.Empty;
-            float rounded = 0;
-            if (ballLaunched < 1000)
-            {
-                rounded = ballLaunched;
-                result = $"{rounded}";
-            }
-            else if (ballLaunched < 1000000)
-            {
-                rounded = ballLaunched;
-                result = $"{Math.Round(rounded / 1000, 2)}K";
-            }
-            else
-            {
-                rounded = ballLaunched;
-                result = $"{Math.Round(rounded / 1000000, 2)}M";
-            }
-            return result;
+            File.WriteAllText(filePath.ToLower(), fileContent);
         }
     }
 }

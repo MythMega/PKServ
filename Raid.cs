@@ -1,7 +1,8 @@
-﻿using PKServ.Business;
+﻿using PKServ.Binding;
+using PKServ.Business;
 using PKServ.Configuration;
+using PKServ.Entity.Raid;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,16 @@ namespace PKServ
         /// </summary>
         public Dictionary<string, int> UserCodeCatchStatut { get; set; }
 
+        /// <summary>
+        /// Last attack
+        /// </summary>
+        public Dictionary<string, DateTime> UserCodeLastAttack { get; set; }
+
+        /// <summary>
+        /// Statut
+        /// </summary>
+        public Dictionary<string, (string statut, int remainingTours, DateTime recoveryTime)> UserCodeStatut { get; set; }
+
         public int PV { get; set; }
         public DataConnexion DataConnexion { get; set; }
 
@@ -39,9 +50,13 @@ namespace PKServ
         public int? PVMax { get; set; } = -1;
         public int? CatchRate { get; set; } = -1;
         public int? ShinyRate { get; set; } = -1;
-        public string bossName { get; set; }
+        public string BossName { get; set; }
+
+        public List<UserRaidStats> UserRaidStats { get; set; } = [];
 
         public bool? alreadyGiven { get; set; } = false;
+
+        public string? LastAttackerUserCode { get; set; } = null;
 
         [JsonConstructor]
         public Raid(string bossName, bool displayShiny, int? PVMax = null, int? catchRate = null, int? shinyRate = null)
@@ -49,28 +64,26 @@ namespace PKServ
             this.PVMax = PVMax;
             CatchRate = catchRate;
             ShinyRate = shinyRate;
-            this.bossName = bossName;
-            InitializeBoss(this.bossName);
+            this.BossName = bossName;
             this.UserCodeCatchStatut = [];
             this.UserDamageBase = [];
+            this.UserCodeLastAttack = [];
+            this.UserCodeStatut = [];
             this.DisplayShiny = displayShiny;
             this.Stats = new RaidStats();
         }
 
-        public void InitializeBoss(string Name)
+        public void InitializeBoss(List<Pokemon> pokemons)
         {
             var options = new JsonSerializerOptions
             {
                 IncludeFields = true
             };
-            List<Pokemon> pokemons = new List<Pokemon>();
-            pokemons.AddRange(JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./pokemons.json"), options));
-            pokemons.AddRange(JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./customPokemons.json"), options));
-            Name = Name.Trim().Replace("_", " ").ToLower();
-            this.Boss = pokemons.Where(x => Commun.isSamePoke(x, Name)).FirstOrDefault();
+            BossName = BossName.Trim().Replace("_", " ").ToLower();
+            this.Boss = pokemons.Where(x => Commun.isSamePoke(x, BossName)).FirstOrDefault();
             if (this.Boss == null)
             {
-                throw new Exception($"No boss with name {Name}");
+                throw new Exception($"No boss with name {BossName}");
             }
         }
 
@@ -95,12 +108,27 @@ namespace PKServ
         /// <returns></returns>
         public string Attack(User user, GlobalAppSettings globalAppSettings, AppSettings settings)
         {
+            LastAttackerUserCode = user.Code_user;
+
             Random random = new Random();
             bool critical = false;
+
+            UserRaidStats personalStats;
+            if (HasRaidStats(user))
+            {
+                personalStats = UserRaidStats.First(urs => urs.User.Code_user == user.Code_user);
+            }
+            else
+            {
+                personalStats = new UserRaidStats(user);
+                UserRaidStats.Add(personalStats);
+            }
+
             int damageDone = 0;
             if (UserDamageBase.Where(x => x.Key.Code_user == user.Code_user).Any())
             {
-                if (random.Next(12) == 2)
+                bool skipCritical = UserCodeStatut.Keys.Contains(user.Code_user) && UserCodeStatut[user.Code_user].statut == StatutBinding.STATUT_BACKWIND;
+                if (random.Next(12) == 2 && !skipCritical)
                 {
                     critical = true;
                 }
@@ -124,6 +152,7 @@ namespace PKServ
                 damageDone = (int)Math.Ceiling(damageDone * (1 + (user.Stats.RaidCount / 50f)));
                 UserDamageBase[user] = damageDone;
             }
+
             // gestion du boost
             int multiplier = 1;
             if (ActiveBoost is not null)
@@ -138,6 +167,260 @@ namespace PKServ
                     damageDone *= multiplier;
                 }
             }
+
+            string afkboost = "";
+            string statutEffect = "";
+
+            // gestion du statut
+
+            if (UserCodeStatut.Keys.Contains(user.Code_user))
+            {
+                personalStats.TotalRoundUnderEffect += 1;
+                switch (UserCodeStatut[user.Code_user].statut)
+                {
+                    case StatutBinding.STATUT_KO:
+                        if (UserCodeStatut[user.Code_user].recoveryTime < DateTime.Now)
+                        {
+                            UserCodeStatut.Remove(user.Code_user);
+                            statutEffect = "Tu n'es plus Ko !";
+                        }
+                        else
+                        {
+                            damageDone = 0;
+                            statutEffect = $"Ko jusqu'à {UserCodeStatut[user.Code_user].recoveryTime:HH\\hmm\\:ss}.";
+                        }
+                        break;
+
+                    case StatutBinding.STATUT_PARALYZED:
+                        if (UserCodeStatut[user.Code_user].remainingTours <= 0)
+                        {
+                            UserCodeStatut.Remove(user.Code_user);
+                            statutEffect = "Tu n'es plus paralisé !";
+                        }
+                        else
+                        {
+                            damageDone = 0;
+                            UserCodeStatut[user.Code_user] = (UserCodeStatut[user.Code_user].statut, UserCodeStatut[user.Code_user].remainingTours - 1, UserCodeStatut[user.Code_user].recoveryTime);
+                            statutEffect = $"Paralisé pendant {UserCodeStatut[user.Code_user].remainingTours} tours.";
+                        }
+                        break;
+
+                    case StatutBinding.STATUT_FROZEN:
+                        if (random.Next(100) <= 30 || UserCodeStatut[user.Code_user].remainingTours <= 0)
+                        {
+                            UserCodeStatut.Remove(user.Code_user);
+                            statutEffect = "Tu n'es plus gelé !";
+                        }
+                        else
+                        {
+                            damageDone = 0;
+                            UserCodeStatut[user.Code_user] = (UserCodeStatut[user.Code_user].statut, UserCodeStatut[user.Code_user].remainingTours - 1, UserCodeStatut[user.Code_user].recoveryTime);
+                            statutEffect = $"Toujours gelé.";
+                        }
+                        break;
+
+                    case StatutBinding.STATUT_BURNT:
+                        if (UserCodeStatut[user.Code_user].remainingTours <= 0)
+                        {
+                            UserCodeStatut.Remove(user.Code_user);
+                            statutEffect = "Tu n'es plus brûlé !";
+                        }
+                        else
+                        {
+                            damageDone = damageDone = damageDone / 2;
+                            UserCodeStatut[user.Code_user] = (UserCodeStatut[user.Code_user].statut, UserCodeStatut[user.Code_user].remainingTours - 1, UserCodeStatut[user.Code_user].recoveryTime);
+                            statutEffect = $"Brûlé, dégat divisé par deux, pendant encore {UserCodeStatut[user.Code_user].remainingTours} tours.";
+                        }
+                        break;
+
+                    case StatutBinding.STATUT_CONFUSED:
+                        if (UserCodeStatut[user.Code_user].remainingTours <= 0)
+                        {
+                            UserCodeStatut.Remove(user.Code_user);
+                            statutEffect = "Tu n'es plus confus !";
+                        }
+                        else
+                        {
+                            UserCodeStatut[user.Code_user] = (UserCodeStatut[user.Code_user].statut, UserCodeStatut[user.Code_user].remainingTours - 1, UserCodeStatut[user.Code_user].recoveryTime);
+                            // 50% chance de multiplier les dégats par deux, sinon -1
+                            if (random.Next(2) == 2)
+                            {
+                                damageDone = damageDone * -1;
+                                statutEffect = $"Confus, tu as soigné le boss.";
+                            }
+                            else
+                            {
+                                damageDone = damageDone * 2;
+                                statutEffect = $"Confus, tu as super attaqué le boss.";
+                            }
+                        }
+                        break;
+
+                    case StatutBinding.STATUT_BACKWIND:
+                        if (UserCodeStatut[user.Code_user].remainingTours <= 0)
+                        {
+                            UserCodeStatut.Remove(user.Code_user);
+                            statutEffect = "Tu n'es plus sous vent arrière ennemi !";
+                        }
+                        else
+                        {
+                            UserCodeStatut[user.Code_user] = (UserCodeStatut[user.Code_user].statut, UserCodeStatut[user.Code_user].remainingTours - 1, UserCodeStatut[user.Code_user].recoveryTime);
+                        }
+                        break;
+
+                    case StatutBinding.STATUT_ASLEEP:
+                        if (UserCodeStatut[user.Code_user].remainingTours <= 0)
+                        {
+                            UserCodeStatut.Remove(user.Code_user);
+                            statutEffect = "Tu n'es plus endormis !";
+                        }
+                        else
+                        {
+                            UserCodeStatut[user.Code_user] = (UserCodeStatut[user.Code_user].statut, UserCodeStatut[user.Code_user].remainingTours - 1, UserCodeStatut[user.Code_user].recoveryTime);
+                            if (UserCodeStatut[user.Code_user].remainingTours == 0)
+                            {
+                                damageDone = 1;
+                            }
+                            else
+                                damageDone = damageDone / UserCodeStatut[user.Code_user].remainingTours;
+                        }
+                        break;
+
+                    case StatutBinding.STATUT_HEALINGFOUNTAIN:
+                        if (UserCodeStatut[user.Code_user].remainingTours <= 0)
+                        {
+                            UserCodeStatut.Remove(user.Code_user);
+                            statutEffect = "Tu n'es plus healer !";
+                        }
+                        else
+                        {
+                            if (UserCodeStatut.Keys.Count(x => x != user.Code_user) >= 1)
+                            {
+                                damageDone = 0;
+                                string userToHeal = UserCodeLastAttack.Keys.Where(w => w != user.Code_user).ElementAt(random.Next(UserCodeLastAttack.Keys.Count(w => w != user.Code_user)));
+                                UserCodeStatut.Remove(userToHeal);
+                                personalStats.HealPeople += 1;
+                            }
+                        }
+                        break;
+
+                    case StatutBinding.STATUT_POISONED:
+
+                        if (UserCodeStatut[user.Code_user].remainingTours <= 0)
+                        {
+                            UserCodeStatut.Remove(user.Code_user);
+                            statutEffect = "Tu n'es plus empoisonné !";
+                        }
+                        else
+                        {
+                            bool poisonSomeone = false;
+
+                            // 1) Construis la liste des cibles possibles
+                            var potentialTargets = UserCodeLastAttack.Keys
+                                .Where(code =>
+                                    code != user.Code_user               // pas toi-même
+                                    && !UserCodeStatut.ContainsKey(code) // pas déjà empoisonné
+                                )
+                                .ToList();
+
+                            // 2) Si la liste n'est pas vide, choisis-en un au hasard
+                            if (potentialTargets.Count > 0 && random.Next(6) <= 1)
+                            {
+                                string userToPoison = potentialTargets[
+                                    random.Next(potentialTargets.Count)
+                                ];
+
+                                personalStats.PoisonOther += 1;
+                                statutEffect +=
+                                    $"{DataConnexion.GetPseudoByCodeUser(userToPoison)} a été empoisonné(e) par {user.Pseudo}. ";
+                                poisonSomeone = true;
+                                UserCodeStatut[userToPoison] = (StatutBinding.STATUT_POISONED, 3, DateTime.Now);
+                            }
+
+                            UserCodeStatut[user.Code_user] = (UserCodeStatut[user.Code_user].statut, UserCodeStatut[user.Code_user].remainingTours - 1, UserCodeStatut[user.Code_user].recoveryTime);
+                            damageDone = damageDone / 4;
+                            string remain = $"Il te reste {UserCodeStatut[user.Code_user].remainingTours} tours de poison.";
+                            statutEffect += poisonSomeone ? remain : $"Tu n'as empoisonné personne. {remain}";
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                int randValue = random.Next(0, 100);
+                Console.WriteLine($"--------------------------------DEBUG = randValue - StatutEffect {randValue}");
+                if (randValue <= 2)
+                {
+                    UserCodeStatut[user.Code_user] = (StatutBinding.STATUT_KO, 0, DateTime.Now.AddMinutes(5));
+                    statutEffect = "Tu as été mis KO. Tes attaques ne feront plus de dégats pendant 5 minutes !";
+                    personalStats.StatutCountKo += 1;
+                }
+                else if (randValue <= 3)
+                {
+                    UserCodeStatut[user.Code_user] = (StatutBinding.STATUT_FROZEN, 5, DateTime.Now);
+                    statutEffect = "Tu as été gelé. Tes attaques ne feront plus de dégat jusqu'a ce que tu dégèle (30% de chance à chaque tour) !";
+                    personalStats.StatutCountFrozen += 1;
+                }
+                else if (randValue <= 4)
+                {
+                    UserCodeStatut[user.Code_user] = (StatutBinding.STATUT_BURNT, 5, DateTime.Now);
+                    statutEffect = "Tu as été brulé. Tes attaques ne feront moitié moins de dégat pendant 5 tours !";
+                    personalStats.StatutCountBurnt += 1;
+                }
+                else if (randValue <= 5)
+                {
+                    UserCodeStatut[user.Code_user] = (StatutBinding.STATUT_PARALYZED, 3, DateTime.Now);
+                    statutEffect = "Tu as été paralysé. Tes attaques ne feront pas de dégats pendant 3 tours !";
+                    personalStats.StatutCountPara += 1;
+                }
+                else if (randValue <= 6)
+                {
+                    UserCodeStatut[user.Code_user] = (StatutBinding.STATUT_CONFUSED, 1, DateTime.Now);
+                    statutEffect = "Tu es confus. Ta prochaine attaque peut doubler ou soignezr le boss !";
+                    personalStats.StatutCountConfused += 1;
+                }
+                else if (randValue <= 7)
+                {
+                    UserCodeStatut[user.Code_user] = (StatutBinding.STATUT_ASLEEP, 3, DateTime.Now);
+                    statutEffect = "Tu es endormis. Tes prochaines attaques seront faibles jusqu'a revenir a la normale !";
+                    personalStats.StatutCountAsleep += 1;
+                }
+                else if (randValue <= 8)
+                {
+                    UserCodeStatut[user.Code_user] = (StatutBinding.STATUT_BACKWIND, 3, DateTime.Now);
+                    statutEffect = "Tu es sous vent arrière. Tes prochaines attaques ne peuvent ni être chargées ni critique !";
+                    personalStats.StatutCountBackWind += 1;
+                }
+                else if (randValue <= 9)
+                {
+                    UserCodeStatut[user.Code_user] = (StatutBinding.STATUT_HEALINGFOUNTAIN, 3, DateTime.Now);
+                    statutEffect = "Tu ne fais plus de dégats pendant 3 tours, par contre tu heal un allié au hasard.";
+                    personalStats.StatutCountHealing += 1;
+                }
+                else if (randValue <= 10)
+                {
+                    UserCodeStatut[user.Code_user] = (StatutBinding.STATUT_POISONED, 3, DateTime.Now);
+                    statutEffect = "Tu es empoisonné ! Tes attaques sont divisées par 4 pendant 3 tours. 10% de chances de refiler le poison a quelqu'un a chaque attaque.";
+                    personalStats.StatutCountPoisoned += 1;
+                }
+            }
+            // charged attack
+            if (damageDone > 0 && UserCodeLastAttack.ContainsKey(user.Code_user) && (!UserCodeStatut.Keys.Contains(user.Code_user) || UserCodeStatut[user.Code_user].statut != StatutBinding.STATUT_BACKWIND))
+            {
+                // minutes depuis la dernière attaque
+                double minutes = (DateTime.Now - UserCodeLastAttack[user.Code_user]).TotalMinutes;
+                // Le boost démarre à 2 min et culmine à +100% à 7 min
+                double chargeBoost = 1 + Math.Min(1, Math.Max(0, (minutes - 2) / 5));
+                //  minutes<2  => 1.0
+                //  2≤min<7   => [1.0 → 2.0[
+                //  min≥7     => 2.0
+
+                damageDone = (int)(damageDone * chargeBoost);
+                if (chargeBoost > 1.01)
+                    afkboost += $"Attaque chargée : x{chargeBoost:F1}. ";
+            }
+
+            UserCodeLastAttack[user.Code_user] = DateTime.Now;
 
             if (Stats.UserDamageCount.Where(u => u.Key.Code_user == user.Code_user).Any())
             {
@@ -173,7 +456,9 @@ namespace PKServ
                 this.DefeatedTime = DateTime.Now;
             }
 
-            return critical ? $"[X{multiplier}] CRITIQUE ! {user.Pseudo} fait {damageDone} dégats ! [{PV}/{PVMax}]." : $"[X{multiplier}] {user.Pseudo} fait {damageDone} dégats ! [{PV}/{PVMax}].";
+            string typeDamage = damageDone > 0 ? "dégats" : "soins";
+
+            return critical ? $"[X{multiplier}] CRITIQUE ! {user.Pseudo} fait {Math.Abs(damageDone)} {typeDamage} ! [{PV}/{PVMax}]." : $"[X{multiplier}] {user.Pseudo} fait {damageDone} dégats ! {afkboost} {statutEffect} [{PV}/{PVMax}].";
         }
 
         /// <summary>
@@ -334,65 +619,45 @@ namespace PKServ
 
             #endregion csv generation
         }
-    }
 
-    public class RaidStats
-    {
-        public Dictionary<string, int> PlatformDamage { get; set; } = [];
-        public Dictionary<User, int> UserDamageCount { get; set; } = [];
-        public Dictionary<User, int> UserDamageTotal { get; set; } = [];
-
-        public RaidStats()
+        public string Heal(User raidHealer, bool self)
         {
-        }
-    }
-
-    public class RaidDamageBoost
-    {
-        public int Multiplicator { get; set; }
-        public DateTime? End { get; set; }
-        public int? Minute { get; set; }
-
-        public RaidDamageBoost()
-        {
-        }
-
-        /// <summary>
-        /// dans le cas ou on veut une durée indéfinie, on met le max
-        /// </summary>
-        /// <param name="Multiplier"></param>
-        public RaidDamageBoost(int Multiplicator)
-        {
-            this.Multiplicator = Multiplicator;
-            End = DateTime.MaxValue;
-        }
-
-        /// <summary>
-        /// dans le cas ou un json contiendrais une entrée "Minute"
-        /// </summary>
-        /// <param name="Multiplier"></param>
-        /// <param name="Minute"></param>
-        public RaidDamageBoost(int Multiplicator, int Minute)
-        {
-            this.Multiplicator = Multiplicator;
-            End = DateTime.Now.AddMinutes(Minute);
-        }
-
-        public void Initialize()
-        {
-            if (Minute.HasValue)
+            UserRaidStats personalStats;
+            if (HasRaidStats(raidHealer))
             {
-                End = DateTime.Now.AddMinutes(Minute.Value);
+                personalStats = UserRaidStats.First(urs => urs.User.Code_user == raidHealer.Code_user);
             }
             else
             {
-                End = DateTime.MaxValue;
+                personalStats = new UserRaidStats(raidHealer);
+                UserRaidStats.Add(personalStats);
+            }
+
+            if (self)
+            {
+                if (UserCodeStatut.ContainsKey(raidHealer.Code_user))
+                {
+                    UserCodeStatut.Remove(raidHealer.Code_user);
+                    personalStats.HealSelf += 1;
+                    return $"{raidHealer.Pseudo} s'est soigné (que lui)";
+                }
+                else
+                {
+                    return $"{raidHealer.Pseudo} a tenté de se soigner (mais n'était pas infecté)";
+                }
+            }
+            else
+            {
+                int nombreDePersonneQuiAvaientUnStatut = UserCodeStatut.Count;
+                personalStats.HealSelf += UserCodeStatut.Count;
+                UserCodeStatut.Clear();
+                return $"{raidHealer.Pseudo} a soigné tout le monde ! ( {nombreDePersonneQuiAvaientUnStatut} personne(s) )";
             }
         }
 
-        public bool Validity()
+        public bool HasRaidStats(User element)
         {
-            return DateTime.Now < End;
+            return UserRaidStats.Any(urs => urs.User.Code_user == element.Code_user);
         }
     }
 }

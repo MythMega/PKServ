@@ -1,12 +1,12 @@
 ﻿using Microsoft.Data.Sqlite;
 using PKServ.Entity;
+using PKServ.Entity._DATA;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Threading.Tasks;
 
 namespace PKServ.Configuration
 {
@@ -115,7 +115,6 @@ VALUES ('SQLVersion', '1');";
             if (version == 1)
             {
                 updated = true;
-                connection.Open();
 
                 string alterTableSql = @"
         ALTER TABLE user
@@ -134,7 +133,6 @@ VALUES ('SQLVersion', '1');";
             if (version == 2)
             {
                 updated = true;
-                connection.Open();
 
                 string alterTableSql = @"
         ALTER TABLE user
@@ -157,7 +155,6 @@ ADD COLUMN Stat_RaidTotalDmg INTEGER NOT NULL DEFAULT 0;
             if (version == 3)
             {
                 updated = true;
-                connection.Open();
 
                 string alterTableSql = @"
     CREATE TABLE giveaway (
@@ -178,7 +175,6 @@ ADD COLUMN Stat_RaidTotalDmg INTEGER NOT NULL DEFAULT 0;
             if (version == 4)
             {
                 updated = true;
-                connection.Open();
 
                 string alterTableSql = @"
         ALTER TABLE user
@@ -196,7 +192,6 @@ ADD COLUMN favoriteCreature TEXT NULL;
             if (version == 5)
             {
                 updated = true;
-                connection.Open();
 
                 string alterTableSql = @"
         ALTER TABLE giveaway
@@ -214,7 +209,6 @@ ADD COLUMN date DATETIME NOT NULL;
             if (version == 6)
             {
                 updated = true;
-                connection.Open();
 
                 string alterTableSql = @"
         ALTER TABLE user
@@ -232,7 +226,6 @@ ADD COLUMN avatarUrl TEXT NULL;
             if (version == 7)
             {
                 updated = true;
-                connection.Open();
 
                 string alterTableSql = @"
         ALTER TABLE user
@@ -251,7 +244,6 @@ ADD COLUMN cardsUrl TEXT NULL;
             if (version == 8)
             {
                 updated = true;
-                connection.Open();
 
                 string alterTableSql = @"
     CREATE TABLE records (
@@ -271,6 +263,24 @@ ADD COLUMN cardsUrl TEXT NULL;
                 version = 9;
             }
 
+            // ajout table cards dans users
+            if (version == 9)
+            {
+                updated = true;
+
+                string alterTableSql = @"
+    ALTER TABLE user
+    ADD COLUMN selectedZone TEXT NOT NULL DEFAULT '<void>';
+";
+
+                using (var command = new SqliteCommand(alterTableSql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                version = 10;
+            }
+
             // Mettre à jour la version dans la base de données
             newVersion = $"{version}";
             string updateSql = "UPDATE info SET value = @newValue WHERE data = @data";
@@ -281,25 +291,59 @@ ADD COLUMN cardsUrl TEXT NULL;
                 updateCommand.ExecuteNonQuery();
             }
             string result = updated ? $"Database updated successfully to version {version}" : "Database already up-to-date";
+            connection.Close();
             Console.WriteLine(result);
         }
 
-        private static bool ColumnExists(SqliteConnection connection, string tableName, string columnName)
+        public async Task<List<Entrie>> GetEntriesByPseudoAsync(string pseudoTriggered, string platformTriggered, bool includeDisabled = false)
         {
-            using (var command = new SqliteCommand($"PRAGMA table_info({tableName})", connection))
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "database.sqlite");
+            List<Entrie> entriesByPseudo = new List<Entrie>();
+
+            if (!File.Exists(path))
             {
-                using (var reader = command.ExecuteReader())
+                return entriesByPseudo;
+            }
+
+            using (SqliteConnection connection = new SqliteConnection($"Data Source={path}"))
+            {
+                await connection.OpenAsync();
+                var options = new JsonSerializerOptions
                 {
-                    while (reader.Read())
+                    IncludeFields = true
+                };
+                string query = @"
+            SELECT Id, Pseudo, Stream, Platform, PokeName, CountNormal, CountShiny, DataLastCatch, DataFirstCatch, CODE_USER
+            FROM Entrees
+            WHERE Pseudo = @Pseudo AND Platform = @Platform";
+
+                using (SqliteCommand command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Pseudo", pseudoTriggered);
+                    command.Parameters.AddWithValue("@Platform", platformTriggered);
+
+                    using (SqliteDataReader reader = await command.ExecuteReaderAsync())
                     {
-                        if (reader["name"].ToString() == columnName)
+                        while (reader.Read())
                         {
-                            return true;
+                            int id = reader.GetInt32(0);
+                            string pseudo = reader.GetString(1);
+                            string stream = reader.GetString(2);
+                            string platform = reader.GetString(3);
+                            string pokeName = reader.GetString(4);
+                            int countNormal = reader.GetInt32(5);
+                            int countShiny = reader.GetInt32(6);
+                            DateTime last = reader.GetDateTime(7);
+                            DateTime first = reader.GetDateTime(8);
+                            string Code_User = reader.GetString(9);
+
+                            entriesByPseudo.Add(new Entrie(id, pseudo, stream, platform, pokeName, countNormal, countShiny, last, first, Code_User));
                         }
                     }
                 }
             }
-            return false;
+
+            return entriesByPseudo;
         }
 
         public List<Entrie> GetEntriesByPseudo(string pseudoTriggered, string platformTriggered, bool includeDisabled = false)
@@ -319,7 +363,6 @@ ADD COLUMN cardsUrl TEXT NULL;
                 {
                     IncludeFields = true
                 };
-                List<Pokemon> pokemonsEnabled = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./pokemons.json"), options).Where(w => w.enabled).ToList();
                 string query = @"
             SELECT Id, Pseudo, Stream, Platform, PokeName, CountNormal, CountShiny, DataLastCatch, DataFirstCatch, CODE_USER
             FROM Entrees
@@ -354,7 +397,7 @@ ADD COLUMN cardsUrl TEXT NULL;
             return entriesByPseudo;
         }
 
-        public List<Entrie> GetAllEntries(bool includeDisabled = false)
+        public List<Entrie> GetAllEntries()
         {
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "database.sqlite");
             List<Entrie> entriesByPseudo = new List<Entrie>();
@@ -371,7 +414,6 @@ ADD COLUMN cardsUrl TEXT NULL;
                 {
                     IncludeFields = true
                 };
-                List<Pokemon> pokemonsEnabled = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./pokemons.json"), options).Where(w => w.enabled).ToList();
                 string query = @"
             SELECT Id, Pseudo, Stream, Platform, PokeName, CountNormal, CountShiny, DataLastCatch, DataFirstCatch
             FROM Entrees";
@@ -401,11 +443,78 @@ ADD COLUMN cardsUrl TEXT NULL;
             return entriesByPseudo;
         }
 
-        public void UpdateUserStatsMoneyBall(string pseudo, string platform, int ballsLaunched, int moneySpent, string CODE_USER)
+        public string GetFirstNonNullStream()
+        {
+            // Chemin vers la DB
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "database.sqlite");
+            if (!File.Exists(path))
+            {
+                return null; // ou string.Empty, selon vos besoins
+            }
+
+            // On ne sélectionne qu'une seule colonne et la première ligne où Stream n'est pas NULL
+            string query = @"
+        SELECT Stream
+        FROM Entrees
+        WHERE Stream IS NOT NULL
+        LIMIT 1;
+    ";
+
+            using (var connection = new SqliteConnection($"Data Source={path}"))
+            {
+                connection.Open();
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    // ExecuteScalar renvoie le premier champ de la première ligne
+                    object result = command.ExecuteScalar();
+                    return result?.ToString();
+                    // si result == null (pas de lignes), retourne null
+                }
+            }
+        }
+
+        public async Task CreateUser(string pseudo, string platform, string code_user, string avatarUrl)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+            // Insérer une nouvelle ligne si l'utilisateur n'existe pas
+            string insertQuery = @"
+                    INSERT INTO user (CODE_USER, Pseudo, Platform)
+                    VALUES (@CODE_USER, @Pseudo, @Platform)";
+
+            using var insertCommand = new SqliteCommand(insertQuery, connection);
+            insertCommand.Parameters.AddWithValue("@CODE_USER", code_user);
+            insertCommand.Parameters.AddWithValue("@Pseudo", pseudo);
+            insertCommand.Parameters.AddWithValue("@Platform", platform);
+
+            await insertCommand.ExecuteNonQueryAsync();
+            connection.Close();
+        }
+
+        public async Task CreateUser(User user)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+            // Insérer une nouvelle ligne si l'utilisateur n'existe pas
+            string insertQuery = @"
+                    INSERT INTO user (CODE_USER, Pseudo, Platform)
+                    VALUES (@CODE_USER, @Pseudo, @Platform)";
+
+            using var insertCommand = new SqliteCommand(insertQuery, connection);
+            insertCommand.Parameters.AddWithValue("@CODE_USER", user.Code_user);
+            insertCommand.Parameters.AddWithValue("@Pseudo", user.Pseudo);
+            insertCommand.Parameters.AddWithValue("@Platform", user.Platform);
+
+            await insertCommand.ExecuteNonQueryAsync();
+            connection.Close();
+            Console.WriteLine("\n\nUTILISATEUR CREE = " + user.Pseudo + "   " + user.Code_user);
+        }
+
+        public async Task UpdateUserStatsMoneyBall(string pseudo, string platform, int ballsLaunched, int moneySpent, string CODE_USER)
         {
             using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
             {
-                connection.Open();
+                await connection.OpenAsync();
 
                 // Vérifier si l'utilisateur existe
                 string checkQuery = @"
@@ -439,7 +548,7 @@ ADD COLUMN cardsUrl TEXT NULL;
                             updateCommand.Parameters.AddWithValue("@BallsLaunched", ballsLaunched);
                             updateCommand.Parameters.AddWithValue("@MoneySpent", moneySpent);
 
-                            updateCommand.ExecuteNonQuery();
+                            await updateCommand.ExecuteNonQueryAsync();
                         }
                     }
                     else
@@ -457,7 +566,7 @@ ADD COLUMN cardsUrl TEXT NULL;
                             insertCommand.Parameters.AddWithValue("@BallsLaunched", ballsLaunched);
                             insertCommand.Parameters.AddWithValue("@MoneySpent", moneySpent);
 
-                            insertCommand.ExecuteNonQuery();
+                            await insertCommand.ExecuteNonQueryAsync();
                         }
                     }
                 }
@@ -533,6 +642,7 @@ ADD COLUMN cardsUrl TEXT NULL;
                             insertCommand.ExecuteNonQuery();
                         }
                     }
+                    connection.Close();
                 }
             }
         }
@@ -926,6 +1036,32 @@ ADD COLUMN cardsUrl TEXT NULL;
             return pseudo;
         }
 
+        internal string GetPseudoByCodeUser(string codeUser)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
+            {
+                connection.Open();
+                string query = @"
+                SELECT Pseudo
+                FROM user
+                WHERE CODE_USER = @CodeUser AND Pseudo IS NOT NULL
+                LIMIT 1";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@CodeUser", codeUser);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return reader["Pseudo"].ToString();
+                        }
+                    }
+                }
+            }
+            return "NOT FOUND";
+        }
+
         internal string GetCodeUserByPlatformPseudo(User item)
         {
             string platform = item.Platform;
@@ -1006,6 +1142,7 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
                     command.Parameters.AddWithValue("@Platform", platform);
                     command.ExecuteNonQuery();
                 }
+                connection.Close();
             }
         }
 
@@ -1036,6 +1173,8 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
                     command.Parameters.AddWithValue("@Platform", platform);
                     command.ExecuteNonQuery();
                 }
+
+                connection.Close();
             }
         }
 
@@ -1051,24 +1190,23 @@ WHERE Platform = @Platform AND Pseudo = @Pseudo AND CODE_USER IS NOT NULL LIMIT 
             string platform = entrie.Platform;
             string pokeName = entrie.PokeName;
 
-            using (var connection = new SqliteConnection($"Data Source={dataFilePath}"))
-            {
-                connection.Open();
-                string query = @"
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+            string query = @"
         DELETE FROM entrees
         WHERE (Pseudo = @Pseudo AND CODE_USER = @CodeUser AND Platform = @Platform AND Pokename = @Pokename)
            OR (Pseudo = @Pseudo AND Platform = @Platform AND Pokename = @Pokename AND NOT EXISTS (
                SELECT 1 FROM entrees WHERE Pseudo = @Pseudo AND CODE_USER = @CodeUser AND Platform = @Platform AND Pokename = @Pokename))";
 
-                using (var command = new SqliteCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Pseudo", pseudo);
-                    command.Parameters.AddWithValue("@CodeUser", codeUser);
-                    command.Parameters.AddWithValue("@Platform", platform);
-                    command.Parameters.AddWithValue("@Pokename", pokeName);
-                    command.ExecuteNonQuery();
-                }
+            using (var command = new SqliteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@Pseudo", pseudo);
+                command.Parameters.AddWithValue("@CodeUser", codeUser);
+                command.Parameters.AddWithValue("@Platform", platform);
+                command.Parameters.AddWithValue("@Pokename", pokeName);
+                command.ExecuteNonQuery();
             }
+            connection.Close();
         }
 
         internal void UpdateUserStatsMoney(int moneyEarned, User user, string mode = "update")
@@ -1369,6 +1507,28 @@ WHERE Usercode = @Usercode";
             connection.Close();
         }
 
+        internal void UpdateAvatar(string avatarUrl, string userCode)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+
+            string updateQuery = @"
+                    UPDATE user
+                    SET
+                        avatarUrl = @AVATAR_URL
+                    WHERE CODE_USER = @CODE_USER";
+
+            using (var command = new SqliteCommand(updateQuery, connection))
+            {
+                command.Parameters.AddWithValue("@CODE_USER", userCode);
+                command.Parameters.AddWithValue("@AVATAR_URL", avatarUrl);
+
+                command.ExecuteNonQuery();
+            }
+
+            connection.Close();
+        }
+
         internal void UpdateCardBackground(User user, string url)
         {
             using var connection = new SqliteConnection($"Data Source={dataFilePath}");
@@ -1587,6 +1747,373 @@ WHERE Usercode = @Usercode";
                     insertCommand.ExecuteNonQuery();
                 }
             }
+        }
+
+        public Zone GetZoneUser(string userCode, List<Zone> zones)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+
+            string query = @"
+            SELECT
+                selectedZone
+            FROM
+                user
+            WHERE
+                CODE_USER = @CODE_USER
+            LIMIT 1";
+
+            using (var command = new SqliteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@CODE_USER", userCode);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        try
+                        {
+                            return zones.Where(w => w.Name == reader["selectedZone"].ToString()).First();
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception("Zone not found : " + reader["selectedZone"].ToString());
+                        }
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
+
+        internal async Task SetUserZone(string code_user, string name)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            await connection.OpenAsync();
+
+            string query = @"
+        UPDATE user
+        SET selectedZone = @selectedZone
+        WHERE CODE_USER = @CODE_USER";
+
+            using (var command = new SqliteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@selectedZone", name);
+                command.Parameters.AddWithValue("@CODE_USER", code_user);
+
+                int rowsAffected = await command.ExecuteNonQueryAsync();
+                if (rowsAffected == 0)
+                {
+                    throw new Exception($"Aucun utilisateur trouvé avec le code {code_user}");
+                }
+            }
+        }
+
+        public User GetUserBaseInfo(string userCode, string platform, AppSettings appSettings)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            connection.Open();
+
+            string query = @"
+            SELECT
+                Pseudo, selectedZone, Platform, CODE_USER, avatarUrl, cardsUrl, favoriteCreature
+            FROM
+                user
+            WHERE
+                CODE_USER = @CODE_USER
+                AND Platform = @Platform
+            LIMIT 1";
+
+            using (var command = new SqliteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@CODE_USER", userCode);
+                command.Parameters.AddWithValue("@Platform", platform);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        try
+                        {
+                            User utilisateur = new User
+                            {
+                                Pseudo = reader["Pseudo"].ToString(),
+                                Platform = reader["Platform"].ToString(),
+                                Code_user = reader["CODE_USER"].ToString(),
+                                Location = appSettings.Zones.Where(w => Commun.CompareStrings(w.Name, reader["selectedZone"].ToString())).First() ?? Commun.GetBaseZone(),
+                                AvatarUrl = reader["avatarUrl"]?.ToString(),
+                                CardBackgroundUrl = reader["cardsUrl"]?.ToString()
+                            };
+                            try
+                            {
+                                utilisateur.FavoritePoke = appSettings.pokemons.Where(w => Commun.CompareStrings(w.Name_FR, reader["favoriteCreature"].ToString().Split('#')[0])).First() ??
+                                appSettings.pokemons.Where(w => Commun.CompareStrings(w.Name_FR, this.GetEntriesByPseudo(reader["Pseudo"].ToString(), platform)[0].PokeName)).First();
+                            }
+                            catch
+                            {
+                            }
+                            return utilisateur;
+                        }
+                        catch (Exception)
+                        {
+                            throw new KeyNotFoundException($"Dataconnexion.GetUserBaseInfo User not found {userCode} {platform}");
+                        }
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update le pseudo d'un utilisateur dans la base de données.
+        /// Filtrage where avec le code utilisateur et la plateforme.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="NewUserName"></param>
+        /// <returns></returns>
+        public async Task UpdateUserPseudo(User user, string NewUserName)
+        {
+            using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            await connection.OpenAsync();
+
+            string query = @"
+        UPDATE user
+        SET Pseudo = @Pseudo
+        WHERE CODE_USER = @CODE_USER";
+
+            using (var command = new SqliteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@Pseudo", NewUserName);
+                command.Parameters.AddWithValue("@CODE_USER", user.Code_user);
+
+                int rowsAffected = await command.ExecuteNonQueryAsync();
+                if (rowsAffected == 0)
+                {
+                    throw new Exception($"Aucun utilisateur trouvé avec le code {user.Code_user}");
+                }
+            }
+        }
+
+        public async Task<List<Entrie>> GetEntrieByCodeUser(string code_user, AppSettings settings)
+        {
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "database.sqlite");
+            List<Entrie> entriesByPseudo = new List<Entrie>();
+
+            if (!File.Exists(path))
+            {
+                return entriesByPseudo;
+            }
+
+            using (SqliteConnection connection = new SqliteConnection($"Data Source={path}"))
+            {
+                await connection.OpenAsync();
+                var options = new JsonSerializerOptions
+                {
+                    IncludeFields = true
+                };
+                string query = @"
+            SELECT Id, Pseudo, Stream, Platform, PokeName, CountNormal, CountShiny, DataLastCatch, DataFirstCatch, CODE_USER
+            FROM Entrees
+            WHERE CODE_USER = @Usercode";
+
+                using (SqliteCommand command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Usercode", code_user);
+
+                    using (SqliteDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            int id = reader.GetInt32(0);
+                            string pseudo = reader.GetString(1);
+                            string stream = reader.GetString(2);
+                            string platform = reader.GetString(3);
+                            string pokeName = reader.GetString(4);
+                            int countNormal = reader.GetInt32(5);
+                            int countShiny = reader.GetInt32(6);
+                            DateTime last = reader.GetDateTime(7);
+                            DateTime first = reader.GetDateTime(8);
+                            string Code_User = reader.GetString(9);
+
+                            entriesByPseudo.Add(new Entrie(id, pseudo, stream, platform, pokeName, countNormal, countShiny, last, first, Code_User));
+                        }
+                    }
+                }
+            }
+
+            return entriesByPseudo;
+        }
+
+        public async Task<List<BDD_USER>> GetAllUsersEntitiesAsync()
+        {
+            var resultats = new List<BDD_USER>();
+            var erroredUsersEntries = new List<int>();
+
+            await using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            await connection.OpenAsync();
+
+            const string query = @"
+        SELECT *
+          FROM user;
+    ";
+
+            await using var command = new SqliteCommand(query, connection);
+            await using var reader = await command.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                try
+                {
+                    var user = new BDD_USER
+                    {
+                        Id = reader.IsDBNull(reader.GetOrdinal("Id"))
+                                                 ? null
+                                                 : reader.GetInt32(reader.GetOrdinal("Id")),
+
+                        CODE_USER = reader.IsDBNull(reader.GetOrdinal("CODE_USER"))
+                                                 ? null
+                                                 : reader.GetString(reader.GetOrdinal("CODE_USER")),
+
+                        Pseudo = reader.IsDBNull(reader.GetOrdinal("Pseudo"))
+                                                 ? null
+                                                 : reader.GetString(reader.GetOrdinal("Pseudo")),
+
+                        Platform = reader.IsDBNull(reader.GetOrdinal("Platform"))
+                                                 ? null
+                                                 : reader.GetString(reader.GetOrdinal("Platform")),
+
+                        Stat_BallLaunched = reader.GetInt32(reader.GetOrdinal("Stat_BallLaunched")),
+                        Stat_MoneySpent = reader.GetInt32(reader.GetOrdinal("Stat_MoneySpent")),
+                        pokeReceived_normal = reader.GetInt32(reader.GetOrdinal("pokeReceived_normal")),
+                        pokeReceived_shiny = reader.GetInt32(reader.GetOrdinal("pokeReceived_shiny")),
+                        pokeScrapped_normal = reader.GetInt32(reader.GetOrdinal("pokeScrapped_normal")),
+                        pokeScrapped_shiny = reader.GetInt32(reader.GetOrdinal("pokeScrapped_shiny")),
+                        customMoney = reader.GetInt32(reader.GetOrdinal("customMoney")),
+                        Stat_tradeCount = reader.GetInt32(reader.GetOrdinal("Stat_tradeCount")),
+                        Stat_RaidCount = reader.GetInt32(reader.GetOrdinal("Stat_RaidCount")),
+                        Stat_RaidTotalDmg = reader.GetInt32(reader.GetOrdinal("Stat_RaidTotalDmg")),
+                        favoriteCreature = reader.IsDBNull(reader.GetOrdinal("favoriteCreature"))
+                                                 ? null
+                                                 : reader.GetString(reader.GetOrdinal("favoriteCreature")),
+
+                        avatarUrl = reader.IsDBNull(reader.GetOrdinal("avatarUrl"))
+                                                 ? null
+                                                 : reader.GetString(reader.GetOrdinal("avatarUrl")),
+
+                        cardsUrl = reader.IsDBNull(reader.GetOrdinal("cardsUrl"))
+                                                 ? null
+                                                 : reader.GetString(reader.GetOrdinal("cardsUrl")),
+
+                        selectedZone = reader.IsDBNull(reader.GetOrdinal("selectedZone"))
+                                                 ? Commun.GetBaseZone().Name
+                                                 : reader.GetString(reader.GetOrdinal("selectedZone"))
+                    };
+
+                    resultats.Add(user);
+                }
+                catch (Exception ex)
+                {
+                    // Si l’Id est dispo, on le stocke pour debug
+                    if (!reader.IsDBNull(reader.GetOrdinal("Id")))
+                    {
+                        erroredUsersEntries.Add(reader.GetInt32(reader.GetOrdinal("Id")));
+                    }
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            return resultats;
+        }
+
+        public async Task DeleteListUsersByIds(List<int> toDelete)
+        {
+            if (toDelete == null || toDelete.Count == 0)
+                return;
+
+            await using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            await connection.OpenAsync();
+
+            // Crée autant de paramètres que d'IDs
+            var paramNames = toDelete
+                .Select((id, idx) => new { Name = $"@id{idx}", Value = id })
+                .ToList();
+
+            // DELETE … WHERE Id IN (@id0, @id1, @id2, …)
+            var sql = $"DELETE FROM user WHERE Id IN ({string.Join(", ", paramNames.Select(p => p.Name))});";
+
+            await using var cmd = new SqliteCommand(sql, connection);
+            foreach (var p in paramNames)
+                cmd.Parameters.AddWithValue(p.Name, p.Value);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateListUsersByIds(List<BDD_USER> toKeepList)
+        {
+            if (toKeepList == null || toKeepList.Count == 0)
+                return;
+
+            await using var connection = new SqliteConnection($"Data Source={dataFilePath}");
+            await connection.OpenAsync();
+
+            // CAST de la transaction en SqliteTransaction
+            await using var tx = (SqliteTransaction)await connection.BeginTransactionAsync();
+
+            const string sql = @"
+        UPDATE user
+           SET CODE_USER           = @CODE_USER,
+               Pseudo              = @Pseudo,
+               Platform            = @Platform,
+               Stat_BallLaunched   = @Stat_BallLaunched,
+               Stat_MoneySpent     = @Stat_MoneySpent,
+               pokeReceived_normal = @pokeReceived_normal,
+               pokeReceived_shiny  = @pokeReceived_shiny,
+               pokeScrapped_normal = @pokeScrapped_normal,
+               pokeScrapped_shiny  = @pokeScrapped_shiny,
+               customMoney         = @customMoney,
+               Stat_tradeCount     = @Stat_tradeCount,
+               Stat_RaidCount      = @Stat_RaidCount,
+               Stat_RaidTotalDmg   = @Stat_RaidTotalDmg,
+               favoriteCreature    = @favoriteCreature,
+               avatarUrl           = @avatarUrl,
+               cardsUrl            = @cardsUrl,
+               selectedZone        = @selectedZone
+         WHERE Id = @Id;
+    ";
+
+            foreach (var user in toKeepList)
+            {
+                await using var cmd = new SqliteCommand(sql, connection, tx);
+
+                // Les AddWithValue() gèrent DBNull pour les strings nullables
+                cmd.Parameters.AddWithValue("@Id", user.Id ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@CODE_USER", user.CODE_USER);
+                cmd.Parameters.AddWithValue("@Pseudo", user.Pseudo ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Platform", user.Platform ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Stat_BallLaunched", user.Stat_BallLaunched);
+                cmd.Parameters.AddWithValue("@Stat_MoneySpent", user.Stat_MoneySpent);
+                cmd.Parameters.AddWithValue("@pokeReceived_normal", user.pokeReceived_normal);
+                cmd.Parameters.AddWithValue("@pokeReceived_shiny", user.pokeReceived_shiny);
+                cmd.Parameters.AddWithValue("@pokeScrapped_normal", user.pokeScrapped_normal);
+                cmd.Parameters.AddWithValue("@pokeScrapped_shiny", user.pokeScrapped_shiny);
+                cmd.Parameters.AddWithValue("@customMoney", user.customMoney);
+                cmd.Parameters.AddWithValue("@Stat_tradeCount", user.Stat_tradeCount);
+                cmd.Parameters.AddWithValue("@Stat_RaidCount", user.Stat_RaidCount);
+                cmd.Parameters.AddWithValue("@Stat_RaidTotalDmg", user.Stat_RaidTotalDmg);
+                cmd.Parameters.AddWithValue("@favoriteCreature", user.favoriteCreature ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@avatarUrl", user.avatarUrl ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@cardsUrl", user.cardsUrl ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@selectedZone", user.selectedZone);
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+
+            await tx.CommitAsync();
         }
     }
 }

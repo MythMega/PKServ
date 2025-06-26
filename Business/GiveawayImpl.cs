@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace PKServ.Business
 {
@@ -84,7 +82,8 @@ namespace PKServ.Business
         /// <returns></returns>
         public static List<Giveaway> GetGiveaways(AppSettings settings)
         {
-            List<Giveaway> result = JsonSerializer.Deserialize<List<Giveaway>>(File.ReadAllText("./giveaways.json"), Commun.GetJsonSerializerOptions());
+            List<Giveaway> result = JsonSerializer.Deserialize<List<Giveaway>>(File.ReadAllText("./Data/StreamDex/giveaways.json"), Commun.GetJsonSerializerOptions());
+            result.AddRange(LoadCustomGiveaway());
             result.ForEach(ga =>
             {
                 List<Pokemon> pokemons = new List<Pokemon>();
@@ -105,6 +104,30 @@ namespace PKServ.Business
                 ga.Pokemons = pokemons;
             });
             return result;
+        }
+
+        private static List<Giveaway> LoadCustomGiveaway()
+        {
+            // Giveaway personnalisées
+            List<Giveaway> custom = new List<Giveaway>();
+            if (!Directory.Exists("./Data/Custom/Overlays"))
+            {
+                Directory.CreateDirectory("./Data/Custom/Overlays");
+            }
+            foreach (string file in Directory.GetFiles("./Data/Custom/Overlays", "*.json"))
+            {
+                try
+                {
+                    List<Giveaway> giveawayInFile = JsonSerializer.Deserialize<List<Giveaway>>(File.ReadAllText(file), Commun.GetJsonSerializerOptions());
+                    custom.AddRange(giveawayInFile);
+                    Commun.Logger($"white#Custom Pokémon loaded from file: |yellow#{Path.GetFileName(file)}|white# : |aqua#{giveawayInFile.Count}|white#.");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error reading {file}: {e.Message}");
+                }
+            }
+            return custom;
         }
     }
 }

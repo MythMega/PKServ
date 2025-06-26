@@ -65,7 +65,7 @@ namespace PKServ
 
                 WriteFile();
             }
-            catch (Exception e)
+            catch
             {
                 if (!firstLaunch)
                 {

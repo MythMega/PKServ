@@ -92,7 +92,7 @@
       "CodeExpired": "Le code a expiré.",
       "CodeNotYetAvailable": "Le code n'est pas encore disponible."
     },
-    "type": {
+    "Types": {
       "fire": "feu",
       "water": "eau",
       "grass": "plante",
