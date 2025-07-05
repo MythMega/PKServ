@@ -40,8 +40,6 @@ namespace PKServ
 
         public List<(string Serie, int Count)> SeriesData = [];
 
-        public List<Zone> Zones = [];
-
         public AppSettings()
         {
         }
@@ -78,27 +76,11 @@ namespace PKServ
 
         public int GetIdPokeByName(string pokeName) => pokemons.IndexOf(pokemons.Where(w => w.Name_FR == pokeName).FirstOrDefault());
 
-        internal Pokemon getOnePokeFromBall(Pokeball pkb, Zone zone, bool shinyForced = false)
+        internal Pokemon getOnePokeFromBall(Pokeball pkb, bool shinyForced = false)
         {
             List<Pokemon> pokemonsAvailable = pokemons.Where(x => !x.isLock).ToList();
-
             if (pokemonsAvailable.Count == 0)
                 throw new Exception("No Pokemon available (maybe they're all locked = true ?");
-
-            List<Pokemon> zoneFilteredPokemon = [];
-
-            foreach (Pokemon pokemon in pokemonsAvailable)
-            {
-                if (!pokemon.IsZoneExclusive || pokemon.ZonesList.Any(z => z.Name.ToLower() == (zone.Name.ToLower() ?? Commun.GetBaseZone().Name.ToLower())))
-                {
-                    zoneFilteredPokemon.Add(pokemon);
-                }
-            }
-            pokemonsAvailable = zoneFilteredPokemon;
-
-            if (pokemonsAvailable.Count == 0)
-                throw new Exception($"No Pokemon available in the zone {zone.Name}.");
-
             if (pkb.exclusiveType is not null)
             {
                 pokemonsAvailable = pokemonsAvailable.Where(p => p.Type1.ToLower() == pkb.exclusiveType.ToLower() || (p.Type2 is not null && p.Type2.ToLower() == pkb.exclusiveType.ToLower())).ToList();
@@ -108,13 +90,6 @@ namespace PKServ
             if (pkb.exclusiveSerie is not null)
             {
                 pokemonsAvailable = pokemonsAvailable.Where(p => p.Serie.ToLower() == pkb.exclusiveSerie.ToLower()).ToList();
-                if (pokemonsAvailable.Count == 0)
-                    throw new Exception($"No Pokemon available (found no creature with serie {pkb.exclusiveSerie} forced by the ball).");
-            }
-
-            if (pkb.exclusiveZone is not null)
-            {
-                pokemonsAvailable = pokemonsAvailable.Where(p => p.ZonesList.Where(zone => zone.Name.ToLower() == pkb.exclusiveZone.ToLower()).Any()).ToList();
                 if (pokemonsAvailable.Count == 0)
                     throw new Exception($"No Pokemon available (found no creature with serie {pkb.exclusiveSerie} forced by the ball).");
             }

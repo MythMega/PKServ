@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Envoyer une pokéball",
+    "description": "Utilise cette commande pour lancer une Pokéball",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Pokeball"
+  },
+  {
+    "name": "Envoyer une super ball",
+    "description": "Utilise cette commande pour lancer une super ball.",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Super Ball"
+  },
+  {
+    "name": "Envoyer une hyper ball",
+    "description": "Utilise cette commande pour lancer une super ball.",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Hyper Ball"
+  },
+  {
+    "name": "Envoyer une master ball",
+    "description": "Utilise cette commande pour lancer une masterball.",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Master Ball"
+  },
+  {
+    "name": "Reward Export Dex",
+    "description": "Récompense permettant d'exporter le Pokédex.",
+    "type": "COMMAND",
+    "effect": "EXPORTDEX",
+    "ballName": null
+  },
+  {
+    "name": "Stats Command",
+    "description": "Commande pour obtenir des statistiques.",
+    "type": "COMMAND",
+    "effect": "STATS",
+    "ballName": null
+  }
+]

@@ -1,9 +1,8 @@
-﻿using PKServ.Binding;
-using PKServ.Configuration;
-using PKServ.Entity;
+﻿using PKServ.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text.Json.Serialization;
 
 namespace PKServ
@@ -65,7 +64,7 @@ namespace PKServ
         public int? valueShiny { get; set; }
         public int? priceNormal { get; set; }
         public int? priceShiny { get; set; }
-        public string? Rarity { get; set; }
+        public int? rarity { get; set; }
 
         public string? AltName { get; set; }
 
@@ -74,12 +73,6 @@ namespace PKServ
         public string? EvolveFrom { get; set; }
 
         public List<Artist> Artist { get; set; }
-
-        public List<String> ZonesNames { get; set; } = [];
-
-        public bool IsZoneExclusive { get; set; } = false;
-
-        public List<Zone> ZonesList { get; set; } = [];
 
         /// <summary>
         /// constructor
@@ -91,7 +84,7 @@ namespace PKServ
         /// <param name="isCustom">false by default</param>
         /// <param name="isLock">false by default</param>
         /// <param name="isLegendary">false by default</param>
-        public Pokemon(string name_FR, string name_EN, string sprite_Shiny, string sprite_Normal, List<Artist> artist, List<String> ZonesNames, List<Zone> ZonesList, bool isCustom = false, bool isLock = false, bool isLegendary = false, bool isShinyLock = false, int? valueNormal = null, int? valueShiny = null, int? priceNormal = null, int? priceShiny = null, string? Rarity = "COMMON", string AltName = null, string Serie = "main", bool IsZoneExclusive = true, string evolveFrom = null)
+        public Pokemon(string name_FR, string name_EN, string sprite_Shiny, string sprite_Normal, List<Artist> artist, bool isCustom = false, bool isLock = false, bool isLegendary = false, bool isShinyLock = false, int? valueNormal = null, int? valueShiny = null, int? priceNormal = null, int? priceShiny = null, int? rarity = 1, string AltName = null, string Serie = "main", string evolveFrom = null)
         {
             Name_FR = name_FR;
             Name_EN = name_EN;
@@ -105,7 +98,7 @@ namespace PKServ
             this.valueShiny = valueShiny;
             this.priceNormal = priceNormal;
             this.priceShiny = priceShiny;
-            this.Rarity = Rarity.ToUpper();
+            this.rarity = rarity;
             if (AltName is null)
             {
                 this.AltNameForced = true;
@@ -119,10 +112,6 @@ namespace PKServ
             this.Serie = Serie;
             this.EvolveFrom = evolveFrom;
             this.Artist = artist is null ? [] : artist;
-            this.IsZoneExclusive = IsZoneExclusive;
-            this.ZonesNames = ZonesNames is null ? [] : ZonesNames;
-            if (this.ZonesNames.Count == 0 && !isLock)
-                this.ZonesList.Add(Commun.GetBaseZone());
         }
 
         public Pokemon Clone()
@@ -133,8 +122,6 @@ namespace PKServ
                 this.Sprite_Shiny,
                 this.Sprite_Normal,
                 this.Artist,
-                this.ZonesNames,
-                this.ZonesList,
                 this.isCustom,
                 this.isLock,
                 this.isLegendary,
@@ -143,10 +130,9 @@ namespace PKServ
                 this.valueShiny,
                 this.priceNormal,
                 this.priceShiny,
-                this.Rarity,
+                this.rarity,
                 this.AltName,
                 this.Serie,
-                this.IsZoneExclusive,
                 this.EvolveFrom
             )
             {
@@ -161,28 +147,6 @@ namespace PKServ
         public string GetAdditionalInfosString(GlobalAppSettings gas)
         {
             List<string> tags = [];
-
-            switch(this.Rarity)
-            {
-                case CreatureRarity.COMMON:
-                    tags.AddRange(["common", "commun"]);
-                    break;
-                case CreatureRarity.UNCOMMON:
-                    tags.AddRange(["uncommon", "peucommun"]);
-                    break;
-                case CreatureRarity.RARE:
-                    tags.AddRange(["rare"]);
-                    break;
-                case CreatureRarity.EPIC:
-                    tags.AddRange(["epic", "epique"]);
-                    break;
-                case CreatureRarity.LEGENDARY:
-                    tags.AddRange(["legendary", "legendaire"]);
-                    break;
-                case CreatureRarity.MYTHICAL:
-                    tags.AddRange(["mythical", "mythique"]);
-                    break;
-            }
 
             if (this.isLegendary)
             {
@@ -199,8 +163,7 @@ namespace PKServ
                 try
                 {
                     tags.Add(Commun.GetTranslatedType(gas, this.Type1));
-                }
-                catch { }
+                } catch { }
             }
             if (this.Type2 is not null)
             {
@@ -218,18 +181,6 @@ namespace PKServ
             }
 
             return String.Join(" ; ", tags);
-        }
-
-        internal void SetData(List<Zone> zones)
-        {
-            foreach (string zoneName in this.ZonesNames)
-            {
-                Zone zone = zones.FirstOrDefault(x => x.Name.ToLower() == zoneName.ToLower());
-                if (zone is not null)
-                {
-                    this.ZonesList.Add(zone);
-                }
-            }
         }
     }
 

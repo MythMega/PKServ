@@ -1,14 +1,16 @@
-﻿using PKServ.Binding;
-using PKServ.Configuration;
+﻿using PKServ.Configuration;
+using PKServ.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PKServ.Business
 {
     public static class RaidStatsReportImpl
     {
-        public static string GenerateRaidReport(PKServ.Raid raid, AppSettings appSettings, GlobalAppSettings globalAppSettings, DataConnexion dataConnexion)
+        public static string GenerateRaidReport(Raid raid, AppSettings appSettings, GlobalAppSettings globalAppSettings, DataConnexion dataConnexion)
         {
             User leader = raid.Stats.UserDamageTotal
                      .OrderByDescending(x => x.Value)
@@ -21,92 +23,6 @@ namespace PKServ.Business
                 float avg = (float)raid.Stats.UserDamageTotal[user] / (float)raid.Stats.UserDamageCount[user];
                 float luck = avg / (float)raid.UserDamageBase[user];
                 lucks.Add((user, luck));
-            }
-            string facts = "";
-            if (raid.UserRaidStats.Count > 0)
-            {
-                // Construction de la liste brute de tous les fun facts
-                var funFacts = new List<string>();
-                var stats = raid.UserRaidStats; // IEnumerable<UserRaidStats>
-
-                // 1) Le healer du groupe
-                var topHealer = stats.OrderByDescending(u => u.HealPeople).FirstOrDefault();
-                if (topHealer?.HealPeople > 0)
-                    funFacts.Add($"Le healer du groupe : {topHealer.User.Pseudo} {PlatformBinding.IconHTML(topHealer.User.Platform, IconSize.Small)} ({topHealer.HealPeople} personne(s) soignées)");
-
-                // 2) Le plus grand empoisonneur
-                var topPoisoner = stats.OrderByDescending(u => u.PoisonOther).FirstOrDefault();
-                if (topPoisoner?.PoisonOther > 0)
-                    funFacts.Add($"Le plus toxique : {topPoisoner.User.Pseudo} {PlatformBinding.IconHTML(topPoisoner.User.Platform, IconSize.Small)} ({topPoisoner.PoisonOther} empoisonnement(s))");
-
-                // 3) Le plus malchanceux (KO)
-                var mostKOd = stats.OrderByDescending(u => u.StatutCountKo).FirstOrDefault();
-                if (mostKOd?.StatutCountKo > 0)
-                    funFacts.Add($"Le plus malchanceux (KO) : {mostKOd.User.Pseudo} {PlatformBinding.IconHTML(mostKOd.User.Platform, IconSize.Small)} ({mostKOd.StatutCountKo} KO)");
-
-                // 4) Le plus paralysé
-                var mostParalyzed = stats.OrderByDescending(u => u.StatutCountPara).FirstOrDefault();
-                if (mostParalyzed?.StatutCountPara > 0)
-                    funFacts.Add($"Le plus paralysé : {mostParalyzed.User.Pseudo} {PlatformBinding.IconHTML(mostParalyzed.User.Platform, IconSize.Small)} ({mostParalyzed.StatutCountPara} fois)");
-
-                // 5) Le plus gelé
-                var mostFrozen = stats.OrderByDescending(u => u.StatutCountFrozen).FirstOrDefault();
-                if (mostFrozen?.StatutCountFrozen > 0)
-                    funFacts.Add($"Le plus gelé : {mostFrozen.User.Pseudo} {PlatformBinding.IconHTML(mostFrozen.User.Platform, IconSize.Small)} ({mostFrozen.StatutCountFrozen} fois)");
-
-                // 6) Le plus brûlé
-                var mostBurnt = stats.OrderByDescending(u => u.StatutCountBurnt).FirstOrDefault();
-                if (mostBurnt?.StatutCountBurnt > 0)
-                    funFacts.Add($"Le plus brûlé : {mostBurnt.User.Pseudo} {PlatformBinding.IconHTML(mostBurnt.User.Platform, IconSize.Small)} ({mostBurnt.StatutCountBurnt} fois)");
-
-                // 7) Le plus confus
-                var mostConfused = stats.OrderByDescending(u => u.StatutCountConfused).FirstOrDefault();
-                if (mostConfused?.StatutCountConfused > 0)
-                    funFacts.Add($"Le plus confus : {mostConfused.User.Pseudo} {PlatformBinding.IconHTML(mostConfused.User.Platform, IconSize.Small)} ({mostConfused.StatutCountConfused} fois)");
-
-                // 8) Le plus souvent face au vent arrière
-                var mostBackWind = stats.OrderByDescending(u => u.StatutCountBackWind).FirstOrDefault();
-                if (mostBackWind?.StatutCountBackWind > 0)
-                    funFacts.Add($"Le plus souvent face au vent arrière : {mostBackWind.User.Pseudo} {PlatformBinding.IconHTML(mostBackWind.User.Platform, IconSize.Small)} ({mostBackWind.StatutCountBackWind} fois)");
-
-                // 9) Le plus endormi
-                var mostAsleep = stats.OrderByDescending(u => u.StatutCountAsleep).FirstOrDefault();
-                if (mostAsleep?.StatutCountAsleep > 0)
-                    funFacts.Add($"Le plus endormi : {mostAsleep.User.Pseudo} {PlatformBinding.IconHTML(mostAsleep.User.Platform, IconSize.Small)} ({mostAsleep.StatutCountAsleep} fois)");
-
-                // 10) Le plus en mode guérison
-                var mostHealing = stats.OrderByDescending(u => u.StatutCountHealing).FirstOrDefault();
-                if (mostHealing?.StatutCountHealing > 0)
-                    funFacts.Add($"Meilleur healer : {mostHealing.User.Pseudo} {PlatformBinding.IconHTML(mostHealing.User.Platform, IconSize.Small)} ({mostHealing.StatutCountHealing} fois)");
-
-                // 11) Le plus empoisonné
-                var mostPoisoned = stats.OrderByDescending(u => u.StatutCountPoisoned).FirstOrDefault();
-                if (mostPoisoned?.StatutCountPoisoned > 0)
-                    funFacts.Add($"Le plus empoisonné : {mostPoisoned.User.Pseudo} {PlatformBinding.IconHTML(mostPoisoned.User.Platform, IconSize.Small)} ({mostPoisoned.StatutCountPoisoned} fois)");
-
-                // 12) Le plus grand cumul de tours sous effet
-                var mostUnderEffect = stats.OrderByDescending(u => u.TotalRoundUnderEffect).FirstOrDefault();
-                if (mostUnderEffect?.TotalRoundUnderEffect > 0)
-                    funFacts.Add($"Le plus grand cumul de tours sous effet : {mostUnderEffect.User.Pseudo} {PlatformBinding.IconHTML(mostUnderEffect.User.Platform, IconSize.Small)} ({mostUnderEffect.TotalRoundUnderEffect} tours)");
-
-                // Sélection aléatoire de 5 fun facts (ou moins si on en a moins)
-                var random = new Random();
-                var factsSelected = funFacts
-                    .OrderBy(_ => random.Next())
-                    .Take(5)
-                    .ToList();
-
-                if (factsSelected.Count > 0)
-                {
-                    foreach (string fact in factsSelected)
-                    {
-                        facts += @$"
-      <div class=""col-12"" data-aos=""fade-up"">
-        <h3>{fact}.</h3><br><br>
-      </div>
-";
-                    }
-                }
             }
 
             // Utilisateur le plus chanceux (même méthode que dans votre code)
@@ -254,9 +170,8 @@ namespace PKServ.Business
         <h3>Le plus ancien : {veteranData.veteran.Pseudo} avec un total de {veteranData.raidCount} raids.</h3><br><br>
       </div>
       <div class=""col-12"" data-aos=""fade-up"">
-        <h3>Un rookie : {rookieData.rookie.Pseudo} avec un total de {rookieData.raidCount} raids.</h3><br><br>
+        <h3>Un rookie : {rookieData.rookie.Pseudo} avec un ratio de {rookieData.raidCount}</h3><br><br>
       </div>
-             {facts}
     </div>
   </div>
 

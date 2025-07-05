@@ -1,10 +1,7 @@
 ﻿using PKServ.Admin;
 using PKServ.Business;
-using PKServ.Business.Admin;
-using PKServ.Business.Raid;
 using PKServ.Configuration;
 using PKServ.Entity;
-using PKServ.Entity.Raid;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,11 +16,11 @@ namespace PKServ
 {
     internal class Program
     {
-        private static async Task Main(string[] args)
+        private static void Main(string[] args)
         {
             #region Initiatlization
 
-            DataConnexion data = new();
+            DataConnexion data = new DataConnexion();
             data.Initialize();
 
             var options = new JsonSerializerOptions
@@ -39,22 +36,16 @@ namespace PKServ
             GlobalAppSettings globalAppSettings = JsonSerializer.Deserialize<GlobalAppSettings>(File.ReadAllText("./_settings.json"), options);
             GlobalAppSettings globalAppSettingsDefaults = JsonSerializer.Deserialize<GlobalAppSettings>(File.ReadAllText("Admin\\DefaultSettings.json"), options);
             SettingsHelper.MergeWithDefaults(globalAppSettings, globalAppSettingsDefaults);
-            globalAppSettings.FixType(globalAppSettingsDefaults);
             File.WriteAllText("./_settings.json", JsonSerializer.Serialize(globalAppSettings, options));
+
+            HttpListener listener = new HttpListener();
+            listener.Prefixes.Add($"http://localhost:{globalAppSettings.ServerPort}/");
+            listener.Start();
 
             // définition des données
             AppSettings settings = new();
-            List<User> usersHere = [new User("_history", "system")];
 
-            globalAppSettings.LanguageCode = globalAppSettings.LanguageCode.ToLower();
-            if (globalAppSettings.LanguageCode == "fr")
-            {
-                settings.allPokemons.ForEach(p => { if (p.AltNameForced) { p.AltName = p.Name_FR; } });
-            }
-            else if (globalAppSettings.LanguageCode == "en")
-            {
-                settings.allPokemons.ForEach(p => { if (p.AltNameForced) { p.AltName = p.Name_EN; } });
-            }
+            List<User> usersHere = [new User("_history", "system")];
 
             if (globalAppSettings.KeepUserInGiveAwayAfterShutdown)
             {
@@ -65,23 +56,76 @@ namespace PKServ
                 catch { }
             }
 
-            LoadAllData(ref settings, ref globalAppSettings, data, usersHere);
+            settings.allPokemons.AddRange(JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./pokemons.json"), options));
+            //dumpSprite(settings.allPokemons);
+            List<Pokemon> custom = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./customPokemons.json"), options);
+            custom.ForEach(p => { p.isCustom = true; });
+            settings.allPokemons.AddRange(custom);
+            settings.pokeballs.AddRange(JsonSerializer.Deserialize<List<Pokeball>>(File.ReadAllText("./balls.json"), options));
+            settings.triggers.AddRange(JsonSerializer.Deserialize<List<Trigger>>(File.ReadAllText("./Triggers.json"), options));
+            settings.TrainerCardsBackgrounds.AddRange(JsonSerializer.Deserialize<List<Background>>(File.ReadAllText("./TrainerCardBackgrounds.json"), options));
+            settings.badges.AddRange(JsonSerializer.Deserialize<List<Badge>>(File.ReadAllText("./badges.json"), options).Where(x => !x.Locked).ToList());
+            settings.customOverlays.AddRange(JsonSerializer.Deserialize<List<CustomOverlay>>(File.ReadAllText("./customOverlays.json"), options));
+            settings.customOverlays.ForEach(overlay => { overlay.SetEnv(data, settings, globalAppSettings, usersHere); overlay.BuildOverlay(true); });
+            OverlayGeneration overlays = new OverlayGeneration(data, settings, globalAppSettings, usersHere);
+            globalAppSettings.LanguageCode = globalAppSettings.LanguageCode.ToLower();
+            if (globalAppSettings.LanguageCode == "fr")
+            {
+                settings.allPokemons.ForEach(p => { if (p.AltNameForced) { p.AltName = p.Name_FR; } });
+            }
+            else if (globalAppSettings.LanguageCode == "en")
+            {
+                settings.allPokemons.ForEach(p => { if (p.AltNameForced) { p.AltName = p.Name_EN; } });
+            }
+            settings.pokemons = settings.allPokemons.Where(p => p.enabled || p == null).ToList();
+            settings.giveaways = GiveawayInitializer.GetGiveaways(settings);
 
-            LogInitialsDatas(settings, globalAppSettings, usersHere);
+            List<string> Series = settings.pokemons.Select(a => a.Serie).Distinct().ToList();
+            Series.ForEach(a =>
+            {
+                settings.SeriesData.Add((a, settings.pokemons.Where(poke => poke.Serie == a).Count()));
+            });
 
+            Logger($"yellow#{globalAppSettings.Texts.serverStarted}");
+            Logger($"white#Nombre de pokémon chargé : |red#{settings.pokemons.Count}");
+            Logger($"white#Nombre de series chargé : |red#{settings.SeriesData.Count}");
+            Logger($"white#Nombre de pokeball chargé : |red#{settings.pokeballs.Count}");
+            Logger($"white#Nombre de triggers chargé : |red#{settings.triggers.Count}");
+            Logger($"white#Nombre de badges chargé : |red#{settings.badges.Count}");
+            Logger($"white#Nombre de custom overlays chargé : |red#{settings.customOverlays.Count}");
+            Logger($"white#Nombre de Background Trainer Card chargé : |red#{settings.TrainerCardsBackgrounds.Count}");
+            Logger($"white#Nombre de Code de Distributions chargé : |red#{settings.giveaways.Count}");
+            Logger($"white#Nombre d'utilisateurs chargés dans le giveaway : |red#{usersHere.Where(uh => uh.Platform != "system").Count()}");
+            Logger($"aqua#Listening on port |yellow#{globalAppSettings.ServerPort}|aqua# , so send your request at |blue#http://localhost:|yellow#{globalAppSettings.ServerPort}");
+            if (globalAppSettings.Log.logConsole.console)
+            {
+                string settingsServer = "Server settings (you can change those settings in _settings.json)";
+                Console.WriteLine("\n" + settingsServer);
+
+                Logger($"aqua#Log infos on console : |yellow#{globalAppSettings.Log.logConsole.console}");
+                Logger($"aqua#Log Json on console (require infos on console) : |yellow#{globalAppSettings.Log.logConsole.logJsonOnConsole}");
+                Logger($"aqua#Log also on File : |yellow#{globalAppSettings.Log.logFile}");
+            }
             DateTime lastExportTime = DateTime.Now;
+            generateOverlays(overlays, First: true);
             checkScheduledTasks(globalAppSettings, true);
-
-            await DataFixerImpl.FixEntries(globalAppSettings, data);
-            await DataFixerImpl.FixUsers(data);
+            try
+            {
+                if (data.GetAllEntries().Where(x => x.code.ToLower().Contains("unset") && x.Platform != "system").Count() > 0)
+                {
+                    if (globalAppSettings.Log.logConsole.console)
+                        Console.WriteLine("Fix usernames in databases");
+                    GlobalDataAction.FixUserCodeDB(_db: data, log: globalAppSettings.Log.logConsole.console);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger(e.ToString());
+            }
 
             #endregion Initiatlization
 
-            HttpListener listener = new HttpListener();
-            listener.Prefixes.Add($"http://localhost:{globalAppSettings.ServerPort}/");
-            listener.Start();
-
-            await Task.Run(async () =>
+            Task.Run(async () =>
             {
                 while (true)
                 {
@@ -103,7 +147,6 @@ namespace PKServ
                             string urlPath = request.Url.LocalPath.Trim('/');
                             string responseString = "";
                             UserRequest ctx = null;
-                            bool actionToExport = false;
 
                             if (globalAppSettings.Log.logConsole.console)
                             {
@@ -132,21 +175,6 @@ namespace PKServ
                                             }
                                         }
                                         catch { }
-                                        break;
-
-                                    case "CatchPokeNew":
-                                        BallThrowRequest ballThrowRequest = JsonSerializer.Deserialize<BallThrowRequest>(requestBody, options);
-
-                                        if (globalAppSettings.AutoSignInGiveAway)
-                                        {
-                                            AddToHere(new User(ballThrowRequest.UserName, ballThrowRequest.Platform, ballThrowRequest.UserCode, data), ref usersHere, globalAppSettings);
-                                        }
-
-                                        BallThrowTreatement traitement = new BallThrowTreatement();
-                                        await traitement.InitializeAsync(ballThrowRequest, settings, data, globalAppSettings);
-                                        responseString = await traitement.ProcessAsync(settings, globalAppSettings, data);
-                                        actionToExport = true;
-
                                         break;
 
                                     case "Evolve":
@@ -191,8 +219,18 @@ namespace PKServ
                                         }
                                         break;
 
+                                    case "GenerateDexSolo":
+                                        ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                        if (globalAppSettings.AutoSignInGiveAway)
+                                        {
+                                            AddToHere(new User(ctx.UserName, ctx.Platform, ctx.UserCode, data), ref usersHere, globalAppSettings);
+                                        }
+                                        responseString = GenerateDexSolo(ctx, data, settings, globalAppSettings);
+                                        break;
+
                                     case "GenerateDexFull":
-                                        responseString = GenerateDexFull(data, settings, globalAppSettings);
+                                        ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                        responseString = GenerateDexFull(ctx, data, settings, globalAppSettings);
                                         break;
 
                                     case "GetUserStats":
@@ -256,49 +294,6 @@ namespace PKServ
                                         }
                                         else
                                             responseString = "T'as pas le droit frere";
-                                        break;
-
-                                    case "Zone/Move/Normal":
-                                        ZoneChange rqZoneChange = JsonSerializer.Deserialize<ZoneChange>(requestBody, options);
-                                        if (globalAppSettings.AutoSignInGiveAway)
-                                        {
-                                            AddToHere(new User(rqZoneChange.User.Pseudo, rqZoneChange.User.Platform, rqZoneChange.User.Code_user, data), ref usersHere, globalAppSettings);
-                                        }
-                                        if (rqZoneChange.IsValide(settings))
-                                        {
-                                            List<string> errors = rqZoneChange.ListErrors(settings, globalAppSettings);
-                                            if (errors.Count == 0)
-                                            {
-                                                responseString = await rqZoneChange.DoResult(settings, data);
-
-                                                if (!settings.UsersToExport.Where(u => u.Code_user == rqZoneChange.User.Code_user || (u.Pseudo == rqZoneChange.User.Pseudo && u.Platform == rqZoneChange.User.Platform)).Any())
-                                                    settings.UsersToExport.Add(rqZoneChange.User);
-                                            }
-                                            else
-                                            {
-                                                responseString = "Failed : " + string.Join(" ; ", errors);
-                                            }
-                                        }
-                                        else
-                                            responseString = "Erreur, soit ça existe po, soit y a un bug";
-                                        break;
-
-                                    case "Zone/GetCurrentZone":
-                                        User userGetCurrentZone = JsonSerializer.Deserialize<User>(requestBody, options);
-                                        responseString = data.GetZoneUser(userGetCurrentZone.Code_user, settings.Zones)?.Name;
-                                        break;
-
-                                    case "Zone/Move/Random":
-                                        ZoneChangeAuto rqZoneChangeRandom = JsonSerializer.Deserialize<ZoneChangeAuto>(requestBody, options);
-                                        rqZoneChangeRandom.SmartMode = false;
-                                        rqZoneChangeRandom.SetPokesZones(settings.pokemons, settings.Zones);
-                                        responseString = await rqZoneChangeRandom.DoResult(settings, data, globalAppSettings);
-                                        break;
-
-                                    case "Zone/Move/Smart":
-                                        ZoneChangeAuto rqZoneChangeSmart = JsonSerializer.Deserialize<ZoneChangeAuto>(requestBody, options);
-                                        rqZoneChangeSmart.SmartMode = true;
-                                        responseString = await rqZoneChangeSmart.DoResult(settings, data, globalAppSettings);
                                         break;
 
                                     case "Giveaway/Claim":
@@ -499,7 +494,6 @@ namespace PKServ
 
                                     case "Raid/Attack":
                                         User raidAttacker = JsonSerializer.Deserialize<User>(requestBody, options);
-                                        await GlobalDataAction.UserClean(raidAttacker, settings, data);
                                         if (settings.ActiveRaid is null)
                                         {
                                             responseString = globalAppSettings.Texts.TranslationRaid.NoActiveRaid;
@@ -531,35 +525,6 @@ namespace PKServ
                                         responseString = settings.ActiveRaid.Catch(globalAppSettings, raidCatcher);
                                         break;
 
-                                    case "Raid/Heal/Self":
-                                        User raidSelfHealer = JsonSerializer.Deserialize<User>(requestBody, options);
-
-                                        responseString = settings.ActiveRaid.Heal(raidSelfHealer, self: true);
-                                        break;
-
-                                    case "Raid/Heal/Full":
-                                        User raidFullHealer = JsonSerializer.Deserialize<User>(requestBody, options);
-
-                                        responseString = settings.ActiveRaid.Heal(raidFullHealer, self: false);
-                                        break;
-
-                                    case "Raid/ForceStatut":
-                                        RaidStatutApplication raidStatutApplication = JsonSerializer.Deserialize<RaidStatutApplication>(requestBody, options);
-                                        responseString = RaidStatutDistributionImpl.ProcessApplication(settings.ActiveRaid, raidStatutApplication);
-                                        break;
-
-                                    case "Interface/GetAll/Creatures":
-                                        responseString = JsonSerializer.Serialize<List<Pokemon>>(settings.pokemons, options);
-                                        break;
-
-                                    case "Interface/GetAll/Balls":
-                                        responseString = JsonSerializer.Serialize<List<Pokeball>>(settings.pokeballs, options);
-                                        break;
-
-                                    case "Interface/GetAll/Users":
-                                        responseString = JsonSerializer.Serialize<List<User>>(data.GetAllUserPlatforms());
-                                        break;
-
                                     case "Interface/LaunchBall":
                                         ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
                                         ctx = tempFixUserRequest(ctx, data);
@@ -575,7 +540,7 @@ namespace PKServ
                                         DateTime date_a = DateTime.Now;
                                         ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
                                         bool forced = ctx.TriggerName == "API_FWE_Force";
-                                        responseString = API_FullExport(data, settings, globalAppSettings, forced: forced);
+                                        responseString = API_FullExport(ctx, data, settings, globalAppSettings, forced: forced);
                                         DateTime date_b = DateTime.Now;
                                         Console.WriteLine((date_b - date_a).TotalSeconds);
                                         break;
@@ -602,7 +567,6 @@ namespace PKServ
 
                                     case "Interface/Raid/Start":
                                         Raid raid = JsonSerializer.Deserialize<Raid>(requestBody, options);
-                                        raid.InitializeBoss(settings.pokemons);
                                         raid.SetDefaultValues(globalAppSettings, data);
                                         settings.ActiveRaid = raid;
                                         responseString = $"Raid {settings.ActiveRaid.Boss.Name_FR} {settings.ActiveRaid.PVMax}PV";
@@ -653,10 +617,25 @@ namespace PKServ
                                     case "System/ReloadData":
                                         try
                                         {
-                                            LoadAllData(ref settings, ref globalAppSettings, data, usersHere);
-                                            LogInitialsDatas(settings, globalAppSettings, usersHere);
+                                            settings.allPokemons = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./pokemons.json"), options);
+                                            List<Pokemon> custom = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./customPokemons.json"), options);
+                                            custom.ForEach(p => { p.isCustom = true; });
+                                            settings.allPokemons.AddRange(custom);
+                                            settings.pokemons = settings.allPokemons.Where(p => p.enabled || p == null).ToList();
+                                            settings.pokeballs = JsonSerializer.Deserialize<List<Pokeball>>(File.ReadAllText("./balls.json"), options);
+                                            settings.triggers = JsonSerializer.Deserialize<List<Trigger>>(File.ReadAllText("./Triggers.json"), options);
+                                            globalAppSettings = JsonSerializer.Deserialize<GlobalAppSettings>(File.ReadAllText("./_settings.json"), options);
+                                            settings.badges = (JsonSerializer.Deserialize<List<Badge>>(File.ReadAllText("./badges.json"), options).Where(x => !x.Locked).ToList());
+                                            settings.customOverlays = (JsonSerializer.Deserialize<List<CustomOverlay>>(File.ReadAllText("./customOverlays.json"), options));
 
-                                            Commun.Logger($"white#Tous les settings ont été rechargés |red#sauf le port du serveur, cet élement nécessite un redémarre si vous le changez !\n");
+                                            Logger($"yellow#{globalAppSettings.Texts.serverReloaded}");
+                                            Logger($"white#Nombre de pokémon chargé : |red#{settings.pokemons.Count}");
+                                            Logger($"white#Nombre de pokeball chargé : |red#{settings.pokeballs.Count}");
+                                            Logger($"white#Nombre de triggers chargé : |red#{settings.triggers.Count}");
+                                            Logger($"white#Nombre de badges chargé : |red#{settings.badges.Count}");
+                                            Logger($"white#Nombre de custom overlays chargé : |red#{settings.customOverlays.Count}");
+
+                                            Logger($"white#Tous les settings ont été rechargés |red#sauf le port du serveur, cet élement nécessite un redémarre si vous le changez !\n");
 
                                             responseString = "system data reloaded";
                                         }
@@ -692,24 +671,6 @@ namespace PKServ
                                         responseString = $"Route non reconnue. \nDEBUG : {requestBody}";
                                         break;
                                 }
-
-                                responseString = responseString
-                                    .Replace("<", "\uFF1C")
-                                    .Replace(">", "\uFF1E");
-                                if (globalAppSettings.Log.logConsole.console)
-                                    Console.WriteLine($"Réponse envoyée à twitchat : {responseString}");
-
-                                if (responseString is null)
-                                {
-                                    responseString = "";
-                                    Console.WriteLine("ERROR WHILE EXECUTING REQUEST : RESPONSESTRING IS NULL");
-                                }
-                                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
-                                response.ContentLength64 = buffer.Length;
-                                using (Stream output = response.OutputStream)
-                                {
-                                    output.Write(buffer, 0, buffer.Length);
-                                }
                             }
                             catch (Exception e)
                             {
@@ -719,53 +680,58 @@ namespace PKServ
                             #region post-request POST
 
                             // Auto Export
-                            if (actionToExport && globalAppSettings.MustAutoFullExport && urlPath != "Interface/FullExport" && lastExportTime.AddMinutes(globalAppSettings.DelayBeforeFullWebUpdate) < DateTime.Now)
+                            if (globalAppSettings.MustAutoFullExport && urlPath != "Interface/FullExport" && lastExportTime.AddMinutes (globalAppSettings.DelayBeforeFullWebUpdate) < DateTime.Now)
                             {
                                 try
                                 {
-                                    string a = API_FullExport(data, settings, globalAppSettings, forced: false, assets: false);
+                                    ctx = JsonSerializer.Deserialize<UserRequest>(requestBody, options);
+                                    string a = API_FullExport(ctx, data, settings, globalAppSettings, forced: false, assets: false);
                                     lastExportTime = DateTime.Now;
                                     if (globalAppSettings.Log.logConsole.console)
                                         Console.WriteLine("Export done.");
                                 }
-                                catch (Exception e)
+                                catch
                                 {
-                                    {
-                                        if (globalAppSettings.Log.logConsole.console)
-                                        {
-                                            Console.WriteLine("Export not possible.");
-                                            Console.WriteLine(e.Message);
-                                            Console.WriteLine(e.StackTrace);
-                                            Console.WriteLine(e.Source);
-                                        }
-                                    }
+                                    if (globalAppSettings.Log.logConsole.console)
+                                        Console.WriteLine("Export not possible.");
                                 }
-
-                                try
-                                {
-                                    List<CustomOverlay> a = []; //JsonSerializer.Deserialize<List<CustomOverlay>>(File.ReadAllText("./customOverlays.json"), options);
-                                    foreach (CustomOverlay overlayReset in a)
-                                    {
-                                        settings.customOverlays.Where(overlay => overlay.Filename == overlayReset.Filename).FirstOrDefault().Content = overlayReset.Content;
-                                    }
-                                    settings.customOverlays.ForEach(overlay => { overlay.BuildOverlay(false); });
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine("Error while Building custom Overlays : " + e.Message);
-                                }
-
-                                try
-                                {
-                                    generateOverlays(new OverlayGeneration(data, settings, globalAppSettings, usersHere), First: false);
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine("Error while genereting PKServs Overlay :  " + e.Message + "\n" + e.Data);
-                                }
-
-                                #endregion post-request POST
                             }
+
+                            try
+                            {
+                                List<CustomOverlay> a = JsonSerializer.Deserialize<List<CustomOverlay>>(File.ReadAllText("./customOverlays.json"), options);
+                                foreach (CustomOverlay overlayReset in a)
+                                {
+                                    settings.customOverlays.Where(overlay => overlay.Filename == overlayReset.Filename).FirstOrDefault().Content = overlayReset.Content;
+                                }
+                                settings.customOverlays.ForEach(overlay => { overlay.BuildOverlay(false); });
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("Error while Building custom Overlays : " + e.Message);
+                            }
+                            if (responseString is null)
+                            {
+                                responseString = "";
+                                Console.WriteLine("ERROR WHILE EXECUTING REQUEST : RESPONSESTRING IS NULL");
+                            }
+                            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
+                            response.ContentLength64 = buffer.Length;
+                            using (Stream output = response.OutputStream)
+                            {
+                                output.Write(buffer, 0, buffer.Length);
+                            }
+
+                            try
+                            {
+                                generateOverlays(overlays, First: false);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("Error while genereting PKServs Overlay :  " + e.Message + "\n" + e.Data);
+                            }
+
+                            #endregion post-request POST
                         }
                     }
                     if (request.HttpMethod == "GET")
@@ -893,241 +859,6 @@ namespace PKServ
             listener.Stop();
         }
 
-        private static void LoadAllData(ref AppSettings settings, ref GlobalAppSettings globalAppSettings, DataConnexion data, List<User> usersHere)
-        {
-            JsonSerializerOptions options = Commun.GetJsonSerializerOptions();
-            // Initialisations des listes
-            settings.allPokemons = new List<Pokemon>();
-            settings.pokeballs = new List<Pokeball>();
-            settings.triggers = new List<Trigger>();
-            settings.badges = new List<Badge>();
-            settings.TrainerCardsBackgrounds = new List<Background>();
-            settings.customOverlays = new List<CustomOverlay>();
-            settings.Zones = new List<Zone>();
-            settings.SeriesData = new List<(string Serie, int Count)>();
-            settings.pokemons = new List<Pokemon>();
-            settings.giveaways = new List<Giveaway>();
-            settings.Zones.Add(Commun.GetBaseZone());
-
-            // Chargement des données de base
-            settings.allPokemons.AddRange(JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./Data/StreamDex/Creatures.json"), options));
-            settings.pokeballs.AddRange(JsonSerializer.Deserialize<List<Pokeball>>(File.ReadAllText("./Data/StreamDex/Balls.json"), options));
-            settings.triggers.AddRange(JsonSerializer.Deserialize<List<Trigger>>(File.ReadAllText("./Data/StreamDex/Triggers.json"), options));
-            settings.TrainerCardsBackgrounds.AddRange(JsonSerializer.Deserialize<List<Background>>(File.ReadAllText("./Data/StreamDex/TrainerCardBackgrounds.json"), options));
-            settings.badges.AddRange(JsonSerializer.Deserialize<List<Badge>>(File.ReadAllText("./Data/StreamDex/badges.json"), options).Where(x => !x.Locked).ToList());
-            settings.customOverlays.AddRange(JsonSerializer.Deserialize<List<CustomOverlay>>(File.ReadAllText("./Data/StreamDex/Overlays.json"), options));
-
-            // Chargement des données globales
-            LoadCustomBadges(ref settings);
-            LoadCustomBalls(ref settings);
-            LoadCustomCreature(ref settings);
-            LoadCustomOverlay(ref settings);
-            LoadCustomTrainerCardsBackground(ref settings);
-            LoadCustomZone(ref settings);
-
-            string temp = "";
-
-            settings.Zones.ForEach(settings =>
-            {
-                temp += "      \"" + settings.Name + "\",\n";
-            });
-
-            var settingsLocal = settings;
-            var globalAppSettingsLocal = globalAppSettings;
-
-            settings.customOverlays.ForEach(overlay => { overlay.SetEnv(data, settingsLocal, globalAppSettingsLocal, usersHere); overlay.BuildOverlay(true); });
-            OverlayGeneration overlays = new OverlayGeneration(data, settings, globalAppSettings, usersHere);
-
-            settings.pokemons = settings.allPokemons.Where(p => p.enabled).ToList();
-            settings.allPokemons.ForEach(p => { p.SetData(settingsLocal.Zones); });
-            settings.giveaways = GiveawayInitializer.GetGiveaways(settings);
-
-            List<string> Series = settings.pokemons.Select(a => a.Serie).Distinct().ToList();
-            Series.ForEach(serie =>
-            {
-                settingsLocal.SeriesData.Add((serie, settingsLocal.pokemons.Where(poke => poke.Serie == serie).Count()));
-            });
-
-            generateOverlays(overlays, First: true);
-
-            GenerateDexFull(data, settings, globalAppSettings);
-            // buylist & scraplist
-            ExportBuyList bl = new ExportBuyList(settings, data, globalAppSettings);
-            ExportScrapList sl = new ExportScrapList(settings, data, globalAppSettings);
-
-            bl.BuildDocument();
-            sl.BuildDocument();
-
-            // export commandGenerator.html
-
-            ExportCommandGenerator commandGenerator = new ExportCommandGenerator(settings, data, globalAppSettings);
-            commandGenerator.ExportFile();
-
-            //  export pokestats.html
-            ExportStats exportStats = new ExportStats(settings, data, globalAppSettings);
-            exportStats.ExportFile();
-
-            ExportIndividualPoke exportIndividualPoke = new ExportIndividualPoke(settings, data, globalAppSettings);
-            exportIndividualPoke.ExportAllFile().Wait();
-
-            ExportIndividualZone exportIndividualZone = new ExportIndividualZone(settings, data, globalAppSettings);
-            exportIndividualZone.ExportAllFile().Wait();
-        }
-
-        #region LoadCustomDatas
-
-        private static void LoadCustomTrainerCardsBackground(ref AppSettings settings)
-        {
-            // Chargement des backgrounds personnalisés pour les cartes de dresseur
-            List<Background> custom = new List<Background>();
-            string path = "./Data/Custom/TrainerCardsBackgrounds";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            foreach (string file in Directory.GetFiles(path, "*.json"))
-            {
-                try
-                {
-                    List<Background> backgroundsInFile = JsonSerializer.Deserialize<List<Background>>(
-                        File.ReadAllText(file), Commun.GetJsonSerializerOptions());
-                    custom.AddRange(backgroundsInFile);
-                    Commun.Logger($"white#Custom Trainer Cards Background loaded from file: |yellow#{Path.GetFileName(file)}|white# : |aqua#{backgroundsInFile.Count}|white#.");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Error reading {file}: {e.Message}");
-                }
-            }
-            settings.TrainerCardsBackgrounds.AddRange(custom);
-        }
-
-        private static void LoadCustomOverlay(ref AppSettings settings)
-        {
-            // Chargement des overlays personnalisés
-            List<CustomOverlay> custom = [];
-            string path = "./Data/Custom/Overlays";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            foreach (string file in Directory.GetFiles(path, "*.json"))
-            {
-                try
-                {
-                    List<CustomOverlay> overlaysInFile = JsonSerializer.Deserialize<List<CustomOverlay>>(
-                        File.ReadAllText(file), Commun.GetJsonSerializerOptions());
-                    custom.AddRange(overlaysInFile);
-                    Commun.Logger($"white#Custom Overlay loaded from file: |yellow#{Path.GetFileName(file)}|white# : |aqua#{overlaysInFile.Count}|white#.");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Error reading {file}: {e.Message}");
-                }
-            }
-            settings.customOverlays.AddRange(custom);
-        }
-
-        private static void LoadCustomBalls(ref AppSettings settings)
-        {
-            // Chargement des balles personnalisées
-            List<Pokeball> custom = new List<Pokeball>();
-            string path = "./Data/Custom/Balls";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            foreach (string file in Directory.GetFiles(path, "*.json"))
-            {
-                try
-                {
-                    List<Pokeball> ballsInFile = JsonSerializer.Deserialize<List<Pokeball>>(
-                        File.ReadAllText(file), Commun.GetJsonSerializerOptions());
-                    custom.AddRange(ballsInFile);
-                    Commun.Logger($"white#Custom Balls loaded from file: |yellow#{Path.GetFileName(file)}|white# : |aqua#{ballsInFile.Count}|white#.");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Error reading {file}: {e.Message}");
-                }
-            }
-            settings.pokeballs.AddRange(custom);
-        }
-
-        private static void LoadCustomBadges(ref AppSettings settings)
-        {
-            // Chargement des badges personnalisés
-            List<Badge> custom = new List<Badge>();
-            string path = "./Data/Custom/Badges";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            foreach (string file in Directory.GetFiles(path, "*.json"))
-            {
-                try
-                {
-                    List<Badge> badgesInFile = JsonSerializer.Deserialize<List<Badge>>(
-                        File.ReadAllText(file), Commun.GetJsonSerializerOptions());
-                    custom.AddRange(badgesInFile);
-                    Commun.Logger($"white#Custom Badges loaded from file: |yellow#{Path.GetFileName(file)}|white# : |aqua#{badgesInFile.Count}|white#.");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Error reading {file}: {e.Message}");
-                }
-            }
-            settings.badges.AddRange(custom);
-        }
-
-        private static void LoadCustomCreature(ref AppSettings settings)
-        {
-            // Creatures personnalisées
-            List<Pokemon> custom = [];
-            if (!Directory.Exists("./Data/Custom/Creatures"))
-            {
-                Directory.CreateDirectory("./Data/Custom/Creatures");
-            }
-            foreach (string file in Directory.GetFiles("./Data/Custom/Creatures", "*.json"))
-            {
-                try
-                {
-                    List<Pokemon> pokeInFile = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText(file), Commun.GetJsonSerializerOptions());
-                    custom.AddRange(pokeInFile);
-                    Commun.Logger($"white#Custom Pokémon loaded from file: |yellow#{Path.GetFileName(file)}|white# : |aqua#{pokeInFile.Count}|white#.");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Error reading {file}: {e.Message}");
-                }
-            }
-            custom.ForEach(p => { p.isCustom = true; });
-            settings.allPokemons.AddRange(custom);
-        }
-
-        private static void LoadCustomZone(ref AppSettings settings)
-        {
-            if (!Directory.Exists("./Data/Custom/Zones"))
-            {
-                Directory.CreateDirectory("./Data/Custom/Zones");
-            }
-            foreach (string file in Directory.GetFiles("./Data/Custom/Zones", "*.json"))
-            {
-                try
-                {
-                    List<Zone> zoneInFile = JsonSerializer.Deserialize<List<Zone>>(File.ReadAllText(file), Commun.GetJsonSerializerOptions());
-                    settings.Zones.AddRange(zoneInFile);
-                    Commun.Logger($"white#Zones loaded from file: |yellow#{Path.GetFileName(file)}|white# : |aqua#{zoneInFile.Count}|white#.");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Error reading {file}: {e.Message}");
-                }
-            }
-        }
-
-        #endregion LoadCustomDatas
-
         private static string GetOneCreatureStat(GetPokeStats requestGetPokeStats, DataConnexion data, AppSettings settings, GlobalAppSettings globalAppSettings)
         {
             List<Entrie> entries = data.GetEntriesByPseudo(requestGetPokeStats.User.Pseudo, requestGetPokeStats.User.Platform);
@@ -1154,30 +885,6 @@ namespace PKServ
                 .Replace("[COUNT_SHINY]", $"{target.CountShiny}")
                 .Replace("[TIME_SINCE_FIRST_CAPTURE]", TimeSinceFirstCapture)
                 .Replace("[TIME_SINCE_LAST_CAPTURE]", TimeSinceLastCapture);
-        }
-
-        private static void LogInitialsDatas(AppSettings settings, GlobalAppSettings globalAppSettings, List<User> usersHere)
-        {
-            Commun.Logger($"yellow#{globalAppSettings.Texts.serverStarted}");
-            Commun.Logger($"white#Nombre de pokémon chargé : |red#{settings.pokemons.Count}");
-            Commun.Logger($"white#Nombre de series chargé : |red#{settings.SeriesData.Count}");
-            Commun.Logger($"white#Nombre de pokeball chargé : |red#{settings.pokeballs.Count}");
-            Commun.Logger($"white#Nombre de triggers chargé : |red#{settings.triggers.Count}");
-            Commun.Logger($"white#Nombre de badges chargé : |red#{settings.badges.Count}");
-            Commun.Logger($"white#Nombre de custom overlays chargé : |red#{settings.customOverlays.Count}");
-            Commun.Logger($"white#Nombre de Background Trainer Card chargé : |red#{settings.TrainerCardsBackgrounds.Count}");
-            Commun.Logger($"white#Nombre de Code de Distributions chargé : |red#{settings.giveaways.Count}");
-            Commun.Logger($"white#Nombre d'utilisateurs chargés dans le giveaway : |red#{usersHere.Where(uh => uh.Platform != "system").Count()}");
-            Commun.Logger($"aqua#Listening on port |yellow#{globalAppSettings.ServerPort}|aqua# , so send your request at |blue#http://localhost:|yellow#{globalAppSettings.ServerPort}");
-            if (globalAppSettings.Log.logConsole.console)
-            {
-                string settingsServer = "Server settings (you can change those settings in _settings.json)";
-                Console.WriteLine("\n" + settingsServer);
-
-                Commun.Logger($"aqua#Log infos on console : |yellow#{globalAppSettings.Log.logConsole.console}");
-                Commun.Logger($"aqua#Log Json on console (require infos on console) : |yellow#{globalAppSettings.Log.logConsole.logJsonOnConsole}");
-                Commun.Logger($"aqua#Log also on File : |yellow#{globalAppSettings.Log.logFile}");
-            }
         }
 
         private static string API_GetUserHere(List<User> usersHere)
@@ -1277,7 +984,7 @@ namespace PKServ
 
                         process.Start();
 
-                        Commun.Logger($"white#Task |red#{Path.GetFileName(task.ProcessFilePath)}|white# success.");
+                        Logger($"white#Task |red#{Path.GetFileName(task.ProcessFilePath)}|white# success.");
                     }
                     else
                     {
@@ -1338,7 +1045,7 @@ namespace PKServ
                 usersHere.Add(user);
                 if (globalAppSettings.Log.logConsole.console)
                 {
-                    Commun.Logger($"red#{user.Pseudo}|white# (on |red#{user.Platform}|white#) a ajouté à la liste du giveaway.");
+                    Logger($"red#{user.Pseudo}|white# (on |red#{user.Platform}|white#) a ajouté à la liste du giveaway.");
                     Console.WriteLine("\r");
                 }
             }
@@ -1381,7 +1088,7 @@ namespace PKServ
             string r = string.Empty;
             try
             {
-                ExportDexAvailablePokemon a = new ExportDexAvailablePokemon(settings, data, globalAppSettings);
+                ExportDexAvailablePokemon a = new ExportDexAvailablePokemon(settings, ur, data, globalAppSettings);
                 a.GenerateFile();
                 return a.filename;
             }
@@ -1502,11 +1209,30 @@ namespace PKServ
             }
         }
 
-        private static string GenerateDexFull(DataConnexion cnx, AppSettings appSettings, GlobalAppSettings globalAppSettings)
+        private static string GenerateDexSolo(UserRequest json, DataConnexion cnx, AppSettings appSettings, GlobalAppSettings globalAppSettings)
+        {
+            tempFixUserCodeInBDD(json, cnx);
+            try
+            {
+                var data = new ExportSoloDex(appSettings, json, cnx, globalAppSettings);
+                data.ExportFile().Wait();
+                data.UploadFileAsync(globalAppSettings).Wait();
+                if (globalAppSettings.Log.logConsole.console)
+                    Console.WriteLine($"---\nresult : {data.url}\n---\n");
+                return data.url;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"---\nERROR : {ex.InnerException}\n{ex.Message}\n---\n");
+                return globalAppSettings.Texts.error;
+            }
+        }
+
+        private static string GenerateDexFull(UserRequest json, DataConnexion cnx, AppSettings appSettings, GlobalAppSettings globalAppSettings)
         {
             try
             {
-                var data = new ExportMain(appSettings, cnx, globalAppSettings);
+                var data = new ExportRapport(appSettings, json, cnx, globalAppSettings);
                 data.ExportFile().Wait();
                 string result = $"Génération exécutée avec succès sous le nom de {data.filename}!";
 
@@ -1561,27 +1287,22 @@ namespace PKServ
             }
         }
 
-        private static string API_FullExport(DataConnexion cnx, AppSettings appSettings, GlobalAppSettings globalAppSettings, bool forced = false, bool assets = true)
+        private static string API_FullExport(UserRequest json, DataConnexion cnx, AppSettings appSettings, GlobalAppSettings globalAppSettings, bool forced = false, bool assets = true)
         {
             try
             {
-                string result = "";
+                // export main file  + individuals
+                string result = new Work(json, cnx, appSettings, globalAppSettings).DoFullExport(forced: forced);
+
                 if (assets)
                 {
-                    // export all dex
-                    result = Exporter.DoFullExport(connexion: cnx, appSettings, globalAppSettings, forced);
-
-                    // main
-                    ExportMain exportMain = new ExportMain(appSettings, cnx, globalAppSettings);
-                    exportMain.ExportFile().Wait();
-
                     //  export availablespokemon.html
-                    ExportDexAvailablePokemon a = new ExportDexAvailablePokemon(appSettings, cnx, globalAppSettings);
+                    ExportDexAvailablePokemon a = new ExportDexAvailablePokemon(appSettings, json, cnx, globalAppSettings);
                     a.GenerateFile();
 
                     // buylist & scraplist
-                    ExportBuyList bl = new ExportBuyList(appSettings, cnx, globalAppSettings);
-                    ExportScrapList sl = new ExportScrapList(appSettings, cnx, globalAppSettings);
+                    ExportBuyList bl = new ExportBuyList(appSettings, json, cnx, globalAppSettings);
+                    ExportScrapList sl = new ExportScrapList(appSettings, json, cnx, globalAppSettings);
 
                     bl.BuildDocument();
                     sl.BuildDocument();
@@ -1589,12 +1310,12 @@ namespace PKServ
 
                 // export commandGenerator.html
 
-                ExportCommandGenerator commandGenerator = new ExportCommandGenerator(appSettings, cnx, globalAppSettings);
-                commandGenerator.ExportFile();
+                ExportCommandGenerator commandGenerator = new ExportCommandGenerator(appSettings, json, cnx, globalAppSettings);
+                commandGenerator.ExportFile(true, true).Wait();
 
                 //  export pokestats.html
-                ExportStats exportStats = new ExportStats(appSettings, cnx, globalAppSettings);
-                exportStats.ExportFile();
+                ExportStats exportStats = new ExportStats(appSettings, json, cnx, globalAppSettings);
+                exportStats.ExportFile().Wait();
 
                 if (globalAppSettings.Log.logConsole.console)
                     Console.WriteLine($"---\nresult : {result}\n---\n");
@@ -1620,6 +1341,61 @@ namespace PKServ
             {
                 Console.WriteLine($"---\nERROR : {ex.InnerException}\n{ex.Message}\n---\n");
                 return globalAppSettings.Texts.error;
+            }
+        }
+
+        private static void Logger(string message)
+        {
+            try
+            {
+                Console.WriteLine("\r");
+                List<string> parts = message.Split('|').ToList();
+                foreach (string part in parts)
+                {
+                    string color = part.Split('#')[0];
+                    string msg = part.Split('#')[1];
+
+                    switch (color.ToLower())
+                    {
+                        case "blue":
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            break;
+
+                        case "red":
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            break;
+
+                        case "yellow":
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            break;
+
+                        case "aqua":
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            break;
+
+                        case "green":
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            break;
+
+                        case "orange":
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            break;
+
+                        case "pink":
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            break;
+
+                        default:
+                            Console.ForegroundColor = ConsoleColor.White;
+                            break;
+                    }
+                    Console.Write(msg);
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error while logging :  " + e.Message + "\n" + e.Data);
             }
         }
     }

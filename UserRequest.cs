@@ -1,6 +1,7 @@
 ﻿using PKServ.Configuration;
 using PKServ.Entity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PKServ
@@ -13,7 +14,7 @@ namespace PKServ
         public string TriggerName;
         public string ChannelSource;
         public int Price;
-        public bool? skip;
+        private bool? skip;
         public string avatarUrl;
 
         public UserRequest(string userName, string platform, string triggerName, string channelSource, int price, string userCode = "", string avatarUrl = null)
@@ -25,14 +26,14 @@ namespace PKServ
             Price = price;
             UserCode = userCode;
             this.avatarUrl = avatarUrl;
-            skip = false;
+            bool? skip = false;
 
             if (UserName == null && platform == null && triggerName == null && channelSource == null)
             {
                 skip = true;
             }
 
-             if (!skip.Value && userCode == "" && platform.ToLower() != "interface" && platform.ToLower() != "system" && !userName.StartsWith('+'))
+            if (!skip.Value && userCode == "" && platform.ToLower() != "interface" && platform.ToLower() != "system" && !userName.StartsWith('+'))
             {
                 DataConnexion data = new DataConnexion();
                 User u = new User(userName, platform);

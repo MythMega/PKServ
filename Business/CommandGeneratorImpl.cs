@@ -1,7 +1,13 @@
-﻿using PKServ.Configuration;
+﻿using Microsoft.VisualBasic.FileIO;
+using PKServ.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
+using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace PKServ.Business
 {
@@ -33,15 +39,6 @@ namespace PKServ.Business
       color: red;
       font-size: 0.9rem;
     }}
-    body {{
-        background-color: #2a2a2a;
-        color: #ffffff;
-    }}
-    .nav-tabs .nav-link {{
-    background-color: #6a6a6a;
-    text-decoration: none;
-    color: white;
-}}
   </style>
 </head>
 <body>
@@ -74,9 +71,6 @@ namespace PKServ.Business
     </li>
     <li class=""nav-item"" role=""presentation"">
       <button class=""nav-link"" id=""tab-badge-tab"" data-bs-toggle=""tab"" data-bs-target=""#tab-badge"" type=""button"" role=""tab"" aria-controls=""tab-badge"" aria-selected=""false"">Badges</button>
-    </li>
-    <li class=""nav-item"" role=""presentation"">
-      <button class=""nav-link"" id=""tab-Zone-tab"" data-bs-toggle=""tab"" data-bs-target=""#tab-Zone"" type=""button"" role=""tab"" aria-controls=""tab-Zone"" aria-selected=""false"">Zone</button>
     </li>
     <li class=""nav-item"" role=""presentation"">
       <button class=""nav-link"" id=""tab-background-tab"" data-bs-toggle=""tab"" data-bs-target=""#tab-background"" type=""button"" role=""tab"" aria-controls=""tab-background"" aria-selected=""false"">Fond Carte</button>
@@ -327,164 +321,6 @@ namespace PKServ.Business
       alert(""Commande copiée !"");
     }});
   }});
-</script>
-";
-
-            // onglet Zone
-
-            // Récupération des régions distinctes
-            List<string> regions = appSettings.Zones
-                .OrderBy(o => o.DexRequirement)
-                .Select(z => z.Region)
-                .Distinct()
-                .ToList();
-
-            // Construction des options pour le select
-            string regionOption = string.Join("", regions.Select(r => $"<option value=\"{r}\">{r}</option>\n"));
-
-            // Sérialisation en JSON de l'ensemble des zones
-            string zonesJson = JsonSerializer.Serialize(appSettings.Zones, Commun.GetJsonSerializerOptions());
-
-            content += @$"
-<!-- Onglet Zones -->
-<div class=""tab-pane fade p-3"" id=""tab-Zone"" role=""tabpanel"" aria-labelledby=""tab-Zone-tab"">
-  <h3>Zones</h3>
-
-  <!-- Styles personnalisés -->
-  <style>
-    .zone-image {{
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      object-position: center center;
-    }}
-
-    .card {{
-      height: 520px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }}
-
-    .card-body {{
-      overflow-y: auto;
-      flex-grow: 1;
-    }}
-  </style>
-
-  <!-- Combobox : Sélection de la région -->
-  <div class=""mb-3"">
-    <label for=""combobox1_tab-zone"" class=""form-label"">Région</label>
-    <select class=""form-select"" id=""combobox1_tab-zone"">
-      <option selected disabled>Choisissez une région</option>
-      {regionOption}
-    </select>
-    <div class=""error-message"" id=""error1_tab-zone""></div>
-  </div>
-
-  <!-- Zone destinée à accueillir la grille des zones -->
-  <div id=""zone-grid"" class=""row row-cols-1 row-cols-md-4 g-3"">
-    <!-- Les zones filtrées apparaîtront ici -->
-  </div>
-</div>
-
-<script>
-const zonesList = JSON.parse(`{zonesJson}`);
-
-function copyToClipboard(button) {{
-  const textToCopy = button.getAttribute('data-copy');
-  if (!navigator.clipboard) {{
-    const textArea = document.createElement('textarea');
-    textArea.value = textToCopy;
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {{
-      document.execCommand('copy');
-      alert('Texte copié : ' + textToCopy);
-    }} catch (err) {{
-      alert('Erreur lors de la copie dans le presse-papiers : ' + err);
-    }}
-    document.body.removeChild(textArea);
-    return;
-  }}
-  navigator.clipboard.writeText(textToCopy).then(() => {{
-    alert('Texte copié : ' + textToCopy);
-  }}).catch(err => {{
-    alert('Erreur lors de la copie dans le presse-papiers : ' + err);
-  }});
-}}
-
-function displayZonesByRegion(selectedRegion) {{
-  const container = document.getElementById('zone-grid');
-  container.innerHTML = '';
-
-  const matchingZones = zonesList.filter(zone => zone.Region === selectedRegion);
-
-  if (matchingZones.length === 0) {{
-    container.innerHTML = '<p>Aucune zone trouvée pour cette région.</p>';
-    return;
-  }}
-
-  matchingZones.forEach(zone => {{
-    const col = document.createElement('div');
-    col.className = 'col';
-
-    const card = document.createElement('div');
-    card.className = 'card';
-
-    const img = document.createElement('img');
-    img.className = 'card-img-top zone-image';
-    img.src = zone.Image;
-    img.alt = zone.Name;
-    card.appendChild(img);
-
-    const cardBody = document.createElement('div');
-    cardBody.className = 'card-body';
-
-    const nameHeading = document.createElement('h4');
-    const titleLink = document.createElement('a');
-    titleLink.href = './Zone/' + zone.Name.replace(/[<>:""\/\\|?*]+/g, '_') + '.html';
-    titleLink.textContent = zone.Name;
-    nameHeading.appendChild(titleLink);
-    cardBody.appendChild(nameHeading);
-
-    const requirementsDiv = document.createElement('div');
-    requirementsDiv.innerHTML = `<p>Level requis : ${{zone.LevelRequirement}}</p>
-                                 <p>Pokémon minimum : ${{zone.DexRequirement}}</p>`;
-    cardBody.appendChild(requirementsDiv);
-
-    const copyButton = document.createElement('button');
-    copyButton.className = 'btn btn-secondary mt-2';
-    copyButton.textContent = 'Copier la commande';
-    const commandText = '!changeZone ' + zone.Name.replace(/ /g, '_');
-    copyButton.setAttribute('data-copy', commandText);
-    copyButton.addEventListener('click', function() {{
-      copyToClipboard(this);
-    }});
-    cardBody.appendChild(copyButton);
-
-    if (zone.Description) {{
-  // on insère d'abord le <br>
-  const br = document.createElement('br');
-  cardBody.appendChild(br);
-
-  // puis le <p> avec la description
-  const descriptionParagraph = document.createElement('p');
-  descriptionParagraph.textContent = zone.Description;
-  cardBody.appendChild(descriptionParagraph);
-    }}
-
-    card.appendChild(cardBody);
-    col.appendChild(card);
-    container.appendChild(col);
-  }});
-}}
-
-document.getElementById('combobox1_tab-zone').addEventListener('change', function() {{
-  const selectedRegion = this.value;
-  displayZonesByRegion(selectedRegion);
-}});
 </script>
 ";
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace PKServ
 {
@@ -11,7 +12,7 @@ namespace PKServ
         public bool KeepUserInGiveAwayAfterShutdown { get; set; }
         public bool MustAutoFullExport { get; set; }
         public int DelayBeforeFullWebUpdate { get; set; }
-        public string LanguageCode { get; set; } = "fr";
+        public string LanguageCode { get; set; } = "en";
         public string GitHubTokenUpload { get; set; }
         public string Namespace { get; set; }
         public GlobalAppLog Log { get; set; }
@@ -26,14 +27,6 @@ namespace PKServ
         public RaidSettings RaidSettings { get; set; }
         public EvolveSettings EvolveSettings { get; set; }
         public GiveAwaySettings GiveAwaySettings { get; set; }
-
-        internal void FixType(GlobalAppSettings globalAppSettingsDefaults)
-        {
-            if (this.Texts.Types == null)
-            {
-                this.Texts.Types = globalAppSettingsDefaults.Texts.Types;
-            }
-        }
     }
 
     public class OverlaySettings
@@ -185,7 +178,7 @@ namespace PKServ
         public TranslationEvolving TranslationEvolving { get; set; }
         public TranslationGiveaway TranslationGiveaway { get; set; }
         public Emotes emotes { get; set; }
-        public Types Types { get; set; }
+        public Types types { get; set; }
     }
 
     public class TranslationScrapping

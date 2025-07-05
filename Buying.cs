@@ -38,7 +38,8 @@ namespace PKServ
 
         public bool IsValide()
         {
-            return appSettings.pokemons.Where(p => Commun.isSamePoke(pokemonSearched: p, pokename)).Any();
+            return appSettings.pokemons.Where(p => p.Name_FR.ToLower() == pokename.ToLower()).Count() == 1 ||
+                 appSettings.pokemons.Where(p => p.Name_EN.ToLower() == pokename.ToLower()).Count() == 1;
         }
 
         public string DoResult()

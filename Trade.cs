@@ -243,6 +243,9 @@ namespace PKServ
             if (CreatureRequested.isShiny)
                 price += globalAppSettings.TradeSettings.Prices.PerShinyIncreasement;
 
+            // rarity
+            price += globalAppSettings.TradeSettings.Prices.PerRarityIncreasement * ((CreatureRequested.rarity.HasValue ? CreatureRequested.rarity.Value : 0) + (CreatureSent.rarity.HasValue ? CreatureSent.rarity.Value : 0));
+
             // custom
             if (CreatureSent.isCustom)
                 price += globalAppSettings.TradeSettings.Prices.PerCustomIncreasement;

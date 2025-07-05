@@ -1,10 +1,9 @@
 ﻿using PKServ.Configuration;
-using PKServ.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PKServ.Admin
 {
@@ -46,36 +45,6 @@ namespace PKServ.Admin
             if (log)
             {
                 Console.WriteLine($"\n\n\nFixed entries : {countFixed}.\nErrored entries : {countError}.\n");
-            }
-        }
-
-        public static async Task UserClean(User user, AppSettings appSettings, DataConnexion data)
-        {
-            try
-             {
-                User KnowUser = data.GetUserBaseInfo(user.Code_user, user.Platform, appSettings);
-                if (user.AvatarUrl is not null && KnowUser.AvatarUrl != user.AvatarUrl)
-                {
-                    data.UpdateAvatar(KnowUser.Code_user, user.AvatarUrl);
-                    KnowUser.AvatarUrl = user.AvatarUrl;
-                }
-                if (KnowUser.Pseudo != user.Pseudo)
-                {
-                    await data.UpdateUserPseudo(KnowUser, user.Pseudo);
-                    KnowUser.Pseudo = user.Pseudo;
-                }
-            }
-            catch
-            {
-                User KnowUser = new User
-                {
-                    Pseudo = user.Pseudo,
-                    Platform = user.Platform,
-                    Code_user = user.Code_user,
-                    AvatarUrl = user.AvatarUrl,
-                    Location = Commun.GetBaseZone(),
-                };
-                await data.CreateUser(KnowUser);
             }
         }
     }
