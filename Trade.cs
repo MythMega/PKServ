@@ -196,10 +196,6 @@ namespace PKServ
 
             this.PokeSent = PokeSent.Replace('_', ' ').ToLower();
             this.PokeWanted = PokeWanted.Replace('_', ' ').ToLower();
-            bool sentShiny = (this.ShinySent.ToLower() == "shiny" || this.ShinySent.ToLower() == "chromatique" || this.ShinySent.ToLower() == "s");
-            bool requestedShiny = (this.ShinyWanted.ToLower() == "shiny" || this.ShinyWanted.ToLower() == "chromatique" || this.ShinyWanted.ToLower() == "s");
-
-            InitializePokemons(this.PokeSent, this.PokeWanted, sentShiny, requestedShiny);
         }
 
         public void Complete()
@@ -207,22 +203,22 @@ namespace PKServ
             this.Completed = true;
         }
 
-        private void InitializePokemons(string pokeSent, string pokeWanted, bool sentShiny, bool requestedShiny)
+        public void InitializePokemons(List<Pokemon> pokes)
         {
             var options = new JsonSerializerOptions
             {
                 IncludeFields = true
             };
 
-            List<Pokemon> pokeAvailable = JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./pokemons.json"), options).Where(p => p.enabled).ToList();
-            pokeAvailable.AddRange(JsonSerializer.Deserialize<List<Pokemon>>(File.ReadAllText("./customPokemons.json"), options).Where(p => p.enabled).ToList());
+            bool sentShiny = (this.ShinySent.ToLower() == "shiny" || this.ShinySent.ToLower() == "chromatique" || this.ShinySent.ToLower() == "s");
+            bool requestedShiny = (this.ShinyWanted.ToLower() == "shiny" || this.ShinyWanted.ToLower() == "chromatique" || this.ShinyWanted.ToLower() == "s");
 
-            this.CreatureSent = pokeAvailable.Where(p => Commun.isSamePoke(p, pokeSent)).FirstOrDefault();
+            this.CreatureSent = pokes.Where(p => Commun.isSamePoke(p, this.PokeSent)).FirstOrDefault();
             if (this.CreatureSent == null)
             {
                 throw new Exception("Poke Sent Not Found");
             }
-            this.CreatureRequested = pokeAvailable.Where(p => Commun.isSamePoke(p, pokeWanted)).FirstOrDefault();
+            this.CreatureRequested = pokes.Where(p => Commun.isSamePoke(p, this.PokeWanted)).FirstOrDefault();
             if (this.CreatureRequested == null)
             {
                 throw new Exception("Poke Wanted Not Found");
@@ -242,9 +238,6 @@ namespace PKServ
                 price += globalAppSettings.TradeSettings.Prices.PerShinyIncreasement;
             if (CreatureRequested.isShiny)
                 price += globalAppSettings.TradeSettings.Prices.PerShinyIncreasement;
-
-            // rarity
-            price += globalAppSettings.TradeSettings.Prices.PerRarityIncreasement * ((CreatureRequested.rarity.HasValue ? CreatureRequested.rarity.Value : 0) + (CreatureSent.rarity.HasValue ? CreatureSent.rarity.Value : 0));
 
             // custom
             if (CreatureSent.isCustom)

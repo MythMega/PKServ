@@ -1,8 +1,10 @@
-﻿using PKServ.Configuration;
+﻿using PKServ.Business.Raid;
+using PKServ.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PKServ
 {
@@ -26,13 +28,14 @@ namespace PKServ
             usersHere = users;
         }
 
-        public void BuildOverlay(bool firstLaunch)
+        public async Task BuildOverlay(bool firstLaunch)
         {
             try
             {
                 // required var
                 var data_newTrainer = data.GetAllUserPlatforms().Where(user => user.Stats.firstCatch > startTime).ToList();
                 List<Entrie> allentries = data.GetAllEntries();
+                await RaidOverlayImpl.WriteOverlay(gas: globalAppSettings);
 
                 textVariables = new Dictionary<string, string>
                 {
@@ -65,7 +68,7 @@ namespace PKServ
 
                 WriteFile();
             }
-            catch (Exception e)
+            catch
             {
                 if (!firstLaunch)
                 {
@@ -425,6 +428,286 @@ namespace PKServ
 </body>
 </html>
 
+";
+
+            // Last Poké Caught (new)
+            files["lastCaughtPokeSpriteNew.html"] = @$"
+<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8""/>
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0""/>
+    <title>PokéSprite Synchro</title>
+    <style>
+        body {{
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }}
+
+        .image-container {{
+            position: relative;
+        }}
+
+        @keyframes fadeInOut {{
+            0%, 100% {{ opacity: 0; }}
+            5%, 80%  {{ opacity: 1; }}
+        }}
+
+        img {{
+            width: 64px;
+            height: auto;
+            animation: fadeInOut 5s infinite;
+        }}
+
+        .image-container, #username {{
+            display: block;
+            text-align: center;
+        }}
+
+
+        #username {{
+            display: block;
+            margin-top: 10px;
+            font-size: 28px;
+            color: white;
+            text-align: center;
+            text-shadow:
+                -2px -2px 0 black,
+                 2px -2px 0 black,
+                -2px  2px 0 black,
+                 2px  2px 0 black;
+        }}
+    </style>
+</head>
+<body>
+    <div class=""image-container"">
+        <img id=""pokeImage"" src="""" alt=""Pokémon Sprite""/>
+    </div>
+        <span id=""username""></span>
+
+    <script>
+        async function fetchImage() {{
+            try {{
+                const response = await fetch('http://localhost:{globalAppSettings.ServerPort}/Get?Value=lastPokeCaughtSprite');
+                const data = await response.json();
+                document.getElementById('pokeImage').src = data.imageUrl;
+                document.getElementById('username').textContent = data.userName;
+            }} catch (error) {{
+                console.error('Erreur fetch sprite :', error);
+            }}
+        }}
+
+        // Chargement initial
+        fetchImage();
+
+        // À chaque fin de cycle d'animation (opacité = 0) on met à jour le sprite
+        document
+          .getElementById('pokeImage')
+          .addEventListener('animationiteration', fetchImage);
+    </script>
+</body>
+</html>
+";
+
+            // Last Poké Caught (last throw result)
+            files["barBallThrowResume.html"] = @$"
+<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8""/>
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0""/>
+    <title>Pokémon Catch Display</title>
+    <style>
+        body {{
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+        }}
+
+        .display-container {{
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }}
+
+        .display-container.visible {{
+            opacity: 1;
+        }}
+
+        .time, .username {{
+            font-size: 96px;
+            font-weight: bold;
+            height: 128px;
+            display: flex;
+            align-items: center;
+        }}
+
+        .time {{
+            color: #FFD700;
+        }}
+
+        .username {{
+            color: #87CEEB;
+        }}
+
+        img {{
+            height: 128px;
+            min-height: 128px;
+            width: auto;
+            image-rendering: pixelated;
+        }}
+
+        .separator {{
+            font-size: 32px;
+            height: 128px;
+            display: flex;
+            align-items: center;
+        }}
+    </style>
+</head>
+<body>
+    <div class=""display-container"" id=""displayContainer"">
+        <span class=""time"" id=""timeDisplay""></span>
+        <img id=""platformIcon"" src="""" alt=""Platform"" style=""display: none;""/>
+        <span class=""username"" id=""username""></span>
+        <span class=""separator"">-</span>
+        <img id=""pokeImage"" src="""" alt=""Pokémon"" style=""display: none;""/>
+        <img id=""shinyIcon"" src="""" alt=""Shiny"" style=""display: none;""/>
+        <img id=""catchIcon"" src="""" alt=""Catch Result"" style=""display: none;""/>
+    </div>
+
+    <script>
+        let nullCount = 0;
+        let currentData = null;
+
+        const SHINY_ICON = 'https://cdn-icons-png.flaticon.com/256/2267/2267359.png';
+        const CAUGHT_ICON = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/960px-Pok%C3%A9_Ball_icon.svg.png';
+        const NOT_CAUGHT_ICON = 'https://cdn-icons-png.flaticon.com/512/6659/6659895.png';
+
+        function formatTime(timeString) {{
+            // timeString est au format ""HHmmss""
+            if (timeString && timeString.length === 6) {{
+                const hours = timeString.substring(0, 2);
+                const minutes = timeString.substring(2, 4);
+                const seconds = timeString.substring(4, 6);
+                return `[${{hours}}:${{minutes}}:${{seconds}}]`;
+            }}
+            return timeString;
+        }}
+
+        function updateDisplay(data) {{
+            const container = document.getElementById('displayContainer');
+
+            // Fade out
+            container.classList.remove('visible');
+
+            setTimeout(() => {{
+                // Update content
+                document.getElementById('timeDisplay').textContent = formatTime(data.time);
+                document.getElementById('username').textContent = data.userName;
+
+                // Platform icon
+                const platformIcon = document.getElementById('platformIcon');
+                if (data.userPlateformIcon) {{
+                    platformIcon.src = data.userPlateformIcon;
+                    platformIcon.style.display = 'block';
+                }} else {{
+                    platformIcon.style.display = 'none';
+                }}
+
+                // Pokemon image
+                const pokeImage = document.getElementById('pokeImage');
+                if (data.imageUrl) {{
+                    pokeImage.src = data.imageUrl;
+                    pokeImage.style.display = 'block';
+                }} else {{
+                    pokeImage.style.display = 'none';
+                }}
+
+                // Shiny icon
+                const shinyIcon = document.getElementById('shinyIcon');
+                if (data.isShiny === 'true' || data.isShiny === true) {{
+                    shinyIcon.src = SHINY_ICON;
+                    shinyIcon.style.display = 'block';
+                }} else {{
+                    shinyIcon.style.display = 'none';
+                }}
+
+                // Catch result icon
+                const catchIcon = document.getElementById('catchIcon');
+                if (data.isCaught === 'true' || data.isCaught === true) {{
+                    catchIcon.src = CAUGHT_ICON;
+                    catchIcon.style.display = 'block';
+                }} else if (data.isCaught === 'false' || data.isCaught === false) {{
+                    catchIcon.src = NOT_CAUGHT_ICON;
+                    catchIcon.style.display = 'block';
+                }} else {{
+                    catchIcon.style.display = 'none';
+                }}
+
+                // Fade in
+                container.classList.add('visible');
+            }}, 250);
+        }}
+
+        function hideDisplay() {{
+            const container = document.getElementById('displayContainer');
+            container.classList.remove('visible');
+        }}
+
+        async function fetchData() {{
+            try {{
+                const response = await fetch('http://localhost:{globalAppSettings.ServerPort}/Get?Value=lastpokecaughtcatchresume');
+
+                if (!response.ok) {{
+                    throw new Error('Network response was not ok');
+                }}
+                console.log(response);
+
+                const data = await response.json();
+                // Vérifier si le JSON est valide et contient des données
+                if (data && typeof data === 'object' && Object.keys(data).length > 0) {{
+                    nullCount = 0;
+                    currentData = data;
+                    updateDisplay(data);
+                }} else {{
+                    // JSON null ou vide
+                    nullCount++;
+                    if (nullCount >= 5) {{
+                        hideDisplay();
+                    }}
+                    // Sinon, on garde l'affichage actuel
+                }}
+            }} catch (error) {{
+                console.error('Erreur lors de la récupération des données:', error);
+                nullCount++;
+                if (nullCount >= 5) {{
+                    hideDisplay();
+                }}
+                // En cas d'erreur, on garde l'affichage actuel si nullCount < 5
+            }}
+        }}
+
+        // Chargement initial
+        fetchData();
+
+        // Rafraîchissement toutes les 3 secondes
+        setInterval(fetchData, 3000);
+    </script>
+</body>
+</html>
 ";
 
             if (globalAppSettings.OverlaySettings.GlobalTotalCaughtGoal.Enabled)
@@ -1182,127 +1465,6 @@ namespace PKServ
 </html>
 ";
             }
-
-            // Last Poké Caught
-            files["raidOverlay.html"] = @$"
-
-<!DOCTYPE html>
-<html lang=""fr"">
-<head>
-    <meta charset=""UTF-8"">
-    <title>Raid Progress</title>
-    <style>
-        body {{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }}
-
-        /* Classe pour masquer tout le contenu */
-        .hidden {{
-            display: none;
-        }}
-
-        .image-container {{
-            position: absolute;
-            width: 256px;
-            height: 256px;
-            overflow: hidden;  /* garantit que rien ne déborde du container */
-        }}
-
-        .image-container img {{
-            position: absolute;
-            width: 256px;
-            height: 256px;
-            top: 0;
-            left: 0;
-        }}
-
-        .progress-bar {{
-			padding-top: 236px;
-            width: 256px;
-            height: 20px;
-            background-color: rgba(0, 90, 45, 0.2);
-            border-radius: 10px;
-            overflow: hidden;
-        }}
-
-        .progress-fill {{
-            height: 100%;
-            background-color: #16f7a0;
-            width: 0%;
-            transition: width 0.5s ease;
-        }}
-    </style>
-</head>
-<body>
-
-    <div id=""content"">
-	<center>
-        <div class=""image-container"">
-            <img id=""image-creature"" src="""" alt=""Créature"">
-            <img id=""image-overlay"" src="""" alt=""Overlay"">
-        </div>
-
-        <div class=""progress-bar"">
-            <div class=""progress-fill"" id=""progress-fill""></div>
-        </div>
-	</center>
-    </div>
-
-    <script>
-        function updateContent() {{
-            fetch('http://localhost:{globalAppSettings.ServerPort}/GetRaidInfos')
-                .then(response => response.json())
-                .then(data => {{
-                    const contentDiv = document.getElementById('content');
-					console.log(contentDiv);
-					console.log(""Element"");
-                    // Vérifier si le JSON est vide
-                    if (Object.keys(data).length === 0) {{
-                        // Masquer tout le contenu avec la classe 'hidden'
-                        contentDiv.classList.add('hidden');
-                    }} else {{
-						console.log(data);
-                        // Afficher le contenu si masqué
-                        contentDiv.classList.remove('hidden');
-
-                        // Mettre à jour les images
-                        document.getElementById('image-creature').src = data.Url_Creature;
-                        document.getElementById('image-overlay').src = data.Url_Overlay;
-
-                        // Facultatif : Gérer le cache des images
-                        /*
-                        const timestamp = new Date().getTime();
-                        document.getElementById('image-creature').src = data.Url_Creature + '?t=' + timestamp;
-                        document.getElementById('image-overlay').src = data.Url_Overlay + '?t=' + timestamp;
-                        */
-
-                        // Mettre à jour la barre de progression
-                        const maxValue = data.Bar_Max;
-                        const currentValue = data.Bar_CurrentValue;
-                        const percentage = (currentValue / maxValue) * 100;
-                        document.getElementById('progress-fill').style.width = percentage + '%';
-                    }}
-                }})
-                .catch(error => {{
-                    console.error('Erreur lors de la récupération des données :', error);
-                    // En cas d'erreur, masquer le contenu
-                    document.getElementById('content').classList.add('hidden');
-                }});
-        }}
-
-        // Actualiser les informations toutes les 10 secondes
-        setInterval(updateContent, 10000);
-
-        // Appel initial pour charger les données au démarrage
-        updateContent();
-    </script>
-</body>
-</html>
-
-";
-
             TextsUpdate();
 
             writeFile();
@@ -1324,8 +1486,8 @@ namespace PKServ
             // texts
 
             // everyonehere
-            files["everyonehere.count.txt"] = (usersHere.Count - 1).ToString();
-            files["everyonehere.lastJoined.txt"] = usersHere.Last().ToString();
+            files["everyonehere.count.txt"] = (usersHere.Count).ToString();
+            files["everyonehere.lastJoined.txt"] = usersHere.Any() ? usersHere.Last().ToString() : "";
 
             // this session
             files["session.pokecaughtTotal.Count.txt"] = settings.catchHistory.Count.ToString();

@@ -1,4 +1,5 @@
-﻿using PKServ.Configuration;
+﻿using PKServ.Binding;
+using PKServ.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -151,19 +152,56 @@ namespace PKServ
                     case "lastpokecaughtsprite":
 
                         // une image transparente par défaut
-                        string sprite = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1200px-HD_transparent_picture.png";
+                        string spriteCatch = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1200px-HD_transparent_picture.png";
 
                         CatchHistory lastCatchHistory = appSettings.catchHistory.Where(x => x.shownInOverlay_lastCaughtPokeSprite == false).FirstOrDefault();
                         if (lastCatchHistory != null)
                         {
-                            sprite = lastCatchHistory.shiny ? lastCatchHistory.Pokemon.Sprite_Shiny : lastCatchHistory.Pokemon.Sprite_Normal;
-                            Console.Write("sprite -> " + sprite);
+                            spriteCatch = lastCatchHistory.shiny ? lastCatchHistory.Pokemon.Sprite_Shiny : lastCatchHistory.Pokemon.Sprite_Normal;
+                            Console.Write("sprite -> " + spriteCatch);
                             appSettings.catchHistory.Where(x => x.shownInOverlay_lastCaughtPokeSprite == false).FirstOrDefault().shownInOverlay_lastCaughtPokeSprite = true;
-                        }
 
-                        result = @$"{{
-    ""imageUrl"":""{sprite}""
+                            result = @$"{{
+    ""imageUrl"":""{spriteCatch}"",
+    ""userName"": ""{lastCatchHistory.User.Pseudo}""
 }} ";
+                        }
+                        else
+                        {
+                            result = "{}";
+                        }
+                        break;
+
+                    case "lastpokecaughtcatchresume":
+
+                        // une image transparente par défaut
+                        string spriteToShowResume = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1200px-HD_transparent_picture.png";
+                        BallThrowHistory ballthrow = null;
+                        ballthrow = appSettings.ballThrowHistory.Where(x => x.shownInOverlay_bar == false).FirstOrDefault();
+                        if (ballthrow != null)
+                        {
+                            spriteToShowResume = ballthrow.shiny ? ballthrow.Pokemon.Sprite_Shiny : ballthrow.Pokemon.Sprite_Normal;
+                            Console.Write("sprite -> " + spriteToShowResume);
+                            appSettings.ballThrowHistory.Where(x => x.shownInOverlay_bar == false).FirstOrDefault().shownInOverlay_bar = true;
+                            string urlPlatformIcon = PlatformBinding.IconLink(ballthrow.User.Platform);
+
+                            result = @$"{{
+    ""imageUrl"":""{spriteToShowResume}"",
+    ""userName"": ""{ballthrow.User.Pseudo}"",
+    ""userPlateformIcon"":""{urlPlatformIcon}"",
+    ""isShiny"":{ballthrow.Pokemon.isShiny.ToString().ToLower()},
+    ""isLegendary"" : {ballthrow.Pokemon.isLegendary.ToString().ToLower()},
+    ""isNew"":{ballthrow.isNew.ToString().ToLower()},
+    ""isCaught"":{ballthrow.catchResult.ToString().ToLower()},
+    ""time"":""{ballthrow.time.ToString("HH") + ballthrow.time.ToString("mm") + ballthrow.time.ToString("ss")}""
+}} ";
+                        }
+                        else
+                        {
+                            result = "{}";
+                        }
+                        //Console.WriteLine(result);
+
                         break;
 
                     default:

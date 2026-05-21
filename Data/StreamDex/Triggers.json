@@ -1,0 +1,79 @@
+[
+  {
+    "name": "Envoyer une pokéball",
+    "description": "Utilise cette commande pour lancer une Pokéball",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Pokeball"
+  },
+  {
+    "name": "Envoyer une super ball",
+    "description": "Utilise cette commande pour lancer une super ball.",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Super Ball"
+  },
+  {
+    "name": "Envoyer une hyper ball",
+    "description": "Utilise cette commande pour lancer une super ball.",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Hyper Ball"
+  },
+  {
+    "name": "Envoyer une sombre Ball",
+    "description": "Utilise cette commande pour lancer une masterball.",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Sombre Ball"
+  },
+  {
+    "name": "Envoyer une Bis Ball",
+    "description": "Utilise cette commande pour lancer une masterball.",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Bis Ball"
+  },
+  {
+    "name": "Envoyer une Dex Ball",
+    "description": "Utilise cette commande pour lancer une masterball.",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Dex Ball"
+  },
+  {
+    "name": "Envoyer une master ball",
+    "description": "Utilise cette commande pour lancer une masterball.",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Master Ball"
+  },
+  {
+    "name": "Envoyer une Season Ball",
+    "description": "Utilise cette commande pour lancer une masterball.",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Season Ball"
+  },
+  {
+    "name": "Envoyer une Flowerball",
+    "description": "Utilise cette commande pour lancer une flowerball.",
+    "type": "REWARD",
+    "effect": "BALL",
+    "ballName": "Flower Ball"
+  },
+  {
+    "name": "Reward Export Dex",
+    "description": "Récompense permettant d'exporter le Pokédex.",
+    "type": "COMMAND",
+    "effect": "EXPORTDEX",
+    "ballName": null
+  },
+  {
+    "name": "Stats Command",
+    "description": "Commande pour obtenir des statistiques.",
+    "type": "COMMAND",
+    "effect": "STATS",
+    "ballName": null
+  }
+]

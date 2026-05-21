@@ -34,6 +34,12 @@
         //series that pokeball can target
         public string? exclusiveSerie;
 
+        public string? exclusiveZone;
+
+        public string? sprite;
+
+        public bool enabledOnWeb;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -43,7 +49,7 @@
         /// <param name="shinyrate">3 by default</param>
         /// <param name="nightAdditionalRate">0 by default</param>
         /// <param name="alreadyCaughtAdditionalRate">0 by default</param>
-        public Pokeball(string name, int catchrate, string rewardSource, int shinyrate = 3, int nightAdditionalRate = 0, int alreadyCaughtAdditionalRate = 0, int dexRelativeBonusCatchrate = 0, int dexRelativeBonusShinyrate = 0, string? exclusiveType = null, string exclusiveSerie = null)
+        public Pokeball(string name, int catchrate, string rewardSource, int shinyrate = 3, int nightAdditionalRate = 0, int alreadyCaughtAdditionalRate = 0, int dexRelativeBonusCatchrate = 0, int dexRelativeBonusShinyrate = 0, string? exclusiveType = null, string exclusiveSerie = null, string exclusiveZone = null, string sprite = "", bool enabledOnWeb = true)
         {
             Name = name;
             this.rewardSource = rewardSource;
@@ -53,6 +59,9 @@
             this.alreadyCaughtAdditionalRate = alreadyCaughtAdditionalRate;
             this.exclusiveType = exclusiveType;
             this.exclusiveSerie = exclusiveSerie;
+            this.exclusiveZone = exclusiveZone;
+            this.sprite = sprite;
+            this.enabledOnWeb = enabledOnWeb;
         }
     }
 }

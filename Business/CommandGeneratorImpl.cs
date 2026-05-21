@@ -1,13 +1,7 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using PKServ.Configuration;
-using System;
+﻿using PKServ.Configuration;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace PKServ.Business
 {
@@ -21,15 +15,7 @@ namespace PKServ.Business
             string optionsListPokeBuyable = string.Join("", appSettings.pokemons.Where(poke => poke.priceNormal is not null || poke.priceShiny is not null).Select(p => $"<option value=\"{p.AltName.Replace(' ', '_')}\">{p.Name_FR}</option>\n"));
 
             // introduction
-            content = @$"
-<!DOCTYPE html>
-<html lang=""fr"">
-<head>
-  <meta charset=""utf-8"">
-  <title>Générateur par onglet</title>
-  <meta name=""viewport"" content=""width=device-width, initial-scale=1"">
-  <!-- Bootstrap 5.3.3 CSS -->
-  <link href=""https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"" rel=""stylesheet"" integrity=""sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"" crossorigin=""anonymous"">
+            content = Commun.DefaultHTMLStart(false, "StreamDex > Commands") + @$"
   <style>
     /* Styles personnalisés */
     .error {{
@@ -39,111 +25,138 @@ namespace PKServ.Business
       color: red;
       font-size: 0.9rem;
     }}
+.nav-tabs .nav-link {{
+    background-color: #6a6a6a;
+    text-decoration: none;
+    color: white;
+}}
   </style>
-</head>
-<body>
-<nav class=""navbar navbar-dark bg-dark"" style=""justify-content: center; background-color: #2a2a2a;"">
-      <form class=""form-inline"">
-        <a class=""btn btn-sm btn-outline-secondary"" href=""./main.html"" style=""color: white;"">Accueil Pokédex</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""./commandgenerator.html"" style=""color: white;"">Command Generator</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""./raid.html"" style=""color: white;"">Raid Result</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""./availablepokemon.html"" style=""color: white;"">Pokédex Infos</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""./pokestats.html"" style=""color: white;"">Classements</a>
-        <a class=""btn btn-sm btn-outline-secondary"" href=""./records.html"" style=""color: white;"">Enregistrements</a>
-      </form>
-    </nav><br><br>
 <div class=""container my-4"">
   <h1>Générateur de commande StreamDex</h1>";
 
             // définitions des onglets
             content += @"
 
-  <!-- Navigation par onglets -->
+  <!-- Navigation par onglets Bootstrap 4 -->
   <ul class=""nav nav-tabs"" id=""myTab"" role=""tablist"">
     <li class=""nav-item"" role=""presentation"">
-      <button class=""nav-link"" id=""tab-buy-tab"" data-bs-toggle=""tab"" data-bs-target=""#tab-buy"" type=""button"" role=""tab"" aria-controls=""tab-buy"" aria-selected=""false"">Buy</button>
+      <a class=""nav-link active"" id=""tab-buy-tab"" data-toggle=""tab"" href=""#tab-buy"" role=""tab""
+         aria-controls=""tab-buy"" aria-selected=""true"">Buy</a>
     </li>
     <li class=""nav-item"" role=""presentation"">
-      <button class=""nav-link"" id=""tab-scrap-tab"" data-bs-toggle=""tab"" data-bs-target=""#tab-scrap"" type=""button"" role=""tab"" aria-controls=""tab-scrap"" aria-selected=""false"">Scrap</button>
+      <a class=""nav-link"" id=""tab-scrap-tab"" data-toggle=""tab"" href=""#tab-scrap"" role=""tab""
+         aria-controls=""tab-scrap"" aria-selected=""false"">Scrap</a>
     </li>
     <li class=""nav-item"" role=""presentation"">
-      <button class=""nav-link"" id=""tab-trade-tab"" data-bs-toggle=""tab"" data-bs-target=""#tab-trade"" type=""button"" role=""tab"" aria-controls=""tab-trade"" aria-selected=""false"">Trade</button>
+      <a class=""nav-link"" id=""tab-trade-tab"" data-toggle=""tab"" href=""#tab-trade"" role=""tab""
+         aria-controls=""tab-trade"" aria-selected=""false"">Trade</a>
     </li>
     <li class=""nav-item"" role=""presentation"">
-      <button class=""nav-link"" id=""tab-badge-tab"" data-bs-toggle=""tab"" data-bs-target=""#tab-badge"" type=""button"" role=""tab"" aria-controls=""tab-badge"" aria-selected=""false"">Badges</button>
+      <a class=""nav-link"" id=""tab-badge-tab"" data-toggle=""tab"" href=""#tab-badge"" role=""tab""
+         aria-controls=""tab-badge"" aria-selected=""false"">Badges</a>
     </li>
     <li class=""nav-item"" role=""presentation"">
-      <button class=""nav-link"" id=""tab-background-tab"" data-bs-toggle=""tab"" data-bs-target=""#tab-background"" type=""button"" role=""tab"" aria-controls=""tab-background"" aria-selected=""false"">Fond Carte</button>
+      <a class=""nav-link"" id=""tab-zone-tab"" data-toggle=""tab"" href=""#tab-zone"" role=""tab""
+         aria-controls=""tab-zone"" aria-selected=""false"">Zone</a>
     </li>
-  </ul>"
-;
+    <li class=""nav-item"" role=""presentation"">
+      <a class=""nav-link"" id=""tab-background-tab"" data-toggle=""tab"" href=""#tab-background"" role=""tab""
+         aria-controls=""tab-background"" aria-selected=""false"">Fond Carte</a>
+    </li>
+  </ul>
+";
 
             // onglet Buy
             content += @"
-<div class=""tab-content"" id=""myTabContent"">
-  <!-- Onglet Buy -->
-  <div class=""tab-pane fade p-3"" id=""tab-buy"" role=""tabpanel"" aria-labelledby=""tab-buy-tab"">
-    <h3>Générateur Buy</h3>
+  <!--  Onglet Buy -->
+<div class=""tab-content p-3"" id=""myTabContent"">
+  <div  class=""tab-pane fade p-3"" id=""tab-buy"" role=""tabpanel"" aria-labelledby=""tab-buy-tab"">
+
+    <h3> Générateur Buy</h3>
 
     <!-- Choix du Pokémon via datalist -->
-    <div class=""mb-3"">
-      <label for=""pokemonBuy"" class=""form-label"">Choisissez un Pokémon</label>
-      <input type=""text"" class=""form-control"" id=""pokemonBuy"" list=""pokemonListBuy"" autocomplete=""off"">
-      <datalist id=""pokemonListBuy"">
+
+    <div  class=""mb-3"">
+
+      <label for=""pokemonBuy""  class=""form-label""> Choisissez un Pokémon</label>
+
+      <input type = ""text""  class=""form-control"" id=""pokemonBuy"" list=""pokemonListBuy"" autocomplete=""off"">
+
+      <datalist id = ""pokemonListBuy"">
         " + optionsListPokeBuyable + @"
       </datalist>
-      <div class=""error-message"" id=""errorPokemonBuy""></div>
+
+      <div  class=""error-message"" id=""errorPokemonBuy""></div>
+
     </div>
 
-    <!-- Sélection de la version (Normal ou Shiny) -->
-    <div class=""mb-3"">
-      <label for=""variantBuy"" class=""form-label"">Version</label>
-      <select class=""form-select"" id=""variantBuy"">
-        <option value=""normal"" selected>Normal</option>
-        <option value=""shiny"">Shiny</option>
+    <!--  Sélection de  la version(Normal ou Shiny) -->
+
+    <div  class=""mb-3"">
+
+      <label for=""variantBuy""  class=""form-label"">Version</label>
+
+      <select  class=""form-control"" id=""variantBuy"">
+
+        <option value = ""normal"" selected>Normal</option>
+        <option value = ""shiny"">Shiny</option>
       </select>
     </div>
 
-    <!-- Bouton générer et affichage de la commande -->
-    <button class=""btn btn-primary"" id=""generateBtn_buy"">Générer</button>
-    <div class=""mt-3"">
-      <textarea class=""form-control"" id=""resultBox_buy"" rows=""3"" readonly></textarea>
+    <!--  Bouton générer  et affichage  de la commande -->
+
+    <button  class="" btn btn-primary"" id=""generateBtn_buy"">Générer</button>
+
+    <div  class=""mt-3"">
+
+      <textarea  class=""form-control"" id=""resultBox_buy"" rows=""3"" readonly></textarea>
+
     </div>
-    <button class=""btn btn-secondary mt-2"" id=""copyBtn_buy"" disabled>Copier commande</button>
+
+    <button  class="" btn btn- secondary mt-2"" id=""copyBtn_buy"" disabled> Copier commande</button>
+
   </div>
 
   <!-- Script pour le générateur Buy -->
   <script>
-    document.getElementById('generateBtn_buy').addEventListener('click', function() {
-      var pokemonValue = document.getElementById('pokemonBuy').value.trim();
-      var variantValue = document.getElementById('variantBuy').value;
 
-      // Vérifier que l'utilisateur a sélectionné un Pokémon
-      if (!pokemonValue) {
-        document.getElementById('errorPokemonBuy').textContent = 'Veuillez choisir un Pokémon.';
-        return;
-      } else {
-        document.getElementById('errorPokemonBuy').textContent = '';
-      }
+    document.getElementById('generateBtn_buy'). addEventListener('click', function() {
+            var pokemonValue = document.getElementById('pokemonBuy').value.trim();
+            var variantValue = document.getElementById('variantBuy').value;
 
-      // Mettre en majuscule la première lettre de la variante
-      var variantText = variantValue.charAt(0).toUpperCase() + variantValue.slice(1);
-      var command = '!buy ' + pokemonValue + ' ' + variantText;
+            // Vérifier que l'utilisateur a sélectionné un Pokémon
+            if (!pokemonValue)
+            {
+                document.getElementById('errorPokemonBuy').textContent = 'Veuillez choisir un Pokémon.';
+                return;
+            }
+            else
+            {
+                document.getElementById('errorPokemonBuy').textContent = '';
+            }
 
-      // Afficher la commande et activer le bouton copier
-      document.getElementById('resultBox_buy').value = command;
-      document.getElementById('copyBtn_buy').disabled = false;
-    });
+            // Mettre en majuscule la première lettre de la variante
+            var variantText = variantValue.charAt(0).toUpperCase() + variantValue.slice(1);
+            var command = '!buy ' + pokemonValue + ' ' + variantText;
 
-    document.getElementById('copyBtn_buy').addEventListener('click', function() {
-      var resultBox = document.getElementById('resultBox_buy');
-      resultBox.select();
-      try {
-        document.execCommand('copy');
-      } catch (err) {
-        console.error('Erreur lors de la copie :', err);
-      }
-    });
+            // Afficher la commande et activer le bouton copier
+            document.getElementById('resultBox_buy').value = command;
+            document.getElementById('copyBtn_buy').disabled = false;
+        });
+
+    document.getElementById('copyBtn_buy'). addEventListener('click', function() {
+            var resultBox = document.getElementById('resultBox_buy');
+            resultBox.select();
+            try
+            {
+                document.execCommand('copy');
+            }
+            catch (err)
+            {
+                console.error('Erreur lors de la copie :', err);
+            }
+        });
+
   </script>
 ";
 
@@ -156,7 +169,7 @@ namespace PKServ.Business
   <!-- Combobox : Mode de scrap -->
   <div class=""mb-3"">
     <label for=""scrapMode_scrap"" class=""form-label"">Mode de scrap</label>
-    <select class=""form-select"" id=""scrapMode_scrap"">
+    <select class=""form-control"" id=""scrapMode_scrap"">
       <option value=""fullscrap"">Full Scrap (Scrap tous le pokédex normal & shiny)</option>
       <option value=""complete"" selected>Complete (scrap tous les poké normal et shiny du pokémon choisi)</option>
       <option value=""fullnormal"">Fullnormal (scrap tout les normaux du poké choisi)</option>
@@ -257,7 +270,7 @@ namespace PKServ.Business
   <!-- Statut du Pokémon envoyé -->
   <div class=""mb-3"">
     <label for=""statusEnvoye_trade"" class=""form-label"">Statut (Envoyé)</label>
-    <select class=""form-select"" id=""statusEnvoye_trade"">
+    <select class=""form-control"" id=""statusEnvoye_trade"">
       <option value=""Normal"" selected>Normal</option>
       <option value=""Shiny"">Shiny</option>
     </select>
@@ -278,7 +291,7 @@ namespace PKServ.Business
   <!-- Statut du Pokémon demandé -->
   <div class=""mb-3"">
     <label for=""statusDemande_trade"" class=""form-label"">Statut (Demandé)</label>
-    <select class=""form-select"" id=""statusDemande_trade"">
+    <select class=""form-control"" id=""statusDemande_trade"">
       <option value=""Normal"" selected>Normal</option>
       <option value=""Shiny"">Shiny</option>
     </select>
@@ -324,6 +337,164 @@ namespace PKServ.Business
 </script>
 ";
 
+            // onglet Zone
+
+            // Récupération des régions distinctes
+            List<string> regions = appSettings.Zones
+                .OrderBy(o => o.DexRequirement)
+                .Select(z => z.Region)
+                .Distinct()
+                .ToList();
+
+            // Construction des options pour le select
+            string regionOption = string.Join("", regions.Select(r => $"<option value=\"{r}\">{r}</option>\n"));
+
+            // Sérialisation en JSON de l'ensemble des zones
+            string zonesJson = JsonSerializer.Serialize(appSettings.Zones, Commun.GetJsonSerializerOptions());
+
+            content += @$"
+<!-- Onglet Zones -->
+<div class=""tab-pane fade p-3"" id=""tab-zone"" role=""tabpanel"" aria-labelledby=""tab-zone-tab"">
+  <h3>Zones</h3>
+
+  <!-- Styles personnalisés -->
+  <style>
+    .zone-image {{
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      object-position: center center;
+    }}
+
+    .card {{
+      height: 520px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }}
+
+    .card-body {{
+      overflow-y: auto;
+      flex-grow: 1;
+    }}
+  </style>
+
+  <!-- Combobox : Sélection de la région -->
+  <div class=""mb-3"">
+    <label for=""combobox1_tab-zone"" class=""form-label"">Région</label>
+    <select class=""form-control"" id=""combobox1_tab-zone"">
+      <option selected disabled>Choisissez une région</option>
+      {regionOption}
+    </select>
+    <div class=""error-message"" id=""error1_tab-zone""></div>
+  </div>
+
+  <!-- Zone destinée à accueillir la grille des zones -->
+  <div id=""zone-grid"" class=""row row-cols-1 row-cols-md-4 g-3"">
+    <!-- Les zones filtrées apparaîtront ici -->
+  </div>
+</div>
+
+<script>
+const zonesList = JSON.parse(`{zonesJson}`);
+
+function copyToClipboard(button) {{
+  const textToCopy = button.getAttribute('data-copy');
+  if (!navigator.clipboard) {{
+    const textArea = document.createElement('textarea');
+    textArea.value = textToCopy;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {{
+      document.execCommand('copy');
+      alert('Texte copié : ' + textToCopy);
+    }} catch (err) {{
+      alert('Erreur lors de la copie dans le presse-papiers : ' + err);
+    }}
+    document.body.removeChild(textArea);
+    return;
+  }}
+  navigator.clipboard.writeText(textToCopy).then(() => {{
+    alert('Texte copié : ' + textToCopy);
+  }}).catch(err => {{
+    alert('Erreur lors de la copie dans le presse-papiers : ' + err);
+  }});
+}}
+
+function displayZonesByRegion(selectedRegion) {{
+  const container = document.getElementById('zone-grid');
+  container.innerHTML = '';
+
+  const matchingZones = zonesList.filter(zone => zone.Region === selectedRegion);
+
+  if (matchingZones.length === 0) {{
+    container.innerHTML = '<p>Aucune zone trouvée pour cette région.</p>';
+    return;
+  }}
+
+  matchingZones.forEach(zone => {{
+    const col = document.createElement('div');
+    col.className = 'col';
+
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const img = document.createElement('img');
+    img.className = 'card-img-top zone-image';
+    img.src = zone.Image;
+    img.alt = zone.Name;
+    card.appendChild(img);
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body';
+
+    const nameHeading = document.createElement('h4');
+    const titleLink = document.createElement('a');
+    titleLink.href = './Zone/' + zone.Name.replace(/[<>:""\/\\|?*]+/g, '_') + '.html';
+    titleLink.textContent = zone.Name;
+    nameHeading.appendChild(titleLink);
+    cardBody.appendChild(nameHeading);
+
+    const requirementsDiv = document.createElement('div');
+    requirementsDiv.innerHTML = `<p>Level requis : ${{zone.LevelRequirement}}</p>
+                                 <p>Pokémon minimum : ${{zone.DexRequirement}}</p>`;
+    cardBody.appendChild(requirementsDiv);
+
+    const copyButton = document.createElement('button');
+    copyButton.className = 'btn btn-secondary mt-2';
+    copyButton.textContent = 'Copier la commande';
+    const commandText = '!changeZone ' + zone.Name.replace(/ /g, '_');
+    copyButton.setAttribute('data-copy', commandText);
+    copyButton.addEventListener('click', function() {{
+      copyToClipboard(this);
+    }});
+    cardBody.appendChild(copyButton);
+
+    if (zone.Description) {{
+  // on insère d'abord le <br>
+  const br = document.createElement('br');
+  cardBody.appendChild(br);
+
+  // puis le <p> avec la description
+  const descriptionParagraph = document.createElement('p');
+  descriptionParagraph.textContent = zone.Description;
+  cardBody.appendChild(descriptionParagraph);
+    }}
+
+    card.appendChild(cardBody);
+    col.appendChild(card);
+    container.appendChild(col);
+  }});
+}}
+
+document.getElementById('combobox1_tab-zone').addEventListener('change', function() {{
+  const selectedRegion = this.value;
+  displayZonesByRegion(selectedRegion);
+}});
+</script>
+";
+
             // onglet Badge
             content += @"
 
@@ -366,7 +537,6 @@ namespace PKServ.Business
         </datalist>
         <div class=""error-message"" id=""error3_tab-badge""></div>
       </div>
-    </div>
   </div>";
 
             // onglet background
@@ -390,7 +560,7 @@ namespace PKServ.Business
   <!-- Combobox 1 : Sélection du groupe -->
   <div class=""mb-3"">
     <label for=""combobox1_tab-background"" class=""form-label"">Groupe</label>
-    <select class=""form-select"" id=""combobox1_tab-background"">
+    <select class=""form-control"" id=""combobox1_tab-background"">
       <option selected disabled>Choisissez une option</option>
       {groupOption}
     </select>
@@ -533,21 +703,7 @@ displayBackgroundsByGroup(selectedGroup);
 
             // fin HTML
             content += @"
-
-  </div>
-</div>
-
-<!-- Bootstrap 5.3.3 JS Bundle -->
-<script src=""https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"" integrity=""sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"" crossorigin=""anonymous""></script>";
-
-            // script JS
-            content += @"
-<script>
-</script>
-</body>
-</html>
-
-";
+" + Commun.DefaultHTMLEnd();
 
             return content;
         }

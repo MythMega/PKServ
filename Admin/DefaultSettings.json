@@ -31,7 +31,7 @@
     "noCreatureRegistered": "Tu ne possède pas de poké.",
     "CreatureNotRegistered": "Tu ne possède pas ce poké.",
     "noCreatureWithThatName": "Il n'existe aucun poké avec ce nom.",
-    "pokeStatsInfos": "Tu possède [COUNT_NORMAL] normal, et [COUNT_SHINY] shinies, tu as capturé le premier il y a jours ([TIME_SINCE_FIRST_CAPTURE]), et le dernier il y a jours ([TIME_SINCE_LAST_CAPTURE]).",
+    "pokeStatsInfos": "Tu possède [COUNT_NORMAL] normal, et [COUNT_SHINY] shinies, tu as capturé le premier il y a [TIME_SINCE_FIRST_CAPTURE] jours, et le dernier il y a [TIME_SINCE_LAST_CAPTURE] jours.",
     "emotes": {
       "shiny": "✨",
       "ball": "㋡",
@@ -92,7 +92,7 @@
       "CodeExpired": "Le code a expiré.",
       "CodeNotYetAvailable": "Le code n'est pas encore disponible."
     },
-    "type": {
+    "Types": {
       "fire": "feu",
       "water": "eau",
       "grass": "plante",
@@ -156,7 +156,15 @@
     "ValueDefaultNormal": 2,
     "ValueDefaultShiny": 10,
     "minimumToScrap": 2,
-    "legendaryMultiplier": 20
+    "legendaryMultiplier": 2,
+    "RarityMultiplier": {
+      "CommonMultiplier": 1,
+      "UncommonMultiplier": 2,
+      "RareMultiplier": 4,
+      "EpicMultiplier": 10,
+      "LegendaryMultiplier": 20,
+      "MythicalMultiplier": 25
+    }
   },
   "MessageSettings": {
     "showShinyOnFail": false,
@@ -196,15 +204,39 @@
     }
   },
   "RaidSettings": {
+    "AutoRaidSettings": {
+      "Enabled": false,
+      "DelayBetweenRaids": 30,
+      "MaxRaidCountPerSession": 5,
+      "BossCreatureRarity": [
+        "ANY"
+      ],
+      "BossCreatureSerie": [
+
+      ],
+      "BossCreatureShinyRate": 20,
+      "BossCreatureBasePV": 100000,
+      "PVAdditionalPerUser": 20000,
+      "IncludeLockCreatures": false,
+      "IncludeLegendaryCreatures": false,
+      "RarityMultiplier": true
+    },
+    "ManualRandomRaid": {
+      "CreatureSelectionMode": "L",
+      "BossCreatureRarity": [
+        "ANY"
+      ],
+      "BossCreatureSerie": [],
+      "CreatureList": [],
+      "BossCreatureShinyRate": 2,
+      "BossCreatureBasePV": 250000,
+      "PVAdditionalPerUser": 10000,
+      "IncludeLockCreatures": false,
+      "IncludeLegendaryCreatures": true
+    },
     "DefaultPV": 10000,
     "DefaultCatchRate": 70,
     "DefaultShinyRate": 33,
     "TimeMinuteToCatchAfterDefeat": 15
-  },
-  "EvolveSettings": {
-    "RequiredCreatureToEvolve": 10,
-    "AllowShiny": true,
-    "AllowEvolutionLocked": true,
-    "AllowEvolutionShinyLocked": false
   }
 }

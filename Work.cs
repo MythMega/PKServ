@@ -1,5 +1,7 @@
-﻿using PKServ.Business;
+using PKServ.Binding;
+using PKServ.Business;
 using PKServ.Configuration;
+using PKServ.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,20 +46,20 @@ namespace PKServ
             {
                 pkb = pkbForced;
             }
-            CatchPokemon(pkb);
+            Zone zone = connexion.GetZoneUser(uc.UserCode, appSettings.Zones);
+            CatchPokemon(pkb, zone);
             saveStats();
             return msgResult;
         }
 
         private void saveStats()
         {
-            connexion.UpdateUserStatsMoneyBall(uc.UserName, uc.Platform, 1, uc.Price, uc.UserCode);
+            connexion.UpdateUserStatsMoneyBall(uc.UserName, uc.Platform, 1, uc.Price, uc.UserCode).Wait();
         }
 
-        private void CatchPokemon(Pokeball pkb)
+        private void CatchPokemon(Pokeball pkb, Zone zone)
         {
-            //Pokemon onePoke = pkb.eclusiveType == null ? appSettings.getOnePoke() : appSettings.getOnePoke(pkb.eclusiveType);
-            Pokemon onePoke = appSettings.getOnePokeFromBall(pkb);
+            Pokemon onePoke = appSettings.getOnePokeFromBall(pkb, zone);
             onePoke.isShiny = false;
             int bonusCatchRate = 0;
             int bonusShinyRate = 0;
@@ -72,11 +74,11 @@ namespace PKServ
             {
                 bonusCatchRate = 35;
                 bonusShinyRate = 15;
-                RerollNewPoke(10, ref onePoke, pkb);
+                RerollNewPoke(10, ref onePoke, pkb, zone);
             }
 
             if (pkb.rerollItemForUncaught > 0)
-                RerollNewPoke(pkb.rerollItemForUncaught, ref onePoke, pkb);
+                RerollNewPoke(pkb.rerollItemForUncaught, ref onePoke, pkb, zone);
 
             bonusCatchRate += DateTime.Now.Hour < 6 || DateTime.Now.Hour > 18 ? pkb.nightAdditionalRate : 0;
             bonusCatchRate += isAlreadyCatch(onePoke) ? pkb.alreadyCaughtAdditionalRate : 0;
@@ -91,33 +93,24 @@ namespace PKServ
 
             int newCatchrate = pkb.catchrate;
 
-            // gestion de la rarité de pokémon. On ignore tout ceux qui ont une rareté à 1 ou moins, et ceux dont la rareté n'est pas donnée
-            if (onePoke.rarity is not null && onePoke.rarity > 1)
+            bool validate = pkb.catchrate >= 100;
+            while (!validate)
             {
-                // si le catchrate est supérieur a 50%, on augmente les chance de non capture
-                if (pkb.catchrate > 50)
+                if (CreatureRarity.ValidateSelection(onePoke.Rarity))
                 {
-                    newCatchrate = 100 - (100 - pkb.catchrate) * onePoke.rarity.Value;
+                    validate = true;
                 }
-                // si le catchrate est inférieur ou égal à 50%, on divise le taux de capture
                 else
                 {
-                    newCatchrate = pkb.catchrate / onePoke.rarity.Value;
+                    RerollNewPoke(1, ref onePoke, pkb, zone);
                 }
-
-                // on nerf le malus : une ball ne peut pas avoir un taux de capture en dessous de son quart de son taux de base
-                if (newCatchrate < pkb.catchrate / 2)
-                    newCatchrate = (int)Math.Floor(decimal.Ceiling(pkb.catchrate / 2));
             }
-            //#if DEBUG
-            //Console.WriteLine("pokeball rate : " + pkb.catchrate);
-            //Console.WriteLine("real catch rate : " + newCatchrate);
-            //#endif
+
             bool isCaught = random.Next(0, 100) <= newCatchrate + bonusCatchRate;
             bool isShiny = random.Next(0, 100) <= pkb.shinyrate + bonusShinyRate;
             if (onePoke.isShinyLock && isShiny)
             {
-                onePoke = appSettings.getOnePokeFromBall(pkb, true);
+                onePoke = appSettings.getOnePokeFromBall(pkb, zone, true);
             }
             onePoke.isShiny = isShiny;
             string preinfo = onePoke.isLegendary ? "LEGENDAIRE ! " : "";
@@ -133,12 +126,12 @@ namespace PKServ
             onePoke.isShiny = false;
         }
 
-        private void RerollNewPoke(int reroll, ref Pokemon onePoke, Pokeball pkb)
+        private void RerollNewPoke(int reroll, ref Pokemon onePoke, Pokeball pkb, Zone zone)
         {
             int count = 0;
             while (isAlreadyCatch(onePoke) && reroll <= count)
             {
-                onePoke = appSettings.getOnePokeFromBall(pkb);
+                onePoke = appSettings.getOnePokeFromBall(pkb, zone);
                 count++;
             }
         }
@@ -187,13 +180,6 @@ namespace PKServ
             return entriesByPseudo.Where(x => x.PokeName == poke.Name_FR).Any();
         }
 
-        private List<Pokemon> GetPokeCustom(UserRequest uc)
-        {
-            List<Pokemon> pokeCustom = new List<Pokemon>();
-
-            return pokeCustom;
-        }
-
         internal string DistributePoke(List<User> usersHere = null)
         {
             string pokename = uc.TriggerName.Split('+')[0];
@@ -237,7 +223,7 @@ namespace PKServ
             }
             mode += $" ({count})";
             Commun.AddRecords(mode, poke, poke.isShiny, connexion);
-            RecordsGeneratorImpl.GenerateRecords(connexion, appSettings, globalAppSettings);
+            // L'export records.html était généré ici — remplacé par records.json via ExportRecordsAsync dans le cycle d'export normal.
             return result;
         }
 
@@ -314,63 +300,6 @@ namespace PKServ
             {
                 (!poke.isShiny ? new Entrie(-1, user.Pseudo, uc.ChannelSource, user.Platform, poke.Name_FR, 1, 0, DateTime.Now, DateTime.Now, user.Code_user) : new Entrie(-1, user.Pseudo, uc.ChannelSource, user.Platform, poke.Name_FR, 0, 1, DateTime.Now, DateTime.Now, user.Code_user)).Validate(true);
             }
-        }
-
-        /// <summary>
-        /// Lors d'un export de FULL DEX, exporte les dex solo puis le main
-        /// </summary>
-        /// <returns></returns>
-        internal string DoFullExport(bool forced = false)
-        {
-            List<User> users = connexion.GetAllUserPlatforms();
-
-            // si ce n'est pas forcé par le management, on export uniquement les dex avec maj recente
-            if (!forced)
-            {
-                users = users.Where(user => user.lastCatch() > appSettings.LastFullExport).ToList();
-            }
-
-            // on ajoute les users à exporter, y compris ceux qui n'ont pas "capturer", mais fais des actions modifiant le dex
-            appSettings.UsersToExport.ForEach(user =>
-                {
-                    if (!users.Where(u => u.Code_user == user.Code_user || (u.Pseudo == user.Pseudo && u.Platform == user.Platform)).Any())
-                    {
-                        users.Add(user);
-                    }
-                }
-            );
-            appSettings.UsersToExport = [];
-
-            int count = 0;
-
-            // Configurer le parallélisme sur 8 threads maximum
-            ParallelOptions options = new ParallelOptions { MaxDegreeOfParallelism = 8 };
-
-            Parallel.ForEach(users, options, user =>
-            {
-                // Créez une instance locale de UserContext pour éviter tout conflit.
-                UserRequest localUc = new UserRequest(user.Pseudo, user.Platform, "", uc.ChannelSource, 0);
-
-                // Instancier ExportSoloDex pour cet utilisateur
-                var data = new ExportSoloDex(appSettings, localUc, connexion, globalAppSettings);
-
-                // Définir le nom du fichier
-                data.filename = $"{localUc.UserName}.html";
-
-                // Attendre la fin de l'opération d'export
-                data.ExportFile(true).Wait();
-
-                // Incrémenter le compteur de manière thread-safe
-                Interlocked.Increment(ref count);
-            });
-            // on exporte le main
-            var export = new ExportRapport(appSettings, uc, connexion, globalAppSettings);
-            export.filename = "main.html";
-            export.ExportFile(true, true).Wait();
-
-            appSettings.LastFullExport = DateTime.Now;
-
-            return $"Export done. {count}/{users.Count} personal files created + main file created.";
         }
 
         public User CompleteUser(User incompleteUser)

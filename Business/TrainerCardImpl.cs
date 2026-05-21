@@ -1,19 +1,16 @@
 ﻿using PKServ.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PKServ.Business
 {
     public static class TrainerCardImpl
     {
-        public static string GetTrainerCardHtml(User user, DataConnexion dataConnexion, AppSettings appSettings, GlobalAppSettings globalAppSettings)
+        public static string GetTrainerCardHtml(PKServ.User user, DataConnexion dataConnexion, AppSettings appSettings, GlobalAppSettings globalAppSettings)
         {
             string data = "";
-            User utilisateur = user;
+            PKServ.User utilisateur = user;
             utilisateur.Code_user = dataConnexion.GetCodeUserByPlatformPseudo(utilisateur);
 
             string urlAvatar = dataConnexion.GetAvatarUrl(utilisateur);

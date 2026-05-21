@@ -1,7 +1,8 @@
-﻿using System;
+﻿using PKServ.Entity.Raid;
+using PKServ.Entity.Raid.ManualRandomRaid;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text.Json;
 
 namespace PKServ
 {
@@ -12,7 +13,7 @@ namespace PKServ
         public bool KeepUserInGiveAwayAfterShutdown { get; set; }
         public bool MustAutoFullExport { get; set; }
         public int DelayBeforeFullWebUpdate { get; set; }
-        public string LanguageCode { get; set; } = "en";
+        public string LanguageCode { get; set; } = "fr";
         public string GitHubTokenUpload { get; set; }
         public string Namespace { get; set; }
         public GlobalAppLog Log { get; set; }
@@ -27,6 +28,14 @@ namespace PKServ
         public RaidSettings RaidSettings { get; set; }
         public EvolveSettings EvolveSettings { get; set; }
         public GiveAwaySettings GiveAwaySettings { get; set; }
+
+        internal void FixType(GlobalAppSettings globalAppSettingsDefaults)
+        {
+            if (this.Texts.Types == null)
+            {
+                this.Texts.Types = globalAppSettingsDefaults.Texts.Types;
+            }
+        }
     }
 
     public class OverlaySettings
@@ -178,7 +187,7 @@ namespace PKServ
         public TranslationEvolving TranslationEvolving { get; set; }
         public TranslationGiveaway TranslationGiveaway { get; set; }
         public Emotes emotes { get; set; }
-        public Types types { get; set; }
+        public Types Types { get; set; }
     }
 
     public class TranslationScrapping
@@ -288,6 +297,18 @@ namespace PKServ
         public int ValueDefaultShiny { get; set; }
         public int minimumToScrap { get; set; }
         public int legendaryMultiplier { get; set; }
+
+        public RarityMultiplier RarityMultiplier { get; set; }
+    }
+
+    public class RarityMultiplier
+    {
+        public int CommonMultiplier { get; set; }
+        public int UncommonMultiplier { get; set; }
+        public int RareMultiplier { get; set; }
+        public int EpicMultiplier { get; set; }
+        public int LegendaryMultiplier { get; set; }
+        public int MythicalMultiplier { get; set; }
     }
 
     public class CommandSettings
@@ -331,7 +352,10 @@ namespace PKServ
         public int DefaultPV { get; set; }
         public int DefaultCatchRate { get; set; }
         public int DefaultShinyRate { get; set; }
-        public int TimeMinuteToCatchAfterDefeat { get; set; } = 50;
+        public bool ManualRandomRaidSaveCurrentRaid { get; set; } = true;
+        public string PictureOverlayWhenCreatureFainted { get; set; } = "https://png.pngtree.com/png-vector/20230527/ourmid/pngtree-red-cross-paint-clipart-transparent-background-vector-png-image_7110618.png";
+        public AutoRaidSettings AutoRaidSettings { get; set; }
+        public ManualRandomRaid ManualRandomRaid { get; set; }
     }
 
     public class EvolveSettings

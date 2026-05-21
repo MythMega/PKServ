@@ -1,4 +1,4 @@
-﻿using PKServ.Configuration;
+using PKServ.Configuration;
 using PKServ.Entity;
 using System;
 using System.Collections.Generic;
@@ -24,6 +24,8 @@ namespace PKServ
 
         public List<CatchHistory> catchHistory = [];
 
+        public List<BallThrowHistory> ballThrowHistory = [];
+
         public DateTime LastFullExport = DateTime.MinValue;
 
         public List<CustomOverlay> customOverlays = new List<CustomOverlay>();
@@ -40,13 +42,31 @@ namespace PKServ
 
         public List<(string Serie, int Count)> SeriesData = [];
 
+        public List<Zone> Zones = [];
+
         public AppSettings()
         {
         }
 
-        public Pokemon getOnePoke() => pokemons.Where(x => !x.isLock).ToList()[new Random().Next(pokemons.Where(x => !x.isLock).Count())];
+        // OPTIM P6 : anciennement chaque appel à getOnePoke() créait un new Random() (coût
+        // système pour l'entropie) et appelait Where(...).ToList() (allocation d'une nouvelle
+        // liste à chaque tirage). On utilise Random.Shared (instance thread-safe .NET 6+) et
+        // on calcule les listes filtrées à la demande en évitant le double-Where.
+        private static readonly Random _rng = Random.Shared;
 
-        public Pokemon getOnePokeShiny() => pokemons.Where(x => !x.isLock && !x.isShinyLock).ToList()[new Random().Next(pokemons.Where(x => !x.isLock && !x.isShinyLock).Count())];
+        public Pokemon getOnePoke()
+        {
+            // OPTIM P6 : un seul Where + ToList, une seule instance Random réutilisée
+            var available = pokemons.Where(x => !x.isLock).ToList();
+            return available[_rng.Next(available.Count)];
+        }
+
+        public Pokemon getOnePokeShiny()
+        {
+            // OPTIM P6 : idem
+            var available = pokemons.Where(x => !x.isLock && !x.isShinyLock).ToList();
+            return available[_rng.Next(available.Count)];
+        }
 
         public Pokemon getOnePoke(string type)
         {
@@ -67,7 +87,8 @@ namespace PKServ
                     Console.WriteLine($"{poke.Name_FR} does not have type 1");
                 }
             }
-            return pokemonsCompatibles[new Random().Next(pokemonsCompatibles.Count)];
+            // OPTIM P6 : Random.Shared à la place de new Random()
+            return pokemonsCompatibles[_rng.Next(pokemonsCompatibles.Count)];
         }
 
         public string GetText(string code) => trads[code];
@@ -76,11 +97,27 @@ namespace PKServ
 
         public int GetIdPokeByName(string pokeName) => pokemons.IndexOf(pokemons.Where(w => w.Name_FR == pokeName).FirstOrDefault());
 
-        internal Pokemon getOnePokeFromBall(Pokeball pkb, bool shinyForced = false)
+        internal Pokemon getOnePokeFromBall(Pokeball pkb, Zone zone, bool shinyForced = false)
         {
             List<Pokemon> pokemonsAvailable = pokemons.Where(x => !x.isLock).ToList();
+
             if (pokemonsAvailable.Count == 0)
                 throw new Exception("No Pokemon available (maybe they're all locked = true ?");
+
+            List<Pokemon> zoneFilteredPokemon = [];
+
+            foreach (Pokemon pokemon in pokemonsAvailable)
+            {
+                if (!pokemon.IsZoneExclusive || pokemon.ZonesList.Any(z => z.Name.ToLower() == (zone.Name.ToLower() ?? Commun.GetBaseZone().Name.ToLower())))
+                {
+                    zoneFilteredPokemon.Add(pokemon);
+                }
+            }
+            pokemonsAvailable = zoneFilteredPokemon;
+
+            if (pokemonsAvailable.Count == 0)
+                throw new Exception($"No Pokemon available in the zone {zone.Name}.");
+
             if (pkb.exclusiveType is not null)
             {
                 pokemonsAvailable = pokemonsAvailable.Where(p => p.Type1.ToLower() == pkb.exclusiveType.ToLower() || (p.Type2 is not null && p.Type2.ToLower() == pkb.exclusiveType.ToLower())).ToList();
@@ -93,10 +130,21 @@ namespace PKServ
                 if (pokemonsAvailable.Count == 0)
                     throw new Exception($"No Pokemon available (found no creature with serie {pkb.exclusiveSerie} forced by the ball).");
             }
+
+            if (pkb.exclusiveZone is not null)
+            {
+                pokemonsAvailable = pokemonsAvailable.Where(p => p.ZonesList.Where(zone => zone.Name.ToLower() == pkb.exclusiveZone.ToLower()).Any()).ToList();
+                if (pokemonsAvailable.Count == 0)
+                    throw new Exception($"No Pokemon available (found no creature with serie {pkb.exclusiveSerie} forced by the ball).");
+            }
             if (shinyForced)
-                return pokemonsAvailable.Where(x => !x.isShinyLock).ToList()[new Random().Next(pokemonsAvailable.Where(x => !x.isShinyLock).Count())];
+            {
+                // OPTIM P6 : Random.Shared à la place de new Random()
+                var shinyAvailable = pokemonsAvailable.Where(x => !x.isShinyLock).ToList();
+                return shinyAvailable[_rng.Next(shinyAvailable.Count)];
+            }
             else
-                return pokemonsAvailable[new Random().Next(pokemonsAvailable.Count())];
+                return pokemonsAvailable[_rng.Next(pokemonsAvailable.Count)];
         }
     }
 }

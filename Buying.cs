@@ -38,8 +38,7 @@ namespace PKServ
 
         public bool IsValide()
         {
-            return appSettings.pokemons.Where(p => p.Name_FR.ToLower() == pokename.ToLower()).Count() == 1 ||
-                 appSettings.pokemons.Where(p => p.Name_EN.ToLower() == pokename.ToLower()).Count() == 1;
+            return appSettings.pokemons.Where(p => Commun.isSamePoke(pokemonSearched: p, pokename)).Any();
         }
 
         public string DoResult()
@@ -69,6 +68,7 @@ namespace PKServ
                     if (mode.ToLower() == "normal" && User.Stats.CustomMoney >= poke.priceNormal || mode.ToLower() == "shiny" && User.Stats.CustomMoney >= poke.priceShiny)
                     {
                         poke.isShiny = mode.ToLower() == "shiny";
+                        UserRequest.ChannelSource = "Buying";
                         new Work(UserRequest, dataConnexion, appSettings, globalAppSettings).ObtainPoke(User, poke);
                         int price = poke.isShiny ? poke.priceShiny.Value : poke.priceNormal.Value;
                         // ajouter la thune générée par le scrap à l'utilisateur

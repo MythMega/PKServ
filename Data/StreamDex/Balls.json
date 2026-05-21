@@ -1,0 +1,112 @@
+[
+  {
+    "Name": "Pokeball",
+    "catchrate": 33,
+    "shinyrate": 4,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 0,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 0,
+    "sprite": "https://s3.pokeos.com/pokeos-uploads/forgotten-dex/pokeball/poke.png",
+    "rewardSource": "Envoyer Pokeball"
+  },
+  {
+    "Name": "Super Ball",
+    "catchrate": 50,
+    "shinyrate": 4,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 0,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 0,
+    "sprite": "https://s3.pokeos.com/pokeos-uploads/forgotten-dex/pokeball/great.png",
+    "rewardSource": "Envoyer Super Ball"
+  },
+  {
+    "Name": "Hyper Ball",
+    "catchrate": 80,
+    "shinyrate": 5,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 10,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 0,
+    "sprite": "https://s3.pokeos.com/pokeos-uploads/forgotten-dex/pokeball/ultra.png",
+    "rewardSource": "Envoyer Hyper Ball"
+  },
+  {
+    "Name": "Sombre Ball",
+    "catchrate": 20,
+    "shinyrate": 3,
+    "nightAdditionalRate": 60,
+    "alreadyCaughtAdditionalRate": 0,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 0,
+    "sprite": "https://s3.pokeos.com/pokeos-uploads/forgotten-dex/pokeball/dusk.png",
+    "rewardSource": "Envoyer Sombre Ball"
+  },
+  {
+    "Name": "Bis Ball",
+    "catchrate": 33,
+    "shinyrate": 7,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 40,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 0,
+    "sprite": "https://s3.pokeos.com/pokeos-uploads/forgotten-dex/pokeball/repeat.png",
+    "rewardSource": "Envoyer Bis Ball"
+  },
+  {
+    "Name": "Dex Ball",
+    "catchrate": 81,
+    "shinyrate": 1,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 0,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 20,
+    "sprite": "https://s3.pokeos.com/pokeos-uploads/forgotten-dex/pokeball/pester.png",
+    "rewardSource": "Envoyer Dex Ball"
+  },
+  {
+    "Name": "Master Ball",
+    "catchrate": 100,
+    "shinyrate": 100,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 0,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 2,
+    "sprite": "https://s3.pokeos.com/pokeos-uploads/forgotten-dex/pokeball/master.png",
+    "rewardSource": "Envoyer une master ball"
+  },
+  {
+    "Name": "Season Ball",
+    "catchrate": 65,
+    "shinyrate": 6,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 0,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 3,
+    "exclusiveType": "normal",
+    "sprite": "https://s3.pokeos.com/pokeos-uploads/forgotten-dex/pokeball/park-anime.png",
+    "rewardSource": "Envoyer une season ball"
+  },
+  {
+    "Name": "Flower Ball",
+    "catchrate": 51,
+    "shinyrate": 5,
+    "nightAdditionalRate": 0,
+    "alreadyCaughtAdditionalRate": 0,
+    "dexRelativeBonusCatchrate": 0,
+    "dexRelativeBonusShinyrate": 0,
+    "rerollItemForUncaught": 1,
+    "exclusiveSerie": "Fleur",
+    "sprite": "https://raw.githubusercontent.com/MythMega/PkServData/refs/heads/master/img/sprite/ball/FlowerBall/300.png",
+    "rewardSource": "Envoyer une Flowerball"
+  }
+]

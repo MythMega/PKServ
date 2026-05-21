@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace PKServ.Business
 {
@@ -69,7 +67,7 @@ namespace PKServ.Business
             data.RegisterGiveaway(giveawayClaim);
         }
 
-        private static bool EligibleToGiveaway(AppSettings appSettings, User user, Giveaway giveaway, DataConnexion data)
+        private static bool EligibleToGiveaway(AppSettings appSettings, PKServ.User user, Giveaway giveaway, DataConnexion data)
         {
             // si on trouve un code correspondant, alors il n'est pas éligible
             return !data.GetGiveawayUser(appSettings, user).Any(give => give.Code == giveaway.Code);
@@ -84,7 +82,8 @@ namespace PKServ.Business
         /// <returns></returns>
         public static List<Giveaway> GetGiveaways(AppSettings settings)
         {
-            List<Giveaway> result = JsonSerializer.Deserialize<List<Giveaway>>(File.ReadAllText("./giveaways.json"), Commun.GetJsonSerializerOptions());
+            List<Giveaway> result = JsonSerializer.Deserialize<List<Giveaway>>(File.ReadAllText("./Data/StreamDex/giveaways.json"), Commun.GetJsonSerializerOptions());
+            result.AddRange(LoadCustomGiveaway());
             result.ForEach(ga =>
             {
                 List<Pokemon> pokemons = new List<Pokemon>();
@@ -105,6 +104,32 @@ namespace PKServ.Business
                 ga.Pokemons = pokemons;
             });
             return result;
+        }
+
+        public static List<Giveaway> LoadCustomGiveaway()
+        {
+            // Chargement des overlays personnalisés
+            List<Giveaway> custom = [];
+            string path = "./Data/Custom/Giveaways";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            foreach (string file in Directory.GetFiles(path, "*.json"))
+            {
+                try
+                {
+                    List<Giveaway> Giveaway = JsonSerializer.Deserialize<List<Giveaway>>(
+                        File.ReadAllText(file), Commun.GetJsonSerializerOptions());
+                    custom.AddRange(Giveaway);
+                    Commun.Logger($"white#Custom Giveaway loaded from file: |yellow#{Path.GetFileName(file)}|white# : |aqua#{Giveaway.Count}|white#.");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error reading {file}: {e.Message}");
+                }
+            }
+            return custom;
         }
     }
 }

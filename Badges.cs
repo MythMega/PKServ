@@ -1,4 +1,4 @@
-﻿namespace PKServ
+namespace PKServ
 {
     public class Badge
     {
@@ -46,5 +46,10 @@
         public string Group { get; set; } = "Main"; // les badges seront triés par groupes à l'affichage
         public string SubGroup { get; set; } = "Common"; // les badges seront triés par sous groupes au sein d'un groupe
         public bool Obtained { get; set; } = false;
+
+        // OPTIM P8 : copie superficielle utilisée par StatsAchievementsImpl.GenerateAchievements
+        // pour que chaque utilisateur travaille sur ses propres instances de Badge lors des exports
+        // parallèles (Task.WhenAll), évitant les race conditions sur la liste partagée apS.badges.
+        public Badge ShallowCopy() => (Badge)this.MemberwiseClone();
     }
 }

@@ -1,0 +1,254 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamDex › Générateur de commandes</title>
+  <link rel="stylesheet" href="assets/streamdex.css">
+</head>
+<body>
+  <nav class="sd-navbar">
+    <div class="sd-container sd-navbar__inner">
+      <a href="main.html" class="sd-navbar__brand">🎮 StreamDex</a>
+      <button class="sd-navbar__hamburger" id="sd-hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="sd-navbar__links">
+        <a href="main.html" class="sd-navbar__link">Accueil</a>
+        <a href="availablepokemon.html" class="sd-navbar__link">Pokédex</a>
+        <a href="balldex.html" class="sd-navbar__link">Balls</a>
+        <a href="zonedex.html" class="sd-navbar__link">Zones</a>
+        <a href="pokestats.html" class="sd-navbar__link">Stats</a>
+        <div class="sd-dropdown">
+          <button class="sd-navbar__link sd-dropdown__toggle">Achat/Vente ▾</button>
+          <div class="sd-dropdown__menu">
+            <a href="buypokemon.html" class="sd-dropdown__item">🛒 Boutique</a>
+            <a href="scrappokemon.html" class="sd-dropdown__item">♻️ Scrap</a>
+          </div>
+        </div>
+        <a href="records.html" class="sd-navbar__link">Records</a>
+        <a href="commandgenerator.html" class="sd-navbar__link sd-navbar__link--active">Commandes</a>
+        <a href="raids.html" class="sd-navbar__link">Raids</a>
+        <a href="rankings.html" class="sd-navbar__link">Classements</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sd-page">
+    <div class="sd-container">
+
+      <div class="sd-section-header" style="margin-bottom:24px">
+        <h1>⚙️ Générateur de commandes</h1>
+      </div>
+
+      <!-- Onglets -->
+      <div class="sd-tabs" id="cg-tabs" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:0;border-bottom:2px solid var(--border-color)">
+        <button class="sd-tab sd-tab--active" data-tab="buy">💰 Buy</button>
+        <button class="sd-tab" data-tab="scrap">♻️ Scrap</button>
+        <button class="sd-tab" data-tab="trade">🔄 Trade</button>
+        <button class="sd-tab" data-tab="zone">📍 Zone</button>
+        <button class="sd-tab" data-tab="background">🎴 Fond de carte</button>
+      </div>
+
+      <!-- Contenu des onglets -->
+      <div class="sd-card" style="border-top:none;border-radius:0 0 var(--radius-md) var(--radius-md);padding:28px">
+
+        <!-- ── BUY ─────────────────────────────────────────────────── -->
+        <div id="tab-buy" class="cg-panel">
+          <h2 style="font-size:16px;margin:0 0 20px">💰 Acheter une créature</h2>
+          <div class="sd-form-group">
+            <label class="sd-label">Créature</label>
+            <div style="position:relative">
+              <input class="sd-input" id="buy-creature-input" type="text"
+                placeholder="Tapez un nom..." autocomplete="off" style="width:100%">
+              <ul id="buy-ac" class="cg-autocomplete"></ul>
+            </div>
+          </div>
+          <div class="sd-form-group">
+            <label class="sd-label">Version</label>
+            <div style="display:flex;gap:8px">
+              <button class="sd-btn sd-btn--ghost cg-variant-btn cg-variant--active" data-variant="normal">Normal</button>
+              <button class="sd-btn sd-btn--ghost cg-variant-btn" data-variant="shiny">✨ Shiny</button>
+            </div>
+          </div>
+          <div class="cg-result-area">
+            <div class="cg-result-box" id="buy-result"></div>
+            <button class="sd-btn sd-btn--primary" id="buy-copy" style="display:none">📋 Copier</button>
+          </div>
+          <button class="sd-btn sd-btn--accent" id="buy-generate" style="margin-top:16px">Générer la commande</button>
+        </div>
+
+        <!-- ── SCRAP ──────────────────────────────────────────────── -->
+        <div id="tab-scrap" class="cg-panel" style="display:none">
+          <h2 style="font-size:16px;margin:0 0 20px">♻️ Scrapper une créature</h2>
+          <div class="sd-form-group">
+            <label class="sd-label">Mode</label>
+            <select class="sd-select" id="scrap-mode" style="width:100%">
+              <option value="full fulldex">Full Scrap — scrapper tout le pokédex normal &amp; shiny</option>
+              <option value="{name} complete" selected>Complete — scrapper tous les normaux &amp; shiny du pokémon</option>
+              <option value="{name} fullnormal">Fullnormal — scrapper tous les normaux</option>
+              <option value="{name} fullshiny">Fullshiny — scrapper tous les shiny</option>
+              <option value="{name} normal">Normal — scrapper 1 normal</option>
+              <option value="{name} shiny">Shiny — scrapper 1 shiny</option>
+            </select>
+          </div>
+          <div class="sd-form-group" id="scrap-creature-group">
+            <label class="sd-label">Créature</label>
+            <div style="position:relative">
+              <input class="sd-input" id="scrap-creature-input" type="text"
+                placeholder="Tapez un nom..." autocomplete="off" style="width:100%">
+              <ul id="scrap-ac" class="cg-autocomplete"></ul>
+            </div>
+          </div>
+          <div class="cg-result-area">
+            <div class="cg-result-box" id="scrap-result"></div>
+            <button class="sd-btn sd-btn--primary" id="scrap-copy" style="display:none">📋 Copier</button>
+          </div>
+          <button class="sd-btn sd-btn--accent" id="scrap-generate" style="margin-top:16px">Générer la commande</button>
+        </div>
+
+        <!-- ── TRADE ──────────────────────────────────────────────── -->
+        <div id="tab-trade" class="cg-panel" style="display:none">
+          <h2 style="font-size:16px;margin:0 0 20px">🔄 Proposer un échange</h2>
+          <div style="display:flex;gap:24px;flex-wrap:wrap">
+            <div style="flex:1;min-width:200px">
+              <h3 style="font-size:13px;color:var(--text-secondary);margin:0 0 12px;text-transform:uppercase;letter-spacing:.05em">Vous envoyez</h3>
+              <div class="sd-form-group">
+                <label class="sd-label">Créature</label>
+                <div style="position:relative">
+                  <input class="sd-input" id="trade-send-input" type="text"
+                    placeholder="Tapez un nom..." autocomplete="off" style="width:100%">
+                  <ul id="trade-send-ac" class="cg-autocomplete"></ul>
+                </div>
+              </div>
+              <div class="sd-form-group">
+                <label class="sd-label">Version</label>
+                <div style="display:flex;gap:8px">
+                  <button class="sd-btn sd-btn--ghost cg-variant-btn cg-variant--active" data-group="send" data-variant="Normal">Normal</button>
+                  <button class="sd-btn sd-btn--ghost cg-variant-btn" data-group="send" data-variant="Shiny">✨ Shiny</button>
+                </div>
+              </div>
+            </div>
+            <div style="flex:1;min-width:200px">
+              <h3 style="font-size:13px;color:var(--text-secondary);margin:0 0 12px;text-transform:uppercase;letter-spacing:.05em">Vous demandez</h3>
+              <div class="sd-form-group">
+                <label class="sd-label">Créature</label>
+                <div style="position:relative">
+                  <input class="sd-input" id="trade-recv-input" type="text"
+                    placeholder="Tapez un nom..." autocomplete="off" style="width:100%">
+                  <ul id="trade-recv-ac" class="cg-autocomplete"></ul>
+                </div>
+              </div>
+              <div class="sd-form-group">
+                <label class="sd-label">Version</label>
+                <div style="display:flex;gap:8px">
+                  <button class="sd-btn sd-btn--ghost cg-variant-btn cg-variant--active" data-group="recv" data-variant="Normal">Normal</button>
+                  <button class="sd-btn sd-btn--ghost cg-variant-btn" data-group="recv" data-variant="Shiny">✨ Shiny</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cg-result-area">
+            <div class="cg-result-box" id="trade-result"></div>
+            <button class="sd-btn sd-btn--primary" id="trade-copy" style="display:none">📋 Copier</button>
+          </div>
+          <button class="sd-btn sd-btn--accent" id="trade-generate" style="margin-top:16px">Générer la commande</button>
+        </div>
+
+        <!-- ── ZONE ───────────────────────────────────────────────── -->
+        <div id="tab-zone" class="cg-panel" style="display:none">
+          <h2 style="font-size:16px;margin:0 0 20px">📍 Changer de zone</h2>
+          <div class="sd-form-group">
+            <label class="sd-label">Région</label>
+            <div id="zone-region-btns" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+          </div>
+          <div id="zone-cards-container" class="sd-grid sd-grid--auto" style="margin-bottom:16px"></div>
+          <div class="cg-result-area">
+            <div class="cg-result-box" id="zone-result"></div>
+            <button class="sd-btn sd-btn--primary" id="zone-copy" style="display:none">📋 Copier</button>
+          </div>
+        </div>
+
+        <!-- ── BACKGROUND ─────────────────────────────────────────── -->
+        <div id="tab-background" class="cg-panel" style="display:none">
+          <h2 style="font-size:16px;margin:0 0 20px">🎴 Changer le fond de carte dresseur</h2>
+          <div class="sd-form-group">
+            <label class="sd-label">Groupe</label>
+            <div id="bg-group-btns" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+          </div>
+          <div id="bg-cards-container" class="sd-grid sd-grid--auto" style="margin-bottom:16px"></div>
+          <div class="cg-result-area">
+            <div class="cg-result-box" id="bg-result"></div>
+            <button class="sd-btn sd-btn--primary" id="bg-copy" style="display:none">📋 Copier</button>
+          </div>
+        </div>
+      </div><!-- /sd-card -->
+    </div><!-- /sd-container -->
+  </div><!-- /sd-page -->
+
+  <footer class="sd-footer">
+    <div class="sd-container">StreamDex — Données chargées dynamiquement</div>
+  </footer>
+
+  <style>
+    /* ── Onglets ──────────────────────────────────────────────────────── */
+    .sd-tab {
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      border-bottom: none;
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    .sd-tab--active {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--accent-blue);
+      font-weight: 600;
+    }
+
+    /* ── Formulaires ──────────────────────────────────────────────────── */
+    .sd-form-group { margin-bottom: 18px; }
+    .sd-label { display:block; font-size:12px; color:var(--text-secondary); margin-bottom:6px; }
+    .cg-variant-btn { padding: 6px 16px; font-size: 13px; }
+    .cg-variant--active { background: var(--accent-blue) !important; color: #fff !important; border-color: var(--accent-blue) !important; }
+
+    /* ── Autocomplete ─────────────────────────────────────────────────── */
+    .cg-autocomplete {
+      display: none; position: absolute; top: calc(100% + 2px); left: 0; right: 0;
+      z-index: 9999; background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm); margin: 0; padding: 0; list-style: none;
+      max-height: 220px; overflow-y: auto; box-shadow: var(--shadow-md);
+    }
+    .cg-autocomplete li {
+      padding: 8px 12px; cursor: pointer; font-size: 13px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .cg-autocomplete li:last-child { border-bottom: none; }
+    .cg-autocomplete li:hover, .cg-autocomplete li.active {
+      background: var(--bg-card-hover); color: var(--accent-blue);
+    }
+
+    /* ── Résultat ─────────────────────────────────────────────────────── */
+    .cg-result-area { display: flex; align-items: center; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+    .cg-result-box {
+      flex: 1; min-width: 200px; padding: 12px 16px;
+      background: var(--bg-input); border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm); font-family: monospace; font-size: 15px;
+      color: var(--accent-blue); min-height: 44px; word-break: break-all;
+    }
+
+    /* ── Cards zone / background ──────────────────────────────────────── */
+    .cg-item-card {
+      cursor: pointer; border: 2px solid transparent; transition: border-color .15s;
+    }
+    .cg-item-card:hover { border-color: var(--accent-blue); }
+    .cg-item-card.selected { border-color: var(--accent-blue); background: var(--bg-card-hover); }
+    .cg-item-card img { width: 100%; height: 120px; object-fit: cover; border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+  </style>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/commandgenerator.js"></script>
+</body>
+</html>
